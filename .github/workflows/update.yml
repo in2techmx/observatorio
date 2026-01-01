@@ -1,8 +1,29 @@
-- name: Push results
+name: Actualizar Noticias
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Instalar Dependencias
+        run: pip install feedparser
+        
+      - name: Ejecutar Recolector
+        run: python collector.py
+        
+      - name: Guardar y Subir Resultados
         run: |
           git config --global user.name 'NewsBot'
           git config --global user.email 'bot@antigravity.news'
-          # Esta línea asegura que git registre el archivo aunque sea nuevo
-          git add latest_news.json || touch latest_news.json && git add latest_news.json
-          git commit -m "Update news data" || echo "No changes to commit"
+          git add latest_news.json
+          git commit -m "Update news data" || echo "No hay cambios para subir"
           git push
