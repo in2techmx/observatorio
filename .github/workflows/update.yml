@@ -7,7 +7,47 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkoutname: Actualizar Noticias
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Instalar Dependencias
+        run: pip install feedparser
+
+      - name: Ejecutar Recolector
+        run: python collector.py
+        
+      - name: Guardar y Subir Resultados
+        run: |
+          git config --global user.name 'NewsBot'
+          git config --global user.email 'bot@antigravity.news'
+          
+          # 1. Añadimos los archivos generados al área de preparación (stage)
+          git add latest_news.json historico_noticias/
+          
+          # 2. Hacemos el commit LOCALMENTE primero
+          git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          
+          # 3. AHORA sí sincronizamos. Si hay cambios en la web, los pone "detrás" de nuestro commit
+          git pull origin main --rebase
+          
+          # 4. Empujamos todo a la web
+          git push origin main
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
