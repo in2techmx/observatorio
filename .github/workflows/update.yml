@@ -7,8 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Descarga todo el historial para evitar errores de push
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -20,19 +23,19 @@ jobs:
       - name: Ejecutar Recolector
         run: python collector.py
         
-     - name: Guardar y Subir Resultados
+      - name: Guardar y Subir Resultados
         run: |
           git config --global user.name 'NewsBot'
           git config --global user.email 'bot@antigravity.news'
           
-          # Sincronizar con lo que hay en la web antes de subir
+          # Sincronizar cambios remotos antes de subir
           git pull origin main --rebase
           
-          # Añadir los archivos (el fijo y la carpeta nueva)
+          # Añadir archivos creados
           git add latest_news.json historico_noticias/
           
-          # Hacer el commit con la fecha actual
-          git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios para subir"
+          # Intentar commit
+          git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
           
-          # Subir los cambios
+          # Subir con fuerza si es necesario
           git push origin main
