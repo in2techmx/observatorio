@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Descarga todo el historial para evitar errores de push
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -19,23 +19,20 @@ jobs:
           
       - name: Instalar Dependencias
         run: pip install feedparser
-        
+
+      - name: Sincronizar Repositorio
+        run: |
+          git config --global user.name 'NewsBot'
+          git config --global user.email 'bot@antigravity.news'
+          # Sincronizamos ANTES de generar archivos nuevos
+          git pull origin main --rebase
+
       - name: Ejecutar Recolector
         run: python collector.py
         
       - name: Guardar y Subir Resultados
         run: |
-          git config --global user.name 'NewsBot'
-          git config --global user.email 'bot@antigravity.news'
-          
-          # Sincronizar cambios remotos antes de subir
-          git pull origin main --rebase
-          
-          # Añadir archivos creados
+          # Ahora que ya estamos sincronizados, añadimos y subimos
           git add latest_news.json historico_noticias/
-          
-          # Intentar commit
           git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
-          
-          # Subir con fuerza si es necesario
           git push origin main
