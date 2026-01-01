@@ -1,8 +1,9 @@
-name: Actualizar Noticias
+name: Actualizar Noticias con IA
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *' # Cada hora
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,9 +19,9 @@ jobs:
           python-version: '3.9'
           
       - name: Instalar Dependencias
-        run: pip install feedparser
-
-      - name: Ejecutar Recolector
+        run: pip install feedparser google-generativeai
+        
+      - name: Ejecutar Recolector e IA
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
@@ -30,14 +31,12 @@ jobs:
           git config --global user.name 'NewsBot'
           git config --global user.email 'bot@antigravity.news'
           
-          # 1. Añadimos los archivos generados al área de preparación (stage)
+          # Añadir cambios
           git add latest_news.json historico_noticias/
           
-          # 2. Hacemos el commit LOCALMENTE primero
-          git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          # Commit local
+          git commit -m "Inteligencia Generada: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
           
-          # 3. AHORA sí sincronizamos. Si hay cambios en la web, los pone "detrás" de nuestro commit
+          # Sincronizar y Subir
           git pull origin main --rebase
-          
-          # 4. Empujamos todo a la web
           git push origin main
