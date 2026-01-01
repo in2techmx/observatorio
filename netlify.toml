@@ -1,10 +1,13 @@
 [[headers]]
   for = "/latest_news.json"
   [headers.values]
+    # Forzamos a que el navegador siempre pida la versión más nueva del JSON
     cache-control = "no-cache, no-store, must-revalidate"
     Content-Type = "application/json"
+    Access-Control-Allow-Origin = "*"
 
 [[redirects]]
+  # Esto asegura que si el usuario refresca la página, React no de error 404
   from = "/*"
   to = "/index.html"
   status = 200
