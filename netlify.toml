@@ -1,13 +1,23 @@
 [[headers]]
-  for = "/latest_news.json"
+  for = "/*.json"
   [headers.values]
-    # Forzamos a que el navegador siempre pida la versión más nueva del JSON
+    # Evita que el navegador guarde versiones viejas de los datos
     cache-control = "no-cache, no-store, must-revalidate"
     Content-Type = "application/json"
     Access-Control-Allow-Origin = "*"
 
+[[headers]]
+  for = "/historico_noticias/*.json"
+  [headers.values]
+    cache-control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/archivos_maestros/*.json"
+  [headers.values]
+    cache-control = "no-cache, no-store, must-revalidate"
+
 [[redirects]]
-  # Esto asegura que si el usuario refresca la página, React no de error 404
+  # Mantiene la navegación fluida si refrescas la página
   from = "/*"
   to = "/index.html"
   status = 200
