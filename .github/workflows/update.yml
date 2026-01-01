@@ -21,6 +21,8 @@ jobs:
         run: pip install feedparser
 
       - name: Ejecutar Recolector
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
         
       - name: Guardar y Subir Resultados
