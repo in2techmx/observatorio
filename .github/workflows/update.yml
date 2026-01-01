@@ -24,6 +24,7 @@ jobs:
         run: |
           git config --global user.name 'NewsBot'
           git config --global user.email 'bot@antigravity.news'
-          git add latest_news.json
-          git commit -m "Update news data" || echo "No hay cambios para subir"
+          # Añadimos el archivo principal y la nueva carpeta de históricos
+          git add latest_news.json historico_noticias/
+          git commit -m "Registro histórico: $(date +'%Y-%m-%d %H:%M')" || echo "No hay cambios"
           git push
