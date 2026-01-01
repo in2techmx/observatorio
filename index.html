@@ -4,54 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News Proximity | Observatorio</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { inter: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] },
-                    colors: { glass: 'rgba(255, 255, 255, 0.03)', 'glass-border': 'rgba(255, 255, 255, 0.08)', 'void': '#020202' }
-                }
-            }
-        }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --region-usa: #3b82f6; --region-china: #ef4444; --region-russia: #b91c1c;
-            --region-europe: #8b5cf6; --region-india: #f59e0b; --region-mideast: #10b981; --region-latam: #ec4899;
+            --usa: #3b82f6; --china: #ef4444; --russia: #b91c1c; --europe: #8b5cf6;
+            --india: #f59e0b; --mideast: #10b981; --latam: #ec4899; --africa: #06b6d4; --uk: #6366f1;
         }
-        body {
-            margin: 0; background-color: #020202; color: white; overflow: hidden; height: 100vh;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        /* Efecto de Partículas de Fondo */
-        #bg-canvas {
-            position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #0a0a15 0%, #020202 100%);
-        }
-
-        .glass-panel {
-            background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-        
-        .text-xs-nano { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.3em; font-weight: 600; }
-        
-        /* Ocultar Scrollbar */
+        body { margin: 0; background: #020202; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.6; }
+        .glass { background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body>
@@ -59,202 +26,96 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
         const { motion, AnimatePresence } = window.Motion;
 
         const REGIONS = {
-            USA: { name: 'USA', color: 'var(--region-usa)' },
-            CHINA: { name: 'China', color: 'var(--region-china)' },
-            RUSSIA: { name: 'Rusia', color: 'var(--region-russia)' },
-            EUROPE: { name: 'Europa', color: 'var(--region-europe)' },
-            INDIA: { name: 'India', color: 'var(--region-india)' },
-            MID_EAST: { name: 'M. Oriente', color: 'var(--region-mideast)' },
-            LATAM: { name: 'LATAM', color: 'var(--region-latam)' }
-        };
-
-        // --- BACKGROUND PARTICLES ENGINE ---
-        const initParticles = () => {
-            const canvas = document.getElementById('bg-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-            window.onresize = resize; resize();
-
-            for(let i=0; i<100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5, speedX: (Math.random() - 0.5) * 0.2, speedY: (Math.random() - 0.5) * 0.2
-                });
-            }
-
-            const animate = () => {
-                ctx.clearRect(0,0,canvas.width, canvas.height);
-                ctx.fillStyle = "rgba(255,255,255,0.3)";
-                particles.forEach(p => {
-                    p.x += p.speedX; p.y += p.speedY;
-                    if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
-                    if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-                });
-                requestAnimationFrame(animate);
-            };
-            animate();
+            USA: { name: 'USA', color: 'var(--usa)' }, CHINA: { name: 'China', color: 'var(--china)' },
+            RUSSIA: { name: 'Rusia', color: 'var(--russia)' }, EUROPE: { name: 'Europa', color: 'var(--europe)' },
+            INDIA: { name: 'India', color: 'var(--india)' }, MID_EAST: { name: 'M. Oriente', color: 'var(--mideast)' },
+            LATAM: { name: 'LATAM', color: 'var(--latam)' }, AFRICA: { name: 'África', color: 'var(--africa)' },
+            UK: { name: 'Reino Unido', color: 'var(--uk)' }
         };
 
         function App() {
             const [data, setData] = useState([]);
+            const [selected, setSelected] = useState(null);
             const [loading, setLoading] = useState(true);
-            const [selectedEvent, setSelectedEvent] = useState(null);
 
             useEffect(() => {
-                initParticles();
-                fetch(`latest_news.json?v=${Date.now()}`)
-                    .then(res => res.json())
-                    .then(json => { setData(json); setLoading(false); })
-                    .catch(err => console.error("Error", err));
+                // Animación de partículas sutil
+                const canvas = document.getElementById('bg-canvas');
+                const ctx = canvas.getContext('2d');
+                let pts = [];
+                const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+                resize(); window.onresize = resize;
+                for(let i=0; i<80; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3});
+                const draw = () => {
+                    ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(255,255,255,0.2)";
+                    pts.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); });
+                    requestAnimationFrame(draw);
+                };
+                draw();
+
+                // Carga de datos reales
+                fetch(`./latest_news.json?t=${Date.now()}`)
+                    .then(r => r.json()).then(d => { setData(d); setLoading(false); })
+                    .catch(e => console.error("Error", e));
             }, []);
 
-            if (loading) return (
-                <div className="h-screen flex flex-col items-center justify-center space-y-4">
-                    <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span className="text-xs-nano text-blue-400 animate-pulse">Sincronizando Proximidad Global...</span>
-                </div>
-            );
+            if(loading) return <div className="h-screen flex items-center justify-center tracking-[0.5em] text-xs opacity-50">SINCRONIZANDO PROXIMIDAD...</div>;
 
             return (
-                <div className="h-screen w-full flex flex-col p-8 md:p-12 overflow-hidden relative">
-                    {/* UI OVERLAY */}
-                    <header className="flex justify-between items-start z-10 mb-8">
+                <div className="h-screen w-full flex flex-col p-10 overflow-hidden relative">
+                    <header className="mb-12 flex justify-between items-end">
                         <div>
-                            <h1 className="text-5xl font-display font-black tracking-tighter italic">GLOBAL NEWS <span className="text-blue-500 not-italic">PROXIMITY</span></h1>
-                            <div className="flex items-center gap-3 mt-2">
-                                <span className="h-[1px] w-12 bg-blue-500"></span>
-                                <p className="text-xs-nano text-gray-500">Divergencia y Sesgo Narrativo en Tiempo Real</p>
-                            </div>
-                        </div>
-                        <div className="glass-panel px-4 py-2 rounded-lg text-right border-blue-500/20">
-                            <span className="text-[10px] text-blue-400 block font-bold">ACTUALIZACIÓN: NOMINAL</span>
-                            <span className="text-[9px] text-gray-500 uppercase tracking-widest">{new Date().toLocaleDateString()}</span>
+                            <h1 className="text-5xl font-black italic tracking-tighter">GLOBAL NEWS <span className="text-blue-500 not-italic">PROXIMITY</span></h1>
+                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2">Divergencia Narrativa detectada por IA</p>
                         </div>
                     </header>
 
                     <AnimatePresence mode="wait">
-                        {!selectedEvent ? (
-                            <motion.main 
-                                key="feed" exit={{opacity: 0, y: 20}} initial={{opacity: 0}} animate={{opacity: 1}}
-                                className="flex-1 flex flex-col justify-center"
-                            >
-                                <h2 className="text-xs-nano mb-8 text-gray-500">Dimensiones Activas detectadas por IA</h2>
-                                <div className="flex gap-8 overflow-x-auto pb-12 hide-scroll snap-x">
-                                    {data.map((event, idx) => (
-                                        <motion.div 
-                                            key={idx} whileHover={{ y: -15, borderColor: 'rgba(59, 130, 246, 0.5)' }}
-                                            onClick={() => setSelectedEvent(event)}
-                                            className="min-w-[400px] glass-panel p-10 rounded-3xl cursor-pointer snap-center relative overflow-hidden group transition-all"
-                                        >
-                                            <div className="absolute -top-10 -right-10 text-[12rem] font-black opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                                                {idx + 1}
-                                            </div>
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                                                <span className="text-xs-nano text-blue-400">Temática Geopolítica</span>
-                                            </div>
-                                            <h3 className="text-3xl font-bold font-display leading-tight mb-6">{event.tematica}</h3>
-                                            <p className="text-gray-400 text-sm leading-relaxed mb-8">{event.descripcion}</p>
-                                            
-                                            <div className="flex items-center justify-between mt-auto">
-                                                <div className="flex -space-x-3">
-                                                    {event.regiones_activas.map(r => (
-                                                        <div key={r} title={r} className="w-8 h-8 rounded-full border-2 border-[#020202] shadow-lg" style={{backgroundColor: REGIONS[r]?.color}}></div>
-                                                    ))}
-                                                </div>
-                                                <span className="text-[10px] font-bold text-gray-500 tracking-widest uppercase">Analizar Proximidad →</span>
+                        {!selected ? (
+                            <motion.div key="list" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="flex-1 flex flex-col justify-center">
+                                <div className="flex gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
+                                    {data.map((item, i) => (
+                                        <motion.div key={i} whileHover={{y:-10}} onClick={() => setSelected(item)} className="min-w-[400px] glass p-10 rounded-[2rem] cursor-pointer snap-center border-b-4 border-blue-500/30">
+                                            <span className="text-[10px] font-bold text-blue-400 mb-4 block tracking-widest uppercase">Eje de Análisis 0{i+1}</span>
+                                            <h2 className="text-3xl font-bold mb-4 leading-tight">{item.tematica}</h2>
+                                            <p className="text-gray-400 text-sm line-clamp-2">{item.descripcion}</p>
+                                            <div className="mt-8 flex gap-2">
+                                                {item.regiones_activas.map(r => <div key={r} className="w-3 h-3 rounded-full" style={{background: REGIONS[r]?.color}} />)}
                                             </div>
                                         </motion.div>
                                     ))}
                                 </div>
-                            </motion.main>
+                            </motion.div>
                         ) : (
-                            <motion.div 
-                                key="detail" initial={{opacity: 0, scale: 0.95}} animate={{opacity: 1, scale: 1}} exit={{opacity: 0}}
-                                className="flex-1 flex flex-col min-h-0"
-                            >
-                                <button onClick={() => setSelectedEvent(null)} className="text-xs-nano text-gray-500 hover:text-blue-400 transition-colors mb-8 flex items-center gap-2">
-                                    <span className="text-lg">←</span> Salir de esta Dimensión
-                                </button>
-                                
-                                <div className="grid grid-cols-12 gap-8 flex-1 min-h-0">
-                                    {/* VISOR PROXIMITY (PRISMA) */}
-                                    <div className="col-span-12 lg:col-span-8 glass-panel rounded-[3rem] p-8 relative flex items-center justify-center overflow-hidden border-blue-500/10">
-                                        {/* Grid de fondo decorativo */}
-                                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                                             style={{backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '50px 50px'}}></div>
-                                        
-                                        <div className="text-center z-10 max-w-lg">
-                                            <motion.h2 
-                                                initial={{y: 20}} animate={{y: 0}}
-                                                className="text-5xl font-black font-display mb-6 tracking-tighter uppercase italic"
-                                            >
-                                                {selectedEvent.tematica}
-                                            </motion.h2>
-                                            <p className="text-gray-400 text-base leading-relaxed">{selectedEvent.descripcion}</p>
-                                        </div>
-
-                                        {/* Orbes de Proximidad */}
-                                        {Object.keys(REGIONS).map((key, i) => {
-                                            const isActive = selectedEvent.regiones_activas.includes(key);
-                                            const angle = (i / 7) * Math.PI * 2;
-                                            const radiusX = 350; const radiusY = 200;
-                                            const x = Math.cos(angle) * radiusX;
-                                            const y = Math.sin(angle) * radiusY;
-                                            
-                                            return (
-                                                <motion.div 
-                                                    key={key} initial={{scale: 0}} animate={{x, y, scale: 1}}
-                                                    className={`absolute p-4 glass-panel rounded-2xl text-center w-36 border-t-4 transition-all duration-700 ${!isActive ? 'opacity-10 scale-90 blur-[1px]' : 'shadow-[0_0_20px_-5px] shadow-current'}`}
-                                                    style={{borderColor: REGIONS[key].color, color: REGIONS[key].color}}
-                                                >
-                                                    <span className="text-xs font-black block mb-1 uppercase tracking-tighter">{REGIONS[key].name}</span>
-                                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">
-                                                        {isActive ? 'Afinidad Detectada' : 'Distancia Crítica'}
-                                                    </span>
-                                                </motion.div>
-                                            );
-                                        })}
+                            <motion.div key="detail" initial={{opacity:0, scale:0.9}} animate={{opacity:1, scale:1}} exit={{opacity:0}} className="flex-1 grid grid-cols-12 gap-10 min-h-0">
+                                <div className="col-span-8 glass rounded-[3rem] relative flex items-center justify-center overflow-hidden">
+                                    <button onClick={()=>setSelected(null)} className="absolute top-8 left-8 text-[10px] tracking-widest uppercase opacity-50 hover:opacity-100">← Volver</button>
+                                    <div className="text-center z-10 max-w-lg p-6">
+                                        <h2 className="text-5xl font-black uppercase italic mb-6">{selected.tematica}</h2>
+                                        <p className="text-gray-400">{selected.descripcion}</p>
                                     </div>
-
-                                    {/* PANEL LATERAL: PERSPECTIVAS */}
-                                    <div className="col-span-12 lg:col-span-4 flex flex-col gap-4 overflow-y-auto pr-2 hide-scroll">
-                                        <h3 className="text-xs-nano text-blue-500 mb-2">Resumen de Enfoques Regionales</h3>
-                                        {Object.entries(selectedEvent.perspectivas).map(([region, text]) => (
-                                            <motion.div 
-                                                initial={{x: 20, opacity: 0}} animate={{x: 0, opacity: 1}}
-                                                key={region} className="p-5 glass-panel border-l-4 rounded-r-xl" 
-                                                style={{borderLeftColor: REGIONS[region]?.color}}
-                                            >
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-xs font-black uppercase" style={{color: REGIONS[region]?.color}}>{REGIONS[region]?.name}</span>
-                                                    <span className="text-[8px] bg-white/5 px-2 py-0.5 rounded text-gray-500">PERSPECTIVA</span>
-                                                </div>
-                                                <p className="text-xs text-gray-300 leading-relaxed italic">"{text}"</p>
+                                    {Object.keys(REGIONS).map((r, i) => {
+                                        const active = selected.regiones_activas.includes(r);
+                                        const ang = (i/Object.keys(REGIONS).length) * Math.PI * 2;
+                                        return (
+                                            <motion.div key={r} animate={{x: Math.cos(ang)*320, y: Math.sin(ang)*180}} className={`absolute p-4 glass rounded-2xl w-32 text-center border-t-4 ${!active && 'opacity-10 grayscale'}`} style={{borderColor: REGIONS[r].color}}>
+                                                <span className="text-[10px] font-bold block" style={{color: REGIONS[r].color}}>{REGIONS[r].name}</span>
                                             </motion.div>
-                                        ))}
-                                        
-                                        {selectedEvent.puntos_ciegos.length > 0 && (
-                                            <div className="mt-4 p-6 bg-red-500/5 border border-red-500/20 rounded-3xl">
-                                                <span className="text-xs-nano text-red-500 block mb-4">Anomalías: Puntos Ciegos</span>
-                                                <div className="flex flex-wrap gap-3">
-                                                    {selectedEvent.puntos_ciegos.map(p => (
-                                                        <div key={p} className="flex items-center gap-2 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20">
-                                                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                                                            <span className="text-[10px] font-bold text-red-400 uppercase tracking-tighter">{REGIONS[p]?.name}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                <p className="mt-4 text-[10px] text-gray-500 leading-snug">Estas regiones han omitido o no priorizado el tema en sus principales canales informativos.</p>
-                                            </div>
-                                        )}
-                                    </div>
+                                        )
+                                    })}
+                                </div>
+                                <div className="col-span-4 overflow-y-auto hide-scroll space-y-4">
+                                    <h3 className="text-[10px] tracking-widest uppercase opacity-50 mb-6 text-blue-400">Perspectivas Regionales</h3>
+                                    {Object.entries(selected.perspectivas).map(([reg, text]) => (
+                                        <div key={reg} className="p-5 glass border-l-4 rounded-r-xl" style={{borderColor: REGIONS[reg]?.color}}>
+                                            <span className="text-[10px] font-bold uppercase block mb-1" style={{color: REGIONS[reg]?.color}}>{REGIONS[reg]?.name}</span>
+                                            <p className="text-xs text-gray-300 italic leading-relaxed">"{text}"</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </motion.div>
                         )}
@@ -262,7 +123,6 @@
                 </div>
             );
         }
-
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
