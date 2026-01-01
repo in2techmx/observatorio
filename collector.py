@@ -2,6 +2,11 @@ import feedparser
 import json
 import datetime
 import os
+import google.generativeai as genai
+
+# CONFIGURACIÓN IA
+genai.configure(api_key="TU_API_KEY_AQUI")
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 FEEDS = {
     "USA": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
@@ -13,39 +18,64 @@ FEEDS = {
     "LATAM": "https://en.mercopress.com/rss/"
 }
 
-def collect():
-    all_news = []
-    now = datetime.datetime.now()
-    # Formato: 2024-05-20_14-30
-    timestamp_str = now.strftime("%Y-%m-%d_%H-%M")
+def analyze_with_ia(news_batch):
+    prompt = f"""
+    Actúa como un analista geopolítico senior. Te daré una lista de noticias de diferentes regiones.
+    Tu tarea es:
+    1. Agruparlas en 5-7 TEMÁTICAS globales (ej: Guerra Fría Tecnológica, Crisis Climática, Conflictos Territoriales).
+    2. Para cada temática, identifica qué regiones están hablando de ella y crea una 'Síntesis de Narrativa' de 1 frase para cada región.
+    3. Identifica 'Puntos Ciegos' (regiones que NO mencionan el tema).
     
-    # Nombre de tu nueva carpeta
-    folder_name = "historico_noticias"
-    if not os.path.exists(folder_name):
-        os.makedirs(folder_name)
+    Noticias crudas: {news_batch}
+    
+    Responde ÚNICAMENTE en formato JSON con esta estructura:
+    [
+      {{
+        "tematica": "Nombre",
+        "descripcion": "Breve resumen global",
+        "regiones_activas": ["USA", "CHINA"],
+        "puntos_ciegos": ["RUSSIA"],
+        "perspectivas": {{
+           "USA": "Síntesis de su enfoque...",
+           "CHINA": "Síntesis de su enfoque..."
+        }}
+      }}
+    ]
+    """
+    try:
+        response = model.generate_content(prompt)
+        # Limpiamos la respuesta para que sea un JSON válido
+        json_text = response.text.replace('```json', '').replace('```', '').strip()
+        return json.loads(json_text)
+    except:
+        return []
 
+def collect():
+    raw_data = []
+    now = datetime.datetime.now()
+    
+    # 1. Recolección Cruda
     for region, url in FEEDS.items():
         try:
             feed = feedparser.parse(url)
-            for entry in feed.entries[:8]:
-                all_news.append({
-                    "region": region,
-                    "title": entry.title.strip(),
-                    "link": entry.link,
-                    "timestamp": now.isoformat()
-                })
-        except Exception as e:
-            print(f"Error en {region}: {e}")
+            for entry in feed.entries[:5]:
+                raw_data.append({"region": region, "title": entry.title})
+        except: continue
 
-    # Guardamos el archivo para la web y el histórico con timestamp
-    file_fixed = "latest_news.json"
-    file_historic = os.path.join(folder_name, f"noticias_{timestamp_str}.json")
+    # 2. Análisis Inteligente
+    structured_data = analyze_with_ia(raw_data)
+
+    # 3. Guardado
+    folder_name = "historico_noticias"
+    if not os.path.exists(folder_name): os.makedirs(folder_name)
     
-    for file_path in [file_fixed, file_historic]:
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(all_news, f, indent=4, ensure_ascii=False)
-            
-    print(f"✅ Archivos generados: {file_fixed} y {file_historic}")
+    timestamp_str = now.strftime("%Y-%m-%d_%H-%M")
+    file_fixed = "latest_news.json"
+    file_historic = os.path.join(folder_name, f"analisis_{timestamp_str}.json")
+    
+    for path in [file_fixed, file_historic]:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(structured_data, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     collect()
