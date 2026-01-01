@@ -1,19 +1,20 @@
-name: Actualizar Noticias con IA
+name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *' # Cada hora
-  workflow_dispatch:
+    - cron: '0 * * * *' # Se ejecuta automáticamente cada hora
+  workflow_dispatch:      # Permite ejecutarlo manualmente desde la pestaña Actions
+
+permissions:
+  contents: write         # Crucial: permite al bot subir el JSON al repo privado
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout del código
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python
+        
+      - name: Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
@@ -21,22 +22,22 @@ jobs:
       - name: Instalar Dependencias
         run: pip install feedparser google-generativeai
         
-      - name: Ejecutar Recolector e IA
+      - name: Ejecutar Inteligencia Artificial
         env:
+          # Aquí inyectamos tu clave secreta guardada en GitHub
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
         
-      - name: Guardar y Subir Resultados
+      - name: Sincronizar y Publicar Resultados
         run: |
-          git config --global user.name 'NewsBot'
-          git config --global user.email 'bot@antigravity.news'
+          git config --global user.name 'Proximity-Bot'
+          git config --global user.email 'bot@proximity.news'
           
-          # Añadir cambios
+          # Agregamos los archivos generados
           git add latest_news.json historico_noticias/
           
-          # Commit local
-          git commit -m "Inteligencia Generada: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          # Hacemos el commit. El "|| echo" evita que el robot falle si no hay noticias nuevas
+          git commit -m "Update Global Proximity: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
           
-          # Sincronizar y Subir
-          git pull origin main --rebase
+          # Subimos los cambios al repo privado
           git push origin main
