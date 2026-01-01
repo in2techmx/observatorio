@@ -16,9 +16,11 @@
             --india: #f59e0b; --mideast: #10b981; --latam: #ec4899; --africa: #06b6d4; --uk: #6366f1;
         }
         body { margin: 0; background: #020202; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.6; }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
         .glass { background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
         .hide-scroll::-webkit-scrollbar { display: none; }
+        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: currentColor; cursor: pointer; box-shadow: 0 0 10px currentColor; }
     </style>
 </head>
 <body>
@@ -26,7 +28,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
         const { motion, AnimatePresence } = window.Motion;
 
         const REGIONS = {
@@ -39,83 +41,150 @@
 
         function App() {
             const [data, setData] = useState([]);
+            const [timeline, setTimeline] = useState([]);
+            const [maestros, setMaestros] = useState([]);
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [showHistory, setShowHistory] = useState(false);
             const [selected, setSelected] = useState(null);
             const [loading, setLoading] = useState(true);
 
+            // Motor de Partículas Adaptativo
             useEffect(() => {
-                // Animación de partículas sutil
                 const canvas = document.getElementById('bg-canvas');
                 const ctx = canvas.getContext('2d');
                 let pts = [];
                 const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
                 resize(); window.onresize = resize;
-                for(let i=0; i<80; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3});
+                for(let i=0; i<70; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2});
+                
                 const draw = () => {
-                    ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(255,255,255,0.2)";
-                    pts.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); });
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    ctx.fillStyle = showHistory ? "rgba(212, 175, 55, 0.4)" : "rgba(59, 130, 246, 0.4)";
+                    pts.forEach(p => {
+                        p.x+=p.vx; p.y+=p.vy;
+                        if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height;
+                        if(p.x>canvas.width)p.x=0; if(p.y>canvas.height)p.y=0;
+                        ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill();
+                    });
                     requestAnimationFrame(draw);
                 };
                 draw();
+            }, [showHistory]);
 
-                // Carga de datos reales
-                fetch(`./latest_news.json?t=${Date.now()}`)
-                    .then(r => r.json()).then(d => { setData(d); setLoading(false); })
-                    .catch(e => console.error("Error", e));
+            // Carga de Datos
+            useEffect(() => {
+                const init = async () => {
+                    try {
+                        const [resTime, resMaestros] = await Promise.all([
+                            fetch(`./timeline.json?t=${Date.now()}`).then(r => r.json()),
+                            fetch(`./maestros_index.json?t=${Date.now()}`).then(r => r.json())
+                        ]);
+                        setTimeline(resTime);
+                        setMaestros(resMaestros);
+                        if(resTime.length > 0) loadFile(resTime[0]);
+                        setLoading(false);
+                    } catch(e) { console.error(e); setLoading(false); }
+                };
+                init();
             }, []);
 
-            if(loading) return <div className="h-screen flex items-center justify-center tracking-[0.5em] text-xs opacity-50">SINCRONIZANDO PROXIMIDAD...</div>;
+            const loadFile = async (name) => {
+                const res = await fetch(`./historico_noticias/${name}`);
+                const json = await res.json();
+                setData(json);
+            };
+
+            const handleSlider = (i) => {
+                setCurrentIndex(i);
+                loadFile(timeline[i]);
+                setSelected(null);
+            };
+
+            if(loading) return <div className="h-screen flex items-center justify-center tracking-[0.5em] text-[10px] opacity-40">CARGANDO OBSERVATORIO...</div>;
 
             return (
                 <div className="h-screen w-full flex flex-col p-10 overflow-hidden relative">
-                    <header className="mb-12 flex justify-between items-end">
-                        <div>
-                            <h1 className="text-5xl font-black italic tracking-tighter">GLOBAL NEWS <span className="text-blue-500 not-italic">PROXIMITY</span></h1>
-                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2">Divergencia Narrativa detectada por IA</p>
+                    <header className="mb-12 flex justify-between items-start">
+                        <motion.div animate={{ color: showHistory ? '#d4af37' : '#3b82f6' }}>
+                            <h1 className="text-5xl font-black italic tracking-tighter">GLOBAL NEWS <span className={showHistory ? 'text-amber-500' : 'text-blue-500'}>PROXIMITY</span></h1>
+                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2">Divergencia Narrativa e Inteligencia Geopolítica</p>
+                        </motion.div>
+
+                        <div className="flex gap-4">
+                            <motion.button 
+                                whileHover={{ scale: 1.05 }}
+                                onClick={() => setShowHistory(!showHistory)}
+                                className={`px-8 py-3 rounded-full border text-[10px] font-bold tracking-widest uppercase transition-all ${showHistory ? 'border-blue-500 text-blue-500' : 'border-amber-600 text-amber-500 shadow-[0_0_15px_rgba(212,175,55,0.2)]'}`}
+                            >
+                                {showHistory ? "← Volver al Presente" : "Portal de Archivos"}
+                            </motion.button>
                         </div>
                     </header>
 
                     <AnimatePresence mode="wait">
-                        {!selected ? (
-                            <motion.div key="list" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="flex-1 flex flex-col justify-center">
-                                <div className="flex gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
+                        {!showHistory ? (
+                            <motion.div key="present" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="flex-1 flex flex-col">
+                                {/* Slider de Tiempo */}
+                                <div className="mb-10 flex items-center gap-6 glass p-4 rounded-full max-w-2xl mx-auto w-full text-blue-500">
+                                    <span className="text-[9px] font-bold uppercase tracking-tighter opacity-50">Pasado</span>
+                                    <input type="range" min="0" max={timeline.length-1} value={currentIndex} onChange={(e)=>handleSlider(parseInt(e.target.value))} className="flex-1" style={{direction:'rtl'}} />
+                                    <span className="text-[9px] font-bold uppercase tracking-tighter">Presente</span>
+                                    <div className="border-l border-white/10 pl-6 text-[10px] font-mono">{data[0]?.timestamp}</div>
+                                </div>
+
+                                <div className="flex-1 flex items-center gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
                                     {data.map((item, i) => (
-                                        <motion.div key={i} whileHover={{y:-10}} onClick={() => setSelected(item)} className="min-w-[400px] glass p-10 rounded-[2rem] cursor-pointer snap-center border-b-4 border-blue-500/30">
-                                            <span className="text-[10px] font-bold text-blue-400 mb-4 block tracking-widest uppercase">Eje de Análisis 0{i+1}</span>
-                                            <h2 className="text-3xl font-bold mb-4 leading-tight">{item.tematica}</h2>
-                                            <p className="text-gray-400 text-sm line-clamp-2">{item.descripcion}</p>
+                                        <motion.div key={i} whileHover={{y:-10}} onClick={() => setSelected(item)} className="min-w-[400px] glass p-10 rounded-[2.5rem] cursor-pointer snap-center border-b-4 border-blue-500/20">
+                                            <h2 className="text-2xl font-bold mb-4 leading-tight">{item.tematica}</h2>
+                                            <p className="text-gray-400 text-xs leading-relaxed line-clamp-3">{item.descripcion}</p>
                                             <div className="mt-8 flex gap-2">
-                                                {item.regiones_activas.map(r => <div key={r} className="w-3 h-3 rounded-full" style={{background: REGIONS[r]?.color}} />)}
+                                                {item.regiones_activas.map(r => <div key={r} className="w-2 h-2 rounded-full" style={{background: REGIONS[r]?.color}} />)}
                                             </div>
                                         </motion.div>
                                     ))}
                                 </div>
                             </motion.div>
                         ) : (
-                            <motion.div key="detail" initial={{opacity:0, scale:0.9}} animate={{opacity:1, scale:1}} exit={{opacity:0}} className="flex-1 grid grid-cols-12 gap-10 min-h-0">
-                                <div className="col-span-8 glass rounded-[3rem] relative flex items-center justify-center overflow-hidden">
-                                    <button onClick={()=>setSelected(null)} className="absolute top-8 left-8 text-[10px] tracking-widest uppercase opacity-50 hover:opacity-100">← Volver</button>
-                                    <div className="text-center z-10 max-w-lg p-6">
-                                        <h2 className="text-5xl font-black uppercase italic mb-6">{selected.tematica}</h2>
-                                        <p className="text-gray-400">{selected.descripcion}</p>
-                                    </div>
-                                    {Object.keys(REGIONS).map((r, i) => {
-                                        const active = selected.regiones_activas.includes(r);
-                                        const ang = (i/Object.keys(REGIONS).length) * Math.PI * 2;
-                                        return (
-                                            <motion.div key={r} animate={{x: Math.cos(ang)*320, y: Math.sin(ang)*180}} className={`absolute p-4 glass rounded-2xl w-32 text-center border-t-4 ${!active && 'opacity-10 grayscale'}`} style={{borderColor: REGIONS[r].color}}>
-                                                <span className="text-[10px] font-bold block" style={{color: REGIONS[r].color}}>{REGIONS[r].name}</span>
-                                            </motion.div>
-                                        )
-                                    })}
-                                </div>
-                                <div className="col-span-4 overflow-y-auto hide-scroll space-y-4">
-                                    <h3 className="text-[10px] tracking-widest uppercase opacity-50 mb-6 text-blue-400">Perspectivas Regionales</h3>
-                                    {Object.entries(selected.perspectivas).map(([reg, text]) => (
-                                        <div key={reg} className="p-5 glass border-l-4 rounded-r-xl" style={{borderColor: REGIONS[reg]?.color}}>
-                                            <span className="text-[10px] font-bold uppercase block mb-1" style={{color: REGIONS[reg]?.color}}>{REGIONS[reg]?.name}</span>
-                                            <p className="text-xs text-gray-300 italic leading-relaxed">"{text}"</p>
+                            <motion.div key="history" initial={{opacity:0, x:50}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-50}} className="flex-1 flex flex-col justify-center">
+                                <h2 className="text-amber-500/50 text-[10px] tracking-[0.5em] uppercase mb-10 text-center">SÍNTESIS MAESTRAS: PERSPECTIVAS NEUTRALES</h2>
+                                <div className="flex gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
+                                    {maestros.length > 0 ? maestros.map((m, i) => (
+                                        <div key={i} className="min-w-[450px] glass border-amber-500/10 p-12 rounded-[3rem] snap-center relative overflow-hidden group">
+                                            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-30 transition-opacity">
+                                                <div className="w-20 h-20 border-4 border-amber-500 rounded-full"></div>
+                                            </div>
+                                            <span className="text-amber-500 text-[9px] font-black tracking-[0.3em] uppercase">{m.includes('semanal') ? 'Análisis Semanal' : 'Análisis Mensual'}</span>
+                                            <h3 className="text-3xl font-bold mt-4 mb-6 text-amber-50/80 uppercase italic tracking-tighter">{m.replace('.json', '').replace('_', ' ')}</h3>
+                                            <p className="text-amber-200/30 text-xs italic leading-relaxed">Este archivo contiene la divergencia narrativa destilada. La IA ha preservado las posturas regionales para mantener la neutralidad del registro histórico.</p>
+                                            <button className="mt-8 text-amber-500 text-[10px] font-bold uppercase tracking-widest border-b border-amber-500/30 pb-1">Consultar Archivo</button>
                                         </div>
-                                    ))}
+                                    )) : (
+                                        <div className="w-full text-center text-amber-500/20 italic tracking-widest uppercase text-xs">Aún no se han generado síntesis maestras...</div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Modal Detalle (Solo para el Presente) */}
+                    <AnimatePresence>
+                        {selected && (
+                            <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 p-20 glass flex items-center justify-center bg-black/80">
+                                <div className="max-w-6xl w-full grid grid-cols-12 gap-12">
+                                    <div className="col-span-7 flex flex-col justify-center">
+                                        <button onClick={()=>setSelected(null)} className="text-[10px] tracking-widest uppercase opacity-40 mb-10 hover:opacity-100">← Volver al mapa</button>
+                                        <h2 className="text-6xl font-black italic uppercase mb-6 leading-none">{selected.tematica}</h2>
+                                        <p className="text-xl text-gray-400 font-light">{selected.descripcion}</p>
+                                    </div>
+                                    <div className="col-span-5 space-y-4 max-h-[60vh] overflow-y-auto pr-6 hide-scroll">
+                                        <h4 className="text-[9px] tracking-[0.3em] uppercase text-blue-500 font-bold mb-6">Perspectivas Regionales</h4>
+                                        {Object.entries(selected.perspectivas).map(([reg, txt]) => (
+                                            <div key={reg} className="p-6 glass border-l-4 rounded-r-2xl" style={{borderColor: REGIONS[reg]?.color}}>
+                                                <span className="text-[10px] font-bold block mb-2" style={{color: REGIONS[reg]?.color}}>{REGIONS[reg]?.name}</span>
+                                                <p className="text-sm text-gray-300 italic">"{txt}"</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </motion.div>
                         )}
