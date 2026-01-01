@@ -1,11 +1,11 @@
 name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *' # Se ejecuta automáticamente cada hora
-  workflow_dispatch:      # Permite ejecutarlo manualmente desde la pestaña Actions
+    - cron: '0 * * * *' # Se ejecuta cada hora en punto
+  workflow_dispatch:      # Permite ejecución manual desde la pestaña Actions
 
 permissions:
-  contents: write         # Crucial: permite al bot subir el JSON al repo privado
+  contents: write         # Crucial para subir los JSONs al repositorio privado
 
 jobs:
   build:
@@ -13,7 +13,9 @@ jobs:
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
-        
+        with:
+          fetch-depth: 0   # Trae todo el historial para evitar conflictos de git
+
       - name: Configurar Python
         uses: actions/setup-python@v4
         with:
@@ -24,20 +26,19 @@ jobs:
         
       - name: Ejecutar Inteligencia Artificial
         env:
-          # Aquí inyectamos tu clave secreta guardada en GitHub
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
         
-      - name: Sincronizar y Publicar Resultados
+      - name: Sincronizar Cambios
         run: |
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
           
-          # Agregamos los archivos generados
-          git add latest_news.json historico_noticias/
+          # Agregamos todos los archivos nuevos y actualizados
+          git add latest_news.json timeline.json maestros_index.json historico_noticias/ archivos_maestros/
           
-          # Hacemos el commit. El "|| echo" evita que el robot falle si no hay noticias nuevas
-          git commit -m "Update Global Proximity: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
+          # Commit con marca de tiempo
+          git commit -m "Sync: Global Proximity Data Update $(date +'%Y-%m-%d %H:%M')" || echo "No hay cambios para subir"
           
-          # Subimos los cambios al repo privado
+          # Push al repositorio privado
           git push origin main
