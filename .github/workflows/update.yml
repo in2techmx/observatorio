@@ -1,7 +1,7 @@
 name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *' # Corre cada hora
   workflow_dispatch:
 
 jobs:
@@ -19,8 +19,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Google GenAI
-        run: pip install google-genai
+      # MODIFICADO: Ahora instala ambas librerías necesarias
+      - name: Install Dependencies
+        run: pip install google-genai beautifulsoup4
 
       - name: Ejecutar IA
         env:
@@ -31,6 +32,7 @@ jobs:
         run: |
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
-          git add .
+          # MODIFICADO: Aseguramos que se añadan los archivos del historial y el timeline
+          git add latest_news.json timeline.json historico_noticias/
           git commit -m "Auto-update: $(date)" || echo "No hay cambios"
-          git push origin main --force
+          git push origin main
