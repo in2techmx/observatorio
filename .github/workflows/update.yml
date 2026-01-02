@@ -2,7 +2,7 @@ name: Actualizar Observatorio Geopolítico
 
 on:
   schedule:
-    # Se ejecuta cada 6 horas automáticamente
+    # Se ejecuta cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
   workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write
+      contents: write # Permiso obligatorio para subir archivos al repo
 
     steps:
       - name: 1. Descarga del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0 # Descarga todo el historial para evitar errores de sincronización
 
       - name: 2. Configuración de Python
         uses: actions/setup-python@v5
@@ -39,19 +39,19 @@ jobs:
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # 1. FORZAR SINCRONIZACIÓN: Esto elimina el error "behind by 11 commits"
+          # 1. Limpieza total de conflictos locales
           git fetch origin main
           git reset --hard origin main
           
-          # 2. AGREGAR ARCHIVOS CON TOLERANCIA (|| true evita que el proceso falle si no existen aún)
-          git add gravity_carousel.json || true
-          git add manifest.json || true
+          # 2. Agregar archivos con validación de existencia para evitar errores 'pathspec'
+          # Agregamos el archivo principal, el manifiesto y todas las carpetas nuevas
+          [ -f gravity_carousel.json ] && git add gravity_carousel.json
+          [ -f manifest.json ] && git add manifest.json
+          [ -d historico_noticias ] && git add historico_noticias/
           
-          # 3. AGREGAR CARPETAS DE HISTÓRICOS (solo si existen)
-          if [ -d "historico_noticias" ]; then
-            git add historico_noticias/
-          fi
+          # 3. Commit con marca de tiempo
+          # El '|| echo' evita que el flujo falle si no hay cambios nuevos en las noticias
+          git commit -m "Actualización estratégica y archivo: $(date +'%Y-%m-%d %H:%M')" || echo "No se detectaron cambios en los datos."
           
-          # 4. COMMIT Y PUSH FORZADO
-          git commit -m "Actualización estratégica: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          # 4. Push forzado para garantizar que la web se actualice
           git push origin main --force
