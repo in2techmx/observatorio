@@ -10,6 +10,7 @@ PATHS = {"diario": "historico_noticias/diario", "semanal": "historico_noticias/s
 for p in PATHS.values(): os.makedirs(p, exist_ok=True)
 
 ssl_context = ssl._create_unverified_context()
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
 
 AREAS_ESTRATEGICAS = {
     "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6",
@@ -23,17 +24,58 @@ BLOQUE_COLORS = {
     "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
 }
 
-# [NUEVO] Fuentes de alta disponibilidad (Google News como respaldo)
+# --- MATRIZ DE FUENTES HÍBRIDA (Convencionales + Independientes) ---
 FUENTES = {
-    "USA": ["https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
-    "RUSSIA": ["https://news.google.com/rss/search?q=Russia+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://tass.com/rss/v2.xml"],
-    "CHINA": ["https://news.google.com/rss/search?q=China+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://www.scmp.com/rss/91/feed"],
-    "EUROPE": ["https://news.google.com/rss/search?q=Europe+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
-    "LATAM": ["https://news.google.com/rss/search?q=Latin+America+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
-    "MID_EAST": ["https://news.google.com/rss/search?q=Middle+East+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
-    "INDIA": ["https://news.google.com/rss/search?q=India+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
-    "AFRICA": ["https://news.google.com/rss/search?q=Africa+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"]
+    "USA": [
+        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+        "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+        "https://globalnews.ca/world/feed/",
+        "https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"
+    ],
+    "RUSSIA": [
+        "https://tass.com/rss/v2.xml",
+        "https://rt.com/rss/news/",
+        "https://globalvoices.org/section/world/russia/feed/"
+    ],
+    "CHINA": [
+        "https://www.scmp.com/rss/91/feed",
+        "http://www.ecns.cn/rss/rss.xml",
+        "https://globalvoices.org/section/world/east-asia/feed/"
+    ],
+    "EUROPE": [
+        "https://www.france24.com/en/rss",
+        "https://www.dw.com/xml/rss-en-all",
+        "https://globalvoices.org/section/world/western-europe/feed/",
+        "https://www.euronews.com/rss?level=vertical&name=news"
+    ],
+    "LATAM": [
+        "https://www.jornada.com.mx/rss/edicion.xml",
+        "https://legrandcontinent.eu/es/feed/",
+        "https://globalvoices.org/section/world/latin-america/feed/",
+        "https://www.clarin.com/rss/mundo/"
+    ],
+    "MID_EAST": [
+        "https://www.aljazeera.com/xml/rss/all.xml",
+        "https://www.middleeasteye.net/rss",
+        "https://globalvoices.org/section/world/middle-east-north-africa/feed/"
+    ],
+    "INDIA": [
+        "https://www.thehindu.com/news/national/feeder/default.rss",
+        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+        "https://globalvoices.org/section/world/south-asia/feed/"
+    ],
+    "AFRICA": [
+        "https://allafrica.com/tools/headlines/rdf/latestnews/index.xml",
+        "https://globalvoices.org/section/world/sub-saharan-africa/feed/",
+        "https://www.africanews.com/feeds/rss"
+    ]
 }
+
+# Feeds de Gists y Curación Externa
+FUENTES_EXTRA = [
+    "https://gist.githubusercontent.com/pj8912/5be498a246ddc0fe8a7b65f10487562d/raw/",
+    "https://rss.feedspot.com/unbiased_news_rss_feeds/"
+]
 
 class GeopoliticalCollector:
     def __init__(self, api_key):
@@ -41,113 +83,101 @@ class GeopoliticalCollector:
         self.link_storage = {}
         self.title_to_id = {}
         self.hoy = datetime.datetime.now()
-        self.stats = {"total_fetched": 0, "processed": 0, "errors": 0}
 
-    def fetch_rss(self):
-        print(f"🌍 Escaneando fuentes de alta disponibilidad...")
-        results = {reg: [] for reg in FUENTES.keys()}
-        
-        def get_feed(region, url):
-            try:
-                headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
-                req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req, timeout=20, context=ssl_context) as resp:
-                    raw_data = resp.read()
-                    content = raw_data.decode('utf-8', errors='replace')
-                    root = ET.fromstring(content)
+    def fetch_universal(self, region, url):
+        """Intenta extraer de RSS o Scrapear HTML si el RSS falla"""
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
+                raw = resp.read()
+                # 1. Intentar Parser XML
+                try:
+                    root = ET.fromstring(raw)
                     items = root.findall('.//item') or root.findall('.//{*}entry')
-                    
                     extracted = []
-                    for n in items[:15]:
+                    for n in items[:12]:
                         t_node = n.find('title') or n.find('{*}title')
                         l_node = n.find('link') or n.find('{*}link')
                         d_node = n.find('description') or n.find('{*}summary')
                         
-                        title = t_node.text.strip() if t_node is not None and t_node.text else None
-                        link = (l_node.text or l_node.attrib.get('href', '')).strip() if l_node is not None else ""
-                        description = d_node.text.strip() if d_node is not None and d_node.text else ""
+                        t = t_node.text.strip() if t_node is not None else None
+                        l = (l_node.text or l_node.attrib.get('href', '')).strip() if l_node is not None else ""
+                        d = d_node.text.strip() if d_node is not None and d_node.text else ""
                         
-                        if title and link:
-                            article_id = hashlib.md5(title.encode()).hexdigest()[:10]
-                            article_data = {"id": article_id, "title": title, "link": link, "summary": description[:600], "region": region}
-                            self.link_storage[article_id] = article_data
-                            self.title_to_id[title] = article_id
-                            extracted.append(article_data)
-                    return region, extracted
-            except Exception as e:
-                return region, []
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            futures = [executor.submit(get_feed, reg, url) for reg, urls in FUENTES.items() for url in urls]
-            for f in concurrent.futures.as_completed(futures):
-                region, news = f.result()
-                results[region].extend(news)
-                self.stats["total_fetched"] += len(news)
-        return results
-
-    def scrape_and_clean(self, articles):
-        def process(article):
-            # Si es Google News, el summary suele ser inútil, pero el link es un redirect. 
-            # Intentamos usar el summary si es lo suficientemente largo.
-            if len(article.get('summary', '')) > 300:
-                article['text'] = article['summary']
-                return article
-            article['text'] = article['title'] # Fallback mínimo
-            return article
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            return list(executor.map(process, articles))
-
-    def select_best_articles(self, region, items):
-        if not items: return []
-        # Triaje rápido por títulos para no saturar API
-        titles_list = "\n".join([f"[{i}] {item['title']}" for i, item in enumerate(items[:15])])
-        prompt = f"Como experto en {region}, elige los índices de las 2 noticias con más impacto geopolítico. Responde JSON {{'indices': [n, n]}}:\n{titles_list}"
-        try:
-            res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
-            indices = json.loads(res.text.strip()).get("indices", [0, 1])
-            return [items[i] for i in indices if i < len(items)]
-        except: return items[:2]
-
-    def analyze(self, context):
-        print(f"🧠 Generando Matriz Global...")
-        prompt = f"Analiza estas noticias y genera una matriz geopolítica. JSON exacto: {{'carousel': [...]}}. CONTEXTO: {context}"
-        try:
-            res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
-            return json.loads(res.text.strip())
-        except: return {"carousel": []}
+                        if t and l:
+                            art_id = hashlib.md5(t.encode()).hexdigest()[:10]
+                            self.link_storage[art_id] = {"link": l, "title": t, "region": region}
+                            self.title_to_id[t] = art_id
+                            extracted.append({"title": t, "summary": d})
+                    return extracted
+                except:
+                    # 2. Fallback Scraping (para Gists y Feedspot)
+                    soup = BeautifulSoup(raw, 'html.parser')
+                    extracted = []
+                    for a in soup.find_all('a', href=True)[:15]:
+                        t = a.get_text().strip()
+                        l = a['href']
+                        if len(t) > 30 and l.startswith('http'):
+                            art_id = hashlib.md5(t.encode()).hexdigest()[:10]
+                            self.link_storage[art_id] = {"link": l, "title": t, "region": region}
+                            self.title_to_id[t] = art_id
+                            extracted.append({"title": t, "summary": "Análisis de Redes/Fuentes Curadas"})
+                    return extracted
+        except: return []
 
     def run(self):
-        raw_articles = self.fetch_rss()
+        print("🚀 Iniciando Motor de Inteligencia Geopolítica...")
         batch_text = ""
-        all_selected = []
-        
-        for region, items in raw_articles.items():
-            if not items: continue
-            selected = self.select_best_articles(region, items)
-            for s in selected:
-                batch_text += f"REGION: {region} | TITULO: {s['title']} | INFO: {s['summary']}\n\n"
-                all_selected.append(s)
-        
-        if not all_selected:
-            print("❌ No se obtuvieron noticias. Revisa la conexión."); return
+        count = 0
 
-        final_json = self.analyze(batch_text)
-        
-        # Enriquecer JSON final con colores y links
-        for slide in final_json.get('carousel', []):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+            # Enviar fuentes regionales
+            futures = {executor.submit(self.fetch_universal, reg, url): reg for reg, urls in FUENTES.items() for url in urls}
+            # Enviar fuentes extra
+            for url in FUENTES_EXTRA:
+                executor.submit(self.fetch_universal, "GLOBAL", url)
+
+            results = {reg: [] for reg in FUENTES.keys()}
+            for f in concurrent.futures.as_completed(futures):
+                reg = futures[f]
+                results[reg].extend(f.result())
+
+        for reg, items in results.items():
+            if not items: continue
+            # Triaje por Gemini para elegir las 2 mejores del pool de ese bloque
+            titles = "\n".join([f"[{i}] {x['title']}" for i, x in enumerate(items[:15])])
+            try:
+                res = self.client.models.generate_content(
+                    model="gemini-2.0-flash", 
+                    contents=f"Selecciona los índices de las 2 noticias con más peso geopolítico: {titles}",
+                    config={'response_mime_type': 'application/json'}
+                )
+                idxs = json.loads(res.text.strip()).get("idx", [0, 1])
+                for i in idxs:
+                    if i < len(items):
+                        batch_text += f"BLOQUE: {reg} | TIT: {items[i]['title']} | INFO: {items[i]['summary'][:250]}\n\n"
+                        count += 1
+            except: continue
+
+        if count < 5:
+            print("❌ No hay datos."); return
+
+        # Análisis Final
+        prompt = f"Genera matriz geopolítica JSON. Llaves: 'carousel', 'area', 'punto_cero', 'particulas' [{{'titulo', 'bloque', 'proximidad', 'sesgo'}}]. Contexto: {batch_text}"
+        data = json.loads(self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}).text.strip())
+
+        for slide in data.get('carousel', []):
+            slide['area'] = slide.get('area') or "Tendencia Global"
             slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#3b82f6")
             for p in slide.get('particulas', []):
-                art_id = self.title_to_id.get(p['titulo'])
-                if art_id:
-                    p['link'] = self.link_storage[art_id]['link']
-                    p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#94a3b8")
+                art_id = self.title_to_id.get(p.get('titulo'))
+                if art_id: p['link'] = self.link_storage[art_id]['link']
+                p['color_bloque'] = BLOQUE_COLORS.get(p.get('bloque'), "#94a3b8")
 
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-            json.dump(final_json, f, indent=2, ensure_ascii=False)
-        print(f"✅ Proceso completado. {len(all_selected)} noticias analizadas.")
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f"✅ Éxito: {count} noticias procesadas de medios globales.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
     if key: GeopoliticalCollector(key).run()
-    else: print("❌ API KEY Missing.")
