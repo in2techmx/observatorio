@@ -3,87 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatorio Geopolítico Multipolar</title>
+    <title>GRAVITY | Radar Geopolítico</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
+        body { background-color: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(51, 65, 85, 0.5); backdrop-filter: blur(12px); }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <header class="max-w-6xl mx-auto mb-8 flex justify-between items-center">
+<body class="min-h-screen p-4 md:p-10">
+
+    <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-slate-800 pb-8">
         <div>
-            <h1 class="text-3xl font-bold text-blue-400">GRAVITY <span class="text-white font-light text-sm">v2.0</span></h1>
-            <p class="text-slate-400">Análisis Geopolítico en Tiempo Real por Intelligence-Bot</p>
+            <h1 class="text-5xl font-black tracking-tighter text-white">GRAVITY <span class="text-blue-500">RADAR</span></h1>
+            <p class="text-slate-400 mt-2">Visualización de proximidad y sesgo en la narrativa global.</p>
         </div>
-        <div id="last-update" class="text-xs text-slate-500">Actualizando...</div>
+        <div id="update-tag" class="text-xs font-mono text-blue-400 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/30 mt-4">Sincronizando...</div>
     </header>
 
-    <main id="carousel-container" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="col-span-full text-center py-20">
-            <p class="text-slate-500 animate-pulse">Cargando matriz de gravedad...</p>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-1 glass-card rounded-3xl p-6 sticky top-10 h-fit">
+            <h2 class="text-xl font-bold mb-6 text-center">Convergencia por Bloque</h2>
+            <canvas id="radarGeopolitico"></canvas>
+            <p class="text-[10px] text-slate-500 mt-6 leading-relaxed italic text-center">
+                * El centro (0) representa máxima divergencia. El borde (100) representa total alineación con los hechos objetivos del Punto Cero.
+            </p>
         </div>
-    </main>
+
+        <div id="matrix-container" class="lg:col-span-2 space-y-8">
+            </div>
+    </div>
 
     <script>
-        async function loadData() {
+        let radarChart;
+
+        async function initDashboard() {
             try {
-                // Forzamos la carga del JSON ignorando la caché del navegador
-                const response = await fetch(`./gravity_carousel.json?t=${new Date().getTime()}`);
+                const response = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
                 const data = await response.json();
                 
-                const container = document.getElementById('carousel-container');
-                const updateTag = document.getElementById('last-update');
-                
-                container.innerHTML = ''; // Limpiar contenedor
-                
-                if (data.carousel) {
-                    data.carousel.forEach(slide => {
-                        const card = document.createElement('div');
-                        card.className = 'glass p-6 rounded-2xl flex flex-col gap-4';
-                        
-                        let particlesHtml = slide.particulas.map(p => `
-                            <div class="border-l-2 pl-3 py-2" style="border-color: ${p.color_bloque}">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-[10px] font-bold uppercase tracking-widest" style="color: ${p.color_bloque}">${p.bloque}</span>
-                                    <span class="text-[10px] text-slate-500">${p.proximidad}% Proximidad</span>
-                                </div>
-                                <a href="${p.link}" target="_blank" class="text-sm hover:text-blue-300 transition-colors line-clamp-2">${p.titulo}</a>
-                                <p class="text-[11px] text-slate-400 mt-1 italic italic">"${p.sesgo}"</p>
-                            </div>
-                        `).join('');
+                document.getElementById('update-tag').innerText = "ONLINE: " + new Date(data.metadata.generated_at).toLocaleString();
 
-                        card.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                <span class="dot" style="background-color: ${slide.color}"></span>
-                                <h2 class="text-lg font-bold">${slide.area}</h2>
-                            </div>
-                            <div class="bg-black/30 p-3 rounded-lg">
-                                <p class="text-xs font-mono text-blue-200">PUNTO CERO:</p>
-                                <p class="text-sm text-slate-300 font-medium">${slide.punto_cero}</p>
-                            </div>
-                            <div class="flex flex-col gap-4 mt-2">
-                                ${particlesHtml}
-                            </div>
-                        `;
-                        container.appendChild(card);
-                    });
-                    updateTag.innerText = `Última actualización: ${new Date().toLocaleString()}`;
-                }
+                renderRadar(data);
+                renderMatrix(data);
             } catch (error) {
-                console.error("Error cargando datos:", error);
-                document.getElementById('carousel-container').innerHTML = `
-                    <div class="col-span-full bg-red-900/20 p-8 rounded-xl text-center border border-red-500/50">
-                        <p class="text-red-400">Error al cargar la matriz de datos.</p>
-                        <p class="text-xs text-red-500 mt-2">Verifica que gravity_carousel.json exista en el repositorio.</p>
-                    </div>`;
+                console.error("Error:", error);
             }
         }
 
-        loadData();
-        // Recargar cada 10 minutos
-        setInterval(loadData, 600000);
+        function renderRadar(data) {
+            const bloques = {};
+            // Agrupar proximidad por bloque
+            data.carousel.forEach(area => {
+                area.particulas.forEach(p => {
+                    if(!bloques[p.bloque]) bloques[p.bloque] = [];
+                    bloques[p.bloque].push(p.proximidad);
+                });
+            });
+
+            const labels = Object.keys(bloques);
+            const averages = labels.map(l => bloques[l].reduce((a,b) => a+b, 0) / bloques[l].length);
+
+            const ctx = document.getElementById('radarGeopolitico').getContext('2d');
+            if(radarChart) radarChart.destroy();
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Proximidad al Consenso %',
+                        data: averages,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3b82f6',
+                        pointBackgroundColor: '#60a5fa',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.1)' },
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 10 } },
+                            ticks: { display: false },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderMatrix(data) {
+            const container = document.getElementById('matrix-container');
+            container.innerHTML = data.carousel.map(area => `
+                <div class="glass-card rounded-3xl p-8 hover:border-blue-500/50 transition-all">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-4 h-4 rounded-full" style="background:${area.color}"></div>
+                        <h2 class="text-2xl font-bold">${area.area}</h2>
+                    </div>
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 mb-6">
+                        <p class="text-xs font-mono text-blue-400 mb-2 uppercase tracking-widest">Punto Cero (Hechos)</p>
+                        <p class="text-sm text-slate-300 leading-relaxed">${area.punto_cero}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${area.particulas.map(p => `
+                            <a href="${p.link}" target="_blank" class="block bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-white/10 transition-colors group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded" style="background:${p.color_bloque}33; color:${p.color_bloque}">${p.bloque}</span>
+                                    <span class="text-[10px] text-slate-500">${p.proximidad}%</span>
+                                </div>
+                                <h3 class="text-sm font-semibold group-hover:text-blue-400 line-clamp-2">${p.titulo}</h3>
+                                <p class="text-[11px] text-slate-500 mt-2 italic">"${p.sesgo}"</p>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        initDashboard();
     </script>
 </body>
 </html>
