@@ -3,170 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence OS | Deep Dive</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <title>Observatorio Geopolítico | Inteligencia Semántica</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <style>
-        :root { --bg: #010409; --neon: #00f2ff; }
-        body { background: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
-        
-        /* Efectos de Cristal y Gradientes */
-        .glass-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        :root {
+            --bg: #0a0a0f;
+            --card: #16161e;
+            --accent: #8b5cf6;
+            --text: #e2e8f0;
         }
-        .glass-card:hover { border-color: var(--neon); background: rgba(0, 242, 255, 0.05); }
 
-        .radar-line { fill: none; stroke: #fff; stroke-width: 1.5; stroke-opacity: 0.6; filter: drop-shadow(0 0 5px var(--neon)); }
-        .label-pct { font-family: 'JetBrains Mono'; font-size: 10px; fill: var(--neon); font-weight: 900; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; }
+        
+        .header { padding: 40px 20px; text-align: center; background: linear-gradient(to bottom, #1a1a2e, var(--bg)); }
+        
+        /* Controles de Navegación */
+        .time-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        
+        select, button {
+            background: var(--card); color: white; border: 1px solid #2d2d3d;
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 14px;
+        }
+        button:hover, select:hover { border-color: var(--accent); }
+        .active-btn { background: var(--accent); border-color: var(--accent); }
 
-        /* Animaciones */
-        .fade-in { animation: fadeIn 0.8s forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Contenedor Principal */
+        .swiper { width: 100%; max-width: 1250px; padding-bottom: 60px; }
+        
+        .slide-grid {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px;
+            background: var(--card); padding: 35px; border-radius: 24px;
+            border: 1px solid #2d2d3d; min-height: 550px;
+        }
 
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        #view-tactical { display: none; }
+        .consensus-box {
+            background: rgba(139, 92, 246, 0.08); border-radius: 12px;
+            padding: 20px; border-left: 4px solid var(--accent); margin: 20px 0;
+            line-height: 1.5; font-size: 0.95rem;
+        }
+
+        .news-scroll { max-height: 500px; overflow-y: auto; padding-right: 15px; }
+        
+        .news-card {
+            background: #1f1f2e; padding: 18px; border-radius: 12px;
+            margin-bottom: 15px; border-left: 5px solid var(--b-color);
+            transition: all 0.3s ease;
+        }
+        .news-card:hover { transform: translateX(8px); background: #252538; }
+        .news-card a { color: var(--text); text-decoration: none; font-weight: bold; font-size: 1rem; display: block; }
+        
+        .meta-info { font-size: 0.75rem; color: #888; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .bias-analysis { font-size: 0.85rem; color: #ccc; margin-top: 10px; font-style: italic; }
+
+        @media (max-width: 950px) { .slide-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div id="view-home" class="min-h-screen p-10 fade-in">
-        <header class="mb-16">
-            <h1 class="text-3xl font-black tracking-tighter italic text-white uppercase">Intelligence <span class="text-cyan-400">OS</span></h1>
-            <p class="text-[10px] font-mono text-slate-500 uppercase tracking-[0.5em] mt-2">Seleccione dimensión para análisis profundo</p>
-        </header>
-
-        <div id="dimension-carousel" class="flex gap-8 overflow-x-auto pb-10 hide-scroll scroll-smooth">
-            </div>
-    </div>
-
-    <div id="view-tactical" class="min-h-screen relative p-10 fade-in bg-gradient-to-b from-slate-950 to-black">
-        <button onclick="exitTactical()" class="absolute top-10 right-10 text-cyan-400 font-black text-xs tracking-widest hover:text-white transition-colors">
-            [ EXIT_DIMENSION ]
-        </button>
+<div class="header">
+    <h1>Observatorio Geopolítico</h1>
+    <p id="status-update">Sincronizando matriz de gravedad...</p>
+    
+    <div class="time-nav">
+        <button id="btn-live" class="active-btn" onclick="loadData('live')">TIEMPO REAL</button>
         
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 h-full">
-            <div id="radar-container" class="flex flex-col items-center justify-center min-h-[500px] border-r border-white/5">
-                <h2 id="tactical-title" class="text-4xl font-black uppercase italic tracking-tighter text-white mb-2"></h2>
-                <p id="tactical-consensus" class="text-sm text-slate-500 italic max-w-md text-center mb-10"></p>
-                <div id="radar-svg"></div>
-            </div>
+        <select id="sel-semana" onchange="loadData('semanal', this.value)">
+            <option value="">Cargando semanas...</option>
+        </select>
 
-            <div class="overflow-y-auto pr-4 space-y-6" id="tactical-news-list">
-                </div>
-        </div>
+        <select id="sel-mes" onchange="loadData('mensual', this.value)">
+            <option value="">Cargando meses...</option>
+        </select>
     </div>
+</div>
 
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[500px] z-50 translate-x-full bg-black/95 backdrop-blur-3xl border-l border-cyan-500/20 p-12 overflow-y-auto">
-        <button onclick="closeSidePanel()" class="mb-10 text-slate-500 hover:text-cyan-400 font-black text-[10px] tracking-widest uppercase">← Back to Radar</button>
-        <div id="panel-content"></div>
-    </aside>
+<div class="swiper">
+    <div class="swiper-wrapper" id="carousel-wrapper">
+        </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
-    <script>
-        let rawData = null;
-        const BLOQUE_COLORS = {"USA": "#3b82f6", "Europa": "#fde047", "Rusia": "#ef4444", "China": "#f97316", "LATAM": "#d946ef", "Medio Oriente": "#10b981", "África": "#8b5cf6"};
+<script>
+    let swiperInstance;
 
-        async function init() {
-            rawData = await d3.json("./latest_news.json?v=" + Date.now());
-            const carousel = document.getElementById('dimension-carousel');
+    // 1. INICIALIZAR SELECTORES DESDE EL MANIFIESTO
+    async function init() {
+        try {
+            const res = await fetch('manifest.json');
+            const manifest = await res.json();
+            
+            const selSemana = document.getElementById('sel-semana');
+            const selMes = document.getElementById('sel-mes');
 
-            rawData.categorias.forEach((cat, i) => {
-                const card = document.createElement('div');
-                card.className = `glass-card min-w-[350px] p-10 flex flex-col justify-between cursor-pointer group`;
-                card.onclick = () => enterTactical(cat);
-                
-                card.innerHTML = `
-                    <div class="text-[9px] font-mono text-cyan-500 font-bold tracking-widest mb-10">DIMENSIÓN 0${i+1}</div>
-                    <div>
-                        <h3 class="text-4xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase italic leading-none mb-4">${cat.nombre}</h3>
-                        <p class="text-xs text-slate-500 line-clamp-3">${cat.consenso}</p>
-                    </div>
-                    <div class="mt-10 flex justify-between items-center">
-                        <span class="text-[10px] text-slate-400">${cat.particulas.length} NODOS</span>
-                        <span class="text-cyan-500 font-black">→</span>
-                    </div>
-                `;
-                carousel.appendChild(card);
-            });
-        }
-
-        function enterTactical(cat) {
-            document.getElementById('view-home').style.display = 'none';
-            document.getElementById('view-tactical').style.display = 'block';
-            document.getElementById('tactical-title').innerText = cat.nombre;
-            document.getElementById('tactical-consensus').innerText = cat.consenso;
-
-            // 1. Dibujar Radar
-            drawRadar(cat);
-
-            // 2. Listar Noticias
-            const newsList = document.getElementById('tactical-news-list');
-            newsList.innerHTML = "";
-            cat.particulas.forEach(p => {
-                const item = document.createElement('div');
-                item.className = "p-6 bg-white/5 border border-white/5 hover:border-cyan-500/50 transition-all cursor-pointer group";
-                item.onclick = () => openSidePanel(p, cat.consenso);
-                item.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[9px] font-bold px-2 py-0.5" style="background:${p.color_bloque}; color:black">${p.bloque}</span>
-                        <span class="text-lg font-black text-white">${p.proximidad}%</span>
-                    </div>
-                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-400 transition-colors leading-tight">${p.titulo}</h4>
-                `;
-                newsList.appendChild(item);
-            });
-        }
-
-        function drawRadar(cat) {
-            const container = document.getElementById('radar-svg');
-            container.innerHTML = "";
-            const size = 500, MAX_R = 180;
-            const svg = d3.select("#radar-svg").append("svg").attr("width", size).attr("height", size);
-            const g = svg.append("g").attr("transform", `translate(${size/2},${size/2})`);
-
-            // Anillos
-            [0.25, 0.5, 0.75, 1].forEach(r => {
-                g.append("circle").attr("r", MAX_R * r).attr("class", "radar-line");
-                g.append("text").attr("y", -(MAX_R * r) + 12).attr("class", "label-pct").attr("text-anchor", "middle").text(`${Math.round((1-r)*100)}%`);
+            selSemana.innerHTML = '<option value="">Seleccionar Semana...</option>';
+            manifest.semanal.forEach(file => {
+                const label = file.replace('.json', '').replace('_', ' ').replace('Semana', 'Sem.');
+                selSemana.innerHTML += `<option value="${file}">${label}</option>`;
             });
 
-            // Partículas
-            cat.particulas.forEach((p, i) => {
-                const angle = (i / cat.particulas.length) * (Math.PI * 2) - Math.PI/2;
-                const rPos = MAX_R - (p.proximidad * (MAX_R / 100)) + 15;
-                const px = rPos * Math.cos(angle);
-                const py = rPos * Math.sin(angle);
-
-                const pg = g.append("g").attr("class", "particle").attr("transform", `translate(${px},${py})`).on("click", () => openSidePanel(p, cat.consenso));
-                pg.append("circle").attr("r", 8).attr("fill", p.color_bloque).style("stroke", "#fff").style("stroke-width", "2px").style("filter", `drop-shadow(0 0 10px ${p.color_bloque})`);
+            selMes.innerHTML = '<option value="">Seleccionar Mes...</option>';
+            manifest.mensual.forEach(file => {
+                const label = file.replace('.json', '').replace('_', ' ').replace('Mes', '');
+                selMes.innerHTML += `<option value="${file}">${label}</option>`;
             });
+        } catch (e) {
+            console.log("Aún no hay manifiesto disponible.");
         }
+        loadData('live');
+    }
 
-        function exitTactical() {
-            document.getElementById('view-tactical').style.display = 'none';
-            document.getElementById('view-home').style.display = 'block';
+    // 2. CARGAR DATA (LIVE O HISTÓRICA)
+    async function loadData(tipo, archivo = '') {
+        // UI Feedback
+        document.querySelectorAll('.time-nav button, .time-nav select').forEach(el => el.classList.remove('active-btn'));
+        if(tipo === 'live') document.getElementById('btn-live').classList.add('active-btn');
+
+        let url = 'gravity_carousel.json';
+        if (tipo === 'semanal') url = `historico_noticias/semanal/${archivo}`;
+        if (tipo === 'mensual') url = `historico_noticias/mensual/${archivo}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            renderDashboard(data);
+            document.getElementById('status-update').innerText = `Mostrando: ${tipo.toUpperCase()} ${archivo.replace('.json', '')}`;
+        } catch (e) {
+            alert("Error al cargar los datos solicitados.");
         }
+    }
 
-        function openSidePanel(p, consensus) {
-            document.getElementById('panel-content').innerHTML = `
-                <div class="text-[10px] font-black px-3 py-1 bg-white text-black mb-10 inline-block uppercase tracking-widest">${p.bloque} | ${p.proximidad}% ALIGNMENT</div>
-                <h2 class="text-4xl font-black text-white mb-8 leading-none uppercase tracking-tighter italic">${p.titulo}</h2>
-                <div class="space-y-10">
-                    <p class="text-2xl text-slate-100 font-light leading-snug">${p.analisis_regional}</p>
-                    <div class="p-8 bg-cyan-950/20 border-l-8 border-cyan-500">
-                        <h4 class="text-[10px] font-bold text-cyan-400 uppercase mb-2">Consenso de la Dimensión</h4>
-                        <p class="text-sm text-slate-400 italic">"${consensus}"</p>
+    // 3. RENDERIZAR INTERFAZ
+    function renderDashboard(data) {
+        const wrapper = document.getElementById('carousel-wrapper');
+        wrapper.innerHTML = ''; 
+
+        data.carousel.forEach((slide, idx) => {
+            const slideHtml = `
+                <div class="swiper-slide">
+                    <div class="slide-grid">
+                        <div class="viz-col">
+                            <h2 style="color: ${slide.color}">${slide.area}</h2>
+                            <div class="consensus-box">
+                                <strong>Punto Cero:</strong><br>${slide.punto_cero}
+                            </div>
+                            <canvas id="radar-${idx}"></canvas>
+                        </div>
+                        <div class="news-col">
+                            <h3>Partículas Regionales</h3>
+                            <div class="news-scroll">
+                                ${slide.particulas.map(p => `
+                                    <div class="news-card" style="--b-color: ${p.color_bloque}">
+                                        <a href="${p.link}" target="_blank">${p.titulo}</a>
+                                        <div class="meta-info">Bloque: ${p.bloque} | Proximidad: ${p.proximidad}%</div>
+                                        <p class="bias-analysis">${p.sesgo}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
-                    <a href="${p.link}" target="_blank" class="block w-full py-5 bg-cyan-500 text-black text-center font-black uppercase text-xs tracking-widest hover:bg-white transition-all">ACCESS SOURCE_STREAM ↗</a>
-                </div>`;
-            document.getElementById('side-panel').classList.remove('translate-x-full');
-        }
+                </div>
+            `;
+            wrapper.innerHTML += slideHtml;
+        });
 
-        function closeSidePanel() { document.getElementById('side-panel').classList.add('translate-x-full'); }
-        init();
-    </script>
+        if (swiperInstance) swiperInstance.destroy();
+        swiperInstance = new Swiper('.swiper', {
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            on: { init: () => createCharts(data.carousel) }
+        });
+    }
+
+    // 4. CREAR GRÁFICOS RADAR
+    function createCharts(carouselData) {
+        const regiones = ["USA", "EUROPE", "RUSSIA", "CHINA", "LATAM", "MID_EAST", "INDIA", "AFRICA"];
+        
+        carouselData.forEach((slide, idx) => {
+            const ctx = document.getElementById(`radar-${idx}`);
+            if (!ctx) return;
+
+            const values = regiones.map(r => {
+                const p = slide.particulas.find(part => part.bloque === r);
+                return p ? p.proximidad : 0;
+            });
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: regiones,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: slide.color + '33',
+                        borderColor: slide.color,
+                        borderWidth: 2,
+                        pointBackgroundColor: slide.color
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: '#333' },
+                            grid: { color: '#333' },
+                            suggestedMin: 0, suggestedMax: 100,
+                            ticks: { display: false },
+                            pointLabels: { color: '#aaa', font: { size: 10 } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        });
+    }
+
+    init();
+</script>
 </body>
 </html>
