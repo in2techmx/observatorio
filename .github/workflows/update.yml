@@ -32,13 +32,17 @@ jobs:
 
     - name: Publicar Inteligencia
       run: |
+        # 1. Configuración de identidad
         git config --global user.name 'Proximity Bot'
         git config --global user.email 'bot@proximity.ai'
-        # 1. Traemos los cambios más recientes que tú hayas hecho
-        git pull origin main --rebase
-        # 2. Agregamos los archivos del bot
+        
+        # 2. Guardamos el trabajo del Bot PRIMERO (Commit local)
         git add .
-        # 3. Hacemos commit
-        git commit -m "🧠 Cluster Update: $(date)" || exit 0
-        # 4. Subimos todo junto
+        git commit -m "🧠 Cluster Update: $(date)" || echo "Nada que actualizar"
+
+        # 3. Descargamos tus cambios y aplicamos los del bot ENCIMA (Rebase)
+        # Esto soluciona el error "rejected"
+        git pull origin main --rebase
+
+        # 4. Subimos el resultado final
         git push origin main
