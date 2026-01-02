@@ -1,33 +1,22 @@
-import os, json, datetime, urllib.request, ssl, re
+import os, json, datetime, urllib.request, ssl, re, time
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from google import genai
 
-# --- CONFIGURACIÓN DE SEGURIDAD Y HEADERS ---
+# --- CONFIGURACIÓN DE CONEXIÓN ---
 ssl_context = ssl._create_unverified_context()
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-}
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
 
 CATEGORIAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", "Soberanía y Alianzas", "Tecnología y Espacio"]
 
 FUENTES_ESTRATEGICAS = {
-    "USA": ["https://www.washingtontimes.com/rss/headlines/news/world/", "https://feeds.aoc.org/reuters/USA"],
-    "Rusia": ["https://tass.com/rss/v2.xml", "https://pravda-en.com/rss/"],
+    "USA": ["https://www.washingtontimes.com/rss/headlines/news/world/", "https://www.washingtontimes.com/rss/headlines/news/politics/"],
+    "Rusia": ["https://tass.com/rss/v2.xml"],
     "China": ["https://www.scmp.com/rss/91/feed", "http://www.ecns.cn/rss/rss.xml"],
-    "Europa": ["https://www.dw.com/en/top-stories/rss", "https://www.france24.com/en/rss"],
-    "África": ["https://www.africanews.com/feed/", "https://www.premiumtimesng.com/feed"],
-    "LATAM": [
-        "https://www.clarin.com/rss/mundo/",
-        "https://www.infobae.com/feeds/rss/",
-        "https://www.eluniversal.com.mx/rss.xml",
-        "https://www.jornada.com.mx/rss/edicion.xml?v=1"
-    ],
-    "Medio Oriente": [
-        "https://www.aljazeera.com/xml/rss/all.xml",
-        "https://www.trtworld.com/rss",
-        "https://www.hispantv.com/rss/noticias"
-    ]
+    "Europa": ["https://www.france24.com/en/rss", "https://es.euronews.com/rss?level=vertical&name=noticias"],
+    "LATAM": ["https://www.jornada.com.mx/rss/edicion.xml", "https://www.clarin.com/rss/mundo/", "https://www.infobae.com/america/rss/"],
+    "Medio Oriente": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.hispantv.com/rss/noticias"],
+    "África": ["https://www.africanews.com/feed/"]
 }
 
 BLOQUE_COLORS = {
@@ -35,118 +24,121 @@ BLOQUE_COLORS = {
     "China": "#f97316", "LATAM": "#d946ef", "Medio Oriente": "#10b981", "África": "#8b5cf6"
 }
 
-def clean_text(text):
-    """Elimina URLs, emails y normaliza espacios para optimizar tokens"""
-    text = re.sub(r'http\S+', '', text) 
-    text = re.sub(r'\S*@\S*\s?', '', text) 
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
-
 def get_pure_content(url):
-    """Extrae el cuerpo de la noticia eliminando Ads, Nav y Scripts"""
+    """EXTRAE CUERPO DE NOTICIA: Limpia basura y toma hasta 1500 caracteres"""
     try:
         req = urllib.request.Request(url, headers=HEADERS)
         with urllib.request.urlopen(req, timeout=12, context=ssl_context) as resp:
             soup = BeautifulSoup(resp.read(), 'html.parser')
-            
-            # 1. ELIMINAR RUIDO: Etiquetas no periodísticas
-            for noisy in soup(["script", "style", "nav", "footer", "header", "aside", "form", "button", "iframe"]):
+            # Limpieza quirúrgica de Ads y Nav
+            for noisy in soup(["script", "style", "nav", "footer", "header", "aside", "form", "button"]):
                 noisy.decompose()
             
-            # 2. FILTRADO DE PÁRRAFOS: Solo contenido sustancial
+            # Captura de párrafos reales
             paragraphs = soup.find_all('p')
-            news_content = []
-            for p in paragraphs:
-                txt = p.get_text()
-                # Filtrar avisos de cookies o párrafos muy cortos/irrelevantes
-                if len(txt) > 70 and not any(x in txt.lower() for x in ["cookie", "subscribe", "follow us"]):
-                    news_content.append(txt)
+            text_parts = [p.get_text().strip() for p in paragraphs if len(p.get_text()) > 100]
+            full_text = " ".join(text_parts[:6]) # Tomamos los primeros 6 párrafos densos
             
-            # Unir los párrafos más importantes (primeros 5)
-            full_text = " ".join(news_content[:5])
-            return clean_text(full_text)[:1400]
+            # Limpieza de espacios y enlaces
+            full_text = re.sub(r'http\S+', '', full_text)
+            return re.sub(r'\s+', ' ', full_text).strip()[:1500]
     except:
-        return "Contenido no accesible."
+        return ""
 
-def collect():
-    print("📡 Iniciando Deep Scan (Limpieza de contenido y Ads)...")
-    raw_context = ""
-    
-    for bloque, urls in FUENTES_ESTRATEGICAS.items():
-        for url in urls:
-            try:
-                req = urllib.request.Request(url, headers=HEADERS)
-                with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
-                    root = ET.fromstring(resp.read())
-                    items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
-                    
-                    for item in items[:2]:
-                        title_n = item.find('title') or item.find('{http://www.w3.org/2005/Atom}title')
-                        title = title_n.text if title_n is not None else ""
-                        
-                        link_n = item.find('link') or item.find('{http://www.w3.org/2005/Atom}link')
-                        link = link_n.attrib['href'] if link_n is not None and 'href' in link_n.attrib else (link_n.text if link_n is not None else "")
-
-                        if link and title:
-                            print(f"   ∟ Depurando noticia: {title[:45]}...")
-                            body = get_pure_content(link)
-                            raw_context += f"BLOQUE: {bloque} | TÍTULO: {title} | ARGUMENTOS: {body}\n\n"
-                            
-                print(f"✅ Fuente depurada: {url[:35]}...")
-            except Exception as e:
-                print(f"⚠️ Error en fuente: {url[:30]}... {str(e)[:30]}")
-
-    # Análisis de Proximidad con Gemini 2.0 Flash
-    client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
-    
+def triaje_inteligente(client, bloque, pool):
+    """IA EDITORIAL: Analiza hasta 20 titulares y elige los 3 estratégicos"""
+    listado = "\n".join([f"[{i}] {n['title']}" for i, n in enumerate(pool)])
     prompt = f"""
-    Actúa como un motor de análisis geopolítico multipolar.
-    Analiza este CUERPO DE NOTICIAS (limpio de anuncios y ruido):
-    {raw_context}
+    Eres un Analista Senior de Inteligencia Geopolítica.
+    De los siguientes 20 titulares del bloque '{bloque}', selecciona EXACTAMENTE los índices de los 3 que representan mayor impacto estratégico, cambios en el equilibrio de poder o relevancia económica global.
+    IGNORA: sucesos locales, deportes, farándula o noticias de interés humano.
 
-    TAREA:
-    1. Agrupa en: {CATEGORIAS}.
-    2. Determina el 'Consenso Global' (qué dicen la mayoría de los bloques).
-    3. Calcula la Proximidad (0-100) basándote en la semejanza de los ARGUMENTOS del texto.
-    4. En 'analisis_regional', describe la disidencia específica de ese bloque frente al consenso.
-    5. Usa esta paleta: {BLOQUE_COLORS}.
+    LISTA:
+    {listado}
 
-    RESPONDE SOLO JSON:
-    {{
-      "categorias": [
-        {{
-          "nombre": "Nombre de Categoría",
-          "consenso": "...",
-          "particulas": [
-            {{
-              "titulo": "...",
-              "bloque": "...",
-              "proximidad": 80,
-              "color_bloque": "#hex",
-              "analisis_regional": "...",
-              "link": "..."
-            }}
-          ]
-        }}
-      ]
-    }}
+    Responde ESTRICTAMENTE un JSON con este formato: {{"indices": [index1, index2, index3]}}
     """
-
     try:
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=prompt,
             config={'response_mime_type': 'application/json'}
         )
-        data = json.loads(response.text.strip())
-        base_dir = os.path.dirname(os.path.abspath(__file__))
+        # Limpieza básica por si la IA añade texto extra
+        clean_json = response.text.strip().replace('```json', '').replace('```', '')
+        return json.loads(clean_json).get("indices", [])
+    except:
+        return [0, 1] # Fallback si falla la criba
+
+def collect():
+    print("📡 Fase 1: Escaneo de Radar Geopolítico (20 ítems/fuente)...")
+    client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+    contexto_final = ""
+    
+    for bloque, urls in FUENTES_ESTRATEGICAS.items():
+        pool_bloque = []
+        for url in urls:
+            try:
+                req = urllib.request.Request(url, headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
+                    xml_data = resp.read().decode('utf-8', errors='ignore')
+                    root = ET.fromstring(xml_data)
+                    items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
+                    
+                    for item in items[:20]: # Radar de 20 encabezados
+                        t_node = item.find('title') or item.find('{http://www.w3.org/2005/Atom}title')
+                        t = t_node.text if t_node is not None else ""
+                        
+                        l_node = item.find('link') or item.find('{http://www.w3.org/2005/Atom}link')
+                        l = l_node.attrib.get('href') if l_node is not None and l_node.attrib else (l_node.text if l_node is not None else "")
+                        
+                        if t and l: pool_bloque.append({"title": t, "link": l})
+            except: continue
+
+        if pool_bloque:
+            print(f"🧠 IA realizando triaje para {bloque}...")
+            seleccionados = triaje_inteligente(client, bloque, pool_bloque)
+            
+            for idx in seleccionados:
+                if idx < len(pool_bloque):
+                    noticia = pool_bloque[idx]
+                    print(f"   ∟ Extrayendo análisis profundo: {noticia['title'][:50]}...")
+                    cuerpo = get_pure_content(noticia['link'])
+                    if cuerpo:
+                        contexto_final += f"BLOQUE: {bloque} | TÍTULO: {noticia['title']} | CUERPO: {cuerpo}\n\n"
+            time.sleep(1) # Pausa estratégica entre bloques
+
+    # --- ANÁLISIS SEMÁNTICO FINAL ---
+    print("🔮 Generando Clustering Semántico Final...")
+    prompt_final = f"""
+    Como motor de inteligencia multipolar, analiza este universo de datos:
+    {contexto_final}
+    
+    Categorías: {CATEGORIAS}.
+    TAREAS:
+    1. Define el 'Consenso Global' por cada categoría comparando todas las visiones regionales.
+    2. Calcula la 'Proximidad' (0-100) según qué tanto se aleja el CUERPO de la noticia de ese consenso.
+    3. Explica el sesgo específico del bloque en 'analisis_regional'.
+    4. Usa estos colores: {BLOQUE_COLORS}.
+    
+    Responde solo JSON estricto.
+    """
+    
+    try:
+        res = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt_final,
+            config={'response_mime_type': 'application/json'}
+        )
+        clean_res = res.text.strip().replace('```json', '').replace('```', '')
+        data = json.loads(clean_res)
         
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
-            
-        print("✅ Universo geopolítico depurado y actualizado.")
+        print("✅ Observatorio actualizado con inteligencia depurada.")
     except Exception as e:
-        print(f"❌ Error en el análisis de IA: {e}")
+        print(f"❌ Error crítico en fase final: {e}")
 
 if __name__ == "__main__":
     collect()
