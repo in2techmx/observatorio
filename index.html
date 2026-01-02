@@ -12,168 +12,181 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Proximity | Deep Geopolitical Orbit</title>
+    <title>Global Proximity | Orbit Command</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
+        :root { --bg: #020617; }
         body { 
-            background: #020617; 
+            background: var(--bg); 
             color: #f8fafc; 
             font-family: 'Inter', sans-serif; 
-            overflow: hidden; 
-            margin: 0;
+            overflow: hidden; margin: 0;
         }
+        
+        /* Fondo de Estrellas y Rejilla */
+        #universe {
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0),
+                linear-gradient(rgba(15, 23, 42, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px, 100px 100px, 100px 100px;
+        }
+
+        .category-node { filter: drop-shadow(0 0 20px currentColor); }
+        .orbit-path { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 1; stroke-dasharray: 4; }
+        
         .label-cat { 
-            font-size: 10px; 
-            fill: #475569; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            letter-spacing: 0.4em; 
-            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px; fill: #94a3b8; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 0.3em;
         }
+
         #side-panel { 
-            transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); 
-            background: rgba(2, 6, 23, 0.98); 
-            backdrop-filter: blur(20px); 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); 
+            background: rgba(2, 6, 23, 0.85); 
+            backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(255,255,255,0.1);
         }
-        .particle { 
-            cursor: pointer; 
-            transition: all 0.3s ease;
+
+        .proximity-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .proximity-fill { height: 100%; transition: width 1s ease-out; }
+
+        /* Animación de pulso para los núcleos */
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.6; transform: scale(1); }
         }
-        .particle:hover {
-            filter: brightness(1.5) contrast(1.2);
-        }
-        /* Animación de fondo sutil */
-        #universe::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0.5px, transparent 0.5px);
-            background-size: 60px 60px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
+        .sun-core { animation: pulse 4s infinite ease-in-out; }
     </style>
 </head>
 <body>
 
-    <header class="fixed top-0 left-0 w-full p-8 z-40 pointer-events-none">
-        <h1 class="text-[12px] font-black tracking-[0.8em] text-slate-500 uppercase">Global Proximity</h1>
-        <p class="text-[10px] text-slate-600 mt-2 tracking-widest uppercase">Deep Geopolitical Orbit / Live Analysis</p>
-    </header>
-
-    <div id="universe" class="w-screen h-screen"></div>
-
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] border-l border-white/10 z-50 translate-x-full p-12 overflow-y-auto">
-        <button onclick="closePanel()" class="mb-16 text-slate-500 hover:text-white uppercase text-[10px] font-bold tracking-[0.4em] flex items-center gap-2">
-            <span>←</span> Regresar al Espacio
-        </button>
-        <div id="panel-content">
+    <div id="universe" class="w-screen h-screen relative">
+        <div class="absolute top-10 left-10 z-10 pointer-events-none">
+            <h1 class="text-2xl font-black tracking-tighter italic text-white">GLOBAL PROXIMITY</h1>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+                <span class="text-[9px] font-mono text-slate-400 uppercase tracking-widest">Live Strategic Deep Scan</span>
             </div>
+        </div>
+    </div>
+
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[500px] z-50 translate-x-full p-12 overflow-y-auto">
+        <button onclick="closePanel()" class="mb-12 group flex items-center gap-3 text-slate-500 hover:text-white transition-all text-[10px] font-bold tracking-widest">
+            <span class="transform group-hover:-translate-x-1 transition-transform">←</span> REGRESAR AL ESPACIO
+        </button>
+        <div id="panel-content"></div>
     </aside>
 
     <script>
-        let width = window.innerWidth, height = window.innerHeight;
+        const width = window.innerWidth, height = window.innerHeight;
         const svg = d3.select("#universe").append("svg")
-            .attr("width", width)
-            .attr("height", height);
+            .attr("width", width).attr("height", height);
 
         async function init() {
-            try {
-                // Forzamos la carga del JSON más reciente para evitar caché
-                const data = await d3.json("./latest_news.json?nocache=" + Date.now());
+            const data = await d3.json("./latest_news.json?v=" + Date.now());
+            
+            const centers = {
+                "Seguridad y Conflictos": {x: width * 0.25, y: height * 0.30, color: "#f43f5e"},
+                "Economía y Sanciones":   {x: width * 0.50, y: height * 0.50, color: "#fbbf24"},
+                "Energía y Recursos":    {x: width * 0.75, y: height * 0.30, color: "#22c55e"},
+                "Soberanía y Alianzas":  {x: width * 0.30, y: height * 0.75, color: "#a855f7"},
+                "Tecnología y Espacio":  {x: width * 0.70, y: height * 0.75, color: "#0ea5e9"}
+            };
+
+            const nodes = [];
+            
+            // Dibujar Soles y Órbitas
+            Object.keys(centers).forEach(catName => {
+                const c = centers[catName];
                 
-                // Centros de Gravedad para las Categorías Maestras
-                const centers = {
-                    "Seguridad y Conflictos": {x: width * 0.25, y: height * 0.35},
-                    "Economía y Sanciones":   {x: width * 0.50, y: height * 0.35},
-                    "Energía y Recursos":    {x: width * 0.75, y: height * 0.35},
-                    "Soberanía y Alianzas":  {x: width * 0.35, y: height * 0.75},
-                    "Tecnología y Espacio":  {x: width * 0.65, y: height * 0.75}
-                };
+                // Órbita visual
+                svg.append("circle")
+                    .attr("cx", c.x).attr("cy", c.y).attr("r", 140)
+                    .attr("class", "orbit-path");
 
-                const nodes = [];
-                data.categorias.forEach(cat => {
-                    // Etiqueta visual del centro de gravedad
-                    svg.append("text")
-                        .attr("x", centers[cat.nombre]?.x || width/2)
-                        .attr("y", (centers[cat.nombre]?.y || height/2) - 160)
-                        .attr("text-anchor", "middle")
-                        .attr("class", "label-cat")
-                        .text(cat.nombre);
+                // Núcleo del Sol (Categoría)
+                const sun = svg.append("g").attr("transform", `translate(${c.x}, ${c.y})`);
+                
+                sun.append("circle")
+                    .attr("r", 25)
+                    .attr("fill", c.color)
+                    .attr("class", "sun-core")
+                    .style("filter", `blur(15px)`);
 
-                    cat.particulas.forEach(p => {
-                        nodes.push({
-                            ...p,
-                            catName: cat.nombre,
-                            consenso: cat.consenso,
-                            tx: centers[cat.nombre]?.x || width/2,
-                            ty: centers[cat.nombre]?.y || height/2
-                        });
+                sun.append("circle")
+                    .attr("r", 15)
+                    .attr("fill", c.color);
+
+                svg.append("text")
+                    .attr("x", c.x).attr("y", c.y + 60)
+                    .attr("text-anchor", "middle").attr("class", "label-cat")
+                    .text(catName);
+
+                // Filtrar partículas de esta categoría
+                const catData = data.categorias.find(cat => cat.nombre === catName);
+                if(catData) {
+                    catData.particulas.forEach(p => {
+                        nodes.push({ ...p, tx: c.x, ty: c.y, consensus: catData.consenso });
                     });
+                }
+            });
+
+            const simulation = d3.forceSimulation(nodes)
+                .force("x", d3.forceX(d => d.tx).strength(0.1))
+                .force("y", d3.forceY(d => d.ty).strength(0.1))
+                .force("collide", d3.forceCollide().radius(d => 45 - (d.proximidad/4)))
+                .on("tick", () => {
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
                 });
 
-                // Motor de Física de Proximidad
-                const simulation = d3.forceSimulation(nodes)
-                    .force("x", d3.forceX(d => d.tx).strength(0.12))
-                    .force("y", d3.forceY(d => d.ty).strength(0.12))
-                    // Colisión dinámica: las noticias con menos proximidad se repelen más (flotan lejos)
-                    .force("collide", d3.forceCollide().radius(d => 55 - (d.proximidad / 3)))
-                    .on("tick", () => {
-                        node.attr("transform", d => `translate(${d.x},${d.y})`);
-                    });
+            const node = svg.selectAll(".node").data(nodes).join("g")
+                .attr("class", "cursor-pointer")
+                .on("click", (e, d) => openPanel(d));
 
-                const node = svg.selectAll(".node")
-                    .data(nodes)
-                    .join("g")
-                    .attr("class", "particle")
-                    .on("click", (e, d) => openPanel(d));
-
-                // Dibujado de la partícula (Borde indica Región, Relleno indica Proximidad)
-                node.append("circle")
-                    .attr("r", d => 6 + (d.proximidad / 10))
-                    .attr("fill", d => d.proximidad > 40 ? d.color_bloque : "transparent")
-                    .attr("fill-opacity", d => d.proximidad / 100)
-                    .attr("stroke", d => d.color_bloque)
-                    .attr("stroke-width", 2.5)
-                    .style("filter", d => `drop-shadow(0 0 ${d.proximidad/6}px ${d.color_bloque}88)`);
-
-            } catch (error) {
-                console.error("Error cargando el universo de datos:", error);
-            }
+            // Partícula de Noticia
+            node.append("circle")
+                .attr("r", d => 4 + (d.proximidad / 12))
+                .attr("fill", d => d.color_bloque)
+                .attr("fill-opacity", d => 0.2 + (d.proximidad / 150))
+                .attr("stroke", d => d.color_bloque)
+                .attr("stroke-width", 1.5)
+                .style("filter", d => `drop-shadow(0 0 ${d.proximidad/10}px ${d.color_bloque})`);
         }
 
         function openPanel(d) {
-            const content = document.getElementById('panel-content');
-            content.innerHTML = `
-                <div class="animate-in fade-in slide-in-from-right duration-700">
-                    <div class="flex justify-between items-center mb-10">
-                        <span style="color:${d.color_bloque}; border-color:${d.color_bloque}" class="border px-3 py-1 text-[10px] font-black uppercase tracking-[0.3em]">
-                            ${d.bloque}
-                        </span>
-                        <div class="text-right">
-                            <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-widest">Proximidad</span>
-                            <span class="text-4xl font-mono text-white">${d.proximidad}%</span>
+            const panel = document.getElementById('panel-content');
+            panel.innerHTML = `
+                <div class="space-y-8 animate-in slide-in-from-bottom duration-500">
+                    <div class="flex justify-between items-end">
+                        <div style="color:${d.color_bloque}" class="font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
+                            Origin: ${d.bloque}
                         </div>
+                        <div class="text-5xl font-black italic opacity-20">${d.proximidad}%</div>
                     </div>
 
-                    <h2 class="text-4xl font-bold leading-tight mb-8 text-white">${d.titulo}</h2>
-
-                    <div class="p-8 bg-white/5 rounded-2xl border border-white/5 mb-10">
-                        <h4 class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-[0.2em]">Consenso Global en ${d.catName}</h4>
-                        <p class="text-slate-300 italic leading-relaxed text-sm">"${d.consenso}"</p>
+                    <h2 class="text-3xl font-bold leading-tight tracking-tight">${d.titulo}</h2>
+                    
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-sm">
+                        <div class="text-[9px] uppercase tracking-widest text-slate-500 mb-2">Consenso Global</div>
+                        <p class="text-xs text-slate-400 italic leading-relaxed">"${d.consenso}"</p>
                     </div>
 
-                    <div class="mb-12">
-                        <h4 class="text-sky-500 text-[10px] uppercase font-black mb-4 tracking-[0.2em]">Enfoque Regional / Disidencia</h4>
-                        <p class="text-2xl leading-snug text-slate-100 font-light">${d.analisis_regional}</p>
+                    <div class="proximity-bar">
+                        <div class="proximity-fill" style="width:${d.proximidad}%; background:${d.color_bloque}"></div>
                     </div>
 
-                    <div class="pt-8 border-t border-white/5">
-                        <a href="${d.link}" target="_blank" class="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-sky-400 hover:text-white transition-colors">
-                            Ver Fuente Original <span class="text-lg">↗</span>
+                    <div>
+                        <div class="text-[9px] uppercase tracking-widest text-sky-500 mb-3 font-bold">Análisis de Disidencia Regional</div>
+                        <p class="text-lg leading-snug text-slate-200 font-light">${d.analisis_regional}</p>
+                    </div>
+
+                    <div class="pt-8">
+                        <a href="${d.link}" target="_blank" class="inline-block border border-white/20 px-6 py-3 text-[10px] font-bold tracking-[0.2em] hover:bg-white hover:text-black transition-all">
+                            VER FUENTE ORIGINAL ↗
                         </a>
                     </div>
                 </div>
@@ -181,17 +194,7 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
             document.getElementById('side-panel').classList.remove('translate-x-full');
         }
 
-        function closePanel() {
-            document.getElementById('side-panel').classList.add('translate-x-full');
-        }
-
-        // Ajustar el canvas si cambia el tamaño de la ventana
-        window.addEventListener('resize', () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            svg.attr("width", width).attr("height", height);
-        });
-
+        function closePanel() { document.getElementById('side-panel').classList.add('translate-x-full'); }
         init();
     </script>
 </body>
