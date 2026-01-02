@@ -1,27 +1,29 @@
 #!/bin/bash
-set -e  # Salir si ocurre un error
+set -e
 
 echo "===================================================="
-echo "🤖 INTELLIGENCE-BOT: PROCESO DE ACTUALIZACIÓN TOTAL"
+echo "🤖 INTELLIGENCE-BOT: PROCESO DE SINCRONIZACIÓN"
 echo "===================================================="
 
-# 1. CONFIGURACIÓN DE IDENTIDAD
+# 1. CONFIGURAR GIT
 echo "[1/6] Configurando Git..."
 git config --global user.name "Intelligence-Bot"
 git config --global user.email "bot@github.com"
 
-# 2. SINCRONIZACIÓN RADICAL (Soluciona el error de commits desfasados)
-echo "[2/6] Reseteando repositorio a la versión de la nube..."
+# En GitHub Actions el remote ya viene configurado por el checkout
+# Solo nos aseguramos de estar en la rama correcta
 git fetch origin main
-# Usamos origin/main con barra para evitar el error de "argumento ambiguo"
+
+# 2. SINCRONIZACIÓN RADICAL (Limpia desfases de commits)
+echo "[2/6] Sincronizando branch local..."
 git reset --hard origin/main
 git checkout main
 
-# 3. INFRAESTRUCTURA Y PREVENCIÓN DE ERRORES 'PATHSPEC'
-echo "[3/6] Verificando directorios y archivos base..."
+# 3. INFRAESTRUCTURA (CRÍTICO)
+echo "[3/6] Verificando estructura de archivos..."
 mkdir -p historico_noticias/{diario,semanal,mensual}
 
-# Crear manifest.json preventivo si no existe
+# Asegurar que manifest.json existe para evitar error 128 de Git
 if [ ! -f manifest.json ]; then
     echo "  ↪ Creando manifest.json preventivo..."
     echo '{
@@ -30,66 +32,67 @@ if [ ! -f manifest.json ]; then
     }' > manifest.json
 fi
 
-# Crear gravity_carousel.json preventivo si no existe
+# Asegurar que gravity_carousel.json existe
 if [ ! -f gravity_carousel.json ]; then
     echo "  ↪ Creando gravity_carousel.json preventivo..."
     echo '{"articles": [], "last_updated": null}' > gravity_carousel.json
 fi
 
-# 4. EJECUCIÓN DEL MOTOR (Python)
-echo "[4/6] Ejecutando análisis Python..."
-# Instalamos dependencias por si el entorno está limpio
+# 4. EJECUTAR COLECTOR (Python)
+echo "[4/6] Ejecutando análisis..."
+# Aseguramos dependencias
 pip install google-genai beautifulsoup4 --quiet
 
-if [ -f "collector.py" ]; then
-    # Ejecutar collector. Usamos '|| true' para que el script no muera si falla la IA
-    python collector.py || echo "  ⚠️ Advertencia: El collector falló, se usará la base existente."
+if [ -f "collector.py" ] && [ -n "$GEMINI_API_KEY" ]; then
+    echo "  ↪ Ejecutando collector.py..."
+    if python collector.py 2>&1 | tee collector.log; then
+        echo "  ✅ Collector ejecutado exitosamente"
+    else
+        echo "  ⚠️ Collector terminó con errores, revisando últimas líneas:"
+        tail -n 10 collector.log
+    fi
+    
+    # 5. ARCHIVADO DE RESULTADOS
+    # Tu Python genera gravity_carousel.json, lo usamos para el histórico
+    if [ -f "gravity_carousel.json" ]; then
+        echo "  ↪ Archivando datos..."
+        TODAY=$(date +"%Y%m%d_%H%M")
+        cp gravity_carousel.json "historico_noticias/diario/${TODAY}.json"
+    fi
 else
-    echo "  ❌ Error: No se encontró collector.py"
-    exit 1
+    echo "  ⚠️ Saltando collector: No hay API key o falta collector.py"
 fi
 
-# 5. LÓGICA DE ARCHIVADO HISTÓRICO
-echo "[5/6] Organizando archivos históricos..."
-# Verificamos si Python generó el archivo actualizado
-if [ -f "gravity_carousel.json" ]; then
-    FECHA_HOY=$(date +"%Y-%m-%d")
-    HORA_HOY=$(date +"%H%M")
-    
-    # Guardar copia en diario
-    echo "  ↪ Archivando en histórico diario..."
-    cp gravity_carousel.json "historico_noticias/diario/${FECHA_HOY}_${HORA_HOY}.json"
-    
-    # Si es domingo (7), guardar en semanal
-    if [ $(date +%u) -eq 7 ]; then
-        cp gravity_carousel.json "historico_noticias/semanal/semana_$(date +%V).json"
-    fi
-    
-    # Si es día 01, guardar en mensual
-    if [ $(date +%d) -eq 01 ]; then
-        cp gravity_carousel.json "historico_noticias/mensual/mes_$(date +%m).json"
-    fi
-fi
+# 6. COMMIT Y PUSH SEGURO
+echo "[5/6] Preparando commit..."
 
-# 6. COMMIT Y SUBIDA FINAL
-echo "[6/6] Preparando commit y push..."
-
-# Agregamos los archivos de forma segura
+# Agregamos todo el contenido
 git add manifest.json
 git add gravity_carousel.json
 git add historico_noticias/
 
-# Solo subir si hay cambios detectados
-if git diff --staged --quiet; then
-    echo "📭 No se detectaron cambios nuevos para subir."
+# Verificar si hay cambios reales antes de subir
+if git diff --cached --quiet; then
+    echo "  📭 No hay cambios detectados. Terminando."
 else
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M")
-    git commit -m "🌍 Actualización Geopolítica: $TIMESTAMP [Bot]"
-    
-    echo "🚀 Enviando cambios a GitHub..."
-    # Force push para limpiar el historial desfasado definitivamente
-    git push origin main --force
-    echo "===================================================="
-    echo "✅ ACTUALIZACIÓN COMPLETADA EXITOSAMENTE"
-    echo "===================================================="
+    echo "  💾 Creando commit: $TIMESTAMP"
+    git commit -m "🌐 Actualización automática: $TIMESTAMP" --quiet
+
+    echo "[6/6] Enviando a GitHub..."
+    # Intentar push normal, si falla (por cambios remotos), hacer rebase
+    if git push origin main; then
+        echo "  ✅ Push exitoso"
+    else
+        echo "  ⚠️ Push rechazado, sincronizando y reintentando..."
+        git pull --rebase origin main
+        git push origin main
+    fi
 fi
+
+# Limpieza de archivos temporales
+rm -f collector.log 2>/dev/null || true
+
+echo "===================================================="
+echo "✅ SINCRONIZACIÓN COMPLETADA EXITOSAMENTE"
+echo "===================================================="
