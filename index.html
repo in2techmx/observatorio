@@ -12,181 +12,137 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Proximity | Orbit Command</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Global Proximity | Intelligence Command</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #020617; }
-        body { 
-            background: var(--bg); 
-            color: #f8fafc; 
-            font-family: 'Inter', sans-serif; 
-            overflow: hidden; margin: 0;
-        }
+        body { background: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
         
-        /* Fondo de Estrellas y Rejilla */
         #universe {
             background-image: 
-                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0),
-                linear-gradient(rgba(15, 23, 42, 0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.5) 1px, transparent 1px);
-            background-size: 50px 50px, 100px 100px, 100px 100px;
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0),
+                linear-gradient(rgba(15, 23, 42, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px, 80px 80px, 80px 80px;
         }
 
-        .category-node { filter: drop-shadow(0 0 20px currentColor); }
-        .orbit-path { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 1; stroke-dasharray: 4; }
-        
-        .label-cat { 
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px; fill: #94a3b8; font-weight: bold;
-            text-transform: uppercase; letter-spacing: 0.3em;
-        }
+        .orbit-path { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 1; stroke-dasharray: 5,5; }
+        .label-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #64748b; font-weight: bold; letter-spacing: 0.4em; }
 
         #side-panel { 
-            transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); 
-            background: rgba(2, 6, 23, 0.85); 
-            backdrop-filter: blur(25px);
+            transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            background: rgba(2, 6, 23, 0.9); 
+            backdrop-filter: blur(30px);
             border-left: 1px solid rgba(255,255,255,0.1);
         }
 
-        .proximity-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
-        .proximity-fill { height: 100%; transition: width 1s ease-out; }
+        /* Estética de Partícula */
+        .particle { cursor: pointer; transition: transform 0.3s ease; }
+        .particle:hover { transform: scale(1.2); }
 
-        /* Animación de pulso para los núcleos */
-        @keyframes pulse {
-            0% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0.6; transform: scale(1); }
-        }
-        .sun-core { animation: pulse 4s infinite ease-in-out; }
+        .sun-core { filter: blur(20px); opacity: 0.5; animation: pulse 6s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
     <div id="universe" class="w-screen h-screen relative">
-        <div class="absolute top-10 left-10 z-10 pointer-events-none">
-            <h1 class="text-2xl font-black tracking-tighter italic text-white">GLOBAL PROXIMITY</h1>
+        <header class="absolute top-10 left-10 z-10 pointer-events-none">
+            <h1 class="text-xl font-black tracking-tighter italic text-white/90">ORBITAL INTELLIGENCE</h1>
             <div class="flex items-center gap-2 mt-1">
-                <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
-                <span class="text-[9px] font-mono text-slate-400 uppercase tracking-widest">Live Strategic Deep Scan</span>
+                <div class="w-1.5 h-1.5 bg-sky-500 rounded-full animate-pulse"></div>
+                <span class="text-[8px] font-mono text-slate-500 uppercase tracking-[0.3em]">Deep Semantic Triage Active</span>
             </div>
-        </div>
+        </header>
     </div>
 
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[500px] z-50 translate-x-full p-12 overflow-y-auto">
-        <button onclick="closePanel()" class="mb-12 group flex items-center gap-3 text-slate-500 hover:text-white transition-all text-[10px] font-bold tracking-widest">
-            <span class="transform group-hover:-translate-x-1 transition-transform">←</span> REGRESAR AL ESPACIO
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] z-50 translate-x-full p-10 overflow-y-auto">
+        <button onclick="closePanel()" class="mb-12 text-slate-500 hover:text-white transition-all text-[9px] font-bold tracking-[0.5em] flex items-center gap-2">
+            <span>[</span> ESCAPE TO ORBIT <span>]</span>
         </button>
-        <div id="panel-content"></div>
+        <div id="panel-content" class="space-y-8"></div>
     </aside>
 
     <script>
         const width = window.innerWidth, height = window.innerHeight;
-        const svg = d3.select("#universe").append("svg")
-            .attr("width", width).attr("height", height);
+        const svg = d3.select("#universe").append("svg").attr("width", width).attr("height", height);
 
         async function init() {
             const data = await d3.json("./latest_news.json?v=" + Date.now());
             
             const centers = {
-                "Seguridad y Conflictos": {x: width * 0.25, y: height * 0.30, color: "#f43f5e"},
+                "Seguridad y Conflictos": {x: width * 0.25, y: height * 0.35, color: "#f43f5e"},
                 "Economía y Sanciones":   {x: width * 0.50, y: height * 0.50, color: "#fbbf24"},
-                "Energía y Recursos":    {x: width * 0.75, y: height * 0.30, color: "#22c55e"},
-                "Soberanía y Alianzas":  {x: width * 0.30, y: height * 0.75, color: "#a855f7"},
-                "Tecnología y Espacio":  {x: width * 0.70, y: height * 0.75, color: "#0ea5e9"}
+                "Energía y Recursos":    {x: width * 0.75, y: height * 0.35, color: "#22c55e"},
+                "Soberanía y Alianzas":  {x: width * 0.35, y: height * 0.70, color: "#a855f7"},
+                "Tecnología y Espacio":  {x: width * 0.65, y: height * 0.70, color: "#0ea5e9"}
             };
 
             const nodes = [];
             
-            // Dibujar Soles y Órbitas
             Object.keys(centers).forEach(catName => {
                 const c = centers[catName];
                 
-                // Órbita visual
-                svg.append("circle")
-                    .attr("cx", c.x).attr("cy", c.y).attr("r", 140)
-                    .attr("class", "orbit-path");
-
-                // Núcleo del Sol (Categoría)
-                const sun = svg.append("g").attr("transform", `translate(${c.x}, ${c.y})`);
+                // Dibujar Núcleos Gravitacionales
+                svg.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", 150).attr("class", "orbit-path");
+                svg.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", 40).attr("fill", c.color).attr("class", "sun-core");
+                svg.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", 4).attr("fill", c.color);
                 
-                sun.append("circle")
-                    .attr("r", 25)
-                    .attr("fill", c.color)
-                    .attr("class", "sun-core")
-                    .style("filter", `blur(15px)`);
+                svg.append("text").attr("x", c.x).attr("y", c.y + 70).attr("text-anchor", "middle").attr("class", "label-cat").text(catName);
 
-                sun.append("circle")
-                    .attr("r", 15)
-                    .attr("fill", c.color);
-
-                svg.append("text")
-                    .attr("x", c.x).attr("y", c.y + 60)
-                    .attr("text-anchor", "middle").attr("class", "label-cat")
-                    .text(catName);
-
-                // Filtrar partículas de esta categoría
                 const catData = data.categorias.find(cat => cat.nombre === catName);
                 if(catData) {
                     catData.particulas.forEach(p => {
-                        nodes.push({ ...p, tx: c.x, ty: c.y, consensus: catData.consenso });
+                        nodes.push({ ...p, tx: c.x, ty: c.y, consensus: catData.consenso, catColor: c.color });
                     });
                 }
             });
 
             const simulation = d3.forceSimulation(nodes)
-                .force("x", d3.forceX(d => d.tx).strength(0.1))
-                .force("y", d3.forceY(d => d.ty).strength(0.1))
-                .force("collide", d3.forceCollide().radius(d => 45 - (d.proximidad/4)))
+                .force("x", d3.forceX(d => d.tx).strength(0.15))
+                .force("y", d3.forceY(d => d.ty).strength(0.15))
+                .force("collide", d3.forceCollide().radius(d => 50 - (d.proximidad/3)))
                 .on("tick", () => {
                     node.attr("transform", d => `translate(${d.x},${d.y})`);
                 });
 
-            const node = svg.selectAll(".node").data(nodes).join("g")
-                .attr("class", "cursor-pointer")
-                .on("click", (e, d) => openPanel(d));
+            const node = svg.selectAll(".node").data(nodes).join("g").attr("class", "particle").on("click", (e, d) => openPanel(d));
 
-            // Partícula de Noticia
             node.append("circle")
-                .attr("r", d => 4 + (d.proximidad / 12))
+                .attr("r", d => 5 + (d.proximidad / 10))
                 .attr("fill", d => d.color_bloque)
-                .attr("fill-opacity", d => 0.2 + (d.proximidad / 150))
-                .attr("stroke", d => d.color_bloque)
-                .attr("stroke-width", 1.5)
-                .style("filter", d => `drop-shadow(0 0 ${d.proximidad/10}px ${d.color_bloque})`);
+                .attr("fill-opacity", 0.6)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 0.5)
+                .style("filter", d => `drop-shadow(0 0 10px ${d.color_bloque})`);
         }
 
         function openPanel(d) {
             const panel = document.getElementById('panel-content');
             panel.innerHTML = `
-                <div class="space-y-8 animate-in slide-in-from-bottom duration-500">
-                    <div class="flex justify-between items-end">
-                        <div style="color:${d.color_bloque}" class="font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
-                            Origin: ${d.bloque}
-                        </div>
-                        <div class="text-5xl font-black italic opacity-20">${d.proximidad}%</div>
+                <div class="animate-in fade-in slide-in-from-right duration-500">
+                    <div class="flex justify-between items-start mb-6">
+                        <span style="background:${d.color_bloque}" class="text-[9px] font-black px-2 py-1 text-black uppercase tracking-tighter">${d.bloque}</span>
+                        <span class="font-mono text-3xl font-light opacity-30">${d.proximidad}%</span>
                     </div>
 
-                    <h2 class="text-3xl font-bold leading-tight tracking-tight">${d.titulo}</h2>
+                    <h2 class="text-3xl font-extrabold leading-tight text-white mb-6">${d.titulo}</h2>
                     
-                    <div class="p-6 bg-white/5 border border-white/10 rounded-sm">
-                        <div class="text-[9px] uppercase tracking-widest text-slate-500 mb-2">Consenso Global</div>
-                        <p class="text-xs text-slate-400 italic leading-relaxed">"${d.consenso}"</p>
+                    <div class="border-l-2 pl-6 py-2 mb-8" style="border-color:${d.catColor}44">
+                        <h4 class="text-[9px] uppercase tracking-[0.3em] text-slate-500 mb-2">Consenso Detectado</h4>
+                        <p class="text-sm text-slate-400 italic leading-relaxed">"${d.consenso}"</p>
                     </div>
 
-                    <div class="proximity-bar">
-                        <div class="proximity-fill" style="width:${d.proximidad}%; background:${d.color_bloque}"></div>
+                    <div class="space-y-4">
+                        <h4 class="text-[9px] uppercase tracking-[0.3em] text-sky-400 font-bold">Disidencia y Enfoque Regional</h4>
+                        <p class="text-xl leading-snug text-slate-100 font-light">${d.analisis_regional}</p>
                     </div>
 
-                    <div>
-                        <div class="text-[9px] uppercase tracking-widest text-sky-500 mb-3 font-bold">Análisis de Disidencia Regional</div>
-                        <p class="text-lg leading-snug text-slate-200 font-light">${d.analisis_regional}</p>
-                    </div>
-
-                    <div class="pt-8">
-                        <a href="${d.link}" target="_blank" class="inline-block border border-white/20 px-6 py-3 text-[10px] font-bold tracking-[0.2em] hover:bg-white hover:text-black transition-all">
-                            VER FUENTE ORIGINAL ↗
+                    <div class="pt-10">
+                        <a href="${d.link}" target="_blank" class="text-[10px] font-bold tracking-widest text-white border-b border-white/20 pb-2 hover:border-white transition-all">
+                            EXPLORE SOURCE DATA ↗
                         </a>
                     </div>
                 </div>
