@@ -1,61 +1,71 @@
-name: Actualizar Observatorio Geopolítico
+name: Actualizar Observatorio Diario
 
 on:
   schedule:
-    # Se ejecuta cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Inteligencia Semántica y Triage
+  update-observatory:
     runs-on: ubuntu-latest
-    
     permissions:
-      contents: write # Permiso obligatorio para subir archivos al repo
-
+      contents: write
+    
     steps:
-      - name: 1. Descarga del repositorio
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Descarga todo el historial para evitar errores de sincronización
+    - name: Checkout del código
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Configurar Git
+      run: |
+        git config --global user.name "Intelligence-Bot"
+        git config --global user.email "bot@github.com"
 
-      - name: 2. Configuración de Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Sincronización Radical
+      run: |
+        git fetch origin main
+        git reset --hard origin main
 
-      - name: 3. Instalación de dependencias
-        run: |
-          pip install google-genai beautifulsoup4
+    - name: Configurar Python y Dependencias
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - run: pip install google-genai beautifulsoup4
 
-      - name: 4. Ejecución del Proceso de Inteligencia
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python collector.py
-
-      - name: 5. Sincronización y Guardado Final
-        run: |
-          git config --global user.name "Intelligence-Bot"
-          git config --global user.email "bot@github.com"
+    - name: Preparar Entorno de Datos
+      run: |
+        mkdir -p historico_noticias/diario
+        mkdir -p historico_noticias/semanal
+        mkdir -p historico_noticias/mensual
+        if [ ! -f manifest.json ]; then echo '{"last_updated": null}' > manifest.json; fi
+        if [ ! -f gravity_carousel.json ]; then echo '{"articles": []}' > gravity_carousel.json; fi
+        
+    - name: Ejecutar Collector
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python collector.py
+        
+    - name: Archivar y Sincronizar
+      run: |
+        # Usamos gravity_carousel.json como fuente (ajusta si tu script genera otro)
+        FILE="gravity_carousel.json"
+        if [ -f "$FILE" ]; then
+          TODAY=$(date +"%Y%m%d")
+          cp "$FILE" "historico_noticias/diario/news_${TODAY}.json"
           
-          # 1. CORRECCIÓN DE SECUENCIA: Primero nos igualamos a la nube
-          # Esto elimina el error "Your branch is behind by 13 commits"
-          git fetch origin main
-          git reset --hard origin main
-          
-          # 2. AHORA SÍ, registramos lo que generó el collector.py
-          # Usamos condicionales para que no falle si el archivo no existe
-          [ -f gravity_carousel.json ] && git add gravity_carousel.json
-          [ -f manifest.json ] && git add manifest.json
-          
-          # Añadir la carpeta de históricos completa
-          if [ -d "historico_noticias" ]; then
-            git add historico_noticias/
+          if [ $(date +%u) -eq 7 ]; then
+            cp "$FILE" "historico_noticias/semanal/news_$(date +"%Y-W%U").json"
           fi
           
-          # 3. Commit de los nuevos datos
-          git commit -m "Actualización estratégica: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
-          
-          # 4. Push directo (el force asegura que la web se actualice)
-          git push origin main --force
+          if [ $(date +%d) -eq 1 ]; then
+            cp "$FILE" "historico_noticias/mensual/news_$(date +"%Y-%m").json"
+          fi
+        fi
+
+    - name: Commit y Push Final
+      run: |
+        git add gravity_carousel.json manifest.json
+        git add historico_noticias/
+        git commit -m "🤖 Update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "Sin cambios"
+        git push origin main --force
