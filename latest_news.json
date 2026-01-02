@@ -1,13 +1,13 @@
 [
     {
-        "tematica": "Sincronizando...",
-        "descripcion": "El nodo Pro está validando la versión de API.",
-        "timestamp": "2026-01-02 01:41",
+        "tematica": "Error de Configuración de API",
+        "descripcion": "La cuenta Pro no reporta modelos disponibles. Detalle: 'Model' object has no attribute 'support",
+        "timestamp": "2026-01-02 01:42",
         "regiones_activas": [
-            "GLOBAL"
+            "SISTEMA"
         ],
         "perspectivas": {
-            "SISTEMA": "Cambiando a endpoint v1..."
+            "ERROR": "Verificar habilitación de modelo en Google Cloud"
         }
     }
 ]
