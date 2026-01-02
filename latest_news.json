@@ -1,13 +1,13 @@
 [
     {
-        "tematica": "Nodo en Sincronización Pro",
-        "descripcion": "El observatorio está ajustando la conexión con el satélite. Detalle: 'Model' object has no attribute 'supported_methods",
-        "timestamp": "2026-01-02 01:45",
+        "tematica": "Sincronización Pro",
+        "descripcion": "Conexión establecida. Validando flujo de datos. Error: 404 NOT_FOUND. {'error': {'code': 404, '",
+        "timestamp": "2026-01-02 01:46",
         "regiones_activas": [
             "GLOBAL"
         ],
         "perspectivas": {
-            "SISTEMA": "Reintentando protocolo de enlace..."
+            "SISTEMA": "Reintentando..."
         }
     }
 ]
