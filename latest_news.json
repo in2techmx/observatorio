@@ -2,150 +2,110 @@
     "categorias": [
         {
             "nombre": "Seguridad y Conflictos",
-            "consenso": "Análisis de las tensiones geopolíticas y los conflictos emergentes a nivel global.",
+            "consenso": "Resumen ejecutivo de Seguridad y Conflictos",
             "particulas": [
                 {
-                    "titulo": "Escalada de tensiones en el Mar de China Meridional tras ejercicios militares conjuntos de USA y Filipinas",
+                    "titulo": "Título de la noticia de Seguridad y Conflictos 1",
                     "bloque": "USA",
-                    "proximidad": 92,
-                    "analisis_regional": "Aumento de la presencia militar estadounidense en la región como contrapeso a la influencia china.",
-                    "link": "URL_REAL",
+                    "proximidad": 85,
+                    "analisis_regional": "Breve sesgo de la noticia de Seguridad y Conflictos 1",
+                    "link": "URL_REAL_1",
                     "color_bloque": "#3b82f6"
                 },
                 {
-                    "titulo": "Rusia intensifica su presencia militar en el Ártico, generando preocupación en la OTAN",
+                    "titulo": "Título de la noticia de Seguridad y Conflictos 2",
                     "bloque": "Rusia",
-                    "proximidad": 88,
-                    "analisis_regional": "Militarización del Ártico y competencia por el control de los recursos naturales.",
-                    "link": "URL_REAL",
+                    "proximidad": 70,
+                    "analisis_regional": "Breve sesgo de la noticia de Seguridad y Conflictos 2",
+                    "link": "URL_REAL_2",
                     "color_bloque": "#ef4444"
-                },
-                {
-                    "titulo": "Ataque con drones a instalaciones petroleras en Medio Oriente eleva la tensión regional",
-                    "bloque": "Medio Oriente",
-                    "proximidad": 95,
-                    "analisis_regional": "Inestabilidad regional y riesgo de escalada de conflictos.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#10b981"
                 }
             ]
         },
         {
             "nombre": "Economía y Sanciones",
-            "consenso": "Impacto de las sanciones económicas y las políticas comerciales en la economía global.",
+            "consenso": "Resumen ejecutivo de Economía y Sanciones",
             "particulas": [
                 {
-                    "titulo": "La Unión Europea impone nuevas sanciones económicas a Bielorrusia tras la represión de protestas",
+                    "titulo": "Título de la noticia de Economía y Sanciones 1",
                     "bloque": "Europa",
                     "proximidad": 90,
-                    "analisis_regional": "Presión económica sobre el régimen bielorruso y posibles consecuencias para la estabilidad regional.",
-                    "link": "URL_REAL",
+                    "analisis_regional": "Breve sesgo de la noticia de Economía y Sanciones 1",
+                    "link": "URL_REAL_3",
                     "color_bloque": "#fde047"
                 },
                 {
-                    "titulo": "China responde a las restricciones comerciales de USA con medidas proteccionistas",
+                    "titulo": "Título de la noticia de Economía y Sanciones 2",
                     "bloque": "China",
-                    "proximidad": 87,
-                    "analisis_regional": "Recrudecimiento de la guerra comercial entre USA y China.",
-                    "link": "URL_REAL",
+                    "proximidad": 65,
+                    "analisis_regional": "Breve sesgo de la noticia de Economía y Sanciones 2",
+                    "link": "URL_REAL_4",
                     "color_bloque": "#f97316"
-                },
-                {
-                    "titulo": "Argentina enfrenta una nueva crisis económica y busca apoyo financiero internacional",
-                    "bloque": "LATAM",
-                    "proximidad": 93,
-                    "analisis_regional": "Inestabilidad económica en Argentina y riesgo de contagio a otros países de la región.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#d946ef"
                 }
             ]
         },
         {
             "nombre": "Energía y Recursos",
-            "consenso": "Análisis de la geopolítica de la energía y la competencia por los recursos naturales.",
+            "consenso": "Resumen ejecutivo de Energía y Recursos",
             "particulas": [
                 {
-                    "titulo": "Rusia y Alemania avanzan con la construcción del gasoducto Nord Stream 2, pese a las objeciones de USA",
-                    "bloque": "Rusia",
-                    "proximidad": 91,
-                    "analisis_regional": "Fortalecimiento de la influencia rusa en el mercado energético europeo.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#ef4444"
-                },
-                {
-                    "titulo": "La OPEP+ acuerda aumentar la producción de petróleo, aliviando la presión sobre los precios",
+                    "titulo": "Título de la noticia de Energía y Recursos 1",
                     "bloque": "Medio Oriente",
-                    "proximidad": 89,
-                    "analisis_regional": "Impacto en la economía global y en la estabilidad de los países productores de petróleo.",
-                    "link": "URL_REAL",
+                    "proximidad": 75,
+                    "analisis_regional": "Breve sesgo de la noticia de Energía y Recursos 1",
+                    "link": "URL_REAL_5",
                     "color_bloque": "#10b981"
                 },
                 {
-                    "titulo": "Países africanos buscan diversificar sus fuentes de energía y reducir su dependencia de los combustibles fósiles",
+                    "titulo": "Título de la noticia de Energía y Recursos 2",
                     "bloque": "África",
-                    "proximidad": 86,
-                    "analisis_regional": "Transición energética en África y oportunidades para el desarrollo de energías renovables.",
-                    "link": "URL_REAL",
+                    "proximidad": 80,
+                    "analisis_regional": "Breve sesgo de la noticia de Energía y Recursos 2",
+                    "link": "URL_REAL_6",
                     "color_bloque": "#8b5cf6"
                 }
             ]
         },
         {
             "nombre": "Soberanía y Alianzas",
-            "consenso": "Dinámicas de poder y reconfiguración de alianzas estratégicas entre naciones.",
+            "consenso": "Resumen ejecutivo de Soberanía y Alianzas",
             "particulas": [
                 {
-                    "titulo": "USA fortalece su alianza con Australia en respuesta a la creciente influencia de China en el Indo-Pacífico",
+                    "titulo": "Título de la noticia de Soberanía y Alianzas 1",
+                    "bloque": "LATAM",
+                    "proximidad": 95,
+                    "analisis_regional": "Breve sesgo de la noticia de Soberanía y Alianzas 1",
+                    "link": "URL_REAL_7",
+                    "color_bloque": "#d946ef"
+                },
+                {
+                    "titulo": "Título de la noticia de Soberanía y Alianzas 2",
                     "bloque": "USA",
-                    "proximidad": 94,
-                    "analisis_regional": "Contención de la expansión china y mantenimiento del equilibrio de poder en la región.",
-                    "link": "URL_REAL",
+                    "proximidad": 60,
+                    "analisis_regional": "Breve sesgo de la noticia de Soberanía y Alianzas 2",
+                    "link": "URL_REAL_8",
                     "color_bloque": "#3b82f6"
-                },
-                {
-                    "titulo": "La Unión Europea busca una mayor autonomía estratégica y reduce su dependencia de USA en materia de defensa",
-                    "bloque": "Europa",
-                    "proximidad": 85,
-                    "analisis_regional": "Mayor independencia de la UE en política exterior y de seguridad.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#fde047"
-                },
-                {
-                    "titulo": "Rusia y China profundizan su cooperación militar y tecnológica, desafiando el orden mundial liderado por USA",
-                    "bloque": "Rusia",
-                    "proximidad": 92,
-                    "analisis_regional": "Formación de un bloque de poder alternativo y competencia geopolítica con USA.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#ef4444"
                 }
             ]
         },
         {
             "nombre": "Tecnología y Espacio",
-            "consenso": "Avances tecnológicos y la carrera espacial como escenarios de competencia global.",
+            "consenso": "Resumen ejecutivo de Tecnología y Espacio",
             "particulas": [
                 {
-                    "titulo": "China supera a USA en número de patentes de inteligencia artificial",
+                    "titulo": "Título de la noticia de Tecnología y Espacio 1",
                     "bloque": "China",
                     "proximidad": 88,
-                    "analisis_regional": "Liderazgo chino en el desarrollo de tecnologías clave.",
-                    "link": "URL_REAL",
+                    "analisis_regional": "Breve sesgo de la noticia de Tecnología y Espacio 1",
+                    "link": "URL_REAL_9",
                     "color_bloque": "#f97316"
                 },
                 {
-                    "titulo": "USA y Europa colaboran en la exploración de Marte y la búsqueda de vida extraterrestre",
-                    "bloque": "USA",
-                    "proximidad": 90,
-                    "analisis_regional": "Cooperación internacional en la investigación espacial.",
-                    "link": "URL_REAL",
-                    "color_bloque": "#3b82f6"
-                },
-                {
-                    "titulo": "Rusia desarrolla armas hipersónicas y aumenta su capacidad de defensa espacial",
+                    "titulo": "Título de la noticia de Tecnología y Espacio 2",
                     "bloque": "Rusia",
-                    "proximidad": 93,
-                    "analisis_regional": "Carrera armamentística en el espacio y riesgo de conflictos.",
-                    "link": "URL_REAL",
+                    "proximidad": 72,
+                    "analisis_regional": "Breve sesgo de la noticia de Tecnología y Espacio 2",
+                    "link": "URL_REAL_10",
                     "color_bloque": "#ef4444"
                 }
             ]
