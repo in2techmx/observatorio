@@ -2,29 +2,32 @@ name: Actualizar Observatorio Diario
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+    - cron: '0 */6 * * *' # Automático cada 6 horas
+  workflow_dispatch:      # ESTO habilita el botón de ejecución manual
 
 jobs:
-  update-observatory:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
-    steps:
-    - name: 1. Checkout del código
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        
-    - name: 2. Configurar Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
 
-    - name: 3. Ejecutar Script de Automatización
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: |
-        chmod +x update_script.sh
-        ./update_script.sh
+    steps:
+      - name: 1. Descarga del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Configuración de Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 3. Instalación de librerías
+        run: pip install google-genai beautifulsoup4
+
+      - name: 4. Ejecutar el Script de Bash
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          chmod +x update_script.sh
+          ./update_script.sh
