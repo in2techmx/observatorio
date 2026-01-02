@@ -2,150 +2,150 @@
     "categorias": [
         {
             "nombre": "Seguridad y Conflictos",
-            "consenso": "Escalada de tensiones globales debido a conflictos regionales y competencia entre potencias.",
+            "consenso": "Tensiones geopolíticas y conflictos regionales impactan la estabilidad global.",
             "particulas": [
                 {
-                    "titulo": "Despliegue militar en frontera en disputa",
-                    "bloque": "Rusia",
-                    "proximidad": 90,
-                    "analisis_regional": "Aumento de la inestabilidad regional y riesgo de conflicto armado.",
-                    "link": "http://ejemplo.com/seguridad1",
-                    "color_bloque": "#ef4444"
-                },
-                {
-                    "titulo": "Ciberataques dirigidos a infraestructura crítica",
-                    "bloque": "China",
-                    "proximidad": 75,
-                    "analisis_regional": "Amenaza creciente a la seguridad nacional y a la estabilidad económica.",
-                    "link": "http://ejemplo.com/seguridad2",
-                    "color_bloque": "#f97316"
-                },
-                {
-                    "titulo": "Negociaciones de paz estancadas tras acusaciones mutuas",
+                    "titulo": "Escalada de tensiones en el Mar Rojo",
                     "bloque": "Medio Oriente",
-                    "proximidad": 60,
-                    "analisis_regional": "Persistencia del conflicto y sufrimiento humanitario prolongado.",
-                    "link": "http://ejemplo.com/seguridad3",
+                    "proximidad": 92,
+                    "analisis_regional": "Riesgo alto de interrupción del comercio marítimo.",
+                    "link": "https://www.example.com/seguridad/mar_rojo",
                     "color_bloque": "#10b981"
-                }
-            ]
-        },
-        {
-            "nombre": "Economía y Sanciones",
-            "consenso": "Incertidumbre económica global agravada por sanciones y disrupciones en las cadenas de suministro.",
-            "particulas": [
-                {
-                    "titulo": "Nuevas sanciones económicas contra sector energético",
-                    "bloque": "USA",
-                    "proximidad": 80,
-                    "analisis_regional": "Impacto negativo en la economía del país sancionado y posibles represalias.",
-                    "link": "http://ejemplo.com/economia1",
-                    "color_bloque": "#3b82f6"
                 },
                 {
-                    "titulo": "Inflación descontrolada amenaza la estabilidad financiera",
-                    "bloque": "LATAM",
-                    "proximidad": 70,
-                    "analisis_regional": "Riesgo de crisis económica y aumento de la pobreza.",
-                    "link": "http://ejemplo.com/economia2",
-                    "color_bloque": "#d946ef"
-                },
-                {
-                    "titulo": "Disminución del comercio internacional por barreras arancelarias",
-                    "bloque": "China",
-                    "proximidad": 65,
-                    "analisis_regional": "Ralentización del crecimiento económico global y tensiones comerciales.",
-                    "link": "http://ejemplo.com/economia3",
-                    "color_bloque": "#f97316"
-                }
-            ]
-        },
-        {
-            "nombre": "Energía y Recursos",
-            "consenso": "Competencia por recursos energéticos y transición hacia fuentes renovables.",
-            "particulas": [
-                {
-                    "titulo": "Acuerdo para explotar nuevos yacimientos de gas natural",
-                    "bloque": "Rusia",
-                    "proximidad": 85,
-                    "analisis_regional": "Fortalecimiento de la posición como proveedor energético clave.",
-                    "link": "http://ejemplo.com/energia1",
-                    "color_bloque": "#ef4444"
-                },
-                {
-                    "titulo": "Inversión masiva en proyectos de energía solar y eólica",
+                    "titulo": "Creciente actividad militar en Europa del Este",
                     "bloque": "Europa",
-                    "proximidad": 75,
-                    "analisis_regional": "Avance hacia la sostenibilidad y reducción de la dependencia de combustibles fósiles.",
-                    "link": "http://ejemplo.com/energia2",
+                    "proximidad": 88,
+                    "analisis_regional": "Aumento de la inestabilidad regional y riesgo de escalada.",
+                    "link": "https://www.example.com/seguridad/europa_este",
                     "color_bloque": "#fde047"
                 },
                 {
-                    "titulo": "Escasez de agua potable genera conflictos locales",
+                    "titulo": "Inestabilidad política en África Subsahariana",
                     "bloque": "África",
-                    "proximidad": 60,
-                    "analisis_regional": "Inestabilidad social y necesidad urgente de soluciones sostenibles.",
-                    "link": "http://ejemplo.com/energia3",
+                    "proximidad": 75,
+                    "analisis_regional": "Riesgo de conflictos internos y desplazamiento de poblaciones.",
+                    "link": "https://www.example.com/seguridad/africa_subsahariana",
                     "color_bloque": "#8b5cf6"
                 }
             ]
         },
         {
-            "nombre": "Soberanía y Alianzas",
-            "consenso": "Reconfiguración de alianzas y desafíos a la soberanía nacional.",
+            "nombre": "Economía y Sanciones",
+            "consenso": "Las sanciones económicas y las políticas comerciales afectan el crecimiento global.",
             "particulas": [
                 {
-                    "titulo": "Fortalecimiento de alianza militar con socios estratégicos",
+                    "titulo": "Impacto de las sanciones en la economía rusa",
+                    "bloque": "Rusia",
+                    "proximidad": 95,
+                    "analisis_regional": "Recesión económica y dependencia de mercados alternativos.",
+                    "link": "https://www.example.com/economia/sanciones_rusia",
+                    "color_bloque": "#ef4444"
+                },
+                {
+                    "titulo": "Tensiones comerciales entre USA y China",
                     "bloque": "USA",
                     "proximidad": 90,
-                    "analisis_regional": "Mayor capacidad de proyección de poder e influencia geopolítica.",
-                    "link": "http://ejemplo.com/soberania1",
+                    "analisis_regional": "Impacto en las cadenas de suministro globales y la inflación.",
+                    "link": "https://www.example.com/economia/tensiones_usa_china",
                     "color_bloque": "#3b82f6"
                 },
                 {
-                    "titulo": "Disputa territorial continúa sin resolución",
-                    "bloque": "China",
-                    "proximidad": 70,
-                    "analisis_regional": "Tensiones regionales y riesgo de escalada.",
-                    "link": "http://ejemplo.com/soberania2",
-                    "color_bloque": "#f97316"
+                    "titulo": "Devaluación de monedas en LATAM",
+                    "bloque": "LATAM",
+                    "proximidad": 80,
+                    "analisis_regional": "Aumento de la inflación y riesgo de inestabilidad financiera.",
+                    "link": "https://www.example.com/economia/devaluacion_latam",
+                    "color_bloque": "#d946ef"
+                }
+            ]
+        },
+        {
+            "nombre": "Energía y Recursos",
+            "consenso": "La seguridad energética y el acceso a recursos naturales son críticos para la estabilidad económica.",
+            "particulas": [
+                {
+                    "titulo": "Crisis energética en Europa",
+                    "bloque": "Europa",
+                    "proximidad": 93,
+                    "analisis_regional": "Preocupaciones sobre el suministro de gas y aumento de los precios.",
+                    "link": "https://www.example.com/energia/crisis_europa",
+                    "color_bloque": "#fde047"
                 },
                 {
-                    "titulo": "Acuerdos bilaterales para impulsar la integración regional",
+                    "titulo": "Competencia por recursos en África",
+                    "bloque": "África",
+                    "proximidad": 85,
+                    "analisis_regional": "Riesgo de conflictos por el control de recursos naturales.",
+                    "link": "https://www.example.com/energia/recursos_africa",
+                    "color_bloque": "#8b5cf6"
+                },
+                {
+                    "titulo": "Inversiones chinas en energía en Medio Oriente",
+                    "bloque": "China",
+                    "proximidad": 78,
+                    "analisis_regional": "Aumento de la influencia china en la región.",
+                    "link": "https://www.example.com/energia/china_medio_oriente",
+                    "color_bloque": "#f97316"
+                }
+            ]
+        },
+        {
+            "nombre": "Soberanía y Alianzas",
+            "consenso": "La reconfiguración de alianzas y la defensa de la soberanía nacional son prioridades clave.",
+            "particulas": [
+                {
+                    "titulo": "Fortalecimiento de la OTAN",
+                    "bloque": "USA",
+                    "proximidad": 91,
+                    "analisis_regional": "Mayor cohesión y despliegue de fuerzas en Europa del Este.",
+                    "link": "https://www.example.com/soberania/otan",
+                    "color_bloque": "#3b82f6"
+                },
+                {
+                    "titulo": "Acuerdos bilaterales entre Rusia y China",
+                    "bloque": "Rusia",
+                    "proximidad": 87,
+                    "analisis_regional": "Profundización de la cooperación en materia de seguridad y economía.",
+                    "link": "https://www.example.com/soberania/rusia_china",
+                    "color_bloque": "#ef4444"
+                },
+                {
+                    "titulo": "Movimientos independentistas en LATAM",
                     "bloque": "LATAM",
-                    "proximidad": 65,
-                    "analisis_regional": "Mayor cooperación económica y política entre países vecinos.",
-                    "link": "http://ejemplo.com/soberania3",
+                    "proximidad": 72,
+                    "analisis_regional": "Riesgo de fragmentación territorial y conflictos internos.",
+                    "link": "https://www.example.com/soberania/independentismo_latam",
                     "color_bloque": "#d946ef"
                 }
             ]
         },
         {
             "nombre": "Tecnología y Espacio",
-            "consenso": "Avances tecnológicos disruptivos y expansión de la exploración espacial.",
+            "consenso": "La innovación tecnológica y la exploración espacial son cruciales para el poder geopolítico.",
             "particulas": [
                 {
-                    "titulo": "Desarrollo de inteligencia artificial con fines militares",
+                    "titulo": "Carrera espacial entre USA y China",
                     "bloque": "USA",
-                    "proximidad": 80,
-                    "analisis_regional": "Carrera armamentista tecnológica y dilemas éticos.",
-                    "link": "http://ejemplo.com/tecnologia1",
+                    "proximidad": 94,
+                    "analisis_regional": "Inversión en exploración lunar y desarrollo de tecnologías espaciales.",
+                    "link": "https://www.example.com/tecnologia/carrera_espacial",
                     "color_bloque": "#3b82f6"
                 },
                 {
-                    "titulo": "Lanzamiento exitoso de misión espacial a Marte",
+                    "titulo": "Desarrollo de inteligencia artificial en China",
                     "bloque": "China",
-                    "proximidad": 75,
-                    "analisis_regional": "Mayor presencia en el espacio y avance del conocimiento científico.",
-                    "link": "http://ejemplo.com/tecnologia2",
+                    "proximidad": 89,
+                    "analisis_regional": "Avances en reconocimiento facial y sistemas de vigilancia.",
+                    "link": "https://www.example.com/tecnologia/ia_china",
                     "color_bloque": "#f97316"
                 },
                 {
-                    "titulo": "Regulación del uso de datos personales genera debate global",
+                    "titulo": "Regulación de la tecnología en Europa",
                     "bloque": "Europa",
-                    "proximidad": 60,
-                    "analisis_regional": "Protección de la privacidad y equilibrio con la innovación tecnológica.",
-                    "link": "http://ejemplo.com/tecnologia3",
+                    "proximidad": 77,
+                    "analisis_regional": "Preocupaciones sobre privacidad y seguridad de datos.",
+                    "link": "https://www.example.com/tecnologia/regulacion_europa",
                     "color_bloque": "#fde047"
                 }
             ]
