@@ -1,13 +1,13 @@
 [
     {
-        "tematica": "Nodo en Sincronización",
-        "descripcion": "Ajustando protocolos Pro. El sistema estará activo en breve.",
-        "timestamp": "2026-01-02 01:31",
+        "tematica": "Sincronización Pro",
+        "descripcion": "Validando acceso. Error: 404 NOT_FOUND. {'error': {'code': 404, '",
+        "timestamp": "2026-01-02 01:39",
         "regiones_activas": [
             "GLOBAL"
         ],
         "perspectivas": {
-            "SISTEMA": "Buscando endpoint compatible..."
+            "SISTEMA": "Reintentando..."
         }
     }
 ]
