@@ -9,11 +9,9 @@ PATH_DIARIO = "historico_noticias/diario"
 PATH_SEMANAL = "historico_noticias/semanal"
 PATH_MENSUAL = "historico_noticias/mensual"
 
-# Asegurar infraestructura de carpetas
 for folder in [PATH_DIARIO, PATH_SEMANAL, PATH_MENSUAL]:
     os.makedirs(folder, exist_ok=True)
 
-# --- CONFIGURACIÓN ESTRATÉGICA ---
 ssl_context = ssl._create_unverified_context()
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
@@ -49,6 +47,7 @@ class GeopoliticalCollector:
         self.link_storage = {}
         self.hoy = datetime.datetime.now()
         self.es_domingo = self.hoy.weekday() == 6
+        # Corrección lógica para fin de mes
         self.es_fin_mes = (self.hoy + datetime.timedelta(days=1)).day == 1
 
     def fetch_rss_all(self):
@@ -105,19 +104,18 @@ class GeopoliticalCollector:
         res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json', 'temperature': 0.1})
         return json.loads(res.text.strip())
 
-        def actualizar_manifiesto(self):
+    # --- CORRECCIÓN DE IDENTACIÓN AQUÍ ---
+    def actualizar_manifiesto(self):
         """Genera el índice para el index.html en la raíz del proyecto"""
         try:
-            # Listamos archivos reales en las carpetas
             manifiesto = {
-                "diario": sorted(os.listdir("historico_noticias/diario"), reverse=True) if os.path.exists("historico_noticias/diario") else [],
-                "semanal": sorted(os.listdir("historico_noticias/semanal"), reverse=True) if os.path.exists("historico_noticias/semanal") else [],
-                "mensual": sorted(os.listdir("historico_noticias/mensual"), reverse=True) if os.path.exists("historico_noticias/mensual") else []
+                "diario": sorted(os.listdir(PATH_DIARIO), reverse=True) if os.path.exists(PATH_DIARIO) else [],
+                "semanal": sorted(os.listdir(PATH_SEMANAL), reverse=True) if os.path.exists(PATH_SEMANAL) else [],
+                "mensual": sorted(os.listdir(PATH_MENSUAL), reverse=True) if os.path.exists(PATH_MENSUAL) else []
             }
-            # IMPORTANTE: Guardar en la raíz (donde está collector.py)
             with open("manifest.json", "w", encoding="utf-8") as f:
                 json.dump(manifiesto, f, indent=4, ensure_ascii=False)
-            print("📂 manifest.json generado exitosamente en la raíz.")
+            print("📂 manifest.json generado exitosamente.")
         except Exception as e:
             print(f"⚠️ Error al crear manifiesto: {e}")
 
@@ -142,7 +140,7 @@ class GeopoliticalCollector:
                 p['link'] = self.link_storage.get(p['titulo'], p['link'])
                 p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#ffffff")
 
-        # Guardar archivos
+        # Guardado de archivos
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump(data_final, f, indent=4, ensure_ascii=False)
         
