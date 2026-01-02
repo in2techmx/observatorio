@@ -57,7 +57,7 @@
     <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[2000] bg-slate-950 transition-opacity duration-500">
         <div class="text-center mb-12">
             <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-4">Proximity</h1>
-            <p class="text-blue-500 font-mono text-xs tracking-[0.3em] uppercase">Deep Intelligence v11.1</p>
+            <p class="text-blue-500 font-mono text-xs tracking-[0.3em] uppercase">Deep Intelligence v13.5</p>
         </div>
         <div class="w-64">
             <div class="h-1 bg-slate-800 rounded-full overflow-hidden mb-2">
@@ -97,20 +97,20 @@
                 <div class="guide-card rounded-xl p-5">
                     <h4 class="text-white text-xs font-bold uppercase mb-1">Brújula Geopolítica</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Cada bloque tiene un sector fijo (Ej: USA al Oeste, Rusia al Este). Si los puntos convergen al centro, hay consenso. Si divergen, hay conflicto narrativo.
+                        Las noticias se organizan por origen geográfico fijo (ej: USA=Oeste, Rusia=Este). Observa hacia dónde gravita la información.
                     </p>
                 </div>
                 <div class="guide-card rounded-xl p-5">
-                    <h4 class="text-white text-xs font-bold uppercase mb-1">Distancia Narrativa</h4>
+                    <h4 class="text-white text-xs font-bold uppercase mb-1">Consenso vs Anomalía</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        <span class="text-blue-400 font-bold">CENTRO (100%):</span> Hechos / Narrativa Próxima.<br>
-                        <span class="text-red-400 font-bold">BORDE (0%):</span> Interpretación / Narrativa Lejana.
+                        <span class="text-blue-400 font-bold">CENTRO:</span> Consenso Factual. Distancia cero entre narrativas.<br>
+                        <span class="text-red-400 font-bold">BORDE:</span> Divergencia. Narrativa ideológica o propaganda.
                     </p>
                 </div>
                 <div class="guide-card rounded-xl p-5">
                     <h4 class="text-white text-xs font-bold uppercase mb-1">Deep Intelligence</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Haz clic en cualquier punto para ver el análisis de <i>Encuadre (Framing)</i> generado por la IA tras leer la noticia completa.
+                        Haz clic en cualquier nodo para leer el análisis de la IA sobre la discrepancia narrativa detectada.
                     </p>
                 </div>
             </div>
@@ -152,6 +152,10 @@
                     <div class="radar-container p-4">
                         <canvas id="areaScatterChart"></canvas>
                     </div>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 pointer-events-none opacity-60">
+                         <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">Borde: Divergencia</span>
+                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">Centro: Consenso</span>
+                    </div>
                 </div>
                 
                 <div class="bg-white/5 rounded-2xl border border-white/5 flex flex-col overflow-hidden">
@@ -174,7 +178,7 @@
             
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Distancia Narrativa</div>
+                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Proximidad al Consenso</div>
                     <div class="flex items-center gap-3">
                         <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
                             <div id="proximity-fill" class="h-full rounded-full transition-all duration-500"></div>
@@ -183,13 +187,13 @@
                     </div>
                 </div>
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Clasificación</div>
+                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Estado Narrativo</div>
                     <div id="bias-meter" class="text-sm font-medium text-slate-300 font-mono uppercase"></div>
                 </div>
             </div>
             
             <div class="mb-8">
-                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Encuadre (IA)</div>
+                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Discrepancia (IA)</div>
                 <p id="detail-sesgo" class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4 py-1"></p>
             </div>
             
@@ -200,7 +204,7 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN CENTRAL
+        // --- CONFIGURACIÓN DE BLOQUES ---
         const BLOQUE_COLORS = { 
             "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
             "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
@@ -216,7 +220,7 @@
         let scatterChart = null;
         let currentAreaIndex = null;
 
-        // INICIALIZACIÓN
+        // --- INICIALIZACIÓN ---
         async function init() {
             try {
                 updateLoadStatus("Iniciando conexión satelital...", 10);
@@ -251,7 +255,6 @@
             }
         }
 
-        // FUNCIONES CORE
         function updateLoadStatus(msg, pct) {
             document.getElementById('load-status').innerText = msg;
             document.getElementById('load-progress').style.width = pct + '%';
@@ -296,7 +299,7 @@
             `).join('');
         }
 
-        // --- LÓGICA RADAR (BRÚJULA GEOPOLÍTICA) ---
+        // --- LÓGICA DE BRÚJULA GEOPOLÍTICA ---
         function openAreaModal(idx) {
             currentAreaIndex = idx;
             const area = fullData.carousel[idx];
@@ -342,7 +345,7 @@
             const ctx = document.getElementById('areaScatterChart').getContext('2d');
             if (scatterChart) scatterChart.destroy();
 
-            // ÁNGULOS FIJOS (BRÚJULA)
+            // COORDENADAS FIJAS (BRÚJULA)
             const BLOCK_ANGLES = {
                 "RUSSIA": 0, "CHINA": Math.PI*0.25, "INDIA": Math.PI*0.5, "EUROPE": Math.PI*0.75,
                 "USA": Math.PI, "LATAM": Math.PI*1.25, "MID_EAST": Math.PI*1.5, "AFRICA": Math.PI*1.75
@@ -354,12 +357,12 @@
                 label: 'Señales',
                 data: sortedParticles.map((p, i) => {
                     const prox = parseFloat(p.proximidad) || 0;
-                    // Centro = 100% Proximidad (Radio 0). Borde = 0% Proximidad (Radio 100).
+                    // LÓGICA INVERTIDA: 100% Proximidad = Centro (Radio 0)
                     let radius = 100 - prox; 
                     if (radius < 2) radius = Math.random() * 4;
 
                     let baseAngle = BLOCK_ANGLES[p.bloque] !== undefined ? BLOCK_ANGLES[p.bloque] : Math.random()*2*Math.PI;
-                    const jitter = (Math.random() - 0.5) * 0.5; // +- Variación angular para evitar superposición exacta
+                    const jitter = (Math.random() - 0.5) * 0.4; // Pequeña variación para evitar solapamiento
                     const finalAngle = baseAngle + jitter;
 
                     return {
@@ -416,12 +419,14 @@
                         const scale = Math.min(right - left, bottom - top) / 230; 
                         ctx.save();
 
-                        // Fondo Gradiente
+                        // Fondo Gradiente (Centro Azul = Consenso, Borde Oscuro/Rojo = Caos)
                         const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 110 * scale);
-                        grd.addColorStop(0, 'rgba(59, 130, 246, 0.15)'); grd.addColorStop(1, 'rgba(15, 23, 42, 0.0)');   
+                        grd.addColorStop(0, 'rgba(59, 130, 246, 0.15)'); 
+                        grd.addColorStop(0.6, 'rgba(15, 23, 42, 0.5)');
+                        grd.addColorStop(1, 'rgba(239, 68, 68, 0.1)');   
                         ctx.fillStyle = grd; ctx.fillRect(left, top, right-left, bottom-top);
 
-                        // Sectores
+                        // Líneas de Sectores
                         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)'; ctx.lineWidth = 1;
                         for(let i=0; i<8; i++){
                             const ang = i * (Math.PI/4);
@@ -432,10 +437,10 @@
                         [25, 50, 75, 100].forEach(r => {
                             const radius = r * scale;
                             ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                            ctx.strokeStyle = r===100 ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1; ctx.stroke();
+                            ctx.strokeStyle = r===100 ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.05)'; ctx.lineWidth = r===100?1.5:1; ctx.stroke();
                         });
 
-                        // Etiquetas
+                        // Etiquetas de Región
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'; ctx.font = '9px "JetBrains Mono"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
                         const labels = [{txt:"RUSSIA", ang:0}, {txt:"CHINA", ang:Math.PI*0.25}, {txt:"INDIA", ang:Math.PI*0.5}, {txt:"EU", ang:Math.PI*0.75}, {txt:"USA", ang:Math.PI}, {txt:"LATAM", ang:Math.PI*1.25}, {txt:"MID-E", ang:Math.PI*1.5}, {txt:"AFRICA", ang:Math.PI*1.75}];
                         labels.forEach(l => { ctx.fillText(l.txt, cx + Math.cos(l.ang) * (125 * scale), cy + Math.sin(l.ang) * (125 * scale)); });
@@ -466,7 +471,7 @@
             fill.style.width = prox + "%";
             fill.style.backgroundColor = prox >= 75 ? '#22c55e' : prox >= 50 ? '#eab308' : '#ef4444';
             
-            document.getElementById('bias-meter').innerText = prox >= 80 ? "Próxima (Factual)" : prox >= 50 ? "Media (Análisis)" : "Lejana (Interpretativa)";
+            document.getElementById('bias-meter').innerText = prox >= 80 ? "Consenso Factual" : prox >= 50 ? "Interpretativo" : "Divergencia/Propaganda";
             document.getElementById('bias-meter').style.color = fill.style.backgroundColor;
             document.getElementById('news-detail-modal').classList.add('open');
         }
