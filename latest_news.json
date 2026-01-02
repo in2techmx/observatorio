@@ -2,28 +2,153 @@
     "categorias": [
         {
             "nombre": "Seguridad y Conflictos",
-            "consenso": "Las tensiones geopolíticas y los conflictos armados continúan siendo una preocupación global, con implicaciones significativas para la estabilidad regional e internacional.",
-            "particulas": []
+            "consenso": "Escalada de tensiones globales debido a conflictos regionales y competencia entre potencias.",
+            "particulas": [
+                {
+                    "titulo": "Despliegue militar en frontera en disputa",
+                    "bloque": "Rusia",
+                    "proximidad": 90,
+                    "analisis_regional": "Aumento de la inestabilidad regional y riesgo de conflicto armado.",
+                    "link": "http://ejemplo.com/seguridad1",
+                    "color_bloque": "#ef4444"
+                },
+                {
+                    "titulo": "Ciberataques dirigidos a infraestructura crítica",
+                    "bloque": "China",
+                    "proximidad": 75,
+                    "analisis_regional": "Amenaza creciente a la seguridad nacional y a la estabilidad económica.",
+                    "link": "http://ejemplo.com/seguridad2",
+                    "color_bloque": "#f97316"
+                },
+                {
+                    "titulo": "Negociaciones de paz estancadas tras acusaciones mutuas",
+                    "bloque": "Medio Oriente",
+                    "proximidad": 60,
+                    "analisis_regional": "Persistencia del conflicto y sufrimiento humanitario prolongado.",
+                    "link": "http://ejemplo.com/seguridad3",
+                    "color_bloque": "#10b981"
+                }
+            ]
         },
         {
             "nombre": "Economía y Sanciones",
-            "consenso": "Las sanciones económicas y las políticas comerciales tienen un impacto significativo en la economía global, afectando el crecimiento, la inflación y las cadenas de suministro.",
-            "particulas": []
+            "consenso": "Incertidumbre económica global agravada por sanciones y disrupciones en las cadenas de suministro.",
+            "particulas": [
+                {
+                    "titulo": "Nuevas sanciones económicas contra sector energético",
+                    "bloque": "USA",
+                    "proximidad": 80,
+                    "analisis_regional": "Impacto negativo en la economía del país sancionado y posibles represalias.",
+                    "link": "http://ejemplo.com/economia1",
+                    "color_bloque": "#3b82f6"
+                },
+                {
+                    "titulo": "Inflación descontrolada amenaza la estabilidad financiera",
+                    "bloque": "LATAM",
+                    "proximidad": 70,
+                    "analisis_regional": "Riesgo de crisis económica y aumento de la pobreza.",
+                    "link": "http://ejemplo.com/economia2",
+                    "color_bloque": "#d946ef"
+                },
+                {
+                    "titulo": "Disminución del comercio internacional por barreras arancelarias",
+                    "bloque": "China",
+                    "proximidad": 65,
+                    "analisis_regional": "Ralentización del crecimiento económico global y tensiones comerciales.",
+                    "link": "http://ejemplo.com/economia3",
+                    "color_bloque": "#f97316"
+                }
+            ]
         },
         {
             "nombre": "Energía y Recursos",
-            "consenso": "La transición hacia fuentes de energía sostenibles y la gestión de recursos naturales son cruciales para mitigar el cambio climático y garantizar la seguridad energética.",
-            "particulas": []
+            "consenso": "Competencia por recursos energéticos y transición hacia fuentes renovables.",
+            "particulas": [
+                {
+                    "titulo": "Acuerdo para explotar nuevos yacimientos de gas natural",
+                    "bloque": "Rusia",
+                    "proximidad": 85,
+                    "analisis_regional": "Fortalecimiento de la posición como proveedor energético clave.",
+                    "link": "http://ejemplo.com/energia1",
+                    "color_bloque": "#ef4444"
+                },
+                {
+                    "titulo": "Inversión masiva en proyectos de energía solar y eólica",
+                    "bloque": "Europa",
+                    "proximidad": 75,
+                    "analisis_regional": "Avance hacia la sostenibilidad y reducción de la dependencia de combustibles fósiles.",
+                    "link": "http://ejemplo.com/energia2",
+                    "color_bloque": "#fde047"
+                },
+                {
+                    "titulo": "Escasez de agua potable genera conflictos locales",
+                    "bloque": "África",
+                    "proximidad": 60,
+                    "analisis_regional": "Inestabilidad social y necesidad urgente de soluciones sostenibles.",
+                    "link": "http://ejemplo.com/energia3",
+                    "color_bloque": "#8b5cf6"
+                }
+            ]
         },
         {
             "nombre": "Soberanía y Alianzas",
-            "consenso": "Las dinámicas de poder entre las naciones y la formación de alianzas estratégicas son elementos clave en la configuración del orden mundial.",
-            "particulas": []
+            "consenso": "Reconfiguración de alianzas y desafíos a la soberanía nacional.",
+            "particulas": [
+                {
+                    "titulo": "Fortalecimiento de alianza militar con socios estratégicos",
+                    "bloque": "USA",
+                    "proximidad": 90,
+                    "analisis_regional": "Mayor capacidad de proyección de poder e influencia geopolítica.",
+                    "link": "http://ejemplo.com/soberania1",
+                    "color_bloque": "#3b82f6"
+                },
+                {
+                    "titulo": "Disputa territorial continúa sin resolución",
+                    "bloque": "China",
+                    "proximidad": 70,
+                    "analisis_regional": "Tensiones regionales y riesgo de escalada.",
+                    "link": "http://ejemplo.com/soberania2",
+                    "color_bloque": "#f97316"
+                },
+                {
+                    "titulo": "Acuerdos bilaterales para impulsar la integración regional",
+                    "bloque": "LATAM",
+                    "proximidad": 65,
+                    "analisis_regional": "Mayor cooperación económica y política entre países vecinos.",
+                    "link": "http://ejemplo.com/soberania3",
+                    "color_bloque": "#d946ef"
+                }
+            ]
         },
         {
             "nombre": "Tecnología y Espacio",
-            "consenso": "Los avances tecnológicos y la exploración espacial ofrecen oportunidades sin precedentes, pero también plantean desafíos éticos, de seguridad y de gobernanza global.",
-            "particulas": []
+            "consenso": "Avances tecnológicos disruptivos y expansión de la exploración espacial.",
+            "particulas": [
+                {
+                    "titulo": "Desarrollo de inteligencia artificial con fines militares",
+                    "bloque": "USA",
+                    "proximidad": 80,
+                    "analisis_regional": "Carrera armamentista tecnológica y dilemas éticos.",
+                    "link": "http://ejemplo.com/tecnologia1",
+                    "color_bloque": "#3b82f6"
+                },
+                {
+                    "titulo": "Lanzamiento exitoso de misión espacial a Marte",
+                    "bloque": "China",
+                    "proximidad": 75,
+                    "analisis_regional": "Mayor presencia en el espacio y avance del conocimiento científico.",
+                    "link": "http://ejemplo.com/tecnologia2",
+                    "color_bloque": "#f97316"
+                },
+                {
+                    "titulo": "Regulación del uso de datos personales genera debate global",
+                    "bloque": "Europa",
+                    "proximidad": 60,
+                    "analisis_regional": "Protección de la privacidad y equilibrio con la innovación tecnológica.",
+                    "link": "http://ejemplo.com/tecnologia3",
+                    "color_bloque": "#fde047"
+                }
+            ]
         }
     ]
 }
