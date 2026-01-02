@@ -1,223 +1,152 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRAVITY | Intelligence Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .glass { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); }
+<script>
+    let fullData = null;
+    let scatterChart = null;
+    // Mapeo exacto de bloques para asegurar colores
+    const BLOQUE_COLORS = { 
+        "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
+        "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
+        "INDIA": "#8b5cf6", "AFRICA": "#22c55e" 
+    };
+
+    async function init() {
+        try {
+            const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
+            fullData = await res.json();
+            document.getElementById('update-tag').innerText = "HUB ONLINE // " + new Date().toLocaleTimeString();
+            renderCarousel();
+        } catch (e) {
+            console.error("Error cargando datos:", e);
+        }
+    }
+
+    function renderCarousel() {
+        const container = document.getElementById('area-carousel');
+        if (!fullData.carousel) return;
+        container.innerHTML = fullData.carousel.map((area, idx) => `
+            <div class="area-card glass rounded-[2rem] p-8 border-t-4" 
+                 style="border-top-color: ${area.color}" 
+                 onclick="openAreaModal(${idx})">
+                <h3 class="text-2xl font-black text-white mb-4 uppercase italic tracking-tighter">${area.area}</h3>
+                <p class="text-slate-500 text-xs leading-relaxed line-clamp-3 mb-6">${area.punto_cero}</p>
+                <div class="flex justify-between items-center text-[10px] font-mono text-blue-500">
+                    <span>${area.particulas ? area.particulas.length : 0} SEÑALES</span>
+                    <span class="font-black">ESCANEAR RADAR →</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openAreaModal(idx) {
+        const area = fullData.carousel[idx];
+        document.getElementById('modal-area-title').innerText = area.area;
+        document.getElementById('modal-punto-cero').innerText = area.punto_cero;
+        document.getElementById('area-modal').classList.add('open');
         
-        /* Carrusel estilo Netflix */
-        .carousel-container { 
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; 
-            scrollbar-width: none; -ms-overflow-style: none; padding: 20px 0; gap: 1.5rem;
-        }
-        .carousel-container::-webkit-scrollbar { display: none; }
+        // FORZAR RENDERIZADO: Esperamos a que la animación del modal termine
+        setTimeout(() => {
+            renderRadar(area.particulas || []);
+        }, 400); 
+    }
+
+    function renderRadar(particulas) {
+        const canvas = document.getElementById('areaScatterChart');
+        const ctx = canvas.getContext('2d');
         
-        .area-card { 
-            flex: 0 0 320px; scroll-snap-align: start; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-        .area-card:hover { transform: scale(1.05); border-color: rgba(59, 130, 246, 0.5); z-index: 10; }
+        if (scatterChart) scatterChart.destroy();
 
-        /* Modales */
-        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 100; }
-        .modal.open { opacity: 1; pointer-events: auto; backdrop-filter: blur(20px); }
-        .modal-content { transform: translateY(20px); transition: 0.4s ease; width: 95%; max-width: 1100px; }
-        .modal.open .modal-content { transform: translateY(0); }
-    </style>
-</head>
-<body class="min-h-screen bg-slate-950">
-
-    <div class="max-w-7xl mx-auto p-6 md:p-12">
-        <header class="mb-16 flex justify-between items-end border-b border-white/5 pb-10">
-            <div>
-                <h1 class="text-6xl font-black tracking-tighter text-white uppercase italic">Gravity</h1>
-                <p class="text-blue-500 font-mono text-[10px] tracking-widest mt-2 uppercase">Sistema de Inteligencia Multipolar</p>
-            </div>
-            <div id="update-tag" class="text-[9px] font-mono text-slate-500 px-4 py-2 rounded-full border border-white/10">Sincronizando...</div>
-        </header>
-
-        <section>
-            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 ml-2">Áreas Estratégicas Globales</h2>
-            <div id="area-carousel" class="carousel-container">
-                </div>
-        </section>
-    </div>
-
-    <div id="area-modal" class="modal fixed inset-0 bg-black/90">
-        <div class="modal-content glass rounded-[2.5rem] p-8 h-[85vh] relative flex flex-col overflow-hidden">
-            <button onclick="closeAreaModal()" class="absolute top-6 right-8 text-slate-500 hover:text-white text-4xl">&times;</button>
+        // Creamos los datasets asegurando que cada partícula sea visible
+        const datasets = particulas.map((p, i) => {
+            // Conversión de proximidad a coordenadas polares para el radar
+            // proximidad 100 = centro (radio 0), proximidad 0 = periferia (radio 100)
+            const radius = 100 - p.proximidad;
+            const angle = (i / particulas.length) * 2 * Math.PI;
             
-            <div class="mb-6">
-                <h3 id="modal-area-title" class="text-4xl font-black text-white uppercase italic tracking-tighter"></h3>
-                <p id="modal-punto-cero" class="text-slate-400 text-sm italic mt-2"></p>
-            </div>
+            return {
+                label: p.titulo,
+                data: [{
+                    x: radius * Math.cos(angle),
+                    y: radius * Math.sin(angle)
+                }],
+                backgroundColor: BLOQUE_COLORS[p.bloque] || '#ffffff',
+                borderColor: '#ffffff',
+                borderWidth: 1,
+                pointRadius: 8,
+                pointHoverRadius: 12,
+                original: p
+            };
+        });
 
-            <div class="flex-grow relative bg-black/40 rounded-[2rem] border border-white/5 p-4">
-                <canvas id="areaScatterChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div id="news-detail-modal" class="modal fixed inset-0 bg-slate-950/95">
-        <div class="modal-content glass rounded-[2rem] p-10 max-w-2xl border-blue-500/20 shadow-2xl">
-            <div id="detail-tag" class="inline-block px-4 py-1.5 rounded-full text-[10px] font-black uppercase mb-6 border"></div>
-            <h4 id="detail-title" class="text-3xl font-bold text-white mb-6 leading-tight"></h4>
-            
-            <div class="space-y-6 mb-10">
-                <div class="flex justify-between border-b border-white/5 pb-3">
-                    <span class="text-[10px] uppercase text-slate-500">Proximidad Factual</span>
-                    <span id="detail-proximidad" class="font-mono text-blue-400"></span>
-                </div>
-                <p id="detail-sesgo" class="text-slate-300 italic leading-relaxed bg-white/5 p-4 rounded-xl"></p>
-            </div>
-
-            <div class="flex gap-4">
-                <a id="detail-link" href="#" target="_blank" class="flex-grow text-center bg-blue-600 text-white font-black py-4 rounded-xl uppercase tracking-widest text-xs">Ir a la noticia</a>
-                <button onclick="closeNewsDetailModal()" class="px-8 py-4 bg-slate-800 text-slate-400 font-bold rounded-xl uppercase text-[10px]">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let fullData = null;
-        let scatterChart = null;
-        const BLOQUE_COLORS = { "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", "INDIA": "#8b5cf6", "AFRICA": "#22c55e" };
-
-        async function init() {
-            try {
-                // Importante: El archivo debe coincidir con el nombre que genera el collector
-                const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
-                fullData = await res.json();
-                document.getElementById('update-tag').innerText = "LIVE // " + new Date().toLocaleTimeString();
-                renderCarousel();
-            } catch (e) {
-                console.error("Error cargando datos:", e);
-                document.getElementById('area-carousel').innerHTML = "<p class='text-red-500'>Error al cargar gravity_carousel.json. Verifica que el archivo exista.</p>";
-            }
-        }
-
-        function renderCarousel() {
-            const container = document.getElementById('area-carousel');
-            if (!fullData.carousel) return;
-
-            container.innerHTML = fullData.carousel.map((area, idx) => `
-                <div class="area-card glass rounded-[2rem] p-8 border-t-4" 
-                     style="border-top-color: ${area.color}" 
-                     onclick="openAreaModal(${idx})">
-                    <h3 class="text-2xl font-black text-white mb-4 uppercase italic tracking-tighter">${area.area}</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed line-clamp-3 mb-6">${area.punto_cero}</p>
-                    <div class="flex justify-between items-center text-[10px] font-mono text-blue-500">
-                        <span>${area.particulas.length} NODOS</span>
-                        <span class="font-black">EXPLORAR →</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAreaModal(idx) {
-            const area = fullData.carousel[idx];
-            document.getElementById('modal-area-title').innerText = area.area;
-            document.getElementById('modal-punto-cero').innerText = area.punto_cero;
-            document.getElementById('area-modal').classList.add('open');
-            
-            // Retraso mínimo para asegurar que el canvas tenga dimensiones
-            setTimeout(() => renderRadar(area.particulas), 100);
-        }
-
-        function renderRadar(particulas) {
-            const ctx = document.getElementById('areaScatterChart').getContext('2d');
-            if (scatterChart) scatterChart.destroy();
-
-            const datasets = particulas.map(p => {
-                // Lógica de Proximidad: 100% = centro (distancia 0)
-                const distance = 100 - p.proximidad;
-                const angle = Math.random() * Math.PI * 2;
-                return {
-                    label: p.titulo,
-                    data: [{
-                        x: distance * Math.cos(angle),
-                        y: distance * Math.sin(angle)
-                    }],
-                    backgroundColor: BLOQUE_COLORS[p.bloque] || '#94a3b8',
-                    pointRadius: 10,
-                    pointHoverRadius: 15,
-                    original: p
-                };
-            });
-
-            scatterChart = new Chart(ctx, {
-                type: 'scatter',
-                data: { datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    onClick: (e, el) => {
-                        if (el.length) {
-                            const data = scatterChart.data.datasets[el[0].datasetIndex].original;
-                            openNewsDetail(data);
-                        }
-                    },
-                    scales: {
-                        x: { display: false, min: -120, max: 120 },
-                        y: { display: false, min: -120, max: 120 }
-                    },
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: { enabled: false }
+        scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: { datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 1000, easing: 'easeOutQuart' },
+                onClick: (e, el) => {
+                    if (el.length) {
+                        const data = scatterChart.data.datasets[el[0].datasetIndex].original;
+                        openNewsDetail(data);
                     }
                 },
-                plugins: [{
-                    beforeDraw: (chart) => {
-                        const {ctx, chartArea: {left, top, right, bottom}} = chart;
-                        const cx = (left + right) / 2;
-                        const cy = (top + bottom) / 2;
-                        
-                        // Centro: Punto Cero
-                        ctx.save();
+                scales: {
+                    x: { display: false, min: -120, max: 120 },
+                    y: { display: false, min: -120, max: 120 }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [{
+                id: 'radarBackground',
+                beforeDraw: (chart) => {
+                    const {ctx, chartArea: {left, top, right, bottom}} = chart;
+                    const cx = (left + right) / 2;
+                    const cy = (top + bottom) / 2;
+                    
+                    ctx.save();
+                    // Dibujar líneas de órbita más visibles
+                    [25, 50, 75, 100].forEach(r => {
                         ctx.beginPath();
-                        ctx.arc(cx, cy, 15, 0, Math.PI * 2);
-                        ctx.fillStyle = '#3b82f6';
-                        ctx.shadowBlur = 30;
-                        ctx.shadowColor = '#3b82f6';
-                        ctx.fill();
+                        ctx.arc(cx, cy, r * (chart.scales.x.width / 240), 0, Math.PI * 2);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; // Más brillante
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
                         
-                        // Órbitas (25%, 50%, 75%, 100%)
-                        [30, 60, 90, 115].forEach(r => {
-                            ctx.beginPath();
-                            ctx.arc(cx, cy, r * (chart.scales.x.width / 240), 0, Math.PI * 2);
-                            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-                            ctx.stroke();
-                        });
-                        ctx.restore();
-                    }
-                }]
-            });
-        }
+                        // Etiquetas de órbita
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                        ctx.font = '10px monospace';
+                        ctx.fillText(`${100-r}%`, cx + 5, cy - (r * (chart.scales.x.width / 240)) - 2);
+                    });
 
-        function openNewsDetail(p) {
-            document.getElementById('detail-title').innerText = p.titulo;
-            document.getElementById('detail-proximidad').innerText = p.proximidad + "%";
-            document.getElementById('detail-sesgo').innerText = p.sesgo;
-            document.getElementById('detail-link').href = p.link;
-            const tag = document.getElementById('detail-tag');
-            tag.innerText = p.bloque;
-            tag.style.color = BLOQUE_COLORS[p.bloque];
-            tag.style.borderColor = BLOQUE_COLORS[p.bloque];
-            document.getElementById('news-detail-modal').classList.add('open');
-        }
+                    // Punto Cero Central
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 12, 0, Math.PI * 2);
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = '#3b82f6';
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }]
+        });
+    }
 
-        function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
-        function closeNewsDetailModal() { document.getElementById('news-detail-modal').classList.remove('open'); }
+    function openNewsDetail(p) {
+        document.getElementById('detail-title').innerText = p.titulo;
+        document.getElementById('detail-proximidad').innerText = p.proximidad + "%";
+        document.getElementById('detail-sesgo').innerText = p.sesgo;
+        document.getElementById('detail-link').href = p.link;
+        const tag = document.getElementById('detail-tag');
+        tag.innerText = p.bloque;
+        tag.style.color = BLOQUE_COLORS[p.bloque];
+        tag.style.borderColor = BLOQUE_COLORS[p.bloque];
+        document.getElementById('news-detail-modal').classList.add('open');
+    }
 
-        init();
-    </script>
-</body>
-</html>
+    function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
+    function closeNewsDetailModal() { document.getElementById('news-detail-modal').classList.remove('open'); }
+
+    init();
+</script>
