@@ -1,0 +1,97 @@
+{
+    "carousel": [
+        {
+            "area": "Seguridad y Conflictos",
+            "punto_cero": "El conflicto en Ucrania persiste, con enfrentamientos localizados y negociaciones diplomáticas en curso sin avances significativos. Hay un consenso general sobre la necesidad de evitar una escalada mayor y proteger a la población civil.",
+            "particulas": [
+                {
+                    "titulo": "Intensificación de los combates en la región de Donbas",
+                    "bloque": "OTAN",
+                    "proximidad": 75,
+                    "sesgo": "Pro-Ucrania, anti-Rusia",
+                    "link": "https://www.ejemplo.com/noticia1",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "Rusia acusa a Ucrania de ataques transfronterizos",
+                    "bloque": "BRICS",
+                    "proximidad": 60,
+                    "sesgo": "Pro-Rusia, anti-Ucrania",
+                    "link": "https://www.ejemplo.com/noticia2",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "Llamamientos internacionales a un alto el fuego inmediato",
+                    "bloque": "ONU",
+                    "proximidad": 90,
+                    "sesgo": "Neutral",
+                    "link": "https://www.ejemplo.com/noticia3",
+                    "color_bloque": "#ffffff"
+                }
+            ],
+            "color": "#ef4444"
+        },
+        {
+            "area": "Economía y Sanciones",
+            "punto_cero": "Las sanciones económicas impuestas a Rusia tienen un impacto global, generando inflación y disrupciones en las cadenas de suministro. Existe debate sobre la efectividad a largo plazo de estas sanciones y sus consecuencias para la economía mundial.",
+            "particulas": [
+                {
+                    "titulo": "La UE debate nuevas sanciones contra el sector energético ruso",
+                    "bloque": "UE",
+                    "proximidad": 80,
+                    "sesgo": "Anti-Rusia",
+                    "link": "https://www.ejemplo.com/noticia4",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "Rusia busca alternativas para eludir las sanciones occidentales",
+                    "bloque": "BRICS",
+                    "proximidad": 70,
+                    "sesgo": "Pro-Rusia",
+                    "link": "https://www.ejemplo.com/noticia5",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "El FMI advierte sobre el riesgo de estanflación global",
+                    "bloque": "FMI",
+                    "proximidad": 95,
+                    "sesgo": "Neutral",
+                    "link": "https://www.ejemplo.com/noticia6",
+                    "color_bloque": "#ffffff"
+                }
+            ],
+            "color": "#3b82f6"
+        },
+        {
+            "area": "Energía y Recursos",
+            "punto_cero": "La crisis energética global se agudiza debido a la inestabilidad geopolítica y la reducción del suministro de combustibles fósiles. Se observa un aumento en la demanda de energías renovables y una búsqueda de fuentes alternativas de energía.",
+            "particulas": [
+                {
+                    "titulo": "Aumento del precio del gas natural en Europa",
+                    "bloque": "UE",
+                    "proximidad": 85,
+                    "sesgo": "Preocupación por la seguridad energética",
+                    "link": "https://www.ejemplo.com/noticia7",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "Rusia incrementa sus exportaciones de petróleo a Asia",
+                    "bloque": "BRICS",
+                    "proximidad": 75,
+                    "sesgo": "Beneficio económico para Rusia",
+                    "link": "https://www.ejemplo.com/noticia8",
+                    "color_bloque": "#ffffff"
+                },
+                {
+                    "titulo": "Inversión masiva en proyectos de energía solar y eólica",
+                    "bloque": "G7",
+                    "proximidad": 90,
+                    "sesgo": "Promoción de energías renovables",
+                    "link": "https://www.ejemplo.com/noticia9",
+                    "color_bloque": "#ffffff"
+                }
+            ],
+            "color": "#10b981"
+        }
+    ]
+}
