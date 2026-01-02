@@ -1,0 +1,51 @@
+name: Actualizar Observatorio Geopolítico
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Inteligencia Semántica y Triage
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: 1. Descarga del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Descarga todo el historial para evitar conflictos
+
+      - name: 2. Configuración de Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 3. Instalación de dependencias
+        run: |
+          pip install google-genai beautifulsoup4
+
+      - name: 4. Ejecución del Proceso de Inteligencia
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python collector.py
+
+      - name: 5. Sincronización y Guardado Final
+        run: |
+          git config --global user.name "Intelligence-Bot"
+          git config --global user.email "bot@github.com"
+          
+          # Nos aseguramos de estar en la rama main y tener lo último
+          git pull origin main --rebase
+          
+          # Añadimos el archivo (ahora que el script de arriba ya lo creó)
+          git add latest_news.json
+          
+          # Hacemos el commit
+          git commit -m "Actualización estratégica: $(date)" || echo "Sin cambios"
+          
+          # Subimos forzando si es necesario para sincronizar tu edición manual del YML
+          git push origin main
