@@ -2,21 +2,24 @@ name: Actualizar Observatorio Geopolítico
 
 on:
   schedule:
-    # Se ejecuta cada 6 horas
+    # Ejecución automática cada 6 horas
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Esto activa el botón "Run workflow" manual
+  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
 jobs:
   build:
     name: Proceso de Inteligencia Semántica
     runs-on: ubuntu-latest
     
+    # Permisos necesarios para escribir cambios en el repositorio
     permissions:
-      contents: write # Permiso crucial para que el bot pueda subir el JSON
+      contents: write
 
     steps:
       - name: 1. Descarga de código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Descarga todo el historial para evitar conflictos de git
 
       - name: 2. Instalación de Python
         uses: actions/setup-python@v5
@@ -32,11 +35,19 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: 5. Guardado de datos en el repositorio
+      - name: 5. Guardado de datos y Sincronización
         run: |
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
+          
+          # Añadir cambios generados
           git add latest_news.json
-          # El comando '|| exit 0' evita que el WF falle si no hay cambios en las noticias
-          git commit -m "Actualización estratégica: $(date)" || exit 0
-          git push
+          
+          # Crear el commit (si no hay cambios, no fallará)
+          git commit -m "Actualización estratégica: $(date)" || echo "No hay cambios para actualizar"
+          
+          # Sincronización crucial: pull con rebase para evitar rechazos
+          git pull --rebase origin main
+          
+          # Subir cambios finales
+          git push origin main
