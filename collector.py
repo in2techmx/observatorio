@@ -35,46 +35,16 @@ NORMALIZER = {
     "INDIA": "INDIA"
 }
 
-# --- FUENTES COMPLETAS (Originales + África Mejorada) ---
+# --- FUENTES COMPLETAS (África Corregida + Resto) ---
 FUENTES = {
-    "USA": [
-        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-        "https://www.foreignaffairs.com/rss.xml",
-        "https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"
-    ],
-    "RUSSIA": [
-        "https://tass.com/rss/v2.xml",
-        "http://en.kremlin.ru/events/president/news/feed",
-        "https://globalvoices.org/section/world/russia/feed/"
-    ],
-    "CHINA": [
-        "https://www.scmp.com/rss/91/feed",
-        "http://www.ecns.cn/rss/rss.xml",
-        "https://globalvoices.org/section/world/east-asia/feed/"
-    ],
-    "EUROPE": [
-        "https://legrandcontinent.eu/es/feed/",
-        "https://www.euronews.com/rss?level=vertical&name=news",
-        "https://www.france24.com/en/rss",
-        "https://www.dw.com/xml/rss-en-all"
-    ],
-    "LATAM": [
-        "https://www.infobae.com/america/arc/outboundfeeds/rss/",
-        "https://elpais.com/america/rss/",
-        "https://www.jornada.com.mx/rss/edicion.xml",
-        "https://globalvoices.org/section/world/latin-america/feed/"
-    ],
-    "MID_EAST": [
-        "https://www.aljazeera.com/xml/rss/all.xml",
-        "https://www.middleeasteye.net/rss",
-        "https://www.trtworld.com/rss"
-    ],
-    "INDIA": [
-        "https://www.thehindu.com/news/national/feeder/default.rss",
-        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
-        "https://globalvoices.org/section/world/south-asia/feed/"
-    ],
-    # ÁFRICA: Mix de Google (Seguridad) + Top FeedSpot (Política/Economia)
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/World.xml", "https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "http://www.ecns.cn/rss/rss.xml"],
+    "EUROPE": ["https://legrandcontinent.eu/es/feed/", "https://www.euronews.com/rss?level=vertical&name=news"],
+    "LATAM": ["https://elpais.com/america/rss/", "https://www.jornada.com.mx/rss/edicion.xml"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.middleeasteye.net/rss"],
+    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss"],
+    # ÁFRICA: Mix Blindado
     "AFRICA": [
         "https://news.google.com/rss/search?q=Africa+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en",
         "https://africa.com/feed",
@@ -96,7 +66,6 @@ class GeopoliticalCollector:
                 req = urllib.request.Request(url, headers=HEADERS)
                 return urllib.request.urlopen(req, timeout=10).read()
             except urllib.error.URLError as e:
-                # Fallback SSL si hay error de certificado
                 if "certificate" in str(e).lower() or "ssl" in str(e).lower():
                     try:
                         ctx = ssl._create_unverified_context()
@@ -107,8 +76,8 @@ class GeopoliticalCollector:
         return None
 
     def fetch_data(self):
-        print("🌍 Capturando señales multipolares...")
-        batch_text = ""
+        print("🌍 Capturando señales...")
+        raw_news_lines = [] # Lista en lugar de texto gigante
         total_news = 0
         for region, urls in FUENTES.items():
             region_count = 0
@@ -118,37 +87,36 @@ class GeopoliticalCollector:
                     try:
                         root = ET.fromstring(content)
                         items = root.findall('.//item') or root.findall('.//{*}entry')
-                        for n in items[:8]: # 8 noticias por fuente para balancear carga
+                        for n in items[:8]: 
                             t = (n.find('title') or n.find('{*}title')).text.strip()
                             l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
                             if t and l:
                                 art_id = hashlib.md5(t.encode()).hexdigest()[:10]
                                 self.link_storage[art_id] = {"link": l, "title": t, "region_origen": region}
                                 self.title_to_id[t] = art_id
-                                batch_text += f"BLOQUE_ORIGEN: {region} | TIT: {t}\n"
+                                # Guardamos como línea individual
+                                raw_news_lines.append(f"BLOQUE_ORIGEN: {region} | TIT: {t}")
                                 total_news += 1
                                 region_count += 1
                     except: continue
-            print(f"   ✓ {region}: {region_count} señales.")
-        return batch_text, total_news
+            print(f"   ✓ {region}: {region_count}")
+        return raw_news_lines, total_news
 
-    def analyze(self, batch_text):
-        print("🧠 IA: Ejecutando K-Means Semántico (Strict Mode)...")
+    def analyze_batch(self, news_chunk):
+        # Función auxiliar para procesar un trozo pequeño
+        batch_text = "\n".join(news_chunk)
         prompt = f"""
-        Actúa como analista de inteligencia. Clasifica estas noticias en ÁREAS ESTRATÉGICAS.
+        Actúa como analista de inteligencia. Clasifica estas noticias.
         Genera un JSON con la estructura 'carousel'.
         
         ÁREAS: {list(AREAS_ESTRATEGICAS.keys())}
 
-        REGLAS CRÍTICAS DE SALIDA:
-        1. 'link': COPIA EXACTAMENTE el título de la noticia del input.
-        2. 'bloque': Infiérelo del "BLOQUE_ORIGEN" (USA, CHINA, RUSSIA, etc).
-        3. 'proximidad': DAME SOLO UN NÚMERO (FLOAT) entre 0.0 y 100.0.
-           - 100.0: Hecho factual indiscutible.
-           - 80.0: Noticia estándar.
-           - 50.0: Opinión / Editorial.
-           - 20.0: Propaganda / Rumor.
-        4. 'sesgo': Explica en 5 palabras por qué diste esa proximidad.
+        REGLAS CRÍTICAS (STRICT MODE):
+        1. 'link': COPIA EXACTAMENTE el título.
+        2. 'bloque': Infiérelo del "BLOQUE_ORIGEN".
+        3. 'proximidad': FLOAT 0.0 - 100.0. (Evita 0.0 si es posible).
+        4. 'sesgo': 5 palabras máximo.
+        5. IMPORTANTE: Escapa comillas dobles dentro de los textos para no romper el JSON.
 
         INPUT:
         {batch_text}
@@ -161,25 +129,63 @@ class GeopoliticalCollector:
             )
             return json.loads(res.text.strip().replace('```json', '').replace('```', ''))
         except Exception as e:
-            print(f"Error Crítico IA: {e}")
+            print(f"⚠️ Error en lote: {e}")
             return None
+
+    def run_analysis_pipeline(self, raw_news_lines):
+        print(f"🧠 IA: Iniciando procesamiento por lotes ({len(raw_news_lines)} señales)...")
+        
+        # 1. Dividir en lotes de 25 noticias (Seguridad Anti-Crash)
+        chunk_size = 25
+        chunks = [raw_news_lines[i:i + chunk_size] for i in range(0, len(raw_news_lines), chunk_size)]
+        
+        merged_carousel = {} # Diccionario para unir resultados { "Area": { ... } }
+
+        # 2. Procesar cada lote
+        for i, chunk in enumerate(chunks):
+            print(f"   ↳ Procesando Lote {i+1}/{len(chunks)}...")
+            result = self.analyze_batch(chunk)
+            
+            if result and 'carousel' in result:
+                for item in result['carousel']:
+                    area_name = item.get('area')
+                    if not area_name: continue
+                    
+                    if area_name not in merged_carousel:
+                        merged_carousel[area_name] = {
+                            "area": area_name,
+                            "punto_cero": item.get('punto_cero', "Análisis agregado."),
+                            "color": AREAS_ESTRATEGICAS.get(area_name, "#3b82f6"),
+                            "particulas": []
+                        }
+                    # Fusionar partículas
+                    merged_carousel[area_name]['particulas'].extend(item.get('particulas', []))
+            time.sleep(1) # Pausa para no saturar API
+
+        # 3. Convertir de vuelta a lista
+        return {"carousel": list(merged_carousel.values())}
 
     def validate_and_fix(self, data):
         if not data or 'carousel' not in data: return False
         
         for slide in data['carousel']:
             slide['color'] = AREAS_ESTRATEGICAS.get(slide.get('area'), "#3b82f6")
-            if not slide.get('punto_cero'): slide['punto_cero'] = "Análisis en curso."
+            
+            # Asegurar Punto Cero
+            if len(slide.get('punto_cero', '')) < 10:
+                slide['punto_cero'] = "Múltiples focos de atención detectados en esta área estratégica."
 
             valid_p = []
             for p in slide.get('particulas', []):
                 original_title = p.get('link')
-                meta = self.link_storage.get(self.title_to_id.get(original_title))
+                # Búsqueda robusta del ID
+                art_id = self.title_to_id.get(original_title)
                 
-                if meta:
+                if art_id:
+                    meta = self.link_storage[art_id]
                     p['link'] = meta['link']
                     
-                    # Corrección de Bloque (Normalización)
+                    # Corrección Bloque
                     b_ia = str(p.get('bloque', '')).upper()
                     b_real = meta.get('region_origen', 'GLOBAL')
                     final_block = NORMALIZER.get(b_ia, b_real)
@@ -188,16 +194,13 @@ class GeopoliticalCollector:
                     p['bloque'] = final_block
                     p['color_bloque'] = BLOQUE_COLORS.get(final_block, "#94a3b8")
 
-                    # Auditoría de Proximidad (Sin Random, solo reporte)
-                    raw_prox = p.get('proximidad', 'N/A')
+                    # Auditoría Proximidad
                     try:
-                        clean_v = str(raw_prox).replace('%', '').strip()
+                        clean_v = str(p.get('proximidad', '0')).replace('%', '').strip()
                         val = float(clean_v)
                         p['proximidad'] = round(val, 1)
                     except:
-                        # LOG DE ALERTA: Si falla, avisamos pero dejamos 0
-                        print(f"⚠️ [DEBUG] Fallo Proximidad: '{p.get('titulo', 'Sin Título')}'")
-                        print(f"   ↳ Valor IA: '{raw_prox}' -> Asignado 0.0")
+                        print(f"⚠️ [DEBUG] Fallo Proximidad: '{p.get('titulo')}' -> 0.0")
                         p['proximidad'] = 0.0 
 
                     if not p.get('sesgo'): p['sesgo'] = "Sin análisis."
@@ -207,11 +210,14 @@ class GeopoliticalCollector:
         return True
 
     def run(self):
-        batch_text, total_news = self.fetch_data()
+        # PASO 1: Captura (Lista de líneas)
+        raw_news_lines, total_news = self.fetch_data()
         if total_news < 5: return
 
-        data = self.analyze(batch_text)
+        # PASO 2: Análisis por Lotes (Merge)
+        data = self.run_analysis_pipeline(raw_news_lines)
         
+        # PASO 3: Validación y Guardado
         if self.validate_and_fix(data):
             with open("gravity_carousel.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -220,9 +226,9 @@ class GeopoliticalCollector:
             with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
                 
-            print(f"✅ Éxito: {total_news} señales procesadas.")
+            print(f"✅ Éxito: {total_news} señales procesadas en lotes.")
         else:
-            print("❌ Error en validación de datos.")
+            print("❌ Error crítico en validación post-merge.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
