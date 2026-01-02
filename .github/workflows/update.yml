@@ -1,41 +1,36 @@
 name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *' # Se ejecuta cada hora
-  workflow_dispatch:      # Permite ejecución manual
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Permisos necesarios para que el bot pueda escribir en el repo
     permissions:
       contents: write
-      
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Trae todo el historial para evitar conflictos de git
+          fetch-depth: 0
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          pip install google-genai
+      - name: Install Google GenAI
+        run: pip install google-genai
 
       - name: Ejecutar IA
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: Commit y Push
+      - name: Push Changes
         run: |
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
           git add .
-          # Solo hace commit si hay cambios reales en los JSON
-          git commit -m "Update Global News: $(date)" || echo "No hay cambios para subir"
-          # El --force asegura que el bot gane si tú hiciste cambios manuales en el código
+          git commit -m "Auto-update: $(date)" || echo "No hay cambios"
           git push origin main --force
