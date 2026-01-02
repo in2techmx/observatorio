@@ -39,19 +39,23 @@ jobs:
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # 1. Limpieza total de conflictos locales
+          # 1. CORRECCIÓN DE SECUENCIA: Primero nos igualamos a la nube
+          # Esto elimina el error "Your branch is behind by 13 commits"
           git fetch origin main
           git reset --hard origin main
           
-          # 2. Agregar archivos con validación de existencia para evitar errores 'pathspec'
-          # Agregamos el archivo principal, el manifiesto y todas las carpetas nuevas
+          # 2. AHORA SÍ, registramos lo que generó el collector.py
+          # Usamos condicionales para que no falle si el archivo no existe
           [ -f gravity_carousel.json ] && git add gravity_carousel.json
           [ -f manifest.json ] && git add manifest.json
-          [ -d historico_noticias ] && git add historico_noticias/
           
-          # 3. Commit con marca de tiempo
-          # El '|| echo' evita que el flujo falle si no hay cambios nuevos en las noticias
-          git commit -m "Actualización estratégica y archivo: $(date +'%Y-%m-%d %H:%M')" || echo "No se detectaron cambios en los datos."
+          # Añadir la carpeta de históricos completa
+          if [ -d "historico_noticias" ]; then
+            git add historico_noticias/
+          fi
           
-          # 4. Push forzado para garantizar que la web se actualice
+          # 3. Commit de los nuevos datos
+          git commit -m "Actualización estratégica: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
+          
+          # 4. Push directo (el force asegura que la web se actualice)
           git push origin main --force
