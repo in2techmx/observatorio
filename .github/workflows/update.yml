@@ -2,12 +2,14 @@ name: Actualizar Proximity Engine
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Ejecuta cada 6 horas
-  workflow_dispatch:      # Botón manual
+    - cron: '0 */6 * * *' # Ejecuta automáticamente cada 6 horas
+  workflow_dispatch:      # Permite el botón manual "Run workflow"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write     # Permiso explícito para poder hacer git push
 
     steps:
     - name: Checkout del código
@@ -22,27 +24,26 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install google-genai
-        pip install beautifulsoup4  # <--- ¡ESTA LÍNEA ES OBLIGATORIA AHORA!
+        pip install beautifulsoup4  # <--- CRÍTICO: Necesario para el nuevo collector
 
     - name: Ejecutar Motor de Clusters
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        PYTHONIOENCODING: 'utf-8'   # <--- CRÍTICO para caracteres globales
+        PYTHONIOENCODING: 'utf-8'   # <--- CRÍTICO: Soporte para caracteres globales
       run: python collector.py
 
-    - name: Publicar Inteligencia
+    - name: Publicar Inteligencia (Estrategia Rebase)
       run: |
-        # 1. Configuración de identidad
+        # 1. Configurar identidad del Bot
         git config --global user.name 'Proximity Bot'
         git config --global user.email 'bot@proximity.ai'
         
-        # 2. Guardamos el trabajo del Bot PRIMERO (Commit local)
+        # 2. Guardar cambios del Bot en local
         git add .
         git commit -m "🧠 Cluster Update: $(date)" || echo "Nada que actualizar"
 
-        # 3. Descargamos tus cambios y aplicamos los del bot ENCIMA (Rebase)
-        # Esto soluciona el error "rejected"
+        # 3. Descargar cambios remotos y fusionar (Evita error 'rejected')
         git pull origin main --rebase
 
-        # 4. Subimos el resultado final
+        # 4. Subir todo a GitHub
         git push origin main
