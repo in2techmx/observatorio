@@ -4,7 +4,7 @@ on:
   schedule:
     # Se ejecuta cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Permite ejecución manual
+  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
 jobs:
   build:
@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write
+      contents: write # Permiso crucial para que el bot pueda guardar archivos
 
     steps:
       - name: 1. Descarga del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0 # Descarga todo el historial para evitar errores de sincronización
 
       - name: 2. Configuración de Python
         uses: actions/setup-python@v5
@@ -34,24 +34,28 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: 5. Sincronización y Guardado Multicanal
+      - name: 5. Sincronización y Guardado de Datos
         run: |
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          git fetch origin main
-          git checkout main
+          # Sincronizar con el repositorio remoto para evitar errores 'rejected'
+          git pull origin main --rebase
           
-          # Agregamos todos los cambios: el live, los históricos y el manifiesto
-          git add gravity_carousel.json
-          git add manifest.json
-          git add historico_noticias/diario/*.json
-          git add historico_noticias/semanal/*.json
-          git add historico_noticias/mensual/*.json
+          # Agregamos los archivos generados por el collector.py
+          # Usamos comprobaciones para que el script no falle si un archivo no existe aún
           
-          # Commit con fecha y hora para el log de GitHub
-          git commit -m "Actualización Multipolar: $(date +'%Y-%m-%d %H:%M')" || echo "No hay cambios detectados"
+          # 1. El JSON principal para la web
+          if [ -f gravity_carousel.json ]; then git add gravity_carousel.json; fi
           
-          # Push con rebase para evitar conflictos si hubo cambios manuales
-          git pull --rebase origin main
+          # 2. El manifiesto de navegación automática
+          if [ -f manifest.json ]; then git add manifest.json; fi
+          
+          # 3. Las carpetas de históricos (diario, semanal, mensual)
+          if [ -d historico_noticias ]; then git add historico_noticias/; fi
+          
+          # Realizar el commit
+          git commit -m "Actualización estratégica y archivo histórico: $(date +'%Y-%m-%d %H:%M')" || echo "No se detectaron cambios en los datos."
+          
+          # Push final a la rama principal
           git push origin main
