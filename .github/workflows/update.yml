@@ -1,54 +1,25 @@
 name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *' 
-  workflow_dispatch:      
-
-permissions:
-  contents: write         
-
+    - cron: '0 * * * *'
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0   
-
-      - name: Configurar Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          
-      - name: Instalar Dependencias
-        run: pip install feedparser google-generativeai
-        
-      - name: Ejecutar Inteligencia Artificial
+      - run: pip install google-generativeai
+      - name: Ejecutar IA
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
-        
-      - name: Sincronizar Cambios
+      - name: Commit y Push
         run: |
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
-          
-          # 1. Agregamos TODO lo que haya cambiado o se haya creado
           git add .
-          
-          # 2. Guardamos cambios para sincronizar
-          git stash
-          
-          # 3. Traemos cambios remotos
-          git pull origin main --rebase
-          
-          # 4. Recuperamos los archivos creados por el bot
-          git stash pop || echo "No hay cambios en el stash"
-          
-          # 5. Agregamos todo de nuevo para asegurar
-          git add .
-          
-          # 6. Commit y envío (con el comando -A que es infalible)
-          git commit -m "Sync: Global Proximity Update $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          git commit -m "Update $(date)" || echo "No changes"
           git push origin main
