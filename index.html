@@ -3,39 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orbital Intelligence | Cyber Radar</title>
+    <title>Orbital Intelligence | Tactical Command</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #010409; --neon-blue: #00d4ff; --neon-pink: #ff0055; }
+        :root { --bg: #010409; --cyber-blue: #00d4ff; }
         body { background: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
-        #universe { background-image: radial-gradient(circle at 2px 2px, rgba(0, 212, 255, 0.05) 1px, transparent 0); background-size: 40px 40px; }
+        
+        #universe { 
+            background-image: radial-gradient(circle at 2px 2px, rgba(0, 212, 255, 0.03) 1px, transparent 0); 
+            background-size: 50px 50px; 
+        }
 
-        /* Estilo de los Anillos (Círculos de %) */
-        .radar-line { fill: none; stroke: rgba(255, 255, 255, 0.15); stroke-width: 0.8; stroke-dasharray: 3, 6; }
-        .radar-grid { fill: none; stroke: rgba(255, 255, 255, 0.03); stroke-width: 0.5; }
-        .label-pct { font-family: 'JetBrains Mono'; font-size: 7px; fill: #475569; letter-spacing: 1px; }
+        /* ANILLOS DE RADAR REFORZADOS */
+        .radar-line { 
+            fill: none; 
+            stroke: rgba(255, 255, 255, 0.5); /* Alta visibilidad */
+            stroke-width: 1.5; 
+            filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.3));
+        }
+        
+        .radar-grid-line {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 0.5;
+        }
 
-        /* Botón Cyberpunk */
+        .label-pct { 
+            font-family: 'JetBrains Mono'; 
+            font-size: 9px; 
+            fill: #00d4ff; 
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.5);
+        }
+
+        .label-cat { 
+            font-family: 'JetBrains Mono'; 
+            font-size: 11px; 
+            fill: #94a3b8; 
+            font-weight: 800; 
+            letter-spacing: 0.4em;
+        }
+
+        /* BOTÓN CYBERPUNK */
         .cyber-button {
-            background: linear-gradient(45deg, #00d4ff 5%, #0055ff 100%);
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0% 30%);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            background: #00d4ff;
+            clip-path: polygon(0% 15%, 15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
             transition: 0.3s;
+            color: black;
         }
-        .cyber-button:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 212, 255, 0.6); }
-
-        /* Partículas */
-        .particle { cursor: pointer; transition: 0.4s; }
-        .particle:hover { filter: brightness(1.5) drop-shadow(0 0 10px currentColor); }
-
-        /* Modal Guía */
-        #guide-modal { 
-            background: rgba(1, 4, 9, 0.95); backdrop-filter: blur(25px); 
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            transition: 0.5s;
+        .cyber-button:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 35px rgba(0, 212, 255, 0.7); 
         }
+
+        /* PARTÍCULAS */
+        .particle { cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .particle:hover { filter: brightness(1.8) drop-shadow(0 0 15px currentColor); }
+
+        /* MODAL Y PANEL */
+        .glass-panel { background: rgba(1, 4, 9, 0.96); backdrop-filter: blur(30px); border: 1px solid rgba(0, 212, 255, 0.2); }
+        #side-panel { transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
 <body>
@@ -43,36 +73,35 @@
     <div id="universe" class="w-screen h-screen relative">
         <header class="absolute top-8 left-8 z-30 flex flex-col gap-4">
             <div>
-                <h1 class="text-2xl font-black italic tracking-tighter text-white">TACTICAL <span class="text-sky-400">RADAR</span></h1>
-                <span id="news-count" class="text-[9px] font-mono text-slate-500 uppercase tracking-[0.3em]">Sincronizando satélites...</span>
+                <h1 class="text-2xl font-black italic tracking-tighter text-white">ORBITAL <span class="text-sky-400">COMMAND</span></h1>
+                <div id="news-count" class="text-[9px] font-mono text-sky-500/70 uppercase tracking-widest mt-1 font-bold">Iniciando escaneo...</div>
             </div>
-            <button onclick="exportBriefing()" class="w-fit text-[8px] font-mono text-slate-400 border border-white/10 px-3 py-1 hover:bg-white/5 uppercase">
-                Export Briefing
+            <button onclick="exportBriefing()" class="w-fit text-[8px] font-mono text-slate-500 border border-white/10 px-4 py-1.5 hover:bg-sky-500/10 hover:text-sky-400 transition-all uppercase tracking-widest">
+                Download Briefing
             </button>
         </header>
 
-        <button onclick="toggleGuide()" class="fixed bottom-8 right-8 z-50 cyber-button px-6 py-3 text-black font-black text-[10px] tracking-[0.2em] uppercase">
-            [ Reference Guide ]
+        <button onclick="toggleGuide()" class="fixed bottom-8 right-8 z-50 cyber-button px-8 py-3 font-black text-[10px] tracking-[0.2em] uppercase">
+            [ Guía de Inteligencia ]
         </button>
 
-        <div id="guide-modal" class="fixed inset-0 z-[60] flex items-center justify-center opacity-0 pointer-events-none p-10">
-            <div class="max-w-xl w-full p-8 border-l-4 border-sky-500 bg-white/5">
-                <div class="flex justify-between items-start mb-10">
-                    <h4 class="text-sky-400 font-black tracking-widest uppercase text-xs">Decodificación de Radar</h4>
-                    <button onclick="toggleGuide()" class="text-slate-500 hover:text-white">[X]</button>
+        <div id="guide-modal" class="fixed inset-0 z-[60] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 bg-black/80">
+            <div class="glass-panel max-w-2xl w-full p-10 border-l-[6px] border-sky-500">
+                <div class="flex justify-between items-start mb-10 border-b border-white/10 pb-4">
+                    <h4 class="text-sky-400 font-black tracking-widest uppercase text-xs">Anatomía del Radar</h4>
+                    <button onclick="toggleGuide()" class="text-slate-500 hover:text-white font-mono">[ ESC ]</button>
                 </div>
-                <div class="grid grid-cols-2 gap-10">
+                <div class="grid grid-cols-2 gap-12 text-slate-300">
                     <div>
-                        <span class="text-[8px] text-slate-500 uppercase mb-4 block">Bloques Geopolíticos</span>
-                        <div id="legend-items" class="space-y-2"></div>
+                        <span class="text-[9px] text-sky-500/50 font-bold uppercase mb-4 block">Bloques Geopolíticos</span>
+                        <div id="legend-items" class="grid grid-cols-1 gap-3"></div>
                     </div>
                     <div>
-                        <span class="text-[8px] text-slate-500 uppercase mb-4 block">Ejes de Convergencia</span>
-                        <ul class="text-[10px] space-y-3 font-mono">
-                            <li><span class="text-sky-400">CENTER (100%):</span> Consenso Global Absoluto.</li>
-                            <li><span class="text-slate-300">INNER (75%):</span> Alineación estratégica.</li>
-                            <li><span class="text-slate-500">OUTER (25%):</span> Sesgo regional crítico.</li>
-                            <li><span class="text-rose-500">EDGE (0%):</span> Ruptura / Conflicto Narrativo.</li>
+                        <span class="text-[9px] text-sky-500/50 font-bold uppercase mb-4 block">Capas de Convergencia</span>
+                        <ul class="text-[10px] space-y-4 font-mono">
+                            <li><strong class="text-sky-400">CENTRO (100%):</strong> Alineación Total / Consenso.</li>
+                            <li><strong class="text-slate-200">INTERMEDIO (75-50%):</strong> Matices regionales.</li>
+                            <li><strong class="text-rose-500">EXTERIOR (25-0%):</strong> Divergencia / Ruptura narrativa.</li>
                         </ul>
                     </div>
                 </div>
@@ -80,8 +109,8 @@
         </div>
     </div>
 
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[500px] z-[70] translate-x-full bg-slate-950/95 backdrop-blur-3xl border-l border-white/10 p-12 overflow-y-auto">
-        <button onclick="closePanel()" class="mb-16 text-slate-500 hover:text-white text-[10px] font-black uppercase tracking-widest">← Return to Radar</button>
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] z-[70] translate-x-full glass-panel p-12 overflow-y-auto">
+        <button onclick="closePanel()" class="mb-16 text-slate-500 hover:text-sky-400 text-[10px] font-black uppercase tracking-[0.4em] transition-colors italic">← Regresar al Radar</button>
         <div id="panel-content"></div>
     </aside>
 
@@ -95,7 +124,7 @@
                 const data = await d3.json("./latest_news.json?v=" + Date.now());
                 const legend = document.getElementById('legend-items');
                 Object.entries(BLOQUE_COLORS).forEach(([name, color]) => {
-                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-1.5 h-1.5" style="background:${color}"></div><span class="text-[9px] font-mono uppercase">${name}</span></div>`;
+                    legend.innerHTML += `<div class="flex items-center gap-3"><div class="w-3 h-3 rounded-sm" style="background:${color}; box-shadow: 0 0 10px ${color}66"></div><span class="text-[10px] font-mono uppercase tracking-widest font-bold text-slate-200">${name}</span></div>`;
                 });
 
                 const centers = {
@@ -112,57 +141,115 @@
                 Object.keys(centers).forEach(cat => {
                     const c = centers[cat];
                     const catData = data.categorias.find(x => x.nombre === cat);
-                    const g = svg.append("g");
+                    const rg = svg.append("g");
 
-                    // DIBUJO DE ANILLOS (LOS CÍRCULOS DE %)
-                    [0.25, 0.5, 0.75, 1].forEach(r => {
-                        g.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", MAX_R * r).attr("class", "radar-line");
-                        g.append("text").attr("x", c.x + (MAX_R * r) + 5).attr("y", c.y).attr("class", "label-pct").text(`${Math.round((1-r)*100)}%`);
+                    // 1. DIBUJO DE REJILLA RADIAL (LÍNEAS CRUZADAS)
+                    [0, 90].forEach(angle => {
+                        rg.append("line")
+                            .attr("x1", c.x - MAX_R).attr("y1", c.y)
+                            .attr("x2", c.x + MAX_R).attr("y2", c.y)
+                            .attr("class", "radar-grid-line")
+                            .attr("transform", `rotate(${angle}, ${c.x}, ${c.y})`);
                     });
 
-                    // NÚCLEO
-                    g.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", 5).attr("fill", c.color).style("filter", "blur(5px)");
-                    g.append("text").attr("x", c.x).attr("y", c.y + MAX_R + 30).attr("text-anchor", "middle").attr("class", "label-pct").style("fill", "#94a3b8").text(cat.toUpperCase());
+                    // 2. DIBUJO DE ANILLOS (CÍRCULOS DE % MARCADOS)
+                    [0.25, 0.5, 0.75, 1].forEach(r => {
+                        rg.append("circle")
+                            .attr("cx", c.x).attr("cy", c.y)
+                            .attr("r", MAX_R * r)
+                            .attr("class", "radar-line");
+                        
+                        // Etiqueta de porcentaje clara
+                        rg.append("text")
+                            .attr("x", c.x + 5)
+                            .attr("y", c.y - (MAX_R * r) + 12)
+                            .attr("class", "label-pct")
+                            .text(`${Math.round((1-r)*100)}%`);
+                    });
+
+                    // 3. NÚCLEO Y ETIQUETA
+                    rg.append("circle").attr("cx", c.x).attr("cy", c.y).attr("r", 5).attr("fill", c.color).style("filter", "blur(8px)");
+                    rg.append("text").attr("x", c.x).attr("y", c.y + MAX_R + 40).attr("text-anchor", "middle").attr("class", "label-cat").text(cat.toUpperCase());
 
                     if(catData && catData.particulas) {
                         total += catData.particulas.length;
                         catData.particulas.forEach((p, i) => {
-                            const angle = (i / catData.particulas.length) * (Math.PI * 2);
+                            const angle = (i / catData.particulas.length) * (Math.PI * 2) - Math.PI/2;
                             const rPos = MAX_R - (p.proximidad * (MAX_R / 100)) + 15;
                             const px = c.x + rPos * Math.cos(angle);
                             const py = c.y + rPos * Math.sin(angle);
 
-                            const pg = g.append("g").attr("class", "particle").attr("transform", `translate(${px},${py})`).on("click", () => openPanel({...p, catColor: c.color}));
-                            pg.append("circle").attr("r", 5).attr("fill", p.color_bloque).style("filter", `drop-shadow(0 0 5px ${p.color_bloque})`);
-                            pg.append("circle").attr("r", 1).attr("fill", "#fff");
+                            const pg = rg.append("g").attr("class", "particle").attr("transform", `translate(${px},${py})`).on("click", () => openPanel({...p, catColor: c.color, catConsensus: catData.consenso}));
+                            
+                            pg.append("circle")
+                                .attr("r", 6 + (p.proximidad / 15))
+                                .attr("fill", p.color_bloque)
+                                .style("filter", `drop-shadow(0 0 10px ${p.color_bloque})`);
+                            
+                            pg.append("circle").attr("r", 1.5).attr("fill", "#fff").style("opacity", 0.8);
                         });
                     }
                 });
-                document.getElementById('news-count').innerText = `${total} NODOS EN RED`;
+                document.getElementById('news-count').innerText = `${total} NODOS EN ESCANEO TÁCTICO`;
             } catch (e) { console.error(e); }
         }
 
         function toggleGuide() {
             const m = document.getElementById('guide-modal');
-            const isActive = m.style.opacity === "1";
-            m.style.opacity = isActive ? "0" : "1";
-            m.style.pointerEvents = isActive ? "none" : "auto";
+            const active = m.style.opacity === "1";
+            m.style.opacity = active ? "0" : "1";
+            m.style.pointerEvents = active ? "none" : "auto";
         }
 
         function openPanel(d) {
             document.getElementById('panel-content').innerHTML = `
-                <div style="background:${d.color_bloque}" class="px-3 py-1 text-[10px] font-black text-black inline-block mb-10">${d.bloque}</div>
-                <h2 class="text-4xl font-black text-white mb-6 uppercase leading-none">${d.titulo}</h2>
-                <p class="text-xl text-slate-300 font-light mb-10">${d.analisis_regional}</p>
-                <div class="p-6 bg-white/5 border-l-2 mb-10" style="border-color:${d.catColor}">
-                    <p class="text-xs text-slate-500 italic">"${d.consenso || 'Consenso global activo'}"</p>
+                <div class="flex justify-between items-start mb-12 animate-in fade-in slide-in-from-right duration-500">
+                    <div style="background:${d.color_bloque}" class="px-4 py-1 text-[11px] font-black text-black uppercase tracking-widest">${d.bloque}</div>
+                    <div class="text-right">
+                        <div class="text-[9px] font-mono text-slate-500 uppercase tracking-widest">Alineación</div>
+                        <div class="text-4xl font-black text-white">${d.proximidad}%</div>
+                    </div>
                 </div>
-                <a href="${d.link}" target="_blank" class="text-sky-400 font-black text-xs hover:underline tracking-widest">ACCESS DATA_STREAM ↗</a>`;
+                <h2 class="text-3xl font-black text-white mb-8 leading-tight italic uppercase tracking-tighter">${d.titulo}</h2>
+                <div class="space-y-10">
+                    <div>
+                        <h4 class="text-[10px] font-bold text-sky-400 uppercase tracking-[0.4em] mb-4">Análisis de Inteligencia</h4>
+                        <p class="text-xl text-slate-200 font-light leading-relaxed">${d.analisis_regional}</p>
+                    </div>
+                    <div class="p-6 bg-white/5 border-l-4" style="border-color:${d.catColor}">
+                        <h4 class="text-[9px] font-bold text-slate-500 uppercase mb-2">Consenso Detectado</h4>
+                        <p class="text-sm text-slate-400 italic font-serif leading-relaxed">"${d.catConsensus}"</p>
+                    </div>
+                    <div class="pt-10 border-t border-white/5">
+                        <a href="${d.link}" target="_blank" class="flex justify-between items-center group bg-sky-500/5 p-4 rounded border border-sky-500/10 hover:bg-sky-500/10 transition-all">
+                            <span class="text-[10px] font-black text-sky-400 tracking-widest uppercase">Acceder a Fuente Original ↗</span>
+                        </a>
+                    </div>
+                </div>`;
             document.getElementById('side-panel').classList.remove('translate-x-full');
+        }
+
+        async function exportBriefing() {
+            const data = await d3.json("./latest_news.json?v=" + Date.now());
+            let report = `BRIEFING TÁCTICO - ${new Date().toLocaleDateString()}\n====================================\n\n`;
+            data.categorias.forEach(cat => {
+                const p = cat.particulas.filter(x => x.proximidad < 60);
+                if(p.length > 0) {
+                    report += `[ CATEGORÍA: ${cat.nombre.toUpperCase()} ]\n`;
+                    p.forEach(n => report += `- ${n.bloque} (${n.proximidad}%): ${n.titulo}\n`);
+                    report += `\n`;
+                }
+            });
+            const blob = new Blob([report], {type:'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Briefing_Orbital_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
         }
 
         function closePanel() { document.getElementById('side-panel').classList.add('translate-x-full'); }
         init();
+        window.addEventListener('resize', () => location.reload());
     </script>
 </body>
 </html>
