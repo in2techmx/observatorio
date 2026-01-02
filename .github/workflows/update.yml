@@ -34,6 +34,11 @@ jobs:
       run: |
         git config --global user.name 'Proximity Bot'
         git config --global user.email 'bot@proximity.ai'
+        # 1. Traemos los cambios más recientes que tú hayas hecho
+        git pull origin main --rebase
+        # 2. Agregamos los archivos del bot
         git add .
+        # 3. Hacemos commit
         git commit -m "🧠 Cluster Update: $(date)" || exit 0
-        git push
+        # 4. Subimos todo junto
+        git push origin main
