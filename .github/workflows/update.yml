@@ -39,21 +39,21 @@ jobs:
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # Sincronización total para evitar errores de "branch behind"
+          # 1. Sincronización Forzada: Esto resuelve el error "Your branch is behind"
           git fetch origin main
           git reset --hard origin main
           
-          # Agregar archivos de forma segura (no falla si no existen)
-          git add gravity_carousel.json || echo "No existe carousel"
-          git add manifest.json || echo "No existe manifiesto"
+          # 2. Agregar archivos con validación (|| echo evita el error fatal si no existen)
+          git add gravity_carousel.json || echo "gravity_carousel.json no encontrado"
+          git add manifest.json || echo "manifest.json no encontrado"
           
-          # Agregar carpetas de históricos completas
+          # 3. Agregar la carpeta de históricos si existe
           if [ -d "historico_noticias" ]; then
             git add historico_noticias/
+          else
+            echo "La carpeta historico_noticias no ha sido creada aún"
           fi
           
-          # Commit con fecha y hora para el registro
+          # 4. Commit y Push Forzado
           git commit -m "Actualización estratégica y archivo: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
-          
-          # Subida forzada para garantizar la sincronización
           git push origin main --force
