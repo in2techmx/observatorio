@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from google import genai
 
-# --- CONFIGURACIÓN DE ENTORNOS Y RUTAS ---
+# --- CONFIGURACIÓN DE ENTORNOS ---
 PATHS = {
     "diario": "historico_noticias/diario", 
     "semanal": "historico_noticias/semanal", 
@@ -14,7 +14,7 @@ for p in PATHS.values(): os.makedirs(p, exist_ok=True)
 ssl_context = ssl._create_unverified_context()
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
-# --- DEFINICIÓN DE ÁREAS (Eje del Carrusel Netflix) ---
+# --- DEFINICIÓN DE ÁREAS (Eje del Carrusel) ---
 AREAS_ESTRATEGICAS = {
     "Seguridad y Conflictos": "#ef4444", 
     "Economía y Sanciones": "#3b82f6",
@@ -30,7 +30,7 @@ BLOQUE_COLORS = {
     "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
 }
 
-# --- FUENTES AMPLIADAS Y CORREGIDAS ---
+# --- FUENTES AMPLIADAS (Refuerzo para África e India incluido) ---
 FUENTES = {
     "USA": [
         "https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en",
@@ -70,6 +70,7 @@ FUENTES = {
         "https://globalvoices.org/section/world/south-asia/feed/"
     ],
     "AFRICA": [
+        "https://news.google.com/rss/search?q=Africa+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en",
         "https://allafrica.com/tools/headlines/rdf/latestnews/index.xml",
         "https://www.africanews.com/feeds/rss",
         "https://globalvoices.org/section/world/sub-saharan-africa/feed/"
@@ -84,7 +85,7 @@ class GeopoliticalCollector:
         self.hoy = datetime.datetime.now()
 
     def fetch_data(self):
-        print("🌍 Capturando señales multipolares...")
+        print("🌍 Capturando señales multipolares de alta densidad...")
         batch_text = ""
         total_news = 0
         for region, urls in FUENTES.items():
@@ -92,7 +93,7 @@ class GeopoliticalCollector:
             for url in urls:
                 try:
                     req = urllib.request.Request(url, headers=HEADERS)
-                    with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
+                    with urllib.request.urlopen(req, timeout=20, context=ssl_context) as resp:
                         root = ET.fromstring(resp.read())
                         items = root.findall('.//item') or root.findall('.//{*}entry')
                         for n in items[:12]:
@@ -115,14 +116,14 @@ class GeopoliticalCollector:
     def analyze(self, batch_text):
         print("🧠 IA: Procesando Áreas Estratégicas y Análisis de Sesgo...")
         prompt = f"""
-        Actúa como un motor de inteligencia geopolítica de vanguardia. 
+        Actúa como un motor de inteligencia geopolítica avanzado. 
         Analiza el contexto y genera un JSON donde la raíz única sea 'carousel'.
-        Cada objeto dentro de 'carousel' DEBE ser una de las ÁREAS ESTRATÉGICAS especificadas.
+        Cada objeto dentro de 'carousel' DEBE ser una de las ÁREAS ESTRATÉGICAS.
 
         REGLAS DE ORO:
         1. TRADUCE TODO AL ESPAÑOL (Títulos, Sesgos y Puntos Cero).
         2. ESTRUCTURA: 'carousel' -> 'area', 'punto_cero', 'color', 'particulas'.
-        3. ALTA DENSIDAD: Mínimo 5 partículas por área estratégica si el contexto lo permite.
+        3. DENSIDAD: Mínimo 6-8 partículas por área estratégica. No omitas información relevante.
         4. CLAVE LINK: El campo 'link' debe contener el TITULO_ORIGINAL (sin traducir) para recuperación de URL.
 
         LISTADO DE ÁREAS Y COLORES:
@@ -148,27 +149,30 @@ class GeopoliticalCollector:
     def run(self):
         batch_text, total_news = self.fetch_data()
         if total_news < 10:
-            print("❌ Datos insuficientes para análisis."); return
+            print("❌ Datos insuficientes."); return
 
         data = self.analyze(batch_text)
         
-        # Post-procesamiento: Reconstrucción de Links y Colores
+        # Post-procesamiento: Reconstrucción Segura de Links y Colores
         if 'carousel' in data:
             for slide in data['carousel']:
-                # Forzar color del área desde nuestra constante local
                 slide['color'] = AREAS_ESTRATEGICAS.get(slide.get('area'), "#3b82f6")
                 
+                valid_particulas = []
                 for p in slide.get('particulas', []):
-                    # Recuperar URL original usando el título que guardamos en 'link'
+                    # Recuperación de Link Real mediante el título original (almacenado en campo link por la IA)
                     original_title = p.get('link')
                     art_id = self.title_to_id.get(original_title)
+                    
                     if art_id:
                         p['link'] = self.link_storage[art_id]['link']
-                    
-                    # Forzar color de bloque desde nuestra constante local
-                    p['color_bloque'] = BLOQUE_COLORS.get(p.get('bloque'), "#94a3b8")
+                        p['color_bloque'] = BLOQUE_COLORS.get(p.get('bloque'), "#94a3b8")
+                        valid_particulas.append(p)
+                
+                # Sobreescribimos con las partículas verificadas con link real
+                slide['particulas'] = valid_particulas
 
-        # Guardado del snapshots y archivos históricos
+        # Guardado
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
