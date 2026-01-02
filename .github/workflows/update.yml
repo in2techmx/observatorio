@@ -1,9 +1,9 @@
-name: Actualizar Proximity Hub
+name: Actualizar Proximity Engine
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Ejecuta automáticamente cada 6 horas
-  workflow_dispatch:      # Permite ejecutar manualmente con el botón
+    - cron: '0 */6 * * *' # Ejecuta cada 6 horas
+  workflow_dispatch:      # Botón manual
 
 jobs:
   build:
@@ -22,19 +22,18 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install google-genai
-        pip install beautifulsoup4  # <--- CRÍTICO: Para el Deep Scraping
+        pip install beautifulsoup4  # <--- ¡ESTA LÍNEA ES OBLIGATORIA AHORA!
 
-    - name: Ejecutar Inteligencia PROXIMITY
+    - name: Ejecutar Motor de Clusters
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        PYTHONIOENCODING: 'utf-8'   # <--- CRÍTICO: Para soportar Chino/Ruso/Árabe
+        PYTHONIOENCODING: 'utf-8'   # <--- CRÍTICO para caracteres globales
       run: python collector.py
 
-    - name: Guardar y publicar cambios
+    - name: Publicar Inteligencia
       run: |
         git config --global user.name 'Proximity Bot'
         git config --global user.email 'bot@proximity.ai'
         git add .
-        # El commit solo se hace si hubo cambios reales
-        git commit -m "🌍 Deep Intelligence Update: $(date)" || exit 0
+        git commit -m "🧠 Cluster Update: $(date)" || exit 0
         git push
