@@ -1,29 +1,27 @@
 #!/bin/bash
-set -e
+set -e  # Detener el script si ocurre cualquier error
 
 echo "===================================================="
 echo "🤖 INTELLIGENCE-BOT: PROCESO DE SINCRONIZACIÓN"
 echo "===================================================="
 
-# 1. CONFIGURAR GIT
-echo "[1/6] Configurando Git..."
+# 1. CONFIGURACIÓN DE IDENTIDAD
+echo "[1/6] Configurando identidad del bot..."
 git config --global user.name "Intelligence-Bot"
 git config --global user.email "bot@github.com"
 
-# En GitHub Actions el remote ya viene configurado por el checkout
-# Solo nos aseguramos de estar en la rama correcta
+# 2. SINCRONIZACIÓN RADICAL (Solución al desfase de commits)
+echo "[2/6] Sincronizando con el repositorio remoto..."
 git fetch origin main
-
-# 2. SINCRONIZACIÓN RADICAL (Limpia desfases de commits)
-echo "[2/6] Sincronizando branch local..."
+# El reset --hard origin/main elimina el error de "18 commits atrasados"
 git reset --hard origin/main
 git checkout main
 
-# 3. INFRAESTRUCTURA (CRÍTICO)
-echo "[3/6] Verificando estructura de archivos..."
+# 3. INFRAESTRUCTURA DE ARCHIVOS (Evita error fatal 128)
+echo "[3/6] Asegurando estructura de directorios..."
 mkdir -p historico_noticias/{diario,semanal,mensual}
 
-# Asegurar que manifest.json existe para evitar error 128 de Git
+# Crear archivos preventivos: si no existen, el comando 'git add' fallaría
 if [ ! -f manifest.json ]; then
     echo "  ↪ Creando manifest.json preventivo..."
     echo '{
@@ -32,67 +30,52 @@ if [ ! -f manifest.json ]; then
     }' > manifest.json
 fi
 
-# Asegurar que gravity_carousel.json existe
 if [ ! -f gravity_carousel.json ]; then
     echo "  ↪ Creando gravity_carousel.json preventivo..."
     echo '{"articles": [], "last_updated": null}' > gravity_carousel.json
 fi
 
-# 4. EJECUTAR COLECTOR (Python)
-echo "[4/6] Ejecutando análisis..."
-# Aseguramos dependencias
+# 4. EJECUCIÓN DEL MOTOR (Python)
+echo "[4/6] Ejecutando análisis Python..."
+# Instalamos librerías necesarias en el entorno de GitHub Actions
 pip install google-genai beautifulsoup4 --quiet
 
-if [ -f "collector.py" ] && [ -n "$GEMINI_API_KEY" ]; then
-    echo "  ↪ Ejecutando collector.py..."
-    if python collector.py 2>&1 | tee collector.log; then
-        echo "  ✅ Collector ejecutado exitosamente"
-    else
-        echo "  ⚠️ Collector terminó con errores, revisando últimas líneas:"
-        tail -n 10 collector.log
-    fi
-    
-    # 5. ARCHIVADO DE RESULTADOS
-    # Tu Python genera gravity_carousel.json, lo usamos para el histórico
-    if [ -f "gravity_carousel.json" ]; then
-        echo "  ↪ Archivando datos..."
-        TODAY=$(date +"%Y%m%d_%H%M")
-        cp gravity_carousel.json "historico_noticias/diario/${TODAY}.json"
-    fi
+if [ -f "collector.py" ]; then
+    # Ejecutamos el collector. El '|| true' permite que el script siga aunque la IA falle
+    python collector.py || echo "  ⚠️ Advertencia: El collector tuvo un problema, se usará la base existente."
 else
-    echo "  ⚠️ Saltando collector: No hay API key o falta collector.py"
+    echo "  ❌ Error: No se encontró collector.py en la raíz."
+    exit 1
 fi
 
-# 6. COMMIT Y PUSH SEGURO
-echo "[5/6] Preparando commit..."
+# 5. ARCHIVADO HISTÓRICO
+echo "[5/6] Organizando archivos históricos..."
+if [ -f "gravity_carousel.json" ]; then
+    FECHA=$(date +"%Y-%m-%d")
+    HORA=$(date +"%H%M")
+    cp gravity_carousel.json "historico_noticias/diario/${FECHA}_${HORA}.json"
+    echo "  ✓ Copia diaria creada: ${FECHA}_${HORA}.json"
+fi
 
-# Agregamos todo el contenido
+# 6. COMMIT Y SUBIDA FINAL
+echo "[6/6] Preparando commit y push..."
+
+# Agregamos los archivos de forma segura (ya existen gracias al paso 3)
 git add manifest.json
 git add gravity_carousel.json
 git add historico_noticias/
 
-# Verificar si hay cambios reales antes de subir
-if git diff --cached --quiet; then
-    echo "  📭 No hay cambios detectados. Terminando."
+# Solo hacer push si hay cambios reales detectados por Git
+if git diff --staged --quiet; then
+    echo "📭 No hay cambios nuevos para subir."
 else
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M")
-    echo "  💾 Creando commit: $TIMESTAMP"
-    git commit -m "🌐 Actualización automática: $TIMESTAMP" --quiet
-
-    echo "[6/6] Enviando a GitHub..."
-    # Intentar push normal, si falla (por cambios remotos), hacer rebase
-    if git push origin main; then
-        echo "  ✅ Push exitoso"
-    else
-        echo "  ⚠️ Push rechazado, sincronizando y reintentando..."
-        git pull --rebase origin main
-        git push origin main
-    fi
+    git commit -m "🌍 Actualización Geopolítica: $TIMESTAMP [Bot]"
+    
+    echo "🚀 Enviando cambios a GitHub..."
+    # Force push para garantizar que la rama main se limpie del desfase
+    git push origin main --force
+    echo "===================================================="
+    echo "✅ ACTUALIZACIÓN COMPLETADA EXITOSAMENTE"
+    echo "===================================================="
 fi
-
-# Limpieza de archivos temporales
-rm -f collector.log 2>/dev/null || true
-
-echo "===================================================="
-echo "✅ SINCRONIZACIÓN COMPLETADA EXITOSAMENTE"
-echo "===================================================="
