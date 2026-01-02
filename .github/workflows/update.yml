@@ -39,23 +39,19 @@ jobs:
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # 1. Limpieza y Sincronización Total
-          # Esto elimina el error "Your branch is behind"
+          # 1. FORZAR SINCRONIZACIÓN: Esto elimina el error "behind by 11 commits"
           git fetch origin main
           git reset --hard origin main
           
-          # 2. Agregar archivos con "Safe Add"
-          # El '|| true' evita que el proceso muera si el archivo no existe
+          # 2. AGREGAR ARCHIVOS CON TOLERANCIA (|| true evita que el proceso falle si no existen aún)
           git add gravity_carousel.json || true
           git add manifest.json || true
           
-          # 3. Agregar carpetas de históricos
+          # 3. AGREGAR CARPETAS DE HISTÓRICOS (solo si existen)
           if [ -d "historico_noticias" ]; then
             git add historico_noticias/
           fi
           
-          # 4. Commit con información de depuración
-          git commit -m "Actualización estratégica: $(date +'%Y-%m-%d %H:%M') [Bot]" || echo "Sin cambios para commitear"
-          
-          # 5. Empuje forzado para alinear el repositorio
+          # 4. COMMIT Y PUSH FORZADO
+          git commit -m "Actualización estratégica: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
           git push origin main --force
