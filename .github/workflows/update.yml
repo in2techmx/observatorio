@@ -2,9 +2,9 @@ name: Actualizar Observatorio Geopolítico
 
 on:
   schedule:
-    # Se ejecuta cada 6 horas automáticamente
+    # Se ejecuta cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
+  workflow_dispatch: # Permite ejecución manual
 
 jobs:
   build:
@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write # Permiso para que el bot pueda guardar el JSON
+      contents: write
 
     steps:
       - name: 1. Descarga del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Descarga todo el historial para evitar errores de Git
+          fetch-depth: 0 
 
       - name: 2. Configuración de Python
         uses: actions/setup-python@v5
@@ -30,25 +30,28 @@ jobs:
           pip install google-genai beautifulsoup4
 
       - name: 4. Ejecución del Proceso de Inteligencia
-        # Este paso realiza el triaje de 20 noticias y luego el análisis profundo
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: 5. Sincronización y Guardado de Datos
+      - name: 5. Sincronización y Guardado Multicanal
         run: |
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # Aseguramos que el bot esté en la rama correcta y sincronizado con la web
           git fetch origin main
           git checkout main
           
-          # Añadimos el archivo generado por el script de Python
-          git add latest_news.json
+          # Agregamos todos los cambios: el live, los históricos y el manifiesto
+          git add gravity_carousel.json
+          git add manifest.json
+          git add historico_noticias/diario/*.json
+          git add historico_noticias/semanal/*.json
+          git add historico_noticias/mensual/*.json
           
-          # Intentamos hacer commit. Si no hay cambios, el script continúa sin fallar
-          git commit -m "Actualización estratégica: $(date)" || echo "No hay cambios detectados"
+          # Commit con fecha y hora para el log de GitHub
+          git commit -m "Actualización Multipolar: $(date +'%Y-%m-%d %H:%M')" || echo "No hay cambios detectados"
           
-          # Empujamos los cambios forzando la sincronización para evitar el error 'rejected'
-          git push origin main --force
+          # Push con rebase para evitar conflictos si hubo cambios manuales
+          git pull --rebase origin main
+          git push origin main
