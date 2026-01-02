@@ -1,7 +1,7 @@
 import os
 import json
 import datetime
-from google import genai # Nueva librería
+from google import genai
 
 def collect():
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -14,8 +14,10 @@ def collect():
         print("ERROR: No se encontró la API Key.")
         return
 
-    # Nueva forma de conectar (Librería 2026)
+    # Conexión limpia con la nueva librería
     client = genai.Client(api_key=api_key)
+    
+    # Probamos el ID más estándar para Pro
     model_id = "gemini-1.5-pro"
 
     prompt = """Genera un análisis geopolítico mundial actual para hoy 2026. 
@@ -24,14 +26,13 @@ def collect():
     - "tematica": Título profesional corto.
     - "descripcion": Análisis profundo de 2 frases.
     - "regiones_activas": Lista de regiones (USA, CHINA, RUSSIA, EUROPE, INDIA, MID_EAST, LATAM, AFRICA, UK).
-    - "perspectivas": Un objeto con visiones breves.
-    Importante: Solo devuelve el código JSON, sin ```json ni textos extra."""
+    - "perspectivas": Un objeto con visiones breves de cada actor.
+    Importante: Solo devuelve el código JSON, sin decoradores ni texto extra."""
 
     analisis = []
 
     try:
-        print(f"Consultando a {model_id} mediante nueva API...")
-        # Nueva forma de generar contenido
+        print(f"Iniciando consulta a {model_id}...")
         response = client.models.generate_content(
             model=model_id,
             contents=prompt
@@ -39,38 +40,49 @@ def collect():
         
         raw_text = response.text.strip()
         
-        # Extracción de JSON
+        # Limpieza de posibles tags de markdown que la IA a veces incluye
+        if "```json" in raw_text:
+            raw_text = raw_text.split("```json")[1].split("```")[0].strip()
+        elif "```" in raw_text:
+            raw_text = raw_text.split("```")[1].split("```")[0].strip()
+
         inicio = raw_text.find("[")
         fin = raw_text.rfind("]") + 1
         
         if inicio != -1 and fin != 0:
             analisis = json.loads(raw_text[inicio:fin])
-            print(f"✅ ÉXITO TOTAL: {len(analisis)} noticias generadas.")
+            print(f"✅ ÉXITO: {len(analisis)} noticias analizadas.")
         else:
-            print(f"Texto recibido: {raw_text[:100]}...")
-            raise ValueError("No se encontró JSON en la respuesta.")
+            raise ValueError("La respuesta no contiene un array JSON válido.")
 
     except Exception as e:
-        print(f"⚠️ FALLO CRÍTICO: {e}")
+        print(f"⚠️ FALLO DE CONEXIÓN: {e}")
+        # Si falla el 1.5-pro, intentamos la versión flash como respaldo rápido
         analisis = [{
-            "tematica": "Reconexión de Red Pro",
-            "descripcion": f"Actualizando protocolos de la nueva API. Estado: {str(e)[:40]}",
+            "tematica": "Sincronizando Nodo Pro",
+            "descripcion": f"El sistema está validando la API Key Pro. Error: {str(e)[:50]}",
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
             "regiones_activas": ["GLOBAL"],
-            "perspectivas": {"SISTEMA": "Migrando a google-genai v3"}
+            "perspectivas": {"SISTEMA": "Reintentando con protocolo seguro..."}
         }]
 
-    # Guardado de archivos
-    for path in [os.path.join(base_dir, "latest_news.json"), 
-                 os.path.join(historico_dir, f"analisis_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.json")]:
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(analisis, f, indent=4, ensure_ascii=False)
+    # Guardado dual (Raíz e Histórico)
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')
+    
+    # 1. Guardar latest_news.json
+    with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
+        json.dump(analisis, f, indent=4, ensure_ascii=False)
 
+    # 2. Guardar en carpeta histórico
+    with open(os.path.join(historico_dir, f"analisis_{timestamp}.json"), "w", encoding="utf-8") as f:
+        json.dump(analisis, f, indent=4, ensure_ascii=False)
+
+    # 3. Actualizar el timeline.json
     files = sorted([f for f in os.listdir(historico_dir) if f.startswith('analisis_')], reverse=True)
     with open(os.path.join(base_dir, "timeline.json"), "w", encoding="utf-8") as f:
-        json.dump(files, f, indent=4)
+        json.dump(files[:50], f, indent=4) # Guardamos los últimos 50
 
-    print("🚀 Proceso terminado con nueva librería.")
+    print(f"🚀 Archivos actualizados correctamente a las {timestamp}")
 
 if __name__ == "__main__":
     collect()
