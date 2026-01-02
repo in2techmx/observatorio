@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatorio Geopolítico | Inteligencia Semántica</title>
+    <title>Observatorio Geopolítico | Matriz de Gravedad</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -18,12 +18,10 @@
         }
 
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; }
-        
         .header { padding: 40px 20px; text-align: center; background: linear-gradient(to bottom, #1a1a2e, var(--bg)); }
         
-        /* Controles de Navegación */
+        /* Controles Nav */
         .time-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        
         select, button {
             background: var(--card); color: white; border: 1px solid #2d2d3d;
             padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 14px;
@@ -31,9 +29,8 @@
         button:hover, select:hover { border-color: var(--accent); }
         .active-btn { background: var(--accent); border-color: var(--accent); }
 
-        /* Contenedor Principal */
+        /* Carousel */
         .swiper { width: 100%; max-width: 1250px; padding-bottom: 60px; }
-        
         .slide-grid {
             display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px;
             background: var(--card); padding: 35px; border-radius: 24px;
@@ -47,7 +44,6 @@
         }
 
         .news-scroll { max-height: 500px; overflow-y: auto; padding-right: 15px; }
-        
         .news-card {
             background: #1f1f2e; padding: 18px; border-radius: 12px;
             margin-bottom: 15px; border-left: 5px solid var(--b-color);
@@ -55,8 +51,7 @@
         }
         .news-card:hover { transform: translateX(8px); background: #252538; }
         .news-card a { color: var(--text); text-decoration: none; font-weight: bold; font-size: 1rem; display: block; }
-        
-        .meta-info { font-size: 0.75rem; color: #888; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .meta-info { font-size: 0.75rem; color: #888; margin-top: 8px; text-transform: uppercase; }
         .bias-analysis { font-size: 0.85rem; color: #ccc; margin-top: 10px; font-style: italic; }
 
         @media (max-width: 950px) { .slide-grid { grid-template-columns: 1fr; } }
@@ -66,15 +61,13 @@
 
 <div class="header">
     <h1>Observatorio Geopolítico</h1>
-    <p id="status-update">Sincronizando matriz de gravedad...</p>
+    <p id="status-update">Cargando inteligencia multipolar...</p>
     
     <div class="time-nav">
         <button id="btn-live" class="active-btn" onclick="loadData('live')">TIEMPO REAL</button>
-        
         <select id="sel-semana" onchange="loadData('semanal', this.value)">
             <option value="">Cargando semanas...</option>
         </select>
-
         <select id="sel-mes" onchange="loadData('mensual', this.value)">
             <option value="">Cargando meses...</option>
         </select>
@@ -82,8 +75,7 @@
 </div>
 
 <div class="swiper">
-    <div class="swiper-wrapper" id="carousel-wrapper">
-        </div>
+    <div class="swiper-wrapper" id="carousel-wrapper"></div>
     <div class="swiper-pagination"></div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
@@ -92,35 +84,33 @@
 <script>
     let swiperInstance;
 
-    // 1. INICIALIZAR SELECTORES DESDE EL MANIFIESTO
-    async function init() {
+    // 1. Llenar selectores desde el manifiesto
+    async function initSelectors() {
         try {
             const res = await fetch('manifest.json');
+            if (!res.ok) throw new Error();
             const manifest = await res.json();
             
             const selSemana = document.getElementById('sel-semana');
             const selMes = document.getElementById('sel-mes');
 
             selSemana.innerHTML = '<option value="">Seleccionar Semana...</option>';
-            manifest.semanal.forEach(file => {
-                const label = file.replace('.json', '').replace('_', ' ').replace('Semana', 'Sem.');
-                selSemana.innerHTML += `<option value="${file}">${label}</option>`;
+            manifest.semanal.forEach(f => {
+                selSemana.innerHTML += `<option value="${f}">${f.replace('.json','').replace('_',' ')}</option>`;
             });
 
             selMes.innerHTML = '<option value="">Seleccionar Mes...</option>';
-            manifest.mensual.forEach(file => {
-                const label = file.replace('.json', '').replace('_', ' ').replace('Mes', '');
-                selMes.innerHTML += `<option value="${file}">${label}</option>`;
+            manifest.mensual.forEach(f => {
+                selMes.innerHTML += `<option value="${f}">${f.replace('.json','').replace('_',' ')}</option>`;
             });
         } catch (e) {
-            console.log("Aún no hay manifiesto disponible.");
+            console.log("Esperando primera generación de históricos...");
         }
         loadData('live');
     }
 
-    // 2. CARGAR DATA (LIVE O HISTÓRICA)
+    // 2. Cargar datos
     async function loadData(tipo, archivo = '') {
-        // UI Feedback
         document.querySelectorAll('.time-nav button, .time-nav select').forEach(el => el.classList.remove('active-btn'));
         if(tipo === 'live') document.getElementById('btn-live').classList.add('active-btn');
 
@@ -131,45 +121,39 @@
         try {
             const response = await fetch(url);
             const data = await response.json();
-            renderDashboard(data);
+            renderUI(data);
             document.getElementById('status-update').innerText = `Mostrando: ${tipo.toUpperCase()} ${archivo.replace('.json', '')}`;
         } catch (e) {
-            alert("Error al cargar los datos solicitados.");
+            console.error("Error al cargar datos");
         }
     }
 
-    // 3. RENDERIZAR INTERFAZ
-    function renderDashboard(data) {
+    // 3. Dibujar UI
+    function renderUI(data) {
         const wrapper = document.getElementById('carousel-wrapper');
         wrapper.innerHTML = ''; 
 
         data.carousel.forEach((slide, idx) => {
-            const slideHtml = `
+            wrapper.innerHTML += `
                 <div class="swiper-slide">
                     <div class="slide-grid">
-                        <div class="viz-col">
+                        <div>
                             <h2 style="color: ${slide.color}">${slide.area}</h2>
-                            <div class="consensus-box">
-                                <strong>Punto Cero:</strong><br>${slide.punto_cero}
-                            </div>
+                            <div class="consensus-box"><strong>Punto Cero:</strong><br>${slide.punto_cero}</div>
                             <canvas id="radar-${idx}"></canvas>
                         </div>
-                        <div class="news-col">
+                        <div class="news-scroll">
                             <h3>Partículas Regionales</h3>
-                            <div class="news-scroll">
-                                ${slide.particulas.map(p => `
-                                    <div class="news-card" style="--b-color: ${p.color_bloque}">
-                                        <a href="${p.link}" target="_blank">${p.titulo}</a>
-                                        <div class="meta-info">Bloque: ${p.bloque} | Proximidad: ${p.proximidad}%</div>
-                                        <p class="bias-analysis">${p.sesgo}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
+                            ${slide.particulas.map(p => `
+                                <div class="news-card" style="--b-color: ${p.color_bloque}">
+                                    <a href="${p.link}" target="_blank">${p.titulo}</a>
+                                    <div class="meta-info">${p.bloque} | Proximidad: ${p.proximidad}%</div>
+                                    <p class="bias-analysis">${p.sesgo}</p>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
-                </div>
-            `;
-            wrapper.innerHTML += slideHtml;
+                </div>`;
         });
 
         if (swiperInstance) swiperInstance.destroy();
@@ -180,14 +164,11 @@
         });
     }
 
-    // 4. CREAR GRÁFICOS RADAR
+    // 4. Crear Radar
     function createCharts(carouselData) {
         const regiones = ["USA", "EUROPE", "RUSSIA", "CHINA", "LATAM", "MID_EAST", "INDIA", "AFRICA"];
-        
         carouselData.forEach((slide, idx) => {
             const ctx = document.getElementById(`radar-${idx}`);
-            if (!ctx) return;
-
             const values = regiones.map(r => {
                 const p = slide.particulas.find(part => part.bloque === r);
                 return p ? p.proximidad : 0;
@@ -207,13 +188,7 @@
                 },
                 options: {
                     scales: {
-                        r: {
-                            angleLines: { color: '#333' },
-                            grid: { color: '#333' },
-                            suggestedMin: 0, suggestedMax: 100,
-                            ticks: { display: false },
-                            pointLabels: { color: '#aaa', font: { size: 10 } }
-                        }
+                        r: { suggestedMin: 0, suggestedMax: 100, ticks: { display: false }, pointLabels: { color: '#aaa' } }
                     },
                     plugins: { legend: { display: false } }
                 }
@@ -221,7 +196,7 @@
         });
     }
 
-    init();
+    initSelectors();
 </script>
 </body>
 </html>
