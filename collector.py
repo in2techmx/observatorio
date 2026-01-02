@@ -3,11 +3,16 @@ import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from google import genai
 
-# --- CONFIGURACIÓN DE CONEXIÓN ---
+# --- CONFIGURACIÓN ESTRATÉGICA ---
 ssl_context = ssl._create_unverified_context()
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
 
 CATEGORIAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", "Soberanía y Alianzas", "Tecnología y Espacio"]
+
+BLOQUE_COLORS = {
+    "USA": "#3b82f6", "Europa": "#fde047", "Rusia": "#ef4444", 
+    "China": "#f97316", "LATAM": "#d946ef", "Medio Oriente": "#10b981", "África": "#8b5cf6"
+}
 
 FUENTES_ESTRATEGICAS = {
     "USA": ["https://www.washingtontimes.com/rss/headlines/news/world/", "https://www.washingtontimes.com/rss/headlines/news/politics/"],
@@ -19,44 +24,29 @@ FUENTES_ESTRATEGICAS = {
     "África": ["https://www.africanews.com/feed/"]
 }
 
-BLOQUE_COLORS = {
-    "USA": "#3b82f6", "Europa": "#fde047", "Rusia": "#ef4444", 
-    "China": "#f97316", "LATAM": "#d946ef", "Medio Oriente": "#10b981", "África": "#8b5cf6"
-}
-
 def get_pure_content(url):
-    """EXTRAE CUERPO DE NOTICIA: Limpia basura y toma hasta 1500 caracteres"""
+    """Extrae el núcleo narrativo (Deep Scraping)"""
     try:
         req = urllib.request.Request(url, headers=HEADERS)
         with urllib.request.urlopen(req, timeout=12, context=ssl_context) as resp:
             soup = BeautifulSoup(resp.read(), 'html.parser')
-            # Limpieza quirúrgica de Ads y Nav
-            for noisy in soup(["script", "style", "nav", "footer", "header", "aside", "form", "button"]):
+            for noisy in soup(["script", "style", "nav", "footer", "header", "aside", "form", "ad"]):
                 noisy.decompose()
-            
-            # Captura de párrafos reales
             paragraphs = soup.find_all('p')
-            text_parts = [p.get_text().strip() for p in paragraphs if len(p.get_text()) > 100]
-            full_text = " ".join(text_parts[:6]) # Tomamos los primeros 6 párrafos densos
-            
-            # Limpieza de espacios y enlaces
-            full_text = re.sub(r'http\S+', '', full_text)
-            return re.sub(r'\s+', ' ', full_text).strip()[:1500]
+            text = " ".join([p.get_text().strip() for p in paragraphs if len(p.get_text()) > 100][:6])
+            return re.sub(r'\s+', ' ', text).strip()[:1500]
     except:
         return ""
 
 def triaje_inteligente(client, bloque, pool):
-    """IA EDITORIAL: Analiza hasta 20 titulares y elige los 3 estratégicos"""
+    """La IA filtra 20 titulares y elige los 3 más pesados geopolíticamente"""
     listado = "\n".join([f"[{i}] {n['title']}" for i, n in enumerate(pool)])
     prompt = f"""
-    Eres un Analista Senior de Inteligencia Geopolítica.
-    De los siguientes 20 titulares del bloque '{bloque}', selecciona EXACTAMENTE los índices de los 3 que representan mayor impacto estratégico, cambios en el equilibrio de poder o relevancia económica global.
-    IGNORA: sucesos locales, deportes, farándula o noticias de interés humano.
-
+    Como analista de inteligencia, selecciona los índices de los 3 titulares más estratégicos del bloque '{bloque}'.
+    Ignora temas locales, deportes o farándula. Céntrate en poder global.
     LISTA:
     {listado}
-
-    Responde ESTRICTAMENTE un JSON con este formato: {{"indices": [index1, index2, index3]}}
+    Responde solo JSON: {{"indices": [0, 1, 2]}}
     """
     try:
         response = client.models.generate_content(
@@ -64,14 +54,13 @@ def triaje_inteligente(client, bloque, pool):
             contents=prompt,
             config={'response_mime_type': 'application/json'}
         )
-        # Limpieza básica por si la IA añade texto extra
         clean_json = response.text.strip().replace('```json', '').replace('```', '')
         return json.loads(clean_json).get("indices", [])
     except:
-        return [0, 1] # Fallback si falla la criba
+        return [0, 1]
 
 def collect():
-    print("📡 Fase 1: Escaneo de Radar Geopolítico (20 ítems/fuente)...")
+    print("📡 Iniciando Fase 1: Radar (20 noticias por fuente)...")
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
     contexto_final = ""
     
@@ -84,44 +73,54 @@ def collect():
                     xml_data = resp.read().decode('utf-8', errors='ignore')
                     root = ET.fromstring(xml_data)
                     items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
-                    
-                    for item in items[:20]: # Radar de 20 encabezados
+                    for item in items[:20]:
                         t_node = item.find('title') or item.find('{http://www.w3.org/2005/Atom}title')
                         t = t_node.text if t_node is not None else ""
-                        
                         l_node = item.find('link') or item.find('{http://www.w3.org/2005/Atom}link')
                         l = l_node.attrib.get('href') if l_node is not None and l_node.attrib else (l_node.text if l_node is not None else "")
-                        
                         if t and l: pool_bloque.append({"title": t, "link": l})
             except: continue
 
         if pool_bloque:
-            print(f"🧠 IA realizando triaje para {bloque}...")
+            print(f"🧠 Triaje IA para {bloque}...")
             seleccionados = triaje_inteligente(client, bloque, pool_bloque)
-            
             for idx in seleccionados:
                 if idx < len(pool_bloque):
                     noticia = pool_bloque[idx]
-                    print(f"   ∟ Extrayendo análisis profundo: {noticia['title'][:50]}...")
+                    print(f"   ∟ Leyendo cuerpo: {noticia['title'][:40]}...")
                     cuerpo = get_pure_content(noticia['link'])
                     if cuerpo:
-                        contexto_final += f"BLOQUE: {bloque} | TÍTULO: {noticia['title']} | CUERPO: {cuerpo}\n\n"
-            time.sleep(1) # Pausa estratégica entre bloques
+                        contexto_final += f"BLOQUE: {bloque} | TÍTULO: {noticia['title']} | LINK: {noticia['link']} | CUERPO: {cuerpo}\n\n"
+            time.sleep(1)
 
-    # --- ANÁLISIS SEMÁNTICO FINAL ---
-    print("🔮 Generando Clustering Semántico Final...")
+    print("🔮 Generando Estructura de Partículas para el Mapa...")
     prompt_final = f"""
-    Como motor de inteligencia multipolar, analiza este universo de datos:
+    Analiza este universo de datos y genera un JSON para un mapa D3.js:
     {contexto_final}
     
-    Categorías: {CATEGORIAS}.
-    TAREAS:
-    1. Define el 'Consenso Global' por cada categoría comparando todas las visiones regionales.
-    2. Calcula la 'Proximidad' (0-100) según qué tanto se aleja el CUERPO de la noticia de ese consenso.
-    3. Explica el sesgo específico del bloque en 'analisis_regional'.
-    4. Usa estos colores: {BLOQUE_COLORS}.
+    ESTRUCTURA JSON REQUERIDA:
+    {{
+      "categorias": [
+        {{
+          "nombre": "Nombre de la Categoría",
+          "consenso": "Resumen del consenso global en 1 frase",
+          "particulas": [
+            {{
+              "titulo": "Título de la noticia",
+              "bloque": "Nombre del Bloque (USA, China, etc)",
+              "proximidad": 85, 
+              "analisis_regional": "Breve análisis del sesgo o enfoque de este bloque sobre el tema",
+              "link": "URL original de la noticia",
+              "color_bloque": "Usa el color asignado al bloque"
+            }}
+          ]
+        }}
+      ]
+    }}
     
-    Responde solo JSON estricto.
+    Categorías: {CATEGORIAS}.
+    Colores: {BLOQUE_COLORS}.
+    Responde estrictamente en JSON.
     """
     
     try:
@@ -133,12 +132,11 @@ def collect():
         clean_res = res.text.strip().replace('```json', '').replace('```', '')
         data = json.loads(clean_res)
         
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
+        with open("latest_news.json", "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
-        print("✅ Observatorio actualizado con inteligencia depurada.")
+        print("✅ Mapa actualizado: latest_news.json generado con partículas.")
     except Exception as e:
-        print(f"❌ Error crítico en fase final: {e}")
+        print(f"❌ Error final: {e}")
 
 if __name__ == "__main__":
     collect()
