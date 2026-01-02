@@ -3,32 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRAVITY | Radar Geopolítico</title>
+    <title>GRAVITY | Observatorio Geopolítico</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-        .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(51, 65, 85, 0.5); backdrop-filter: blur(12px); }
+        .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(51, 65, 85, 0.5); backdrop-filter: blur(12px); transition: all 0.3s ease; }
+        .filter-btn { border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; }
+        .filter-btn.active { background: #3b82f6; border-color: #60a5fa; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .particle-card:hover { transform: translateY(-2px); border-color: rgba(59, 130, 246, 0.5); }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-10">
 
-    <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-slate-800 pb-8">
-        <div>
-            <h1 class="text-5xl font-black tracking-tighter text-white">GRAVITY <span class="text-blue-500">RADAR</span></h1>
-            <p class="text-slate-400 mt-2">Visualización de proximidad y sesgo en la narrativa global.</p>
+    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <h1 class="text-5xl font-black tracking-tighter text-white uppercase">Gravity <span class="text-blue-500">Radar</span></h1>
+                <p class="text-slate-400 mt-2 font-medium">Motor de Inteligencia Multipolar en Tiempo Real</p>
+            </div>
+            <div id="update-tag" class="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/30">SINCRONIZANDO...</div>
         </div>
-        <div id="update-tag" class="text-xs font-mono text-blue-400 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/30 mt-4">Sincronizando...</div>
+
+        <div class="flex flex-wrap gap-2 mt-8" id="filter-bar">
+            <button onclick="filterByBlock('ALL')" class="filter-btn active px-4 py-2 rounded-lg text-xs font-bold uppercase" id="btn-ALL">Todos los Bloques</button>
+            </div>
     </header>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div class="lg:col-span-1 glass-card rounded-3xl p-6 sticky top-10 h-fit">
-            <h2 class="text-xl font-bold mb-6 text-center">Convergencia por Bloque</h2>
-            <canvas id="radarGeopolitico"></canvas>
-            <p class="text-[10px] text-slate-500 mt-6 leading-relaxed italic text-center">
-                * El centro (0) representa máxima divergencia. El borde (100) representa total alineación con los hechos objetivos del Punto Cero.
-            </p>
+        <div class="lg:col-span-1 space-y-6">
+            <div class="glass-card rounded-3xl p-6 sticky top-10">
+                <h2 class="text-xl font-bold mb-6 text-center text-white">Convergencia de Bloques</h2>
+                <canvas id="radarGeopolitico"></canvas>
+                <div class="mt-6 p-4 bg-slate-900/50 rounded-2xl text-[10px] text-slate-400 leading-relaxed italic border border-slate-800">
+                    * El borde (100) indica alineación total con los hechos objetivos del Punto Cero. El centro indica divergencia narrativa.
+                </div>
+            </div>
         </div>
 
         <div id="matrix-container" class="lg:col-span-2 space-y-8">
@@ -36,26 +48,58 @@
     </div>
 
     <script>
-        let radarChart;
+        let fullData = null;
+        let activeBlock = 'ALL';
+        let radarChart = null;
 
-        async function initDashboard() {
+        const BLOQUE_COLORS = {
+            "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
+            "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
+            "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
+        };
+
+        async function init() {
             try {
-                const response = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
-                const data = await response.json();
+                const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
+                fullData = await res.json();
+                document.getElementById('update-tag').innerText = "ÚLTIMA ACTUALIZACIÓN: " + new Date().toLocaleString();
                 
-                document.getElementById('update-tag').innerText = "ONLINE: " + new Date(data.metadata.generated_at).toLocaleString();
-
-                renderRadar(data);
-                renderMatrix(data);
-            } catch (error) {
-                console.error("Error:", error);
+                generateFilterButtons();
+                renderRadar();
+                renderMatrix();
+            } catch (e) {
+                console.error("Error cargando datos:", e);
+                document.getElementById('matrix-container').innerHTML = "<p class='text-red-400'>Error al cargar la matriz. Reintenta en unos minutos.</p>";
             }
         }
 
-        function renderRadar(data) {
+        function generateFilterButtons() {
+            const blocks = new Set();
+            fullData.carousel.forEach(area => {
+                area.particulas.forEach(p => blocks.add(p.bloque));
+            });
+            
+            const bar = document.getElementById('filter-bar');
+            blocks.forEach(block => {
+                const btn = document.createElement('button');
+                btn.id = `btn-${block}`;
+                btn.className = "filter-btn px-4 py-2 rounded-lg text-xs font-bold uppercase text-slate-400 hover:text-white bg-slate-900/50";
+                btn.innerText = block;
+                btn.onclick = () => filterByBlock(block);
+                bar.appendChild(btn);
+            });
+        }
+
+        function filterByBlock(block) {
+            activeBlock = block;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${block}`).classList.add('active');
+            renderMatrix();
+        }
+
+        function renderRadar() {
             const bloques = {};
-            // Agrupar proximidad por bloque
-            data.carousel.forEach(area => {
+            fullData.carousel.forEach(area => {
                 area.particulas.forEach(p => {
                     if(!bloques[p.bloque]) bloques[p.bloque] = [];
                     bloques[p.bloque].push(p.proximidad);
@@ -73,59 +117,63 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Proximidad al Consenso %',
+                        label: 'Proximidad Media %',
                         data: averages,
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
                         borderColor: '#3b82f6',
-                        pointBackgroundColor: '#60a5fa',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        pointBackgroundColor: labels.map(l => BLOQUE_COLORS[l] || '#fff')
                     }]
                 },
                 options: {
-                    scales: {
-                        r: {
-                            angleLines: { color: 'rgba(255,255,255,0.1)' },
-                            grid: { color: 'rgba(255,255,255,0.1)' },
-                            pointLabels: { color: '#94a3b8', font: { size: 10 } },
-                            ticks: { display: false },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
-                    },
-                    plugins: { legend: { display: false } }
+                    scales: { r: { angleLines: {color:'rgba(255,255,255,0.05)'}, grid: {color:'rgba(255,255,255,0.05)'}, pointLabels: {color:'#94a3b8', font:{size:10}}, ticks: {display:false}, suggestedMin:0, suggestedMax:100 } },
+                    plugins: { legend: {display:false} }
                 }
             });
         }
 
-        function renderMatrix(data) {
+        function renderMatrix() {
             const container = document.getElementById('matrix-container');
-            container.innerHTML = data.carousel.map(area => `
-                <div class="glass-card rounded-3xl p-8 hover:border-blue-500/50 transition-all">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-4 h-4 rounded-full" style="background:${area.color}"></div>
-                        <h2 class="text-2xl font-bold">${area.area}</h2>
+            container.innerHTML = fullData.carousel.map(area => {
+                const filteredParticulas = activeBlock === 'ALL' 
+                    ? area.particulas 
+                    : area.particulas.filter(p => p.bloque === activeBlock);
+
+                if (filteredParticulas.length === 0 && activeBlock !== 'ALL') return '';
+
+                return `
+                    <div class="glass-card rounded-3xl p-8 animate-in fade-in duration-500">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-3 h-3 rounded-full shadow-[0_0_10px_currentColor]" style="background:${area.color}; color:${area.color}"></div>
+                            <h2 class="text-2xl font-black text-white uppercase tracking-tighter">${area.area}</h2>
+                        </div>
+                        
+                        <div class="bg-blue-500/5 p-5 rounded-2xl border border-blue-500/10 mb-8">
+                            <span class="text-[9px] font-bold text-blue-400 uppercase tracking-widest block mb-2">Punto Cero (Hechos Objetivos)</span>
+                            <p class="text-sm text-slate-300 leading-relaxed italic">"${area.punto_cero}"</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${filteredParticulas.map(p => `
+                                <a href="${p.link}" target="_blank" class="particle-card block p-5 rounded-2xl bg-slate-900/40 border border-slate-800 hover:bg-slate-800/60 transition-all">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <span class="text-[10px] font-black px-2 py-0.5 rounded border" style="border-color:${BLOQUE_COLORS[p.bloque]}44; color:${BLOQUE_COLORS[p.bloque]}">${p.bloque}</span>
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-1.5 h-1.5 rounded-full" style="background:${p.proximidad > 70 ? '#10b981' : '#f59e0b'}"></div>
+                                            <span class="text-[10px] font-bold text-slate-500">${p.proximidad}% PROX.</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-sm font-bold text-white mb-2 leading-tight">${p.titulo}</h3>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed italic">"${p.sesgo}"</p>
+                                </a>
+                            `).join('')}
+                        </div>
                     </div>
-                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 mb-6">
-                        <p class="text-xs font-mono text-blue-400 mb-2 uppercase tracking-widest">Punto Cero (Hechos)</p>
-                        <p class="text-sm text-slate-300 leading-relaxed">${area.punto_cero}</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        ${area.particulas.map(p => `
-                            <a href="${p.link}" target="_blank" class="block bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-white/10 transition-colors group">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded" style="background:${p.color_bloque}33; color:${p.color_bloque}">${p.bloque}</span>
-                                    <span class="text-[10px] text-slate-500">${p.proximidad}%</span>
-                                </div>
-                                <h3 class="text-sm font-semibold group-hover:text-blue-400 line-clamp-2">${p.titulo}</h3>
-                                <p class="text-[11px] text-slate-500 mt-2 italic">"${p.sesgo}"</p>
-                            </a>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        initDashboard();
+        init();
     </script>
 </body>
 </html>
