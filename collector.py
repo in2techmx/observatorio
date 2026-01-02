@@ -137,7 +137,6 @@ class ClusterEngine:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
             )
-            # FIX: strict=False permite caracteres de control (saltos de línea raros) dentro del JSON
             return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
         except: return None
 
@@ -183,7 +182,6 @@ class ClusterEngine:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
             )
-            # FIX: strict=False es la clave para evitar el error "Invalid control character"
             return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
         except Exception as e:
             print(f"⚠️ Error Cluster IA ({area_name}): {e}")
@@ -252,4 +250,5 @@ class ClusterEngine:
         return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(area, "#94a3b8")
 
 if __name__ == "__main__":
-    key = os.environ.get("GEMINI_API_
+    key = os.environ.get("GEMINI_API_KEY")
+    if key: ClusterEngine(key).run()
