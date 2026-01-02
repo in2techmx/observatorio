@@ -4,12 +4,17 @@ from bs4 import BeautifulSoup
 from google import genai
 
 # --- CONFIGURACIÓN DE RUTAS ---
-PATHS = {"diario": "historico_noticias/diario", "semanal": "historico_noticias/semanal", "mensual": "historico_noticias/mensual"}
+PATHS = {
+    "diario": "historico_noticias/diario", 
+    "semanal": "historico_noticias/semanal", 
+    "mensual": "historico_noticias/mensual"
+}
 for p in PATHS.values(): os.makedirs(p, exist_ok=True)
 
 ssl_context = ssl._create_unverified_context()
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
+# --- ESTÉTICA Y MAPEO ---
 AREAS_ESTRATEGICAS = {
     "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6",
     "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b",
@@ -22,15 +27,16 @@ BLOQUE_COLORS = {
     "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
 }
 
+# --- FUENTES (Híbridas y Regionales) ---
 FUENTES = {
-    "USA": ["https://news.google.com/rss/search?q=USA+geopolitics&hl=en-US&gl=US&ceid=US:en"],
+    "USA": ["https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"],
     "RUSSIA": ["https://tass.com/rss/v2.xml", "https://globalvoices.org/section/world/russia/feed/"],
     "CHINA": ["https://www.scmp.com/rss/91/feed", "https://globalvoices.org/section/world/east-asia/feed/"],
     "EUROPE": ["https://www.france24.com/en/rss", "https://www.euronews.com/rss?level=vertical&name=news"],
     "LATAM": ["https://legrandcontinent.eu/es/feed/", "https://globalvoices.org/section/world/latin-america/feed/"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml"],
-    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss"],
-    "AFRICA": ["https://news.google.com/rss/search?q=Africa+geopolitics&hl=en-US&gl=US&ceid=US:en", "https://globalvoices.org/section/world/sub-saharan-africa/feed/"]
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.middleeasteye.net/rss"],
+    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss", "https://globalvoices.org/section/world/south-asia/feed/"],
+    "AFRICA": ["https://news.google.com/rss/search?q=Africa+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://globalvoices.org/section/world/sub-saharan-africa/feed/"]
 }
 
 class GeopoliticalCollector:
@@ -41,11 +47,10 @@ class GeopoliticalCollector:
         self.hoy = datetime.datetime.now()
 
     def fetch_data(self):
-        print("🚀 Iniciando Motor de Inteligencia Geopolítica...")
+        print("🚀 Capturando noticias para matriz de alta densidad...")
         batch_text = ""
         total_news = 0
         for region, urls in FUENTES.items():
-            print(f"📍 Escaneando {region}...")
             region_count = 0
             for url in urls:
                 try:
@@ -53,7 +58,7 @@ class GeopoliticalCollector:
                     with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
                         root = ET.fromstring(resp.read())
                         items = root.findall('.//item') or root.findall('.//{*}entry')
-                        for n in items[:6]:
+                        for n in items[:10]: # Aumentamos a 10 por fuente
                             t = (n.find('title') or n.find('{*}title')).text.strip()
                             l = (n.find('link').text if n.find('link') is not None else n.find('{*}link').attrib.get('href', '')).strip()
                             if t and l:
@@ -64,58 +69,85 @@ class GeopoliticalCollector:
                                 total_news += 1
                                 region_count += 1
                 except: continue
-            print(f"   ✓ {region_count} noticias encontradas.")
+            print(f"   ✓ {region}: {region_count} noticias capturadas.")
         return batch_text, total_news
 
     def analyze(self, batch_text):
-        print(f"🧠 Analizando con Gemini...")
-        prompt = f"""Genera una matriz geopolítica JSON. 
-        IMPORTANTE: Responde ÚNICAMENTE el objeto JSON. No añadas texto explicativo.
-        Estructura: {{"carousel": [ {{"area": "...", "punto_cero": "...", "particulas": [{{"titulo": "...", "bloque": "...", "proximidad": 80, "sesgo": "..."}}]}}]}}
-        ÁREAS SUGERIDAS: {list(AREAS_ESTRATEGICAS.keys())}
-        CONTEXTO: {batch_text}"""
+        print("🧠 Generando Matriz Exhaustiva (Traducción + Densidad)...")
+        prompt = f"""
+        Actúa como un Analista de Inteligencia Senior. Procesa este contexto exhaustivamente.
         
+        REGLAS:
+        1. TRADUCE TODO AL ESPAÑOL (Títulos y Sesgos).
+        2. ALTA DENSIDAD: Incluye la mayor cantidad de noticias relevantes posible (hasta 6 por área estratégica).
+        3. REPRESENTATIVIDAD: Asegura que todos los bloques geopolíticos aparezcan.
+        4. LINK: En el campo 'link' pon exactamente el TITULO_ORIGINAL para recuperarlo.
+
+        ESTRUCTURA JSON:
+        {{
+          "carousel": [
+            {{
+              "area": "Nombre en Español",
+              "punto_cero": "Hechos objetivos traducidos",
+              "particulas": [
+                {{
+                  "titulo": "Título en Español",
+                  "bloque": "USA, CHINA, RUSSIA, etc.",
+                  "proximidad": 0-100,
+                  "sesgo": "Análisis narrativo en español",
+                  "link": "TITULO_ORIGINAL"
+                }}
+              ]
+            }}
+          ]
+        }}
+        ÁREAS: {list(AREAS_ESTRATEGICAS.keys())}
+        CONTEXTO: {batch_text}
+        """
         try:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", 
                 contents=prompt, 
-                config={'response_mime_type': 'application/json', 'temperature': 0.1}
+                config={
+                    'response_mime_type': 'application/json', 
+                    'temperature': 0.15,
+                    'max_output_tokens': 5000 # Espacio extra para JSON grande
+                }
             )
-            # Limpiar posibles backticks de markdown
             clean_json = res.text.strip().replace('```json', '').replace('```', '')
             return json.loads(clean_json)
-        except Exception as e:
-            print(f"Error parseando JSON de Gemini: {e}")
-            return {"carousel": []}
+        except: return {"carousel": []}
 
     def run(self):
         batch_text, total_news = self.fetch_data()
         if total_news < 5:
-            print("❌ Datos insuficientes."); return
+            print("❌ Error: No se capturaron suficientes noticias."); return
 
         data = self.analyze(batch_text)
         
-        # VALIDACIÓN DE ESTRUCTURA (Previene el AttributeError)
-        if 'carousel' in data and isinstance(data['carousel'], list):
+        if 'carousel' in data:
             for slide in data['carousel']:
-                if not isinstance(slide, dict): continue # Salta si es un string
-                
-                slide['area'] = slide.get('area', "Tendencia Global")
-                slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#3b82f6")
+                if not isinstance(slide, dict): continue
+                area_name = slide.get('area', "Tendencia Global")
+                slide['color'] = AREAS_ESTRATEGICAS.get(area_name, "#3b82f6")
                 
                 for p in slide.get('particulas', []):
                     if not isinstance(p, dict): continue
-                    art_id = self.title_to_id.get(p.get('titulo'))
-                    if art_id: p['link'] = self.link_storage[art_id]['link']
+                    # Recuperación de Link Real
+                    art_id = self.title_to_id.get(p.get('link'))
+                    if art_id:
+                        p['link'] = self.link_storage[art_id]['link']
                     p['color_bloque'] = BLOQUE_COLORS.get(p.get('bloque'), "#94a3b8")
 
+        # Guardado de archivos
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
         fecha = self.hoy.strftime('%Y-%m-%d_%H%M')
         with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-        print(f"✅ Éxito: Matriz generada con noticias reales.")
+            
+        print(f"✅ Éxito: Matriz densa generada con {total_news} fuentes procesadas.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
