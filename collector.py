@@ -5,7 +5,6 @@ from google import genai
 from bs4 import BeautifulSoup 
 
 # --- PARCHE DE CODIFICACIÓN (CRÍTICO) ---
-# Evita errores con caracteres chinos, rusos, árabes, etc.
 if sys.stdout.encoding != 'utf-8':
     try: sys.stdout.reconfigure(encoding='utf-8')
     except: pass
@@ -25,7 +24,6 @@ AREAS_ESTRATEGICAS = [
     "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
 ]
 
-# Mapa de normalización para asegurar que los colores coincidan en el Frontend
 NORMALIZER = {
     "EE.UU.": "USA", "ESTADOS UNIDOS": "USA", "US": "USA", "UNITED STATES": "USA",
     "RUSIA": "RUSSIA", "RUSSIAN FEDERATION": "RUSSIA", "MOSCU": "RUSSIA",
@@ -108,17 +106,13 @@ class ClusterEngine:
             print(f"   -> Escaneando red: {region}...")
             for url in urls:
                 try:
-                    # Timeout ajustado para evitar cuellos de botella
                     req = urllib.request.Request(url, headers=HEADERS)
                     content = urllib.request.urlopen(req, timeout=4).read()
                     
                     try:
                         root = ET.fromstring(content)
-                    except:
-                        # Fallback simple si el XML está sucio
-                        continue
+                    except: continue
 
-                    # Capturamos máx 5 por feed para no saturar el Triaje (5 * 55 = ~275 noticias)
                     items = root.findall('.//item') or root.findall('.//{*}entry')
                     for n in items[:5]:
                         t = (n.find('title') or n.find('{*}title')).text.strip()
@@ -128,8 +122,7 @@ class ClusterEngine:
                             aid = hashlib.md5(t.encode('utf-8')).hexdigest()[:8]
                             self.raw_storage[aid] = {"id": aid, "title": t, "link": l, "region": region}
                             raw_items.append(f"ID:{aid} | TITLE:{t}")
-                except: 
-                    continue
+                except: continue
         return raw_items
 
     def smart_scrape(self, url):
@@ -138,7 +131,6 @@ class ClusterEngine:
             req = urllib.request.Request(url, headers=HEADERS)
             with urllib.request.urlopen(req, timeout=5) as response:
                 soup = BeautifulSoup(response.read(), 'html.parser')
-                # Limpieza agresiva
                 for s in soup(["script", "style", "nav", "footer", "svg", "header", "aside", "form"]): 
                     s.extract()
                 return re.sub(r'\s+', ' ', soup.get_text()).strip()[:1500]
@@ -173,8 +165,11 @@ class ClusterEngine:
             meta = self.raw_storage[aid]
             full_text = self.smart_scrape(meta['link'])
             if len(full_text) < 50: full_text = meta['title'] 
-            # Inyectamos el bloque para que la IA sepa quién habla
             cluster_context.append(f"ID: {aid} | BLOQUE: {meta['region']} | TEXTO: {full_text}")
+
+        # --- CORRECCIÓN DE SINTAXIS PARA PYTHON < 3.12 ---
+        # Preparamos el string fuera del f-string para evitar Backslash Error
+        context_string = "\n".join(cluster_context)
 
         prompt = f"""
         Eres el motor PROXIMITY. Estás analizando el ecosistema de noticias: {area_name}.
@@ -186,7 +181,7 @@ class ClusterEngine:
         MÉTRICA PROXIMIDAD (0-100%):
         - 100% (CENTRO): Narrativa Próxima. Coincide con el consenso factual/técnico.
         - 50% (MEDIA): Interpretación estándar del bloque.
-        - 0% (BORDE): Narrativa Lejana. Propaganda, especulación o contradicción frontal con otros bloques.
+        - 0% (BORDE): Narrativa Lejana. Propaganda, especulación o contradicción frontal.
 
         OUTPUT JSON:
         {{
@@ -202,7 +197,7 @@ class ClusterEngine:
         }}
 
         DATA DEL CLÚSTER:
-        {"\n".join(cluster_context)}
+        {context_string}
         """
         
         try:
@@ -240,10 +235,7 @@ class ClusterEngine:
         for area, ids in self.clusters.items():
             if not ids: continue
             
-            # Tomamos una muestra representativa (Top 12) para análisis profundo
-            # Esto evita errores por exceso de tokens y mantiene la velocidad
             ids_to_process = ids[:12] 
-            
             analysis = self.analyze_cluster(area, ids_to_process)
             
             if analysis and 'particulas' in analysis:
@@ -252,8 +244,6 @@ class ClusterEngine:
                     if p['id'] in self.raw_storage:
                         meta = self.raw_storage[p['id']]
                         p['link'] = meta['link']
-                        
-                        # Normalización de Bloque/Región
                         p['bloque'] = self.normalize_block(meta['region'])
                         
                         try: p['proximidad'] = float(p['proximidad'])
@@ -280,7 +270,6 @@ class ClusterEngine:
         print("✅ CICLO COMPLETADO: Proximity Engine Actualizado.")
 
     def normalize_block(self, region):
-        # Mapea la región del feed al bloque de color del frontend
         return NORMALIZER.get(region, "GLOBAL")
 
     def get_area_color(self, area):
