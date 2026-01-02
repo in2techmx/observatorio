@@ -1,7 +1,28 @@
 import os
 import json
 import datetime
+import urllib.request
+import xml.etree.ElementTree as ET
 from google import genai
+
+def get_rss_news():
+    """Obtiene titulares reales de fuentes globales"""
+    # Puedes añadir más fuentes aquí (BBC, Reuters, Al Jazeera, etc.)
+    urls = [
+        "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "https://www.aljazeera.com/xml/rss/all.xml"
+    ]
+    titulares = []
+    for url in urls:
+        try:
+            with urllib.request.urlopen(url) as response:
+                tree = ET.parse(response)
+                root = tree.getroot()
+                for item in root.findall('.//item')[:10]: # 10 noticias por fuente
+                    titulares.append(item.find('title').text)
+        except Exception as e:
+            print(f"Error leyendo RSS: {e}")
+    return "\n".join(titulares)
 
 def collect():
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -9,69 +30,62 @@ def collect():
     if not os.path.exists(historico_dir):
         os.makedirs(historico_dir)
 
-    # Inicializa el cliente (detecta GEMINI_API_KEY en el entorno)
     client = genai.Client()
+    noticias_reales = get_rss_news()
 
-    # Modelos a probar (priorizando el que te funcionó)
-    modelos_a_probar = [
-        "gemini-2.5-flash",
-        "gemini-2.0-flash",
-        "gemini-1.5-pro"
+    prompt = f"""
+    Eres el motor de análisis 'Global Proximity'. 
+    Basándote en estas noticias reales de hoy:
+    {noticias_reales}
+
+    TAREA:
+    1. Agrupa las noticias en 6 ejes geopolíticos clave.
+    2. Para cada eje, calcula el 'Grado de Proximidad' (0-100%) entre los bloques implicados (Occidente, Global South, Eurasia, etc.).
+    3. Responde ÚNICAMENTE con un array JSON.
+
+    Formato esperado:
+    [
+      {{
+        "tematica": "Título breve",
+        "descripcion": "Análisis de fondo",
+        "regiones_activas": ["Región A", "Región B"],
+        "proximidad": "85%",
+        "perspectivas": {{
+          "Actor 1": "Postura A",
+          "Actor 2": "Postura B"
+        }}
+      }}
     ]
-
-    # Prompt optimizado para evitar texto plano
-    prompt = """Genera un informe geopolítico mundial de hoy 2026. 
-    Responde ÚNICAMENTE con un array JSON. Sin introducciones.
-    Formato: [{"tematica": "...", "descripcion": "...", "regiones_activas": [], "perspectivas": {}}]"""
+    """
 
     analisis = []
-    modelo_ganador = None
+    modelos = ["gemini-2.0-flash", "gemini-1.5-flash"] # Usamos los estables
 
-    print("--- INICIANDO COLECCIÓN ---")
-
-    for modelo in modelos_a_probar:
+    print("--- INICIANDO ANÁLISIS DE PROXIMIDAD ---")
+    
+    for modelo in modelos:
         try:
-            print(f"Probando: {modelo}...")
-            # Forzamos formato JSON en la configuración
             response = client.models.generate_content(
                 model=modelo,
                 contents=prompt,
                 config={'response_mime_type': 'application/json'}
             )
-            
             raw_text = response.text.strip()
-            
-            # Limpiador de seguridad para extraer el JSON
             inicio = raw_text.find("[")
             fin = raw_text.rfind("]") + 1
-            
-            if inicio != -1:
-                analisis = json.loads(raw_text[inicio:fin])
-                modelo_ganador = modelo
-                print(f"✅ ÉXITO con {modelo_ganador}")
-                break 
-
+            analisis = json.loads(raw_text[inicio:fin])
+            print(f"✅ ÉXITO: {len(analisis)} ejes de proximidad detectados.")
+            break 
         except Exception as e:
-            print(f"❌ Error en {modelo}: {str(e)[:50]}")
+            print(f"❌ Error en {modelo}: {e}")
 
-    if not modelo_ganador:
-        analisis = [{"tematica": "Error", "descripcion": "No se pudo obtener JSON"}]
-
-    # --- GUARDADO DE ARCHIVOS ---
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')
-    
-    # 1. Para la web
+    # --- GUARDADO ---
     with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
         json.dump(analisis, f, indent=4, ensure_ascii=False)
 
-    # 2. Para el histórico
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')
     with open(os.path.join(historico_dir, f"analisis_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(analisis, f, indent=4, ensure_ascii=False)
-
-    # 3. Timeline
-    files = sorted([f for f in os.listdir(historico_dir) if f.startswith('analisis_')], reverse=True)
-    with open(os.path.join(base_dir, "timeline.json"), "w", encoding="utf-8") as f:
-        json.dump(files[:50], f, indent=4)
 
     print(f"--- PROCESO COMPLETADO ---")
 
