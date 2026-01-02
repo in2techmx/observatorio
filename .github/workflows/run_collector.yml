@@ -105,18 +105,21 @@ class GeopoliticalCollector:
         res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json', 'temperature': 0.1})
         return json.loads(res.text.strip())
 
-    def actualizar_manifiesto(self):
-        """Genera el índice para el index.html"""
+        def actualizar_manifiesto(self):
+        """Genera el índice para el index.html en la raíz del proyecto"""
         try:
+            # Listamos archivos reales en las carpetas
             manifiesto = {
-                "diario": sorted(os.listdir(PATH_DIARIO), reverse=True),
-                "semanal": sorted(os.listdir(PATH_SEMANAL), reverse=True),
-                "mensual": sorted(os.listdir(PATH_MENSUAL), reverse=True)
+                "diario": sorted(os.listdir("historico_noticias/diario"), reverse=True) if os.path.exists("historico_noticias/diario") else [],
+                "semanal": sorted(os.listdir("historico_noticias/semanal"), reverse=True) if os.path.exists("historico_noticias/semanal") else [],
+                "mensual": sorted(os.listdir("historico_noticias/mensual"), reverse=True) if os.path.exists("historico_noticias/mensual") else []
             }
+            # IMPORTANTE: Guardar en la raíz (donde está collector.py)
             with open("manifest.json", "w", encoding="utf-8") as f:
                 json.dump(manifiesto, f, indent=4, ensure_ascii=False)
-            print("📂 manifest.json actualizado.")
-        except: print("⚠️ Error al crear manifiesto.")
+            print("📂 manifest.json generado exitosamente en la raíz.")
+        except Exception as e:
+            print(f"⚠️ Error al crear manifiesto: {e}")
 
     def run(self):
         rss_raw = self.fetch_rss_all()
