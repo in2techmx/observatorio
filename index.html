@@ -12,133 +12,187 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Proximity | Orbit Engine</title>
+    <title>Global Proximity | Deep Geopolitical Orbit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #f8fafc; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
-        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
-        .bubble { cursor: pointer; transition: filter 0.3s; }
-        .bubble:hover { filter: brightness(1.5) drop-shadow(0 0 15px rgba(56, 189, 248, 0.5)); }
-        .label { pointer-events: none; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; fill: white; font-size: 10px; }
-        #side-panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); }
-        .active-panel { transform: translateX(0) !important; }
-        .nav-btn { font-size: 10px; letter-spacing: 0.2em; font-weight: 700; border-bottom: 2px solid transparent; transition: all 0.3s; }
-        .active-nav { border-color: #38bdf8; color: #38bdf8; }
+        body { 
+            background: #020617; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+            margin: 0;
+        }
+        .label-cat { 
+            font-size: 10px; 
+            fill: #475569; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 0.4em; 
+            pointer-events: none;
+        }
+        #side-panel { 
+            transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); 
+            background: rgba(2, 6, 23, 0.98); 
+            backdrop-filter: blur(20px); 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .particle { 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        .particle:hover {
+            filter: brightness(1.5) contrast(1.2);
+        }
+        /* Animación de fondo sutil */
+        #universe::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0.5px, transparent 0.5px);
+            background-size: 60px 60px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 left-0 w-full p-8 z-40 flex justify-between items-start pointer-events-none">
-        <div class="pointer-events-auto">
-            <h1 class="text-2xl font-bold tracking-tighter italic">GLOBAL<span class="text-sky-500">PROXIMITY</span></h1>
-            <p class="text-[10px] text-slate-500 uppercase tracking-[0.4em]">Deep Geopolitical Orbit</p>
-        </div>
-        <div class="flex gap-6 pointer-events-auto">
-            <button onclick="updateData('day')" class="nav-btn active-nav uppercase">Día</button>
-            <button onclick="alert('Histórico en formación...')" class="nav-btn text-slate-600 uppercase">Semana</button>
-            <button onclick="alert('Histórico en formación...')" class="nav-btn text-slate-600 uppercase">Mes</button>
-        </div>
-    </nav>
+    <header class="fixed top-0 left-0 w-full p-8 z-40 pointer-events-none">
+        <h1 class="text-[12px] font-black tracking-[0.8em] text-slate-500 uppercase">Global Proximity</h1>
+        <p class="text-[10px] text-slate-600 mt-2 tracking-widest uppercase">Deep Geopolitical Orbit / Live Analysis</p>
+    </header>
 
-    <div id="canvas-container"></div>
+    <div id="universe" class="w-screen h-screen"></div>
 
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[600px] border-l border-white/10 z-50 transform translate-x-full overflow-y-auto p-12">
-        <button onclick="closePanel()" class="mb-12 text-[10px] font-black text-slate-500 hover:text-white tracking-[0.5em] uppercase">← Volver al Mapa</button>
-        <div id="content"></div>
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] border-l border-white/10 z-50 translate-x-full p-12 overflow-y-auto">
+        <button onclick="closePanel()" class="mb-16 text-slate-500 hover:text-white uppercase text-[10px] font-bold tracking-[0.4em] flex items-center gap-2">
+            <span>←</span> Regresar al Espacio
+        </button>
+        <div id="panel-content">
+            </div>
     </aside>
 
     <script>
         let width = window.innerWidth, height = window.innerHeight;
-        let svg = d3.select("#canvas-container").append("svg").attr("width", width).attr("height", height);
-        let simulation;
+        const svg = d3.select("#universe").append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-        async function updateData(period) {
-            const res = await fetch(`./latest_news.json?t=${Date.now()}`);
-            const data = await res.json();
-            drawBubbles(data);
-        }
+        async function init() {
+            try {
+                // Forzamos la carga del JSON más reciente para evitar caché
+                const data = await d3.json("./latest_news.json?nocache=" + Date.now());
+                
+                // Centros de Gravedad para las Categorías Maestras
+                const centers = {
+                    "Seguridad y Conflictos": {x: width * 0.25, y: height * 0.35},
+                    "Economía y Sanciones":   {x: width * 0.50, y: height * 0.35},
+                    "Energía y Recursos":    {x: width * 0.75, y: height * 0.35},
+                    "Soberanía y Alianzas":  {x: width * 0.35, y: height * 0.75},
+                    "Tecnología y Espacio":  {x: width * 0.65, y: height * 0.75}
+                };
 
-        function drawBubbles(data) {
-            svg.selectAll("*").remove();
+                const nodes = [];
+                data.categorias.forEach(cat => {
+                    // Etiqueta visual del centro de gravedad
+                    svg.append("text")
+                        .attr("x", centers[cat.nombre]?.x || width/2)
+                        .attr("y", (centers[cat.nombre]?.y || height/2) - 160)
+                        .attr("text-anchor", "middle")
+                        .attr("class", "label-cat")
+                        .text(cat.nombre);
 
-            // Convertir proximidad (%) a número para el tamaño
-            data.forEach(d => d.radius = 80 + (parseInt(d.proximidad) || 50));
-
-            simulation = d3.forceSimulation(data)
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("charge", d3.forceManyBody().strength(50))
-                .force("collide", d3.forceCollide().radius(d => d.radius + 10))
-                .on("tick", () => {
-                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                    cat.particulas.forEach(p => {
+                        nodes.push({
+                            ...p,
+                            catName: cat.nombre,
+                            consenso: cat.consenso,
+                            tx: centers[cat.nombre]?.x || width/2,
+                            ty: centers[cat.nombre]?.y || height/2
+                        });
+                    });
                 });
 
-            const node = svg.append("g")
-                .selectAll("g")
-                .data(data)
-                .join("g")
-                .attr("class", "node")
-                .on("click", (e, d) => openPanel(d));
+                // Motor de Física de Proximidad
+                const simulation = d3.forceSimulation(nodes)
+                    .force("x", d3.forceX(d => d.tx).strength(0.12))
+                    .force("y", d3.forceY(d => d.ty).strength(0.12))
+                    // Colisión dinámica: las noticias con menos proximidad se repelen más (flotan lejos)
+                    .force("collide", d3.forceCollide().radius(d => 55 - (d.proximidad / 3)))
+                    .on("tick", () => {
+                        node.attr("transform", d => `translate(${d.x},${d.y})`);
+                    });
 
-            // El círculo de la burbuja
-            node.append("circle")
-                .attr("r", d => d.radius)
-                .attr("fill", d => {
-                    const prox = parseInt(d.proximidad);
-                    return prox < 30 ? "#ef4444" : (prox < 70 ? "#38bdf8" : "#10b981");
-                })
-                .attr("fill-opacity", 0.15)
-                .attr("stroke", d => {
-                    const prox = parseInt(d.proximidad);
-                    return prox < 30 ? "#ef4444" : (prox < 70 ? "#38bdf8" : "#10b981");
-                })
-                .attr("stroke-width", 2);
+                const node = svg.selectAll(".node")
+                    .data(nodes)
+                    .join("g")
+                    .attr("class", "particle")
+                    .on("click", (e, d) => openPanel(d));
 
-            // Título dentro de la burbuja
-            node.append("text")
-                .attr("text-anchor", "middle")
-                .attr("dy", ".3em")
-                .attr("class", "label")
-                .text(d => d.tematica.split(" ")[0]); // Solo primera palabra para estética
+                // Dibujado de la partícula (Borde indica Región, Relleno indica Proximidad)
+                node.append("circle")
+                    .attr("r", d => 6 + (d.proximidad / 10))
+                    .attr("fill", d => d.proximidad > 40 ? d.color_bloque : "transparent")
+                    .attr("fill-opacity", d => d.proximidad / 100)
+                    .attr("stroke", d => d.color_bloque)
+                    .attr("stroke-width", 2.5)
+                    .style("filter", d => `drop-shadow(0 0 ${d.proximidad/6}px ${d.color_bloque}88)`);
 
-            // Porcentaje pequeño
-            node.append("text")
-                .attr("text-anchor", "middle")
-                .attr("dy", "2em")
-                .attr("fill", "white")
-                .attr("font-size", "12px")
-                .attr("font-weight", "bold")
-                .text(d => d.proximidad);
+            } catch (error) {
+                console.error("Error cargando el universo de datos:", error);
+            }
         }
 
         function openPanel(d) {
-            document.getElementById('content').innerHTML = `
-                <div class="space-y-8">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sky-500 font-bold tracking-[0.3em] text-[10px] uppercase">Eje Detectado</span>
-                        <span class="text-4xl font-bold font-mono">${d.proximidad}</span>
+            const content = document.getElementById('panel-content');
+            content.innerHTML = `
+                <div class="animate-in fade-in slide-in-from-right duration-700">
+                    <div class="flex justify-between items-center mb-10">
+                        <span style="color:${d.color_bloque}; border-color:${d.color_bloque}" class="border px-3 py-1 text-[10px] font-black uppercase tracking-[0.3em]">
+                            ${d.bloque}
+                        </span>
+                        <div class="text-right">
+                            <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-widest">Proximidad</span>
+                            <span class="text-4xl font-mono text-white">${d.proximidad}%</span>
+                        </div>
                     </div>
-                    <h2 class="text-5xl font-bold leading-none">${d.tematica}</h2>
-                    <p class="text-xl text-slate-400 leading-relaxed">${d.descripcion}</p>
-                    <div class="h-[2px] w-full bg-white/10"></div>
-                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Contraste Geopolítico</h3>
-                    <div class="space-y-6">
-                        ${Object.entries(d.perspectivas).map(([actor, texto]) => `
-                            <div class="border-l-2 border-sky-500 pl-6 py-2">
-                                <h4 class="text-white text-xs font-bold uppercase mb-2">${actor}</h4>
-                                <p class="text-slate-400 italic">"${texto}"</p>
-                            </div>
-                        `).join('')}
+
+                    <h2 class="text-4xl font-bold leading-tight mb-8 text-white">${d.titulo}</h2>
+
+                    <div class="p-8 bg-white/5 rounded-2xl border border-white/5 mb-10">
+                        <h4 class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-[0.2em]">Consenso Global en ${d.catName}</h4>
+                        <p class="text-slate-300 italic leading-relaxed text-sm">"${d.consenso}"</p>
+                    </div>
+
+                    <div class="mb-12">
+                        <h4 class="text-sky-500 text-[10px] uppercase font-black mb-4 tracking-[0.2em]">Enfoque Regional / Disidencia</h4>
+                        <p class="text-2xl leading-snug text-slate-100 font-light">${d.analisis_regional}</p>
+                    </div>
+
+                    <div class="pt-8 border-t border-white/5">
+                        <a href="${d.link}" target="_blank" class="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-sky-400 hover:text-white transition-colors">
+                            Ver Fuente Original <span class="text-lg">↗</span>
+                        </a>
                     </div>
                 </div>
             `;
-            document.getElementById('side-panel').classList.add('active-panel');
+            document.getElementById('side-panel').classList.remove('translate-x-full');
         }
 
-        function closePanel() { document.getElementById('side-panel').classList.remove('active-panel'); }
-        window.addEventListener('resize', () => { width = window.innerWidth; height = window.innerHeight; updateData(); });
-        updateData();
+        function closePanel() {
+            document.getElementById('side-panel').classList.add('translate-x-full');
+        }
+
+        // Ajustar el canvas si cambia el tamaño de la ventana
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            svg.attr("width", width).attr("height", height);
+        });
+
+        init();
     </script>
 </body>
 </html>
