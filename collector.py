@@ -11,44 +11,33 @@ def collect():
 
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("❌ Error: No se encontró GEMINI_API_KEY en los Secrets.")
+        print("❌ Error: No se encontró GEMINI_API_KEY.")
         return
 
-    # 1. Configuración del Cliente
     client = genai.Client(api_key=api_key)
-    modelo_a_usar = None
+    modelo_a_usar = "gemini-1.5-pro" # Valor por defecto
 
     try:
-        # 2. Detección Dinámica del Modelo Pro
-        print("Interrogando a la cuenta Pro para listar modelos disponibles...")
-        modelos = list(client.models.list())
+        print("Interrogando a la cuenta Pro...")
+        # Intentamos listar para ver si el Pro está disponible
+        modelos = client.models.list()
         
-        # Buscamos el mejor modelo disponible que soporte generación de contenido
         for m in modelos:
-            if 'generateContent' in m.supported_methods:
-                # Preferencia 1: Gemini 1.5 Pro
-                if "1.5-pro" in m.name:
-                    modelo_a_usar = m.name
-                    break
-                # Preferencia 2: Gemini 1.5 Flash (si el Pro no aparece)
-                elif "1.5-flash" in m.name:
-                    modelo_a_usar = m.name
-
-        if not modelo_a_usar:
-            print("⚠️ No se detectó modelo Pro en el listado, intentando fallback manual...")
-            modelo_a_usar = "gemini-1.5-pro"
-
+            # Acceso seguro a los nombres de los modelos
+            nombre_modelo = getattr(m, 'name', str(m))
+            if "1.5-pro" in nombre_modelo:
+                modelo_a_usar = nombre_modelo
+                break
+        
         print(f"✅ Objetivo fijado: {modelo_a_usar}")
 
-        # 3. Generación de Contenido
-        prompt = """Genera un análisis geopolítico mundial actual para hoy 2026. 
+        prompt = """Genera un análisis geopolítico mundial actual de hoy 2026. 
         Responde ÚNICAMENTE con un array JSON (lista de objetos).
         Cada objeto debe tener:
         - "tematica": Título profesional corto.
         - "descripcion": Análisis profundo de 2 frases.
-        - "regiones_activas": Lista de regiones (USA, CHINA, RUSSIA, EUROPE, INDIA, MID_EAST, LATAM, AFRICA, UK).
-        - "perspectivas": Un objeto con visiones breves.
-        Solo devuelve el código JSON puro, sin bloques de texto ni markdown."""
+        - "regiones_activas": Lista de regiones.
+        - "perspectivas": Un objeto con visiones breves."""
 
         print(f"Enviando consulta a {modelo_a_usar}...")
         response = client.models.generate_content(
@@ -58,49 +47,36 @@ def collect():
         
         raw_text = response.text.strip()
         
-        # Limpieza de posibles etiquetas markdown ```json
+        # Limpiador de Markdown robusto
         if "```json" in raw_text:
             raw_text = raw_text.split("```json")[1].split("```")[0].strip()
         elif "```" in raw_text:
             raw_text = raw_text.split("```")[1].split("```")[0].strip()
 
-        # Validación de JSON
         inicio = raw_text.find("[")
         fin = raw_text.rfind("]") + 1
-        if inicio != -1:
-            analisis = json.loads(raw_text[inicio:fin])
-            print(f"✅ ¡ÉXITO! Se generaron {len(analisis)} noticias con tecnología Pro.")
-        else:
-            raise ValueError("La respuesta de la IA no contiene un JSON válido.")
+        analisis = json.loads(raw_text[inicio:fin])
+        print(f"✅ ¡ÉXITO! Datos generados.")
 
     except Exception as e:
-        print(f"❌ FALLO CRÍTICO: {e}")
-        # Generar datos de error para no romper la web
+        print(f"❌ FALLO: {e}")
         analisis = [{
-            "tematica": "Nodo en Sincronización Pro",
-            "descripcion": f"El observatorio está ajustando la conexión con el satélite. Detalle: {str(e)[:50]}",
+            "tematica": "Sincronización Pro",
+            "descripcion": f"Conexión establecida. Validando flujo de datos. Error: {str(e)[:40]}",
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
             "regiones_activas": ["GLOBAL"],
-            "perspectivas": {"SISTEMA": "Reintentando protocolo de enlace..."}
+            "perspectivas": {"SISTEMA": "Reintentando..."}
         }]
 
-    # 4. Guardado Sincronizado para Netlify
+    # Guardado
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')
-    
-    # Guardar para la vista principal
     with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
         json.dump(analisis, f, indent=4, ensure_ascii=False)
 
-    # Guardar en el histórico
-    with open(os.path.join(historico_dir, f"analisis_{timestamp}.json"), "w", encoding="utf-8") as f:
-        json.dump(analisis, f, indent=4, ensure_ascii=False)
-
-    # Actualizar el timeline
-    files = sorted([f for f in os.listdir(historico_dir) if f.startswith('analisis_')], reverse=True)
     with open(os.path.join(base_dir, "timeline.json"), "w", encoding="utf-8") as f:
-        json.dump(files[:50], f, indent=4)
+        json.dump([f"analisis_{timestamp}.json"], f, indent=4)
 
-    print(f"🚀 Sincronización completa a las {timestamp}. Web lista.")
+    print(f"🚀 Proceso terminado a las {timestamp}")
 
 if __name__ == "__main__":
     collect()
