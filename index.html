@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GRAVITY | Deep Intelligence Hub</title>
+    <title>PROXIMITY | Deep Intelligence Hub</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -97,6 +97,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
         
         /* SKELETON */
         .skeleton {
@@ -121,13 +122,14 @@
             letter-spacing: 0.05em; border: 1px solid; transition: all 0.3s;
             font-family: 'JetBrains Mono', monospace;
         }
+        .bloque-tag:hover { filter: brightness(1.2); }
 
         /* SCROLL LISTA */
         .custom-scroll { scrollbar-width: thin; scrollbar-color: #334155 transparent; }
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
 
-        /* ACTIVE STATE IN LIST */
+        /* ESTADO ACTIVO EN LISTA */
         .particle-active {
             background-color: rgba(255, 255, 255, 0.15) !important;
             border-left-width: 4px !important;
@@ -139,14 +141,15 @@
 
     <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[2000] bg-slate-950 transition-opacity duration-500">
         <div class="text-center mb-12">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-4">Gravity</h1>
-            <p class="text-blue-500 font-mono text-xs tracking-[0.3em] uppercase">Deep Intelligence v10.2</p>
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-4">Proximity</h1>
+            <p class="text-blue-500 font-mono text-xs tracking-[0.3em] uppercase">Deep Intelligence Hub</p>
         </div>
         <div class="w-64">
             <div class="h-1 bg-slate-800 rounded-full overflow-hidden mb-2">
                 <div id="load-progress" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
             </div>
             <div id="load-status" class="text-slate-500 font-mono text-[10px] text-center">Iniciando protocolos...</div>
+            <div id="load-error" class="text-red-400 font-mono text-[10px] text-center mt-4 hidden"></div>
         </div>
     </div>
 
@@ -154,7 +157,7 @@
         
         <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/5 pb-8 gap-6">
             <div class="animate-fade-in-up">
-                <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-white uppercase italic">Gravity</h1>
+                <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-white uppercase italic">Proximity</h1>
                 <p class="text-slate-400 font-mono text-[10px] tracking-widest mt-2 uppercase">Sistema de Inteligencia Multipolar</p>
             </div>
             <div class="flex flex-col md:items-end gap-3 w-full md:w-auto">
@@ -176,24 +179,27 @@
 
         <section id="guide-section" class="mb-12 animate-fade-in-up" style="animation-delay: 0.05s">
             <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Protocolos de Decodificación</h2>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="guide-card rounded-xl p-5">
-                    <h4 class="text-white text-xs font-bold uppercase mb-1">Pozo de Gravedad</h4>
+                    <h4 class="text-white text-xs font-bold uppercase mb-1">Distancia Narrativa</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        <span class="text-red-400 font-bold">CENTRO (0%):</span> Caos, propaganda pura.<br>
-                        <span class="text-green-400 font-bold">BORDE (100%):</span> Hechos verificados.
+                        <span class="text-green-400 font-bold">CENTRO (100%):</span> Narrativa Próxima. Hechos verificables.<br>
+                        <span class="text-red-400 font-bold">BORDE (0%):</span> Narrativa Lejana. Interpretación y retórica.
                     </p>
                 </div>
+
                 <div class="guide-card rounded-xl p-5">
                     <h4 class="text-white text-xs font-bold uppercase mb-1">Espectro de Origen</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Los colores indican la región de origen. Compara posiciones opuestas para detectar conflictos narrativos.
+                        El color indica la región de origen. La dispersión de colores indica conflicto de narrativas.
                     </p>
                 </div>
+
                 <div class="guide-card rounded-xl p-5">
                     <h4 class="text-white text-xs font-bold uppercase mb-1">Deep Intelligence</h4>
                     <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Haz clic o hover en un punto para ver el análisis de sesgo generado por IA.
+                        Haz hover sobre los puntos para ver el título. Haz clic para leer el análisis de encuadre (Framing) de la IA.
                     </p>
                 </div>
             </div>
@@ -202,7 +208,7 @@
         <section class="animate-fade-in-up" style="animation-delay: 0.1s">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Radar Estratégico</h2>
-                <button onclick="refreshData()" class="text-[10px] font-mono text-blue-400 hover:text-white px-3 py-1 border border-blue-500/30 rounded hover:bg-blue-500/20 transition-all">↻ REFRESH</button>
+                <button onclick="refreshData()" id="refresh-btn" class="text-[10px] font-mono text-blue-400 hover:text-white px-3 py-1 border border-blue-500/30 rounded hover:bg-blue-500/20 transition-all">↻ REFRESH</button>
             </div>
             
             <div id="skeleton-carousel" class="carousel-container">
@@ -235,15 +241,15 @@
                     <div class="radar-container p-4">
                         <canvas id="areaScatterChart"></canvas>
                     </div>
-                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 pointer-events-none opacity-50">
-                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded">0% Propaganda</span>
-                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded">100% Hechos</span>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 pointer-events-none opacity-60">
+                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">BORDE: Narrativa Lejana</span>
+                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">CENTRO: Narrativa Próxima</span>
                     </div>
                 </div>
                 
                 <div class="bg-white/5 rounded-2xl border border-white/5 flex flex-col overflow-hidden">
                     <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-widest">Análisis de Perspectiva</h4>
+                        <h4 class="text-xs font-bold text-white uppercase tracking-widest">Encuadres Detectados</h4>
                         <span class="text-[9px] text-slate-500">SCROLL &darr;</span>
                     </div>
                     <div id="particles-list" class="flex-grow overflow-y-auto custom-scroll p-3 space-y-2"></div>
@@ -271,13 +277,13 @@
                     </div>
                 </div>
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Sesgo Detectado</div>
+                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Clasificación</div>
                     <div id="bias-meter" class="text-sm font-medium text-slate-300 font-mono uppercase"></div>
                 </div>
             </div>
             
             <div class="mb-8">
-                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Perspectiva (IA)</div>
+                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Encuadre (IA)</div>
                 <p id="detail-sesgo" class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4 py-1"></p>
             </div>
             
@@ -288,6 +294,7 @@
     </div>
 
     <script>
+        // CONFIGURACIÓN CENTRAL
         const BLOQUE_COLORS = { 
             "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
             "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
@@ -303,15 +310,20 @@
         let scatterChart = null;
         let currentAreaIndex = null;
 
+        // INICIALIZACIÓN
         async function init() {
             try {
                 updateLoadStatus("Iniciando conexión satelital...", 10);
+                // NOTA: Mantenemos el nombre del archivo JSON original para no romper el backend actual
                 const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
+                
                 if (!res.ok) throw new Error("Error de conexión");
                 updateLoadStatus("Descargando inteligencia...", 40);
                 
                 fullData = await res.json();
                 updateLoadStatus("Calibrando nodos...", 70);
+
+                if (!fullData.carousel) throw new Error("Datos corruptos");
 
                 calculateStats();
                 renderCarousel();
@@ -326,33 +338,43 @@
                         document.getElementById('main-interface').style.opacity = '1';
                     }, 500);
                 }, 500);
+
             } catch (e) {
                 console.error(e);
-                alert("Error cargando datos. Ver consola.");
+                document.getElementById('load-error').innerText = `FALLO CRÍTICO: ${e.message}`;
+                document.getElementById('load-error').classList.remove('hidden');
+                document.getElementById('load-progress').classList.remove('bg-blue-500');
+                document.getElementById('load-progress').classList.add('bg-red-500');
             }
         }
 
-        // FUNCIONES DE RENDERIZADO BÁSICAS
+        // --- CORE FUNCTIONS ---
+
         function updateLoadStatus(msg, pct) {
             document.getElementById('load-status').innerText = msg;
             document.getElementById('load-progress').style.width = pct + '%';
         }
+
         function calculateStats() {
             let total = 0;
             fullData.carousel.forEach(c => total += (c.particulas?.length || 0));
             document.getElementById('total-signals').innerText = total;
             document.getElementById('total-areas').innerText = fullData.carousel.length;
         }
+
         function updateSyncStatus() {
             document.getElementById('sync-status').innerText = `ONLINE // ${new Date().toLocaleTimeString()}`;
         }
+
         function renderCarousel() {
             document.getElementById('skeleton-carousel').classList.add('hidden');
             const container = document.getElementById('area-carousel');
             container.classList.remove('hidden');
+            
             container.innerHTML = fullData.carousel.map((area, idx) => `
                 <div class="area-card glass rounded-[2rem] p-8 border-t-4" 
-                     style="border-top-color: ${area.color}" onclick="openAreaModal(${idx})">
+                     style="border-top-color: ${area.color}" 
+                     onclick="openAreaModal(${idx})">
                     <h3 class="text-2xl font-black text-white uppercase italic tracking-tighter mb-4">${area.area}</h3>
                     <p class="text-slate-400 text-xs leading-relaxed line-clamp-3 mb-6 font-medium">${area.punto_cero}</p>
                     <div class="flex justify-between items-center text-[10px] font-mono text-blue-400">
@@ -362,25 +384,31 @@
                 </div>
             `).join('');
         }
+
         function renderBlockDistribution() {
             const counts = {};
             fullData.carousel.forEach(a => a.particulas?.forEach(p => {
                 const b = p.bloque || 'OTRO';
                 counts[b] = (counts[b] || 0) + 1;
             }));
+            
             const container = document.getElementById('block-distribution');
-            container.innerHTML = Object.entries(counts).sort((a,b) => b[1] - a[1]).map(([block, count]) => `
-                <div class="glass rounded-xl p-4 text-center border-t-2" style="border-color:${BLOQUE_COLORS[block] || '#fff'}">
-                    <div class="text-2xl font-black text-white mb-1">${count}</div>
-                    <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">${BLOQUE_NAMES[block] || block}</div>
-                </div>
-            `).join('');
+            container.innerHTML = Object.entries(counts)
+                .sort((a,b) => b[1] - a[1])
+                .map(([block, count]) => `
+                    <div class="glass rounded-xl p-4 text-center border-t-2 hover:bg-white/5 transition-colors" style="border-color:${BLOQUE_COLORS[block] || '#fff'}">
+                        <div class="text-2xl font-black text-white mb-1">${count}</div>
+                        <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">${BLOQUE_NAMES[block] || block}</div>
+                    </div>
+                `).join('');
         }
 
-        // --- LÓGICA MULTIPOLAR AVANZADA ---
+        // --- MODAL & RADAR LOGIC ---
+
         function openAreaModal(idx) {
             currentAreaIndex = idx;
             const area = fullData.carousel[idx];
+            
             document.getElementById('modal-area-title').innerText = area.area;
             document.getElementById('modal-punto-cero').innerText = area.punto_cero;
             
@@ -389,14 +417,13 @@
             setTimeout(() => renderRadar(area.particulas || []), 350);
         }
 
-        // LISTA ENRIQUECIDA (Ahora muestra el análisis IA)
         function renderParticlesList(particulas) {
             const list = document.getElementById('particles-list');
             if(particulas.length === 0) {
                 list.innerHTML = '<div class="p-4 text-center text-slate-500 text-xs">Sin datos</div>';
                 return;
             }
-            // Ordenamos por bloque para comparar mejor
+            // Ordenar por bloque para mejor comparativa
             const sorted = [...particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
 
             list.innerHTML = sorted.map((p, i) => `
@@ -409,7 +436,7 @@
                     </div>
                     <div class="text-xs font-bold text-white mb-1 line-clamp-2 leading-tight group-hover:text-blue-400 transition-colors">${p.titulo}</div>
                     
-                    <div class="text-[10px] text-slate-400 italic border-l border-white/20 pl-2 leading-tight">
+                    <div class="text-[10px] text-slate-400 italic border-l border-white/20 pl-2 leading-tight mt-1">
                         "${p.sesgo || 'Sin análisis'}"
                     </div>
                 </div>
@@ -418,7 +445,6 @@
 
         function highlightParticle(index) {
             const area = fullData.carousel[currentAreaIndex];
-            // Dado que ordenamos la lista, buscamos el índice original
             const sorted = [...area.particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
             openNewsDetail(sorted[index]);
         }
@@ -427,31 +453,37 @@
             const ctx = document.getElementById('areaScatterChart').getContext('2d');
             if (scatterChart) scatterChart.destroy();
 
-            // Usamos la misma lista ordenada para coincidir índices con la lista lateral
             const sortedParticles = [...particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
 
             const datasets = [{
                 label: 'Señales',
                 data: sortedParticles.map((p, i) => {
                     const prox = parseFloat(p.proximidad) || 0;
-                    const radius = 100 - prox;
+                    
+                    // --- LÓGICA DE PROXIMIDAD INVERTIDA ---
+                    // 100% Proximidad (Hecho) = Centro (Radio 0)
+                    // 0% Proximidad (Lejana) = Borde (Radio 100)
+                    let radius = 100 - prox; 
+                    if (radius < 2) radius = Math.random() * 4; // Evitar overlap perfecto en el centro
+
                     const angle = (i / sortedParticles.length) * 2 * Math.PI;
                     return {
                         x: radius * Math.cos(angle),
                         y: radius * Math.sin(angle),
                         original: p,
-                        index: i // Guardamos índice para cruzar datos
+                        index: i
                     };
                 }),
                 pointBackgroundColor: (ctx) => {
                     const raw = ctx.raw;
                     return raw ? (BLOQUE_COLORS[raw.original.bloque] || '#fff') : '#fff';
                 },
-                pointBorderColor: '#fff',
-                pointBorderWidth: 1.5,
-                pointRadius: 8,
-                pointHoverRadius: 15,
-                pointHoverBorderWidth: 3
+                pointBorderColor: '#0f172a',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 12,
+                pointHoverBorderWidth: 3,
+                pointHoverBorderColor: '#fff'
             }];
 
             scatterChart = new Chart(ctx, {
@@ -461,35 +493,35 @@
                     responsive: true, maintainAspectRatio: false,
                     layout: { padding: 20 },
                     scales: {
-                        x: { display: false, min: -120, max: 120 },
-                        y: { display: false, min: -120, max: 120 }
+                        x: { display: false, min: -115, max: 115 },
+                        y: { display: false, min: -115, max: 115 }
                     },
                     plugins: { 
                         legend: { display: false },
-                        // TOOLTIP MEJORADO
                         tooltip: { 
                             enabled: true,
                             backgroundColor: 'rgba(15, 23, 42, 0.95)',
                             titleColor: '#fff',
                             bodyColor: '#cbd5e1',
-                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderColor: 'rgba(59, 130, 246, 0.3)',
                             borderWidth: 1,
-                            padding: 10,
+                            padding: 12,
                             displayColors: true,
                             callbacks: {
                                 title: (ctx) => `[${ctx[0].raw.original.bloque}]`,
                                 label: (ctx) => {
                                     const title = ctx.raw.original.titulo;
-                                    return title.length > 30 ? title.substr(0, 30) + '...' : title;
+                                    return title.length > 40 ? title.substr(0, 40) + '...' : title;
+                                },
+                                afterLabel: (ctx) => {
+                                    const p = ctx.raw.original.proximidad;
+                                    return p > 80 ? `▼ Narrativa Próxima (${p}%)` : `▲ Narrativa Lejana (${p}%)`;
                                 }
                             }
                         }
                     },
-                    // INTERACCIÓN HOVER CRUZADO
                     onHover: (event, chartElement) => {
-                        // Limpiar estilos previos
                         document.querySelectorAll('.particle-active').forEach(el => el.classList.remove('particle-active'));
-                        
                         if (chartElement.length) {
                             const idx = chartElement[0].element.$context.raw.index;
                             const listEl = document.getElementById(`particle-${idx}`);
@@ -515,18 +547,38 @@
                         const {ctx, chartArea: {left, top, right, bottom}} = chart;
                         const cx = (left + right) / 2, cy = (top + bottom) / 2;
                         const scale = Math.min(right - left, bottom - top) / 240;
+
                         ctx.save();
+                        // Fondo Gradiente Invertido (Centro Azul/Verde, Borde Rojo)
                         const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 110 * scale);
-                        grd.addColorStop(0, 'rgba(59, 130, 246, 0.1)');
-                        grd.addColorStop(1, 'transparent');
+                        grd.addColorStop(0, 'rgba(59, 130, 246, 0.15)'); // Centro Estable
+                        grd.addColorStop(0.6, 'rgba(15, 23, 42, 0.5)'); 
+                        grd.addColorStop(1, 'rgba(239, 68, 68, 0.1)');   // Borde Inestable
                         ctx.fillStyle = grd; ctx.fillRect(left, top, right-left, bottom-top);
+
+                        // Ejes
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+                        ctx.beginPath(); ctx.moveTo(cx, top); ctx.lineTo(cx, bottom); ctx.moveTo(left, cy); ctx.lineTo(right, cy); ctx.stroke(); ctx.setLineDash([]);
+
+                        // Anillos y Etiquetas
                         [25, 50, 75, 100].forEach(r => {
-                            ctx.beginPath();
-                            ctx.arc(cx, cy, r * scale, 0, Math.PI * 2);
-                            ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.stroke();
+                            const radius = r * scale;
+                            ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                            ctx.strokeStyle = r === 100 ? 'rgba(239, 68, 68, 0.3)' : 'rgba(255, 255, 255, 0.1)';
+                            ctx.lineWidth = r === 100 ? 2 : 1;
+                            ctx.stroke();
+                            
+                            // Etiqueta HUD
+                            const val = 100 - r; // Invertimos el valor visual
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                            ctx.font = '9px "JetBrains Mono"';
+                            ctx.textAlign = 'center';
+                            if(r < 100) ctx.fillText(`${val}%`, cx, cy - radius - 4);
                         });
+
+                        // Punto Cero
                         ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI*2);
-                        ctx.fillStyle = '#3b82f6'; ctx.fill();
+                        ctx.fillStyle = '#3b82f6'; ctx.shadowBlur=10; ctx.shadowColor='#3b82f6'; ctx.fill();
                         ctx.restore();
                     }
                 }]
@@ -551,7 +603,7 @@
             fill.style.width = prox + "%";
             fill.style.backgroundColor = prox >= 75 ? '#22c55e' : prox >= 50 ? '#eab308' : '#ef4444';
             
-            document.getElementById('bias-meter').innerText = prox >= 80 ? "Neutral" : prox >= 50 ? "Moderado" : "Alto";
+            document.getElementById('bias-meter').innerText = prox >= 80 ? "Próxima (Factual)" : prox >= 50 ? "Media (Análisis)" : "Lejana (Interpretativa)";
             document.getElementById('bias-meter').style.color = fill.style.backgroundColor;
 
             document.getElementById('news-detail-modal').classList.add('open');
