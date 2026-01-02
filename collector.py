@@ -137,7 +137,8 @@ class ClusterEngine:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
             )
-            return json.loads(res.text.replace('```json','').replace('```',''))
+            # FIX: strict=False permite caracteres de control (saltos de línea raros) dentro del JSON
+            return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
         except: return None
 
     def analyze_cluster(self, area_name, item_ids):
@@ -152,7 +153,6 @@ class ClusterEngine:
 
         context_string = "\n".join(cluster_context)
 
-        # --- EL PROMPT DE RELATIVIDAD NARRATIVA ---
         prompt = f"""
         Eres PROXIMITY. Analiza las relaciones entre noticias del grupo: {area_name}.
         
@@ -160,8 +160,8 @@ class ClusterEngine:
         Mide el "AISLAMIENTO vs INTERSECCIÓN" de las narrativas. No busques la verdad, busca la coincidencia entre rivales.
         
         MÉTRICA "PROXIMIDAD RELATIVA" (0-100%):
-        - 100% (CENTRO): Narrativa de Alta Intersección. Es un tema o enfoque que aparece idéntico en múltiples bloques rivales (ej. USA y Rusia reportan el mismo dato).
-        - 0% (BORDE): Narrativa de Alto Aislamiento. Es una versión de los hechos que SOLO defiende un bloque y es ignorada o contradicha por los demás.
+        - 100% (CENTRO): Narrativa de Alta Intersección. Es un tema o enfoque que aparece idéntico en múltiples bloques rivales.
+        - 0% (BORDE): Narrativa de Alto Aislamiento. Es una versión de los hechos que SOLO defiende un bloque.
         
         OUTPUT JSON:
         {{
@@ -171,7 +171,7 @@ class ClusterEngine:
                     "id": "ID_EXACTO",
                     "titulo": "Título en Español",
                     "proximidad": 85.5,
-                    "sesgo": "Explica por qué está aislado o intersectado (ej. 'Versión exclusiva de Rusia', 'Dato compartido por todos')"
+                    "sesgo": "Explica por qué está aislado o intersectado"
                 }}
             ]
         }}
@@ -183,8 +183,11 @@ class ClusterEngine:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
             )
-            return json.loads(res.text.replace('```json','').replace('```',''))
-        except: return None
+            # FIX: strict=False es la clave para evitar el error "Invalid control character"
+            return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
+        except Exception as e:
+            print(f"⚠️ Error Cluster IA ({area_name}): {e}")
+            return None
 
     def run(self):
         raw_titles = self.fetch_rss()
@@ -249,5 +252,4 @@ class ClusterEngine:
         return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(area, "#94a3b8")
 
 if __name__ == "__main__":
-    key = os.environ.get("GEMINI_API_KEY")
-    if key: ClusterEngine(key).run()
+    key = os.environ.get("GEMINI_API_
