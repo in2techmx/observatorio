@@ -1,117 +1,29 @@
-[
-    {
-        "Categoría": "Seguridad y Conflictos",
-        "Consenso Global": "Existe una preocupación generalizada por la inestabilidad y el aumento de los conflictos a nivel global, aunque las causas y soluciones propuestas varían significativamente entre las regiones. Se observa una condena casi unánime a las acciones que violan el derecho internacional y los derechos humanos, pero la definición de estas violaciones es objeto de debate.",
-        "Proximidad": 70,
-        "analisis_regional": {
-            "USA": "Tiende a enfatizar la defensa de la democracia y los derechos humanos como justificación para la intervención, con un sesgo hacia mantener su hegemonía global.",
-            "Europa": "Prioriza la estabilidad regional y la resolución pacífica de conflictos, mostrando un sesgo hacia el multilateralismo y la diplomacia.",
-            "Rusia": "Se enfoca en la defensa de su soberanía y la prevención de la injerencia externa, a menudo con un sesgo hacia la justificación de sus acciones en términos de seguridad nacional.",
-            "China": "Prioriza la no injerencia en los asuntos internos de otros países y la resolución pacífica de disputas, con un sesgo hacia la promoción de un orden mundial multipolar.",
-            "LATAM": "Busca soluciones pacíficas y el respeto a la soberanía, enfocándose en la no intervención y la resolución negociada de conflictos. Existe un sesgo hacia la autonomía regional.",
-            "Medio Oriente": "Está marcado por conflictos internos y regionales complejos, con un sesgo hacia la defensa de intereses sectarios y alianzas estratégicas.",
-            "África": "Prioriza la estabilidad y el desarrollo, buscando soluciones africanas a los problemas africanos, mostrando un sesgo hacia la integración regional y la no injerencia externa."
+{
+    "categorias": [
+        {
+            "nombre": "Seguridad y Conflictos",
+            "consenso": "Las tensiones geopolíticas y los conflictos armados continúan siendo una preocupación global, con implicaciones significativas para la estabilidad regional e internacional.",
+            "particulas": []
         },
-        "Colores": {
-            "USA": "#3b82f6",
-            "Europa": "#fde047",
-            "Rusia": "#ef4444",
-            "China": "#f97316",
-            "LATAM": "#d946ef",
-            "Medio Oriente": "#10b981",
-            "África": "#8b5cf6"
-        }
-    },
-    {
-        "Categoría": "Economía y Sanciones",
-        "Consenso Global": "Existe un reconocimiento generalizado de la interdependencia económica global y la necesidad de cooperación para abordar los desafíos económicos. Sin embargo, las perspectivas difieren en cuanto a las políticas económicas óptimas y el papel de las sanciones.",
-        "Proximidad": 60,
-        "analisis_regional": {
-            "USA": "Favorece el libre mercado y la competencia, con un sesgo hacia el uso de sanciones económicas como herramienta de política exterior.",
-            "Europa": "Apoya un equilibrio entre el libre mercado y la regulación, con un sesgo hacia el multilateralismo y la cooperación económica.",
-            "Rusia": "Busca diversificar su economía y reducir su dependencia del dólar, con un sesgo hacia la protección de sus intereses nacionales.",
-            "China": "Prioriza el crecimiento económico y la estabilidad social, con un sesgo hacia el desarrollo de su propia influencia económica global.",
-            "LATAM": "Busca un desarrollo económico inclusivo y sostenible, enfocándose en la reducción de la desigualdad y la diversificación de las economías. Existe un sesgo hacia la autonomía económica regional.",
-            "Medio Oriente": "Se enfoca en la diversificación económica y la atracción de inversiones extranjeras, con un sesgo hacia la maximización de los ingresos por hidrocarburos.",
-            "África": "Prioriza el desarrollo económico y la reducción de la pobreza, buscando inversiones extranjeras y la diversificación de sus economías, mostrando un sesgo hacia la integración económica regional."
+        {
+            "nombre": "Economía y Sanciones",
+            "consenso": "Las sanciones económicas y las políticas comerciales tienen un impacto significativo en la economía global, afectando el crecimiento, la inflación y las cadenas de suministro.",
+            "particulas": []
         },
-        "Colores": {
-            "USA": "#3b82f6",
-            "Europa": "#fde047",
-            "Rusia": "#ef4444",
-            "China": "#f97316",
-            "LATAM": "#d946ef",
-            "Medio Oriente": "#10b981",
-            "África": "#8b5cf6"
-        }
-    },
-    {
-        "Categoría": "Energía y Recursos",
-        "Consenso Global": "Existe un reconocimiento generalizado de la necesidad de una transición hacia fuentes de energía más sostenibles y la gestión responsable de los recursos naturales. Sin embargo, las prioridades y estrategias difieren significativamente entre las regiones.",
-        "Proximidad": 80,
-        "analisis_regional": {
-            "USA": "Prioriza la independencia energética y la explotación de sus propios recursos, con un sesgo hacia la protección de su industria energética.",
-            "Europa": "Se enfoca en la transición hacia energías renovables y la reducción de emisiones de carbono, con un sesgo hacia la regulación y la innovación tecnológica.",
-            "Rusia": "Busca mantener su posición como proveedor de energía global, con un sesgo hacia la maximización de los ingresos por hidrocarburos.",
-            "China": "Está invirtiendo masivamente en energías renovables y la eficiencia energética, con un sesgo hacia la seguridad energética y la reducción de la contaminación.",
-            "LATAM": "Busca un uso sostenible de los recursos naturales y la transición hacia energías renovables, enfocándose en la protección del medio ambiente y la soberanía sobre los recursos. Existe un sesgo hacia la autonomía energética regional.",
-            "Medio Oriente": "Está explorando fuentes de energía alternativas, pero sigue dependiendo en gran medida de los hidrocarburos, con un sesgo hacia la maximización de los ingresos petroleros a corto plazo.",
-            "África": "Busca desarrollar sus recursos naturales de manera sostenible y diversificar sus fuentes de energía, mostrando un sesgo hacia el desarrollo económico y la seguridad energética."
+        {
+            "nombre": "Energía y Recursos",
+            "consenso": "La transición hacia fuentes de energía sostenibles y la gestión de recursos naturales son cruciales para mitigar el cambio climático y garantizar la seguridad energética.",
+            "particulas": []
         },
-        "Colores": {
-            "USA": "#3b82f6",
-            "Europa": "#fde047",
-            "Rusia": "#ef4444",
-            "China": "#f97316",
-            "LATAM": "#d946ef",
-            "Medio Oriente": "#10b981",
-            "África": "#8b5cf6"
-        }
-    },
-    {
-        "Categoría": "Soberanía y Alianzas",
-        "Consenso Global": "Existe un reconocimiento generalizado del principio de soberanía nacional, pero la interpretación y aplicación de este principio varían significativamente entre las regiones. Las alianzas estratégicas siguen siendo importantes, pero están sujetas a cambios y tensiones.",
-        "Proximidad": 90,
-        "analisis_regional": {
-            "USA": "Prioriza el mantenimiento de su liderazgo global y la defensa de sus intereses nacionales, con un sesgo hacia las alianzas bilaterales y la acción unilateral.",
-            "Europa": "Apoya el multilateralismo y la cooperación internacional, con un sesgo hacia la integración regional y la defensa de los valores democráticos.",
-            "Rusia": "Busca fortalecer su soberanía y su influencia regional, con un sesgo hacia la defensa de un orden mundial multipolar.",
-            "China": "Prioriza la no injerencia en los asuntos internos de otros países y la promoción de un orden mundial multipolar, con un sesgo hacia la cooperación Sur-Sur.",
-            "LATAM": "Defiende la soberanía y la no intervención, buscando una mayor autonomía regional y una voz más fuerte en los asuntos globales. Existe un sesgo hacia la integración regional y la defensa de los intereses comunes.",
-            "Medio Oriente": "Está marcado por rivalidades y alianzas complejas, con un sesgo hacia la defensa de intereses sectarios y la búsqueda de apoyo externo.",
-            "África": "Prioriza la soberanía y la integración regional, buscando soluciones africanas a los problemas africanos, mostrando un sesgo hacia la unidad africana y la no injerencia externa."
+        {
+            "nombre": "Soberanía y Alianzas",
+            "consenso": "Las dinámicas de poder entre las naciones y la formación de alianzas estratégicas son elementos clave en la configuración del orden mundial.",
+            "particulas": []
         },
-        "Colores": {
-            "USA": "#3b82f6",
-            "Europa": "#fde047",
-            "Rusia": "#ef4444",
-            "China": "#f97316",
-            "LATAM": "#d946ef",
-            "Medio Oriente": "#10b981",
-            "África": "#8b5cf6"
+        {
+            "nombre": "Tecnología y Espacio",
+            "consenso": "Los avances tecnológicos y la exploración espacial ofrecen oportunidades sin precedentes, pero también plantean desafíos éticos, de seguridad y de gobernanza global.",
+            "particulas": []
         }
-    },
-    {
-        "Categoría": "Tecnología y Espacio",
-        "Consenso Global": "Existe un reconocimiento generalizado del papel crucial de la tecnología y el espacio en el desarrollo económico, la seguridad y el progreso humano. Sin embargo, existen preocupaciones sobre la brecha digital, la seguridad cibernética y la militarización del espacio.",
-        "Proximidad": 75,
-        "analisis_regional": {
-            "USA": "Lidera en innovación tecnológica y exploración espacial, con un sesgo hacia el mantenimiento de su ventaja competitiva y la seguridad nacional.",
-            "Europa": "Está invirtiendo en tecnologías emergentes y la exploración espacial, con un sesgo hacia la regulación y la cooperación internacional.",
-            "Rusia": "Busca mantener su capacidad tecnológica y espacial, con un sesgo hacia la defensa de su autonomía estratégica.",
-            "China": "Está invirtiendo masivamente en tecnología e innovación, con un sesgo hacia la autosuficiencia tecnológica y el liderazgo global.",
-            "LATAM": "Busca reducir la brecha digital y promover la innovación tecnológica, enfocándose en el desarrollo de capacidades locales y la cooperación regional. Existe un sesgo hacia la inclusión digital y la soberanía tecnológica.",
-            "Medio Oriente": "Está invirtiendo en tecnología para diversificar sus economías y modernizar sus infraestructuras, con un sesgo hacia la atracción de inversiones extranjeras y la transferencia de tecnología.",
-            "África": "Busca reducir la brecha digital y promover el acceso a la tecnología, mostrando un sesgo hacia el desarrollo de capacidades locales y la cooperación internacional."
-        },
-        "Colores": {
-            "USA": "#3b82f6",
-            "Europa": "#fde047",
-            "Rusia": "#ef4444",
-            "China": "#f97316",
-            "LATAM": "#d946ef",
-            "Medio Oriente": "#10b981",
-            "África": "#8b5cf6"
-        }
-    }
-]
+    ]
+}
