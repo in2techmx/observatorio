@@ -1,11 +1,11 @@
 name: Global Proximity Update
 on:
   schedule:
-    - cron: '0 * * * *' # Se ejecuta cada hora en punto
-  workflow_dispatch:      # Permite ejecución manual desde la pestaña Actions
+    - cron: '0 * * * *' 
+  workflow_dispatch:      
 
 permissions:
-  contents: write         # Crucial para subir los JSONs al repositorio privado
+  contents: write         
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0   # Trae todo el historial para evitar conflictos de git
+          fetch-depth: 0   
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -34,11 +34,12 @@ jobs:
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
           
-          # Agregamos todos los archivos nuevos y actualizados
+          # 1. Sincronizar con lo que borraste en la web para evitar conflictos
+          git pull origin main --rebase
+          
+          # 2. Agregar los archivos generados
           git add latest_news.json timeline.json maestros_index.json historico_noticias/ archivos_maestros/
           
-          # Commit con marca de tiempo
-          git commit -m "Sync: Global Proximity Data Update $(date +'%Y-%m-%d %H:%M')" || echo "No hay cambios para subir"
-          
-          # Push al repositorio privado
+          # 3. Commit y envío
+          git commit -m "Sync: Global Proximity Data Update $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
           git push origin main
