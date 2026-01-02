@@ -10,208 +10,73 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global News Proximity | Observatorio</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global News Proximity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --usa: #3b82f6; --china: #ef4444; --russia: #b91c1c; --europe: #8b5cf6;
-            --india: #f59e0b; --mideast: #10b981; --latam: #ec4899; --africa: #06b6d4; --uk: #6366f1;
-        }
-        body { margin: 0; background: #010101; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
-        .glass { background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.05); height: 2px; border-radius: 5px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 14px; border-radius: 50%; background: #3b82f6; cursor: pointer; border: 2px solid white; box-shadow: 0 0 15px rgba(59,130,246,0.5); }
+        body { margin:0; background:#050505; color:white; font-family: sans-serif; overflow:hidden; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
     <div id="root"></div>
-
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const { motion, AnimatePresence } = window.Motion;
-
-        const REGIONS = {
-            USA: { name: 'USA', color: 'var(--usa)' }, CHINA: { name: 'China', color: 'var(--china)' },
-            RUSSIA: { name: 'Rusia', color: 'var(--russia)' }, EUROPE: { name: 'Europa', color: 'var(--europe)' },
-            INDIA: { name: 'India', color: 'var(--india)' }, MID_EAST: { name: 'M. Oriente', color: 'var(--mideast)' },
-            LATAM: { name: 'LATAM', color: 'var(--latam)' }, AFRICA: { name: 'África', color: 'var(--africa)' },
-            UK: { name: 'Reino Unido', color: 'var(--uk)' }
-        };
+        const { motion } = window.Motion;
 
         function App() {
             const [data, setData] = useState([]);
             const [timeline, setTimeline] = useState([]);
-            const [currentIndex, setCurrentIndex] = useState(0);
             const [loading, setLoading] = useState(true);
-            const [log, setLog] = useState("Iniciando...");
-
-            // Efecto de fondo (Partículas)
-            useEffect(() => {
-                const canvas = document.getElementById('bg-canvas');
-                const ctx = canvas.getContext('2d');
-                let pts = [];
-                const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-                resize();
-                for(let i=0; i<50; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.5, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3});
-                const draw = () => {
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                    ctx.fillStyle = "rgba(59, 130, 246, 0.2)";
-                    pts.forEach(p => {
-                        p.x+=p.vx; p.y+=p.vy;
-                        if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height;
-                        ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill();
-                    });
-                    requestAnimationFrame(draw);
-                };
-                draw();
-                window.addEventListener('resize', resize);
-            }, []);
+            const [status, setStatus] = useState("Iniciando...");
 
             useEffect(() => {
                 const init = async () => {
                     try {
-                        setLog("Buscando timeline...");
                         const res = await fetch(`./timeline.json?t=${Date.now()}`);
-                        if (!res.ok) throw new Error("Timeline no encontrado");
                         const files = await res.json();
                         setTimeline(files);
-                        
-                        if (files.length > 0) {
-                            await loadFile(files[0]);
-                        } else {
-                            // Si el timeline está vacío, intentar latest_news
-                            setLog("Timeline vacío, probando latest_news...");
-                            await loadFile("latest_news.json");
-                        }
-                    } catch (e) {
-                        setLog(`Error: ${e.message}. Probando fallback...`);
-                        await loadFile("latest_news.json");
-                    }
+                        if (files.length > 0) loadFile(files[0]);
+                    } catch (e) { setStatus("Esperando primer deploy..."); setLoading(false); }
                 };
                 init();
             }, []);
 
             const loadFile = async (name) => {
+                setLoading(true);
                 try {
-                    setLoading(true);
-                    setLog(`Cargando ${name}...`);
-                    
-                    // Estrategia de búsqueda multiruta
-                    const paths = [
-                        `./historico_noticias/${name}`,
-                        `./${name}`
-                    ];
-
-                    let foundData = null;
-                    for (let path of paths) {
-                        const res = await fetch(`${path}?t=${Date.now()}`);
-                        if (res.ok) {
-                            foundData = await res.json();
-                            setLog(`Conectado a: ${path}`);
-                            break;
-                        }
-                    }
-
-                    if (!foundData) throw new Error("Archivo ilegible");
-
-                    // Normalizar datos (asegurar que sea array)
-                    const finalData = Array.isArray(foundData) ? foundData : [foundData];
-                    setData(finalData);
-                    setLoading(false);
-                } catch (e) {
-                    setLog(`Fallo crítico: ${e.message}`);
-                    setLoading(false);
-                }
+                    const res = await fetch(`./historico_noticias/${name}?t=${Date.now()}`);
+                    const json = await res.json();
+                    setData(Array.isArray(json) ? json : [json]);
+                } catch (e) { setStatus("Error cargando archivo"); }
+                setLoading(false);
             };
 
             return (
-                <div className="h-screen w-full flex flex-col p-10 relative">
-                    <header className="mb-10 z-10">
-                        <h1 className="text-5xl font-black italic tracking-tighter uppercase text-blue-500">Global Proximity</h1>
-                        <div className="flex items-center gap-2 mt-2 opacity-40">
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                            <p className="text-[10px] tracking-[0.3em] uppercase font-bold italic">Observatorio Geopolítico v2.8</p>
-                        </div>
+                <div className="h-screen w-full p-10 flex flex-col">
+                    <header className="mb-10">
+                        <h1 className="text-4xl font-black italic uppercase text-blue-500 tracking-tighter">Global Proximity</h1>
+                        <p className="text-[10px] opacity-40 tracking-widest uppercase mt-2">Observatorio Pro | {status}</p>
                     </header>
 
-                    {loading ? (
-                        <div className="flex-1 flex flex-col items-center justify-center">
-                            <div className="text-[10px] tracking-[0.5em] font-black italic animate-pulse text-blue-400">SINCRONIZANDO BÚNKER...</div>
-                        </div>
-                    ) : (
-                        <div className="flex-1 flex flex-col">
-                            {/* Control Temporal */}
-                            <div className="mb-12 flex items-center gap-8 glass p-5 rounded-full max-w-2xl mx-auto w-full border-blue-500/10">
-                                <input 
-                                    type="range" 
-                                    min="0" 
-                                    max={timeline.length > 0 ? timeline.length - 1 : 0} 
-                                    value={currentIndex} 
-                                    onChange={(e) => {
-                                        const idx = parseInt(e.target.value);
-                                        setCurrentIndex(idx);
-                                        loadFile(timeline[idx]);
-                                    }} 
-                                    className="flex-1"
-                                />
-                                <span className="text-[10px] font-mono font-black text-blue-500 pr-4">
-                                    {timeline[currentIndex]?.replace('analisis_', '').replace('.json', '') || 'LATEST'}
-                                </span>
-                            </div>
-
-                            {/* Grid de Noticias */}
-                            <div className="flex-1 flex items-center gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
-                                {data.length > 0 ? data.map((item, i) => (
-                                    <motion.div 
-                                        key={i} 
-                                        initial={{ opacity: 0, y: 30 }} 
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.1 }}
-                                        className="min-w-[420px] glass p-10 rounded-[3rem] snap-center hover:bg-white/5 transition-colors border-b-2 border-blue-500/20"
-                                    >
-                                        <div className="flex justify-between items-center mb-6">
-                                            <span className="text-blue-500 text-[9px] font-black uppercase tracking-[0.2em] italic">Sección {i+1}</span>
-                                            <div className="flex gap-1.5">
-                                                {item.regiones_activas?.map(r => (
-                                                    <div key={r} className="w-2 h-2 rounded-full" style={{background: REGIONS[r]?.color || '#fff'}} />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <h2 className="text-2xl font-black mb-6 leading-tight uppercase italic tracking-tighter">
-                                            {item.tematica}
-                                        </h2>
-                                        <p className="text-gray-400 text-xs leading-relaxed italic font-light line-clamp-4">
-                                            "{item.descripcion}"
-                                        </p>
-                                    </motion.div>
-                                )) : (
-                                    <div className="w-full text-center opacity-20 italic">No hay datos disponibles en este nodo.</div>
-                                )}
-                            </div>
+                    {loading ? <div className="flex-1 flex items-center justify-center opacity-20 italic">Sincronizando...</div> : (
+                        <div className="flex-1 flex items-center gap-6 overflow-x-auto pb-10">
+                            {data.map((item, i) => (
+                                <motion.div key={i} initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} className="min-w-[400px] glass p-10 rounded-[3rem]">
+                                    <h2 className="text-2xl font-bold mb-4 italic uppercase">{item.tematica}</h2>
+                                    <p className="text-sm text-gray-400 leading-relaxed italic opacity-80">{item.descripcion}</p>
+                                </motion.div>
+                            ))}
                         </div>
                     )}
-
-                    <footer className="mt-6 flex justify-between items-center opacity-30 text-[8px] font-black uppercase tracking-widest">
-                        <div className="flex items-center gap-4">
-                            <span>SISTEMA DE DIAGNÓSTICO: {log}</span>
-                        </div>
-                        <div>2026 © GLOBAL PROXIMITY</div>
-                    </footer>
                 </div>
             );
         }
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
 </html>
