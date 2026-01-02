@@ -2,52 +2,53 @@ name: Actualizar Observatorio Geopolítico
 
 on:
   schedule:
-    # Ejecución automática cada 6 horas
+    # Se ejecuta cada 6 horas automáticamente
     - cron: '0 */6 * * *'
   workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
 jobs:
   build:
-    name: Proceso de Inteligencia Semántica
+    name: Inteligencia Semántica y Triage
     runs-on: ubuntu-latest
     
-    # Permisos necesarios para escribir cambios en el repositorio
     permissions:
-      contents: write
+      contents: write # Permiso para que el bot pueda guardar el JSON
 
     steps:
-      - name: 1. Descarga de código
+      - name: 1. Descarga del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Descarga todo el historial para evitar conflictos de git
+          fetch-depth: 0 # Descarga todo el historial para evitar errores de Git
 
-      - name: 2. Instalación de Python
+      - name: 2. Configuración de Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: 3. Instalación de librerías
+      - name: 3. Instalación de dependencias
         run: |
           pip install google-genai beautifulsoup4
 
-      - name: 4. Ejecución del Collector Pro
+      - name: 4. Ejecución del Proceso de Inteligencia
+        # Este paso realiza el triaje de 20 noticias y luego el análisis profundo
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: 5. Guardado de datos y Sincronización
+      - name: 5. Sincronización y Guardado de Datos
         run: |
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # Añadir cambios generados
+          # Aseguramos que el bot esté en la rama correcta y sincronizado con la web
+          git fetch origin main
+          git checkout main
+          
+          # Añadimos el archivo generado por el script de Python
           git add latest_news.json
           
-          # Crear el commit (si no hay cambios, no fallará)
-          git commit -m "Actualización estratégica: $(date)" || echo "No hay cambios para actualizar"
+          # Intentamos hacer commit. Si no hay cambios, el script continúa sin fallar
+          git commit -m "Actualización estratégica: $(date)" || echo "No hay cambios detectados"
           
-          # Sincronización crucial: pull con rebase para evitar rechazos
-          git pull --rebase origin main
-          
-          # Subir cambios finales
-          git push origin main
+          # Empujamos los cambios forzando la sincronización para evitar el error 'rejected'
+          git push origin main --force
