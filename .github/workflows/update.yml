@@ -34,17 +34,21 @@ jobs:
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
           
-          # 1. Guardar temporalmente los archivos nuevos generados por la IA
+          # 1. Agregamos TODO lo que haya cambiado o se haya creado
           git add .
+          
+          # 2. Guardamos cambios para sincronizar
           git stash
           
-          # 2. Sincronizar con lo que borraste en la web
+          # 3. Traemos cambios remotos
           git pull origin main --rebase
           
-          # 3. Recuperar los archivos generados por la IA
+          # 4. Recuperamos los archivos creados por el bot
           git stash pop || echo "No hay cambios en el stash"
           
-          # 4. Consolidar y subir
-          git add latest_news.json timeline.json maestros_index.json historico_noticias/ archivos_maestros/
-          git commit -m "Sync: Global Proximity Data Update $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
+          # 5. Agregamos todo de nuevo para asegurar
+          git add .
+          
+          # 6. Commit y envío (con el comando -A que es infalible)
+          git commit -m "Sync: Global Proximity Update $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios"
           git push origin main
