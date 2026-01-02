@@ -1,37 +1,31 @@
-import os, json, datetime, time, ssl, urllib.request, urllib.error, hashlib, glob, re
+import os, json, datetime, time, ssl, urllib.request, urllib.error, hashlib, re, sys
 import xml.etree.ElementTree as ET
+from collections import defaultdict
 from google import genai
-from bs4 import BeautifulSoup # Motor de extracción profunda
+from bs4 import BeautifulSoup 
 
-# --- CONFIGURACIÓN DE ENTORNO ---
-PATHS = {
-    "diario": "historico_noticias/diario", 
-    "semanal": "historico_noticias/semanal", 
-    "mensual": "historico_noticias/mensual"
-}
+# --- PARCHE DE CODIFICACIÓN (CRÍTICO) ---
+# Evita errores con caracteres chinos, rusos, árabes, etc.
+if sys.stdout.encoding != 'utf-8':
+    try: sys.stdout.reconfigure(encoding='utf-8')
+    except: pass
+
+# --- CONFIGURACIÓN ---
+PATHS = { "diario": "historico_noticias/diario" }
 for p in PATHS.values(): os.makedirs(p, exist_ok=True)
 
-# Headers simulando navegador real para evitar bloqueos 403
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Connection': 'keep-alive',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
 }
 
-# --- DEFINICIONES ESTRATÉGICAS ---
-AREAS_ESTRATEGICAS = {
-    "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6",
-    "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b",
-    "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"
-}
+# --- DEFINICIONES VISUALES ---
+AREAS_ESTRATEGICAS = [
+    "Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
+    "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
+]
 
-BLOQUE_COLORS = {
-    "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
-    "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
-    "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
-}
-
+# Mapa de normalización para asegurar que los colores coincidan en el Frontend
 NORMALIZER = {
     "EE.UU.": "USA", "ESTADOS UNIDOS": "USA", "US": "USA", "UNITED STATES": "USA",
     "RUSIA": "RUSSIA", "RUSSIAN FEDERATION": "RUSSIA", "MOSCU": "RUSSIA",
@@ -43,7 +37,7 @@ NORMALIZER = {
     "INDIA": "INDIA", "NEW DELHI": "INDIA"
 }
 
-# --- RED DE INTELIGENCIA GLOBAL (Fuentes V8.0 + África Fix) ---
+# --- RED DE FUENTES COMPLETA (55+ FEEDS) ---
 FUENTES = {
     "USA": [
         "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
@@ -99,246 +93,204 @@ FUENTES = {
     ]
 }
 
-class GeopoliticalCollector:
+class ClusterEngine:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
-        self.link_storage = {}
-        self.title_to_id = {}
+        self.raw_storage = {} 
+        self.clusters = defaultdict(list)
         self.hoy = datetime.datetime.now()
 
-    def fetch_with_retry(self, url, retries=2):
-        for attempt in range(retries):
-            try:
-                req = urllib.request.Request(url, headers=HEADERS)
-                return urllib.request.urlopen(req, timeout=10).read()
-            except urllib.error.URLError as e:
-                # Bypass SSL
-                if "certificate" in str(e).lower() or "ssl" in str(e).lower():
-                    try:
-                        ctx = ssl._create_unverified_context()
-                        return urllib.request.urlopen(req, timeout=10, context=ctx).read()
-                    except: pass
-                time.sleep(1)
-            except: time.sleep(1)
-        return None
-
-    # --- MÓDULO SMART SCRAPER (Fase 2) ---
-    def smart_scrape(self, url):
-        """Intenta descargar y limpiar el texto real de la noticia."""
-        try:
-            req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=6) as response: # Timeout ajustado
-                html = response.read()
-                soup = BeautifulSoup(html, 'html.parser')
-                
-                # Limpieza quirúrgica
-                for script in soup(["script", "style", "nav", "footer", "header", "aside", "form"]):
-                    script.extract()
-                
-                text = soup.get_text()
-                
-                # Formateo de texto
-                lines = (line.strip() for line in text.splitlines())
-                chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-                text = '\n'.join(chunk for chunk in chunks if chunk)
-                
-                # Devolvemos un fragmento sustancial (1500 chars)
-                return text[:1500]
-        except Exception:
-            return ""
-
-    def fetch_data(self):
-        print("🌍 Fase 1: Triaje de Señales Globales...")
-        raw_news_data = [] 
-        total_news = 0
+    def fetch_rss(self):
+        print(f"🌍 FASE 1: Recolección Masiva desde {len([u for r in FUENTES.values() for u in r])} fuentes...")
+        raw_items = []
         
         for region, urls in FUENTES.items():
-            region_count = 0
+            print(f"   -> Escaneando red: {region}...")
             for url in urls:
-                content = self.fetch_with_retry(url)
-                if content:
+                try:
+                    # Timeout ajustado para evitar cuellos de botella
+                    req = urllib.request.Request(url, headers=HEADERS)
+                    content = urllib.request.urlopen(req, timeout=4).read()
+                    
                     try:
                         root = ET.fromstring(content)
-                        items = root.findall('.//item') or root.findall('.//{*}entry')
+                    except:
+                        # Fallback simple si el XML está sucio
+                        continue
+
+                    # Capturamos máx 5 por feed para no saturar el Triaje (5 * 55 = ~275 noticias)
+                    items = root.findall('.//item') or root.findall('.//{*}entry')
+                    for n in items[:5]:
+                        t = (n.find('title') or n.find('{*}title')).text.strip()
+                        l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
                         
-                        # TRIAJE: Top 5 noticias por fuente para profundizar
-                        for n in items[:5]: 
-                            t = (n.find('title') or n.find('{*}title')).text.strip()
-                            l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
-                            
-                            # Fallback Description del RSS
-                            d_node = n.find('description') or n.find('{*}description') or n.find('{*}summary')
-                            rss_desc = d_node.text if (d_node is not None and d_node.text) else ""
-                            
-                            if t and l:
-                                art_id = hashlib.md5(t.encode()).hexdigest()[:8]
-                                self.link_storage[art_id] = {"link": l, "title": t, "region_origen": region}
-                                
-                                raw_news_data.append({
-                                    "id": art_id,
-                                    "region": region,
-                                    "titulo": t,
-                                    "link": l,
-                                    "rss_desc": rss_desc
-                                })
-                                total_news += 1
-                                region_count += 1
-                    except Exception: continue
-            print(f"   ✓ {region}: {region_count} objetivos identificados.")
-        return raw_news_data, total_news
+                        if t and l:
+                            aid = hashlib.md5(t.encode('utf-8')).hexdigest()[:8]
+                            self.raw_storage[aid] = {"id": aid, "title": t, "link": l, "region": region}
+                            raw_items.append(f"ID:{aid} | TITLE:{t}")
+                except: 
+                    continue
+        return raw_items
 
-    def enrich_data(self, news_list):
-        print(f"🕵️ Fase 2: Extracción Profunda (Scraping) de {len(news_list)} objetivos...")
-        enriched_lines = []
-        
-        for i, item in enumerate(news_list):
-            if i % 10 == 0: print(f"   ↳ Extrayendo contexto {i}/{len(news_list)}...")
-            
-            # Intentamos leer la web real
-            full_text = self.smart_scrape(item['link'])
-            
-            # Si falla, usamos el resumen del RSS
-            context_text = full_text if len(full_text) > 200 else item['rss_desc']
-            context_text = re.sub('<[^<]+?>', '', str(context_text)) # Limpieza final HTML
-            
-            # Construcción del Payload para Gemini
-            line = f"ID: {item['id']} | ORIGEN: {item['region']} | TITULO: {item['titulo']} | CONTEXTO: {context_text[:1200]}"
-            enriched_lines.append(line)
-            
-        return enriched_lines
+    def smart_scrape(self, url):
+        """Deep Scraping: Extrae el texto real."""
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=5) as response:
+                soup = BeautifulSoup(response.read(), 'html.parser')
+                # Limpieza agresiva
+                for s in soup(["script", "style", "nav", "footer", "svg", "header", "aside", "form"]): 
+                    s.extract()
+                return re.sub(r'\s+', ' ', soup.get_text()).strip()[:1500]
+        except: return ""
 
-    def analyze_batch(self, news_chunk):
-        batch_text = "\n".join(news_chunk)
+    def triage_batch(self, batch_titles):
+        """FASE 2: Clasificación rápida de títulos."""
+        text_block = "\n".join(batch_titles)
         prompt = f"""
-        Actúa como analista de inteligencia geopolítica senior.
+        Actúa como clasificador de inteligencia.
+        Asigna cada noticia a una de estas ÁREAS: {AREAS_ESTRATEGICAS}.
+        Si no es relevante geopolíticamente, ignórala.
         
-        OBJETIVO:
-        Analiza el TITULO y el CONTEXTO real de las noticias.
-        Detecta la perspectiva regional y la carga factual.
+        FORMATO JSON: {{ "items": [ {{ "id": "...", "area": "..." }} ] }}
         
-        ÁREAS: {list(AREAS_ESTRATEGICAS.keys())}
-
-        REGLAS DE SALIDA (JSON):
-        1. 'id': COPIA EXACTAMENTE el ID.
-        2. 'titulo': Traduce al Español.
-        3. 'bloque': Infiérelo del ORIGEN.
-        4. 'proximidad': FLOAT (0.0 - 100.0).
-           - 85-100: Datos duros, hechos verificados, tono técnico.
-           - 50-80: Análisis interpretativo o editorial.
-           - 10-40: Propaganda evidente, lenguaje incendiario, falta de datos.
-        5. 'sesgo': Frase breve sobre el encuadre (ej. "Enfatiza pérdidas enemigas", "Crítico con la política monetaria").
-
         INPUT:
-        {batch_text}
-
-        FORMATO ESPERADO:
-        {{ "carousel": [ {{ "area": "...", "punto_cero": "Resumen del área...", "particulas": [ {{ "id": "...", "titulo": "...", "bloque": "...", "proximidad": 85.5, "sesgo": "..." }} ] }} ] }}
+        {text_block}
         """
         try:
             res = self.client.models.generate_content(
-                model="gemini-2.0-flash", 
-                contents=prompt, 
-                config={'response_mime_type': 'application/json', 'temperature': 0.15}
+                model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
             )
-            return json.loads(res.text.strip().replace('```json', '').replace('```', ''))
+            return json.loads(res.text.replace('```json','').replace('```',''))
+        except: return None
+
+    def analyze_cluster(self, area_name, item_ids):
+        """FASE 3: Análisis de Consenso y Distancia."""
+        print(f"   ⚡ Analizando Clúster: {area_name} ({len(item_ids)} señales)...")
+        
+        cluster_context = []
+        for aid in item_ids:
+            meta = self.raw_storage[aid]
+            full_text = self.smart_scrape(meta['link'])
+            if len(full_text) < 50: full_text = meta['title'] 
+            # Inyectamos el bloque para que la IA sepa quién habla
+            cluster_context.append(f"ID: {aid} | BLOQUE: {meta['region']} | TEXTO: {full_text}")
+
+        prompt = f"""
+        Eres el motor PROXIMITY. Estás analizando el ecosistema de noticias: {area_name}.
+        
+        TAREA:
+        1. Lee todas las noticias y detecta el "HECHO FACTUAL" central (si existe).
+        2. Mide la DISTANCIA NARRATIVA de cada noticia respecto a ese hecho neutral.
+        
+        MÉTRICA PROXIMIDAD (0-100%):
+        - 100% (CENTRO): Narrativa Próxima. Coincide con el consenso factual/técnico.
+        - 50% (MEDIA): Interpretación estándar del bloque.
+        - 0% (BORDE): Narrativa Lejana. Propaganda, especulación o contradicción frontal con otros bloques.
+
+        OUTPUT JSON:
+        {{
+            "punto_cero": "Resumen de 2 líneas del consenso (o conflicto) factual de este grupo.",
+            "particulas": [
+                {{
+                    "id": "ID_EXACTO",
+                    "titulo": "Título en Español",
+                    "proximidad": 85.5,
+                    "sesgo": "Breve análisis del encuadre (ej. 'Enfatiza X', 'Omite Y')"
+                }}
+            ]
+        }}
+
+        DATA DEL CLÚSTER:
+        {"\n".join(cluster_context)}
+        """
+        
+        try:
+            res = self.client.models.generate_content(
+                model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'}
+            )
+            return json.loads(res.text.replace('```json','').replace('```',''))
         except Exception as e:
-            print(f"⚠️ Error Lote IA: {e}")
+            print(f"Error Cluster IA: {e}")
             return None
 
-    def run_analysis_pipeline(self, enriched_lines):
-        print(f"🧠 Fase 3: Análisis de Contraste ({len(enriched_lines)} señales)...")
-        chunk_size = 12 # Lotes ajustados para contexto enriquecido
-        chunks = [enriched_lines[i:i + chunk_size] for i in range(0, len(enriched_lines), chunk_size)]
-        
-        merged_carousel = {} 
+    def run(self):
+        # 1. HARVEST
+        raw_titles = self.fetch_rss()
+        if not raw_titles: return
 
-        for i, chunk in enumerate(chunks):
-            print(f"   ↳ Analizando Lote {i+1}/{len(chunks)}...")
-            result = self.analyze_batch(chunk)
+        # 2. TRIAGE
+        print(f"🗂️ FASE 2: Triaje de {len(raw_titles)} titulares...")
+        batch_size = 25
+        for i in range(0, len(raw_titles), batch_size):
+            batch = raw_titles[i:i+batch_size]
+            classification = self.triage_batch(batch)
+            if classification and 'items' in classification:
+                for item in classification['items']:
+                    aid = item.get('id')
+                    area = item.get('area')
+                    if aid in self.raw_storage and area in AREAS_ESTRATEGICAS:
+                        self.clusters[area].append(aid)
+            time.sleep(1)
+
+        # 3. DEEP ANALYSIS
+        print("🧠 FASE 3: Deep Analysis (Relatividad Narrativa)...")
+        final_carousel = []
+        
+        for area, ids in self.clusters.items():
+            if not ids: continue
             
-            if result and 'carousel' in result:
-                for item in result['carousel']:
-                    area_name = item.get('area')
-                    if not area_name: continue
-                    
-                    if area_name not in merged_carousel:
-                        merged_carousel[area_name] = {
-                            "area": area_name,
-                            "punto_cero": item.get('punto_cero', "Análisis global en proceso."),
-                            "color": AREAS_ESTRATEGICAS.get(area_name, "#3b82f6"),
-                            "particulas": []
-                        }
-                    merged_carousel[area_name]['particulas'].extend(item.get('particulas', []))
+            # Tomamos una muestra representativa (Top 12) para análisis profundo
+            # Esto evita errores por exceso de tokens y mantiene la velocidad
+            ids_to_process = ids[:12] 
+            
+            analysis = self.analyze_cluster(area, ids_to_process)
+            
+            if analysis and 'particulas' in analysis:
+                clean_particles = []
+                for p in analysis['particulas']:
+                    if p['id'] in self.raw_storage:
+                        meta = self.raw_storage[p['id']]
+                        p['link'] = meta['link']
+                        
+                        # Normalización de Bloque/Región
+                        p['bloque'] = self.normalize_block(meta['region'])
+                        
+                        try: p['proximidad'] = float(p['proximidad'])
+                        except: p['proximidad'] = 50.0
+                        clean_particles.append(p)
+                
+                final_carousel.append({
+                    "area": area,
+                    "punto_cero": analysis.get('punto_cero', 'Análisis en proceso.'),
+                    "color": self.get_area_color(area),
+                    "particulas": clean_particles
+                })
             time.sleep(2)
 
-        return {"carousel": list(merged_carousel.values())}
-
-    def validate_and_fix(self, data):
-        if not data or 'carousel' not in data: return False
+        # 4. SAVE
+        output = {"carousel": final_carousel}
+        with open("gravity_carousel.json", "w", encoding="utf-8") as f:
+            json.dump(output, f, indent=2, ensure_ascii=False)
         
-        total_ok = 0
-        for slide in data['carousel']:
-            slide['color'] = AREAS_ESTRATEGICAS.get(slide.get('area'), "#3b82f6")
+        fecha = self.hoy.strftime('%Y-%m-%d_%H%M')
+        with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
+            json.dump(output, f, indent=2, ensure_ascii=False)
             
-            valid_p = []
-            for p in slide.get('particulas', []):
-                news_id = p.get('id')
-                meta = self.link_storage.get(news_id)
-                
-                if meta:
-                    p['link'] = meta['link']
-                    
-                    # Normalización
-                    b_ia = str(p.get('bloque', '')).upper()
-                    b_real = meta.get('region_origen', 'GLOBAL')
-                    final_block = NORMALIZER.get(b_ia, b_real)
-                    if final_block not in BLOQUE_COLORS: final_block = b_real
-                    
-                    p['bloque'] = final_block
-                    p['color_bloque'] = BLOQUE_COLORS.get(final_block, "#94a3b8")
+        print("✅ CICLO COMPLETADO: Proximity Engine Actualizado.")
 
-                    # Auditoría Proximidad
-                    try:
-                        clean_v = str(p.get('proximidad', '0')).replace('%', '').strip()
-                        val = float(clean_v)
-                        p['proximidad'] = round(val, 1)
-                    except:
-                        print(f"⚠️ [DEBUG] Fallo Proximidad ID {news_id}")
-                        p['proximidad'] = 0.0
+    def normalize_block(self, region):
+        # Mapea la región del feed al bloque de color del frontend
+        return NORMALIZER.get(region, "GLOBAL")
 
-                    if not p.get('sesgo'): p['sesgo'] = "Análisis pendiente."
-                    valid_p.append(p)
-                    total_ok += 1
-            
-            slide['particulas'] = valid_p
-        
-        print(f"🛡️ Integridad: {total_ok} señales validadas y enriquecidas.")
-        return True
-
-    def run(self):
-        # 1. Cosecha
-        raw_news_data, total_news = self.fetch_data()
-        if total_news < 5: return
-
-        # 2. Enriquecimiento (Scraping)
-        enriched_lines = self.enrich_data(raw_news_data)
-
-        # 3. Análisis
-        data = self.run_analysis_pipeline(enriched_lines)
-        
-        # 4. Guardado
-        if self.validate_and_fix(data):
-            with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
-            
-            fecha = self.hoy.strftime('%Y-%m-%d_%H%M')
-            with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
-                
-            print(f"✅ Éxito Total: Inteligencia actualizada.")
-        else:
-            print("❌ Error crítico en validación.")
+    def get_area_color(self, area):
+        colors = {
+            "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", 
+            "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", 
+            "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"
+        }
+        return colors.get(area, "#94a3b8")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
-    if key: GeopoliticalCollector(key).run()
+    if key: ClusterEngine(key).run()
