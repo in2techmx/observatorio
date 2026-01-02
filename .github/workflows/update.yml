@@ -16,10 +16,11 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
-      - name: Commit y Push
+        - name: Commit y Push
         run: |
           git config --global user.name 'Proximity-Bot'
           git config --global user.email 'bot@proximity.news'
           git add .
           git commit -m "Update $(date)" || echo "No changes"
-          git push origin main
+          # Añadimos --force para que el bot siempre gane el choque de versiones
+          git push origin main --force
