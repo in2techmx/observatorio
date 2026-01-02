@@ -1,51 +1,184 @@
-name: Actualizar Observatorio Geopolítico
+import os, json, datetime, time, ssl, urllib.request, hashlib
+import xml.etree.ElementTree as ET
+import concurrent.futures
+from bs4 import BeautifulSoup
+from google import genai
 
-on:
-  schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+# --- CONFIGURACIÓN DE RUTAS ---
+PATH_DIARIO = "historico_noticias/diario"
+PATH_SEMANAL = "historico_noticias/semanal"
+PATH_MENSUAL = "historico_noticias/mensual"
 
-jobs:
-  build:
-    name: Inteligencia Semántica y Triage
-    runs-on: ubuntu-latest
-    
-    permissions:
-      contents: write
+# Asegurar infraestructura de carpetas
+for folder in [PATH_DIARIO, PATH_SEMANAL, PATH_MENSUAL]:
+    os.makedirs(folder, exist_ok=True)
 
-    steps:
-      - name: 1. Descarga del repositorio
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Descarga todo el historial para evitar conflictos
+# --- CONFIGURACIÓN ESTRATÉGICA ---
+ssl_context = ssl._create_unverified_context()
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
-      - name: 2. Configuración de Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+AREAS_ESTRATEGICAS = {
+    "Seguridad y Conflictos": "#ef4444",
+    "Economía y Sanciones": "#3b82f6",
+    "Energía y Recursos": "#10b981",
+    "Soberanía y Alianzas": "#f59e0b",
+    "Tecnología y Espacio": "#8b5cf6",
+    "Sociedad y Derechos": "#ec4899"
+}
 
-      - name: 3. Instalación de dependencias
-        run: |
-          pip install google-genai beautifulsoup4
+BLOQUE_COLORS = {
+    "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
+    "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
+    "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
+}
 
-      - name: 4. Ejecución del Proceso de Inteligencia
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python collector.py
+FUENTES = {
+    "USA": ["https://www.npr.org/rss/rss.php?id=1004", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", "https://api.washingtontimes.com/rss/headlines/news/world/"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "https://rt.com/rss/news/", "https://en.interfax.ru/rss/"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "http://www.ecns.cn/rss/rss.xml", "https://www.globaltimes.cn/rss/index.xml"],
+    "EUROPE": ["https://www.france24.com/en/rss", "https://www.dw.com/xml/rss-en-all", "https://www.euronews.com/rss?level=vertical&name=news"],
+    "LATAM": ["https://www.jornada.com.mx/rss/edicion.xml", "https://www.clarin.com/rss/mundo/", "https://www.infobae.com/america/rss/"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.timesofisrael.com/feed/"],
+    "INDIA": ["https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://www.thehindu.com/news/national/feeder/default.rss", "https://zeenews.india.com/rss/india-national-news.xml"],
+    "AFRICA": ["https://www.africanews.com/feeds/rss", "https://allafrica.com/tools/headlines/rdf/latestnews/index.xml", "https://www.theafricareport.com/feed/"]
+}
 
-      - name: 5. Sincronización y Guardado Final
-        run: |
-          git config --global user.name "Intelligence-Bot"
-          git config --global user.email "bot@github.com"
-          
-          # Nos aseguramos de estar en la rama main y tener lo último
-          git pull origin main --rebase
-          
-          # Añadimos el archivo (ahora que el script de arriba ya lo creó)
-          git add latest_news.json
-          
-          # Hacemos el commit
-          git commit -m "Actualización estratégica: $(date)" || echo "Sin cambios"
-          
-          # Subimos forzando si es necesario para sincronizar tu edición manual del YML
-          git push origin main
+class GeopoliticalCollector:
+    def __init__(self, api_key):
+        self.client = genai.Client(api_key=api_key)
+        self.link_storage = {}
+        self.hoy = datetime.datetime.now()
+        self.es_domingo = self.hoy.weekday() == 6
+        self.es_fin_mes = (self.hoy + datetime.timedelta(days=1)).day == 1
+
+    def fetch_rss_all(self):
+        print(f"🌍 [{self.hoy.strftime('%Y-%m-%d')}] Escaneando RSS...")
+        all_news = {reg: [] for reg in FUENTES.keys()}
+        
+        def fetch_feed(region, url):
+            try:
+                req = urllib.request.Request(url, headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
+                    root = ET.fromstring(resp.read())
+                    items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
+                    extracted = []
+                    for n in items[:8]:
+                        t = (n.find('title') or n.find('{http://www.w3.org/2005/Atom}title')).text
+                        l_node = n.find('link') or n.find('{http://www.w3.org/2005/Atom}link')
+                        l = l_node.attrib.get('href') if (l_node is not None and l_node.attrib) else (l_node.text if l_node is not None else "")
+                        if t and l: extracted.append({"title": t.strip(), "link": l.strip()})
+                    return region, extracted
+            except: return region, []
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+            futures = [executor.submit(fetch_feed, reg, url) for reg, urls in FUENTES.items() for url in urls]
+            for f in concurrent.futures.as_completed(futures):
+                reg, news = f.result()
+                all_news[reg].extend(news)
+        return all_news
+
+    def scrape_articles(self, articles):
+        def scrape_one(item):
+            try:
+                req = urllib.request.Request(item['link'], headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
+                    soup = BeautifulSoup(resp.read(), 'html.parser')
+                    for s in soup(["script", "style", "nav", "footer", "ad"]): s.decompose()
+                    paragraphs = [p.get_text().strip() for p in soup.find_all('p') if len(p.get_text()) > 60]
+                    item['text'] = " ".join(paragraphs[:6])[:1500]
+                    self.link_storage[item['title']] = item['link']
+                    return item
+            except: return None
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            return list(filter(None, executor.map(scrape_one, articles)))
+
+    def analizar_y_sintetizar(self, contexto):
+        print("🧠 Sintetizando proximidad narrativa...")
+        prompt = f"""
+        Actúa como un motor de inteligencia multipolar. Clasifica en: {list(AREAS_ESTRATEGICAS.keys())}.
+        1. PUNTO CERO: Hechos verificados por la mayoría de los 8 bloques.
+        2. PROXIMIDAD: 0-100% de cercanía de cada noticia al Punto Cero.
+        JSON: {{ "carousel": [ {{ "area": "...", "punto_cero": "...", "particulas": [ {{ "titulo": "...", "bloque": "...", "proximidad": 0-100, "sesgo": "...", "link": "LINK_REAL" }} ] }} ] }}
+        CONTEXTO: {contexto}
+        """
+        res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json', 'temperature': 0.1})
+        return json.loads(res.text.strip())
+
+    def actualizar_manifiesto(self):
+        """Genera el índice para los selectores del HTML"""
+        manifiesto = {
+            "diario": sorted(os.listdir(PATH_DIARIO), reverse=True),
+            "semanal": sorted(os.listdir(PATH_SEMANAL), reverse=True),
+            "mensual": sorted(os.listdir(PATH_MENSUAL), reverse=True)
+        }
+        with open("manifest.json", "w", encoding="utf-8") as f:
+            json.dump(manifiesto, f, indent=4, ensure_ascii=False)
+        print("📂 Manifiesto actualizado.")
+
+    def run(self):
+        # 1. RSS + Triaje
+        rss_raw = self.fetch_rss_all()
+        contexto_final = ""
+        
+        for region, articles in rss_raw.items():
+            if not articles: continue
+            # Triaje Gemini (2 mejores por región)
+            titulos = "\n".join([f"[{i}] {a['title']}" for i, a in enumerate(articles[:15])])
+            try:
+                res = self.client.models.generate_content(
+                    model="gemini-2.0-flash", 
+                    contents=f"Selecciona los 2 índices más relevantes geopolíticamente para {region}: \n{titulos}",
+                    config={'response_mime_type': 'application/json'}
+                )
+                idxs = json.loads(res.text.strip()).get("idx", [0, 1])
+                selected = [articles[i] for i in idxs if i < len(articles)]
+                
+                # 2. Scraping
+                enriched = self.scrape_articles(selected)
+                for e in enriched:
+                    contexto_final += f"BLOQUE: {region} | TITULO: {e['title']} | TEXTO: {e['text']}\n\n"
+            except: continue
+
+        # 3. Análisis Final
+        data_analisis = self.analizar_y_sintetizar(contexto_final)
+        
+        # Post-procesado de colores y validación de links
+        for slide in data_analisis['carousel']:
+            slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#ffffff")
+            for p in slide['particulas']:
+                p['link'] = self.link_storage.get(p['titulo'], p['link'])
+                p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#ffffff")
+
+        # 4. Guardado jerárquico
+        # Siempre guarda la versión más reciente para el index.html
+        with open("gravity_carousel.json", "w", encoding="utf-8") as f:
+            json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+
+        # Copia diaria
+        path_d = os.path.join(PATH_DIARIO, f"{self.hoy.strftime('%Y-%m-%d')}.json")
+        with open(path_d, "w", encoding="utf-8") as f:
+            json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+
+        # Si es Domingo -> Semanal
+        if self.es_domingo:
+            path_s = os.path.join(PATH_SEMANAL, f"Semana_{self.hoy.strftime('%Y_W%U')}.json")
+            with open(path_s, "w", encoding="utf-8") as f:
+                json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+
+        # Si es Fin de Mes -> Mensual
+        if self.es_fin_mes:
+            path_m = os.path.join(PATH_MENSUAL, f"Mes_{self.hoy.strftime('%Y_%m')}.json")
+            with open(path_m, "w", encoding="utf-8") as f:
+                json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+
+        # 5. Actualizar el manifiesto para el HTML
+        self.actualizar_manifiesto()
+        print("✅ Proceso completado exitosamente.")
+
+if __name__ == "__main__":
+    API_KEY = os.environ.get("GEMINI_API_KEY")
+    if API_KEY:
+        GeopoliticalCollector(API_KEY).run()
+    else:
+        print("Falta GEMINI_API_KEY")
