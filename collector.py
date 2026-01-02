@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from google import genai
 
-# --- CONFIGURACIÓN DE RUTAS ---
+# --- CONFIGURACIÓN DE ENTORNOS Y RUTAS ---
 PATHS = {
     "diario": "historico_noticias/diario", 
     "semanal": "historico_noticias/semanal", 
@@ -14,11 +14,14 @@ for p in PATHS.values(): os.makedirs(p, exist_ok=True)
 ssl_context = ssl._create_unverified_context()
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
-# --- ESTÉTICA Y MAPEO ---
+# --- DEFINICIÓN DE ÁREAS (Eje del Carrusel Netflix) ---
 AREAS_ESTRATEGICAS = {
-    "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6",
-    "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b",
-    "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"
+    "Seguridad y Conflictos": "#ef4444", 
+    "Economía y Sanciones": "#3b82f6",
+    "Energía y Recursos": "#10b981", 
+    "Soberanía y Alianzas": "#f59e0b",
+    "Tecnología y Espacio": "#8b5cf6", 
+    "Sociedad y Derechos": "#ec4899"
 }
 
 BLOQUE_COLORS = {
@@ -27,16 +30,50 @@ BLOQUE_COLORS = {
     "INDIA": "#8b5cf6", "AFRICA": "#22c55e"
 }
 
-# --- FUENTES (Híbridas y Regionales) ---
+# --- FUENTES AMPLIADAS Y CORREGIDAS ---
 FUENTES = {
-    "USA": ["https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "https://globalvoices.org/section/world/russia/feed/"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://globalvoices.org/section/world/east-asia/feed/"],
-    "EUROPE": ["https://www.france24.com/en/rss", "https://www.euronews.com/rss?level=vertical&name=news"],
-    "LATAM": ["https://legrandcontinent.eu/es/feed/", "https://globalvoices.org/section/world/latin-america/feed/"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.middleeasteye.net/rss"],
-    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss", "https://globalvoices.org/section/world/south-asia/feed/"],
-    "AFRICA": ["https://news.google.com/rss/search?q=Africa+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en", "https://globalvoices.org/section/world/sub-saharan-africa/feed/"]
+    "USA": [
+        "https://news.google.com/rss/search?q=USA+geopolitics+when:24h&hl=en-US&gl=US&ceid=US:en",
+        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+        "https://www.foreignaffairs.com/rss.xml"
+    ],
+    "RUSSIA": [
+        "https://tass.com/rss/v2.xml",
+        "http://en.kremlin.ru/events/president/news/feed",
+        "https://globalvoices.org/section/world/russia/feed/"
+    ],
+    "CHINA": [
+        "https://www.scmp.com/rss/91/feed",
+        "http://www.ecns.cn/rss/rss.xml",
+        "https://globalvoices.org/section/world/east-asia/feed/"
+    ],
+    "EUROPE": [
+        "https://legrandcontinent.eu/es/feed/",
+        "https://www.euronews.com/rss?level=vertical&name=news",
+        "https://www.france24.com/en/rss",
+        "https://www.dw.com/xml/rss-en-all"
+    ],
+    "LATAM": [
+        "https://www.infobae.com/america/arc/outboundfeeds/rss/",
+        "https://elpais.com/america/rss/",
+        "https://www.jornada.com.mx/rss/edicion.xml",
+        "https://globalvoices.org/section/world/latin-america/feed/"
+    ],
+    "MID_EAST": [
+        "https://www.aljazeera.com/xml/rss/all.xml",
+        "https://www.middleeasteye.net/rss",
+        "https://www.trtworld.com/rss"
+    ],
+    "INDIA": [
+        "https://www.thehindu.com/news/national/feeder/default.rss",
+        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+        "https://globalvoices.org/section/world/south-asia/feed/"
+    ],
+    "AFRICA": [
+        "https://allafrica.com/tools/headlines/rdf/latestnews/index.xml",
+        "https://www.africanews.com/feeds/rss",
+        "https://globalvoices.org/section/world/sub-saharan-africa/feed/"
+    ]
 }
 
 class GeopoliticalCollector:
@@ -47,7 +84,7 @@ class GeopoliticalCollector:
         self.hoy = datetime.datetime.now()
 
     def fetch_data(self):
-        print("🚀 Capturando noticias para matriz de alta densidad...")
+        print("🌍 Capturando señales multipolares...")
         batch_text = ""
         total_news = 0
         for region, urls in FUENTES.items():
@@ -58,9 +95,12 @@ class GeopoliticalCollector:
                     with urllib.request.urlopen(req, timeout=15, context=ssl_context) as resp:
                         root = ET.fromstring(resp.read())
                         items = root.findall('.//item') or root.findall('.//{*}entry')
-                        for n in items[:10]: # Aumentamos a 10 por fuente
-                            t = (n.find('title') or n.find('{*}title')).text.strip()
-                            l = (n.find('link').text if n.find('link') is not None else n.find('{*}link').attrib.get('href', '')).strip()
+                        for n in items[:12]:
+                            t_node = n.find('title') or n.find('{*}title')
+                            l_node = n.find('link') or n.find('{*}link')
+                            t = t_node.text.strip() if t_node is not None else None
+                            l = (l_node.text or l_node.attrib.get('href', '')).strip() if l_node is not None else ""
+                            
                             if t and l:
                                 art_id = hashlib.md5(t.encode()).hexdigest()[:10]
                                 self.link_storage[art_id] = {"link": l, "title": t}
@@ -69,77 +109,66 @@ class GeopoliticalCollector:
                                 total_news += 1
                                 region_count += 1
                 except: continue
-            print(f"   ✓ {region}: {region_count} noticias capturadas.")
+            print(f"   ✓ {region}: {region_count} noticias.")
         return batch_text, total_news
 
     def analyze(self, batch_text):
-        print("🧠 Generando Matriz Exhaustiva (Traducción + Densidad)...")
+        print("🧠 IA: Procesando Áreas Estratégicas y Análisis de Sesgo...")
         prompt = f"""
-        Actúa como un Analista de Inteligencia Senior. Procesa este contexto exhaustivamente.
-        
-        REGLAS:
-        1. TRADUCE TODO AL ESPAÑOL (Títulos y Sesgos).
-        2. ALTA DENSIDAD: Incluye la mayor cantidad de noticias relevantes posible (hasta 6 por área estratégica).
-        3. REPRESENTATIVIDAD: Asegura que todos los bloques geopolíticos aparezcan.
-        4. LINK: En el campo 'link' pon exactamente el TITULO_ORIGINAL para recuperarlo.
+        Actúa como un motor de inteligencia geopolítica de vanguardia. 
+        Analiza el contexto y genera un JSON donde la raíz única sea 'carousel'.
+        Cada objeto dentro de 'carousel' DEBE ser una de las ÁREAS ESTRATÉGICAS especificadas.
 
-        ESTRUCTURA JSON:
-        {{
-          "carousel": [
-            {{
-              "area": "Nombre en Español",
-              "punto_cero": "Hechos objetivos traducidos",
-              "particulas": [
-                {{
-                  "titulo": "Título en Español",
-                  "bloque": "USA, CHINA, RUSSIA, etc.",
-                  "proximidad": 0-100,
-                  "sesgo": "Análisis narrativo en español",
-                  "link": "TITULO_ORIGINAL"
-                }}
-              ]
-            }}
-          ]
-        }}
-        ÁREAS: {list(AREAS_ESTRATEGICAS.keys())}
-        CONTEXTO: {batch_text}
+        REGLAS DE ORO:
+        1. TRADUCE TODO AL ESPAÑOL (Títulos, Sesgos y Puntos Cero).
+        2. ESTRUCTURA: 'carousel' -> 'area', 'punto_cero', 'color', 'particulas'.
+        3. ALTA DENSIDAD: Mínimo 5 partículas por área estratégica si el contexto lo permite.
+        4. CLAVE LINK: El campo 'link' debe contener el TITULO_ORIGINAL (sin traducir) para recuperación de URL.
+
+        LISTADO DE ÁREAS Y COLORES:
+        {json.dumps(AREAS_ESTRATEGICAS, indent=2)}
+
+        BLOQUES VÁLIDOS: USA, CHINA, RUSSIA, EUROPE, LATAM, MID_EAST, INDIA, AFRICA.
+
+        CONTEXTO:
+        {batch_text}
         """
         try:
             res = self.client.models.generate_content(
                 model="gemini-2.0-flash", 
                 contents=prompt, 
-                config={
-                    'response_mime_type': 'application/json', 
-                    'temperature': 0.15,
-                    'max_output_tokens': 5000 # Espacio extra para JSON grande
-                }
+                config={'response_mime_type': 'application/json', 'temperature': 0.1}
             )
             clean_json = res.text.strip().replace('```json', '').replace('```', '')
             return json.loads(clean_json)
-        except: return {"carousel": []}
+        except Exception as e:
+            print(f"Error Gemini: {e}")
+            return {"carousel": []}
 
     def run(self):
         batch_text, total_news = self.fetch_data()
-        if total_news < 5:
-            print("❌ Error: No se capturaron suficientes noticias."); return
+        if total_news < 10:
+            print("❌ Datos insuficientes para análisis."); return
 
         data = self.analyze(batch_text)
         
+        # Post-procesamiento: Reconstrucción de Links y Colores
         if 'carousel' in data:
             for slide in data['carousel']:
-                if not isinstance(slide, dict): continue
-                area_name = slide.get('area', "Tendencia Global")
-                slide['color'] = AREAS_ESTRATEGICAS.get(area_name, "#3b82f6")
+                # Forzar color del área desde nuestra constante local
+                slide['color'] = AREAS_ESTRATEGICAS.get(slide.get('area'), "#3b82f6")
                 
                 for p in slide.get('particulas', []):
-                    if not isinstance(p, dict): continue
-                    # Recuperación de Link Real
-                    art_id = self.title_to_id.get(p.get('link'))
+                    # Recuperar URL original usando el título que guardamos en 'link'
+                    original_title = p.get('link')
+                    art_id = self.title_to_id.get(original_title)
                     if art_id:
                         p['link'] = self.link_storage[art_id]['link']
+                    
+                    # Forzar color de bloque desde nuestra constante local
                     p['color_bloque'] = BLOQUE_COLORS.get(p.get('bloque'), "#94a3b8")
 
-        # Guardado de archivos
+        # Guardado del snapshots y archivos históricos
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
@@ -147,7 +176,7 @@ class GeopoliticalCollector:
         with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
             
-        print(f"✅ Éxito: Matriz densa generada con {total_news} fuentes procesadas.")
+        print(f"✅ Éxito: Se procesaron {total_news} señales.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
