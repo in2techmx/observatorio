@@ -10,73 +10,74 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global News Proximity</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatorio Geopolítico 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <style>
-        body { margin:0; background:#050505; color:white; font-family: sans-serif; overflow:hidden; }
-        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
-<body>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { motion } = window.Motion;
+<body class="p-6 md:p-12">
+    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
+        <div>
+            <h1 class="text-4xl font-bold text-sky-400">OBSERVATORIO <span class="text-white">PROXIMITY</span></h1>
+            <p class="text-slate-400 uppercase tracking-widest text-sm mt-2">Inteligencia Artificial Gemini 2.5 Flash | Hoy 2026</p>
+        </div>
+        <div class="text-right hidden md:block">
+            <span class="text-xs text-slate-500 block">SISTEMA AUTÓNOMO</span>
+            <span class="text-green-400 font-mono pulse text-sm">● ACTUALIZADO</span>
+        </div>
+    </header>
 
-        function App() {
-            const [data, setData] = useState([]);
-            const [timeline, setTimeline] = useState([]);
-            const [loading, setLoading] = useState(true);
-            const [status, setStatus] = useState("Iniciando...");
+    <main id="noticias-container" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="text-slate-500 animate-pulse col-span-full text-center py-20">Interrogando a la red de satélites...</div>
+    </main>
 
-            useEffect(() => {
-                const init = async () => {
-                    try {
-                        const res = await fetch(`./timeline.json?t=${Date.now()}`);
-                        const files = await res.json();
-                        setTimeline(files);
-                        if (files.length > 0) loadFile(files[0]);
-                    } catch (e) { setStatus("Esperando primer deploy..."); setLoading(false); }
-                };
-                init();
-            }, []);
+    <script>
+        async function cargarNoticias() {
+            try {
+                // Buscamos el archivo generado por tu collector.py
+                const response = await fetch('./latest_news.json');
+                const data = await response.json();
+                
+                const container = document.getElementById('noticias-container');
+                container.innerHTML = ''; // Limpiar mensaje de carga
 
-            const loadFile = async (name) => {
-                setLoading(true);
-                try {
-                    const res = await fetch(`./historico_noticias/${name}?t=${Date.now()}`);
-                    const json = await res.json();
-                    setData(Array.isArray(json) ? json : [json]);
-                } catch (e) { setStatus("Error cargando archivo"); }
-                setLoading(false);
-            };
+                data.forEach(noticia => {
+                    const card = document.createElement('div');
+                    card.className = 'card p-6 rounded-xl flex flex-col justify-between';
+                    
+                    // Construir la lista de regiones
+                    const regiones = noticia.regiones_activas.map(r => 
+                        `<span class="bg-sky-900/50 text-sky-300 text-[10px] px-2 py-1 rounded mr-1">#${r}</span>`
+                    ).join('');
 
-            return (
-                <div className="h-screen w-full p-10 flex flex-col">
-                    <header className="mb-10">
-                        <h1 className="text-4xl font-black italic uppercase text-blue-500 tracking-tighter">Global Proximity</h1>
-                        <p className="text-[10px] opacity-40 tracking-widest uppercase mt-2">Observatorio Pro | {status}</p>
-                    </header>
-
-                    {loading ? <div className="flex-1 flex items-center justify-center opacity-20 italic">Sincronizando...</div> : (
-                        <div className="flex-1 flex items-center gap-6 overflow-x-auto pb-10">
-                            {data.map((item, i) => (
-                                <motion.div key={i} initial={{opacity:0, x:20}} animate={{opacity:1, x:0}} className="min-w-[400px] glass p-10 rounded-[3rem]">
-                                    <h2 className="text-2xl font-bold mb-4 italic uppercase">{item.tematica}</h2>
-                                    <p className="text-sm text-gray-400 leading-relaxed italic opacity-80">{item.descripcion}</p>
-                                </motion.div>
-                            ))}
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center mb-4">${regiones}</div>
+                            <h2 class="text-xl font-bold mb-3 text-white leading-tight">${noticia.tematica}</h2>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-6">${noticia.descripcion}</p>
                         </div>
-                    )}
-                </div>
-            );
+                        <div class="border-t border-slate-700/50 pt-4 mt-auto">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Perspectiva estratégica</span>
+                            <p class="text-xs italic text-slate-300 mt-1">"${Object.values(noticia.perspectivas)[0]}"</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error cargando el observatorio:", error);
+                document.getElementById('noticias-container').innerHTML = 
+                    `<div class="col-span-full text-center text-red-400">Error de conexión con el flujo de datos.</div>`;
+            }
         }
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+        cargarNoticias();
     </script>
 </body>
 </html>
