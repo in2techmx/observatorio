@@ -18,7 +18,7 @@ def collect():
         return
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
     # Prompt ultra-específico para evitar basura en la respuesta
     prompt = """Genera un análisis geopolítico mundial actual. 
@@ -90,3 +90,4 @@ def collect():
 
 if __name__ == "__main__":
     collect()
+
