@@ -1,9 +1,18 @@
-import os, json, time, ssl, urllib.request, hashlib, re
+import os, json, datetime, time, ssl, urllib.request
 import xml.etree.ElementTree as ET
 import concurrent.futures
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 from google import genai
+
+# --- CONFIGURACIÓN DE RUTAS Y CARPETAS ---
+PATHS = {
+    "diario": "historico_noticias/diario",
+    "semanal": "historico_noticias/semanal",
+    "mensual": "historico_noticias/mensual"
+}
+
+for p in PATHS.values():
+    os.makedirs(p, exist_ok=True)
 
 # --- CONFIGURACIÓN ESTRATÉGICA ---
 ssl_context = ssl._create_unverified_context()
@@ -31,127 +40,121 @@ FUENTES = {
     "EUROPE": ["https://www.france24.com/en/rss", "https://www.dw.com/xml/rss-en-all", "https://www.euronews.com/rss?level=vertical&name=news"],
     "LATAM": ["https://www.jornada.com.mx/rss/edicion.xml", "https://www.clarin.com/rss/mundo/", "https://www.infobae.com/america/rss/"],
     "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.timesofisrael.com/feed/"],
-    "INDIA": ["https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://www.thehindu.com/news/national/feeder/default.rss", "https://idsa.in/rss.xml"],
+    "INDIA": ["https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://www.thehindu.com/news/national/feeder/default.rss", "https://zeenews.india.com/rss/india-national-news.xml"],
     "AFRICA": ["https://www.africanews.com/feeds/rss", "https://allafrica.com/tools/headlines/rdf/latestnews/index.xml", "https://www.theafricareport.com/feed/"]
 }
 
 class GeopoliticalCollector:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
-        self.link_storage = {} # Backup de URLs reales
+        self.link_storage = {}
+        self.hoy = datetime.datetime.now()
+        self.es_domingo = self.hoy.weekday() == 6
+        self.es_fin_mes = (self.hoy + datetime.timedelta(days=1)).day == 1
 
-    def get_rss_fast(self):
-        print("🚀 Fase 1: Recolección RSS Multipolar...")
-        all_news = {reg: [] for reg in FUENTES.keys()}
+    def fetch_rss(self):
+        print(f"🌍 Escaneando fuentes multipolares...")
+        results = {reg: [] for reg in FUENTES.keys()}
         
-        def fetch_feed(region, url):
+        def get_feed(region, url):
             try:
                 req = urllib.request.Request(url, headers=HEADERS)
                 with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
                     root = ET.fromstring(resp.read())
                     items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
-                    extracted = []
-                    for n in items[:6]:
-                        t = (n.find('title') or n.find('{http://www.w3.org/2005/Atom}title')).text
-                        l_node = n.find('link') or n.find('{http://www.w3.org/2005/Atom}link')
-                        l = l_node.attrib.get('href') if (l_node is not None and l_node.attrib) else (l_node.text if l_node is not None else "")
-                        if t and l: extracted.append({"title": t.strip(), "link": l.strip()})
-                    return region, extracted
+                    return region, [{"title": (n.find('title') or n.find('{http://www.w3.org/2005/Atom}title')).text.strip(),
+                                    "link": (n.find('link').text if n.find('link').text else n.find('link').attrib.get('href'))} 
+                                   for n in items[:10] if n.find('title') is not None]
             except: return region, []
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-            futures = [executor.submit(fetch_feed, reg, url) for reg, urls in FUENTES.items() for url in urls]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+            futures = [executor.submit(get_feed, reg, url) for reg, urls in FUENTES.items() for url in urls]
             for f in concurrent.futures.as_completed(futures):
                 reg, news = f.result()
-                all_news[reg].extend(news)
-        return all_news
+                results[reg].extend(news)
+        return results
 
-    def scrape_selected(self, news_list):
-        # Scraping puro para no perder URLs reales
-        def scrape_one(item):
+    def scrape_and_clean(self, articles):
+        def process(item):
             try:
                 req = urllib.request.Request(item['link'], headers=HEADERS)
                 with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
                     soup = BeautifulSoup(resp.read(), 'html.parser')
-                    for s in soup(["script", "style"]): s.decompose()
-                    paragraphs = [p.get_text().strip() for p in soup.find_all('p') if len(p.get_text()) > 60]
-                    text = " ".join(paragraphs[:5])[:1500]
-                    item['text'] = text
+                    for s in soup(["script", "style", "nav", "footer", "ad"]): s.decompose()
+                    text = " ".join([p.get_text().strip() for p in soup.find_all('p') if len(p.get_text()) > 60][:6])
+                    item['text'] = text[:1800]
                     self.link_storage[item['title']] = item['link']
                     return item
             except: return None
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            return list(filter(None, executor.map(scrape_one, news_list)))
+            return list(filter(None, executor.map(process, articles)))
+
+    def analyze(self, context, mode="diario"):
+        print(f"🧠 Sintetizando Matriz de Gravedad ({mode})...")
+        prompt = f"""
+        Actúa como motor de inteligencia geopolítica multipolar.
+        CATEGORÍAS: {list(AREAS_ESTRATEGICAS.keys())}
+        
+        1. Define 'PUNTO CERO' (Consenso de hechos entre los 8 bloques).
+        2. Calcula 'PROXIMIDAD' (0-100%) de cada noticia al Punto Cero.
+        
+        JSON: {{ "carousel": [ {{ "area": "...", "punto_cero": "...", "particulas": [ {{ "titulo": "...", "bloque": "...", "proximidad": 0-100, "sesgo": "...", "link": "LINK_REAL" }} ] }} ] }}
+        CONTEXTO: {context}
+        """
+        res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json', 'temperature': 0.1})
+        return json.loads(res.text.strip())
+
+    def save_data(self, data):
+        # El "Live" actual
+        with open("gravity_carousel.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+
+        # Históricos por carpeta
+        diario_path = os.path.join(PATHS["diario"], f"{self.hoy.strftime('%Y-%m-%d')}.json")
+        with open(diario_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+
+        if self.es_domingo:
+            sem_path = os.path.join(PATHS["semanal"], f"Semana_{self.hoy.strftime('%Y_W%U')}.json")
+            with open(sem_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+
+        if self.es_fin_mes:
+            mes_path = os.path.join(PATHS["mensual"], f"Mes_{self.hoy.strftime('%Y_%m')}.json")
+            with open(mes_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
 
     def run(self):
-        # 1. RSS
-        raw_rss = self.get_rss_fast()
+        raw = self.fetch_rss()
+        batch_text = ""
         
-        # 2. Triaje Inteligente por Bloque (Seleccionamos 3 mejores por región)
-        print("🤖 Fase 2: Triaje Geopolítico...")
-        final_context = ""
-        for region, articles in raw_rss.items():
-            if not articles: continue
-            list_str = "\n".join([f"[{i}] {a['title']}" for i, a in enumerate(articles[:15])])
-            prompt = f"Selecciona los 3 índices de noticias más relevantes para {region} sobre impacto global. JSON: {{\"idx\": [x,y,z]}}. Lista:\n{list_str}"
+        for region, items in raw.items():
+            if not items: continue
+            # Triaje por IA (Selecciona las 2 más potentes)
+            titles = "\n".join([f"[{i}] {x['title']}" for i, x in enumerate(items[:15])])
+            res = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"Índices de las 2 noticias más relevantes para {region}:\n{titles}", config={'response_mime_type': 'application/json'})
             try:
-                res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
-                idxs = json.loads(res.text.strip()).get("idx", [0,1,2])
-                selected = [articles[i] for i in idxs if i < len(articles)]
-                
-                # 3. Scraping Selectivo de los 3 elegidos
-                enriched = self.scrape_selected(selected)
+                idxs = json.loads(res.text.strip()).get("idx", [0, 1])
+                selected = [items[i] for i in idxs if i < len(items)]
+                enriched = self.scrape_and_clean(selected)
                 for e in enriched:
-                    final_context += f"BLOQUE: {region} | TITULO: {e['title']} | LINK: {e['link']} | TEXTO: {e['text']}\n\n"
+                    batch_text += f"REGION: {region} | TITULO: {e['title']} | TEXTO: {e['text']}\n\n"
             except: continue
 
-        # 4. Análisis de Gravedad y Proximidad Multipolar
-        print("🧠 Fase 3: Cálculo de Proximidad por Áreas...")
-        prompt_final = f"""
-        Actúa como un Motor de Inteligencia Multipolar. Clasifica la información en estas áreas: {list(AREAS_ESTRATEGICAS.keys())}.
+        final_json = self.analyze(batch_text)
         
-        Para cada área:
-        1. PUNTO CERO: Identifica los hechos verificados por el mayor número de bloques (USA, RUSSIA, CHINA, EUROPE, LATAM, MID_EAST, INDIA, AFRICA).
-        2. PROXIMIDAD: Calcula el % de cercanía de cada noticia al PUNTO CERO (100% = Hecho compartido, 0% = Narrativa única/Propaganda).
-        
-        JSON ESTRUCTURA:
-        {{
-          "carousel": [
-            {{
-              "area": "Nombre del Área",
-              "punto_cero": "Resumen del consenso global",
-              "particulas": [
-                {{ "titulo": "...", "bloque": "...", "proximidad": 0-100, "sesgo": "Analisis corto", "link": "LINK_REAL" }}
-              ]
-            }}
-          ]
-        }}
-        
-        CONTEXTO REAL: {final_context}
-        """
+        # Inyectar colores y validar links finales
+        for slide in final_json['carousel']:
+            slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#ffffff")
+            for p in slide['particulas']:
+                p['link'] = self.link_storage.get(p['titulo'], p['link'])
+                p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#ffffff")
 
-        try:
-            res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt_final, config={'response_mime_type': 'application/json', 'temperature': 0.0})
-            data = json.loads(res.text.strip())
-            
-            # Validación Final de Seguridad de URLs
-            for slide in data['carousel']:
-                slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#ffffff")
-                for p in slide['particulas']:
-                    p['link'] = self.link_storage.get(p['titulo'], p['link'])
-                    p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#ffffff")
-
-            with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=4, ensure_ascii=False)
-            print("✅ JSON para Carousel generado con éxito.")
-            
-        except Exception as e:
-            print(f"❌ Error en síntesis final: {e}")
+        self.save_data(final_json)
+        print("✅ Proceso completado exitosamente.")
 
 if __name__ == "__main__":
-    API_KEY = os.environ.get("GEMINI_API_KEY")
-    if API_KEY:
-        GeopoliticalCollector(API_KEY).run()
-    else:
-        print("Falta GEMINI_API_KEY")
+    key = os.environ.get("GEMINI_API_KEY")
+    if key: GeopoliticalCollector(key).run()
+    else: print("Error: GEMINI_API_KEY no encontrada.")
