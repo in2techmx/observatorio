@@ -24,10 +24,12 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
             --usa: #3b82f6; --china: #ef4444; --russia: #b91c1c; --europe: #8b5cf6;
             --india: #f59e0b; --mideast: #10b981; --latam: #ec4899; --africa: #06b6d4; --uk: #6366f1;
         }
-        body { margin: 0; background: #020202; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
+        body { margin: 0; background: #010101; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
-        .glass { background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass { background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); }
         .hide-scroll::-webkit-scrollbar { display: none; }
+        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.05); height: 2px; border-radius: 5px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 14px; border-radius: 50%; background: #3b82f6; cursor: pointer; border: 2px solid white; box-shadow: 0 0 15px rgba(59,130,246,0.5); }
     </style>
 </head>
 <body>
@@ -51,33 +53,49 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
             const [timeline, setTimeline] = useState([]);
             const [currentIndex, setCurrentIndex] = useState(0);
             const [loading, setLoading] = useState(true);
-            const [status, setStatus] = useState("Iniciando sistema...");
+            const [log, setLog] = useState("Iniciando...");
+
+            // Efecto de fondo (Partículas)
+            useEffect(() => {
+                const canvas = document.getElementById('bg-canvas');
+                const ctx = canvas.getContext('2d');
+                let pts = [];
+                const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+                resize();
+                for(let i=0; i<50; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.5, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3});
+                const draw = () => {
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    ctx.fillStyle = "rgba(59, 130, 246, 0.2)";
+                    pts.forEach(p => {
+                        p.x+=p.vx; p.y+=p.vy;
+                        if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height;
+                        ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill();
+                    });
+                    requestAnimationFrame(draw);
+                };
+                draw();
+                window.addEventListener('resize', resize);
+            }, []);
 
             useEffect(() => {
                 const init = async () => {
                     try {
-                        setStatus("Cargando línea de tiempo...");
-                        const resTime = await fetch(`./timeline.json?t=${Date.now()}`);
-                        if (!resTime.ok) throw new Error("Timeline no disponible");
-                        const files = await resTime.json();
+                        setLog("Buscando timeline...");
+                        const res = await fetch(`./timeline.json?t=${Date.now()}`);
+                        if (!res.ok) throw new Error("Timeline no encontrado");
+                        const files = await res.json();
                         setTimeline(files);
-
+                        
                         if (files.length > 0) {
-                            // PRIORIDAD 1: Cargar el archivo más reciente del historial (que sabemos que existe)
                             await loadFile(files[0]);
                         } else {
-                            setStatus("No se encontraron registros históricos.");
-                            setLoading(false);
+                            // Si el timeline está vacío, intentar latest_news
+                            setLog("Timeline vacío, probando latest_news...");
+                            await loadFile("latest_news.json");
                         }
                     } catch (e) {
-                        setStatus(`Error de conexión: ${e.message}`);
-                        // FALLBACK: Intentar latest_news como último recurso
-                        try {
-                            const resLat = await fetch(`./latest_news.json?t=${Date.now()}`);
-                            const jsonLat = await resLat.json();
-                            if(jsonLat.length > 0) setData(jsonLat);
-                        } catch(err) {}
-                        setLoading(false);
+                        setLog(`Error: ${e.message}. Probando fallback...`);
+                        await loadFile("latest_news.json");
                     }
                 };
                 init();
@@ -86,102 +104,108 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
             const loadFile = async (name) => {
                 try {
                     setLoading(true);
-                    setStatus(`Accediendo a: ${name}...`);
+                    setLog(`Cargando ${name}...`);
                     
-                    // Probamos primero en la carpeta histórica
-                    let res = await fetch(`./historico_noticias/${name}?t=${Date.now()}`);
-                    if (!res.ok) res = await fetch(`./${name}?t=${Date.now()}`);
+                    // Estrategia de búsqueda multiruta
+                    const paths = [
+                        `./historico_noticias/${name}`,
+                        `./${name}`
+                    ];
 
-                    if (!res.ok) throw new Error("Contenido no localizable");
-
-                    const json = await res.json();
-                    
-                    // Verificación de integridad del JSON
-                    if (Array.isArray(json) && json.length > 0) {
-                        setData(json);
-                        setStatus("Operativo");
-                        setLoading(false);
-                    } else {
-                        throw new Error("Archivo vacío o corrupto");
+                    let foundData = null;
+                    for (let path of paths) {
+                        const res = await fetch(`${path}?t=${Date.now()}`);
+                        if (res.ok) {
+                            foundData = await res.json();
+                            setLog(`Conectado a: ${path}`);
+                            break;
+                        }
                     }
+
+                    if (!foundData) throw new Error("Archivo ilegible");
+
+                    // Normalizar datos (asegurar que sea array)
+                    const finalData = Array.isArray(foundData) ? foundData : [foundData];
+                    setData(finalData);
+                    setLoading(false);
                 } catch (e) {
-                    setStatus(`Error en archivo ${name}: ${e.message}`);
+                    setLog(`Fallo crítico: ${e.message}`);
                     setLoading(false);
                 }
             };
 
             return (
                 <div className="h-screen w-full flex flex-col p-10 relative">
-                    <header className="mb-10 z-10 flex justify-between items-start">
-                        <div>
-                            <h1 className="text-5xl font-black italic tracking-tighter uppercase text-blue-500">Global Proximity</h1>
-                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2 font-bold italic">Observatorio v2.7 | {status}</p>
+                    <header className="mb-10 z-10">
+                        <h1 className="text-5xl font-black italic tracking-tighter uppercase text-blue-500">Global Proximity</h1>
+                        <div className="flex items-center gap-2 mt-2 opacity-40">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                            <p className="text-[10px] tracking-[0.3em] uppercase font-bold italic">Observatorio Geopolítico v2.8</p>
                         </div>
                     </header>
 
                     {loading ? (
-                        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-                            <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
-                            <div className="text-[10px] tracking-[0.4em] opacity-30 uppercase font-black italic">{status}</div>
+                        <div className="flex-1 flex flex-col items-center justify-center">
+                            <div className="text-[10px] tracking-[0.5em] font-black italic animate-pulse text-blue-400">SINCRONIZANDO BÚNKER...</div>
                         </div>
                     ) : (
                         <div className="flex-1 flex flex-col">
-                            {/* Slider de control temporal */}
-                            <div className="mb-12 flex items-center gap-8 glass p-5 rounded-full max-w-3xl mx-auto w-full border-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.1)]">
-                                <span className="text-[9px] font-black uppercase text-blue-500 pl-4 tracking-widest">Historial</span>
+                            {/* Control Temporal */}
+                            <div className="mb-12 flex items-center gap-8 glass p-5 rounded-full max-w-2xl mx-auto w-full border-blue-500/10">
                                 <input 
                                     type="range" 
                                     min="0" 
-                                    max={timeline.length - 1} 
+                                    max={timeline.length > 0 ? timeline.length - 1 : 0} 
                                     value={currentIndex} 
                                     onChange={(e) => {
                                         const idx = parseInt(e.target.value);
                                         setCurrentIndex(idx);
                                         loadFile(timeline[idx]);
                                     }} 
-                                    className="flex-1 accent-blue-500 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                    className="flex-1"
                                 />
-                                <span className="text-[10px] font-mono font-bold text-blue-400 pr-4">
-                                    {timeline[currentIndex]?.split('_')[1] || "PRESENTE"}
+                                <span className="text-[10px] font-mono font-black text-blue-500 pr-4">
+                                    {timeline[currentIndex]?.replace('analisis_', '').replace('.json', '') || 'LATEST'}
                                 </span>
                             </div>
 
-                            {/* Contenedor de noticias */}
+                            {/* Grid de Noticias */}
                             <div className="flex-1 flex items-center gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
                                 {data.length > 0 ? data.map((item, i) => (
                                     <motion.div 
                                         key={i} 
-                                        initial={{ opacity: 0, scale: 0.9 }} 
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        className="min-w-[450px] glass p-12 rounded-[3.5rem] snap-center border-b-4 border-blue-500/30"
+                                        initial={{ opacity: 0, y: 30 }} 
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.1 }}
+                                        className="min-w-[420px] glass p-10 rounded-[3rem] snap-center hover:bg-white/5 transition-colors border-b-2 border-blue-500/20"
                                     >
                                         <div className="flex justify-between items-center mb-6">
-                                            <span className="text-blue-500 text-[9px] font-black uppercase tracking-widest italic opacity-60">Análisis Regional {i+1}</span>
+                                            <span className="text-blue-500 text-[9px] font-black uppercase tracking-[0.2em] italic">Sección {i+1}</span>
                                             <div className="flex gap-1.5">
                                                 {item.regiones_activas?.map(r => (
-                                                    <div key={r} className="w-2.5 h-2.5 rounded-full shadow-sm" style={{background: REGIONS[r]?.color || '#fff'}} title={r} />
+                                                    <div key={r} className="w-2 h-2 rounded-full" style={{background: REGIONS[r]?.color || '#fff'}} />
                                                 ))}
                                             </div>
                                         </div>
-                                        <h2 className="text-3xl font-black mb-6 leading-[1.1] uppercase italic tracking-tighter text-white/90">
+                                        <h2 className="text-2xl font-black mb-6 leading-tight uppercase italic tracking-tighter">
                                             {item.tematica}
                                         </h2>
-                                        <p className="text-gray-400 text-sm leading-relaxed italic font-light">
+                                        <p className="text-gray-400 text-xs leading-relaxed italic font-light line-clamp-4">
                                             "{item.descripcion}"
                                         </p>
                                     </motion.div>
                                 )) : (
-                                    <div className="w-full text-center py-20 border-2 border-dashed border-white/5 rounded-[3rem] opacity-20 italic">
-                                        No se han podido procesar los datos del archivo seleccionado.
-                                    </div>
+                                    <div className="w-full text-center opacity-20 italic">No hay datos disponibles en este nodo.</div>
                                 )}
                             </div>
                         </div>
                     )}
-                    
-                    <footer className="mt-6 flex justify-between items-center opacity-20 text-[9px] font-bold uppercase tracking-[0.3em]">
-                        <div>Data Source: 18 Global RSS Feeds</div>
-                        <div>Powered by Gemini 1.5 Flash</div>
+
+                    <footer className="mt-6 flex justify-between items-center opacity-30 text-[8px] font-black uppercase tracking-widest">
+                        <div className="flex items-center gap-4">
+                            <span>SISTEMA DE DIAGNÓSTICO: {log}</span>
+                        </div>
+                        <div>2026 © GLOBAL PROXIMITY</div>
                     </footer>
                 </div>
             );
