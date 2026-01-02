@@ -12,60 +12,19 @@ jobs:
       contents: write
     
     steps:
-    - name: Checkout del código
+    - name: 1. Checkout del código
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         
-    - name: Configurar Git
-      run: |
-        git config --global user.name "Intelligence-Bot"
-        git config --global user.email "bot@github.com"
-
-    - name: Sincronización Radical
-      run: |
-        git fetch origin main
-        git reset --hard origin main
-
-    - name: Configurar Python y Dependencias
+    - name: 2. Configurar Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    - run: pip install google-genai beautifulsoup4
 
-    - name: Preparar Entorno de Datos
-      run: |
-        mkdir -p historico_noticias/diario
-        mkdir -p historico_noticias/semanal
-        mkdir -p historico_noticias/mensual
-        if [ ! -f manifest.json ]; then echo '{"last_updated": null}' > manifest.json; fi
-        if [ ! -f gravity_carousel.json ]; then echo '{"articles": []}' > gravity_carousel.json; fi
-        
-    - name: Ejecutar Collector
+    - name: 3. Ejecutar Script de Automatización
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python collector.py
-        
-    - name: Archivar y Sincronizar
       run: |
-        # Usamos gravity_carousel.json como fuente (ajusta si tu script genera otro)
-        FILE="gravity_carousel.json"
-        if [ -f "$FILE" ]; then
-          TODAY=$(date +"%Y%m%d")
-          cp "$FILE" "historico_noticias/diario/news_${TODAY}.json"
-          
-          if [ $(date +%u) -eq 7 ]; then
-            cp "$FILE" "historico_noticias/semanal/news_$(date +"%Y-W%U").json"
-          fi
-          
-          if [ $(date +%d) -eq 1 ]; then
-            cp "$FILE" "historico_noticias/mensual/news_$(date +"%Y-%m").json"
-          fi
-        fi
-
-    - name: Commit y Push Final
-      run: |
-        git add gravity_carousel.json manifest.json
-        git add historico_noticias/
-        git commit -m "🤖 Update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "Sin cambios"
-        git push origin main --force
+        chmod +x update_script.sh
+        ./update_script.sh
