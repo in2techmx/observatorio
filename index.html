@@ -3,186 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Stream | Observatorio Geopolítico</title>
+    <title>Intelligence OS | Deep Dive</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #05070a; --card-bg: #0f1219; --accent: #00f2ff; }
-        body { background: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 50px; }
+        :root { --bg: #010409; --neon: #00f2ff; }
+        body { background: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .news-card {
-            min-width: 320px;
-            max-width: 320px;
-            height: 200px;
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);
-        }
-
-        .pct-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-family: 'JetBrains Mono';
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        .category-row {
-            border-left: 4px solid var(--accent);
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-
-        #side-panel {
+        /* Efectos de Cristal y Gradientes */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
             transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            background: rgba(5, 7, 10, 0.98);
-            backdrop-filter: blur(30px);
         }
+        .glass-card:hover { border-color: var(--neon); background: rgba(0, 242, 255, 0.05); }
 
-        .cyber-header {
-            background: linear-gradient(to bottom, rgba(0, 242, 255, 0.05), transparent);
-            border-bottom: 1px solid rgba(0, 242, 255, 0.1);
-        }
+        .radar-line { fill: none; stroke: #fff; stroke-width: 1.5; stroke-opacity: 0.6; filter: drop-shadow(0 0 5px var(--neon)); }
+        .label-pct { font-family: 'JetBrains Mono'; font-size: 10px; fill: var(--neon); font-weight: 900; }
+
+        /* Animaciones */
+        .fade-in { animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        #view-tactical { display: none; }
     </style>
 </head>
 <body>
 
-    <header class="cyber-header p-8 mb-10 flex justify-between items-center sticky top-0 z-40 backdrop-blur-md">
-        <div>
-            <h1 class="text-2xl font-black tracking-tighter italic uppercase text-white">Intelligence <span class="text-cyan-400">Stream</span></h1>
-            <p id="stats" class="text-[10px] font-mono text-slate-500 mt-1 uppercase tracking-widest">Sincronizando flujo de datos...</p>
+    <div id="view-home" class="min-h-screen p-10 fade-in">
+        <header class="mb-16">
+            <h1 class="text-3xl font-black tracking-tighter italic text-white uppercase">Intelligence <span class="text-cyan-400">OS</span></h1>
+            <p class="text-[10px] font-mono text-slate-500 uppercase tracking-[0.5em] mt-2">Seleccione dimensión para análisis profundo</p>
+        </header>
+
+        <div id="dimension-carousel" class="flex gap-8 overflow-x-auto pb-10 hide-scroll scroll-smooth">
+            </div>
+    </div>
+
+    <div id="view-tactical" class="min-h-screen relative p-10 fade-in bg-gradient-to-b from-slate-950 to-black">
+        <button onclick="exitTactical()" class="absolute top-10 right-10 text-cyan-400 font-black text-xs tracking-widest hover:text-white transition-colors">
+            [ EXIT_DIMENSION ]
+        </button>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 h-full">
+            <div id="radar-container" class="flex flex-col items-center justify-center min-h-[500px] border-r border-white/5">
+                <h2 id="tactical-title" class="text-4xl font-black uppercase italic tracking-tighter text-white mb-2"></h2>
+                <p id="tactical-consensus" class="text-sm text-slate-500 italic max-w-md text-center mb-10"></p>
+                <div id="radar-svg"></div>
+            </div>
+
+            <div class="overflow-y-auto pr-4 space-y-6" id="tactical-news-list">
+                </div>
         </div>
-        <button onclick="exportBriefing()" class="px-4 py-2 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-widest hover:bg-cyan-500 hover:text-black transition-all">
-            Descargar Reporte TXT
-        </button>
-    </header>
+    </div>
 
-    <main id="main-content" class="px-8 space-y-16">
-        </main>
-
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[600px] z-50 translate-x-full border-l border-white/10 p-12 overflow-y-auto">
-        <button onclick="closePanel()" class="mb-12 text-cyan-500 hover:text-white text-[11px] font-black uppercase tracking-[0.5em]">
-            ← VOLVER AL STREAM
-        </button>
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[500px] z-50 translate-x-full bg-black/95 backdrop-blur-3xl border-l border-cyan-500/20 p-12 overflow-y-auto">
+        <button onclick="closeSidePanel()" class="mb-10 text-slate-500 hover:text-cyan-400 font-black text-[10px] tracking-widest uppercase">← Back to Radar</button>
         <div id="panel-content"></div>
     </aside>
 
     <script>
+        let rawData = null;
         const BLOQUE_COLORS = {"USA": "#3b82f6", "Europa": "#fde047", "Rusia": "#ef4444", "China": "#f97316", "LATAM": "#d946ef", "Medio Oriente": "#10b981", "África": "#8b5cf6"};
 
         async function init() {
-            try {
-                const data = await d3.json("./latest_news.json?v=" + Date.now());
-                const container = document.getElementById('main-content');
-                let total = 0;
+            rawData = await d3.json("./latest_news.json?v=" + Date.now());
+            const carousel = document.getElementById('dimension-carousel');
 
-                data.categorias.forEach(cat => {
-                    if (cat.particulas && cat.particulas.length > 0) {
-                        total += cat.particulas.length;
-                        
-                        // Crear la Fila (Row)
-                        const row = document.createElement('section');
-                        row.className = 'space-y-4';
-                        row.innerHTML = `
-                            <div class="category-row">
-                                <h2 class="text-xs font-black uppercase tracking-[0.3em] text-slate-400">${cat.nombre}</h2>
-                                <p class="text-[10px] text-slate-600 mt-1 italic">${cat.consenso}</p>
-                            </div>
-                            <div class="flex gap-6 overflow-x-auto pb-6 hide-scroll px-2" id="row-${cat.nombre.replace(/\s+/g, '')}">
-                                </div>
-                        `;
-                        container.appendChild(row);
-
-                        const rowContent = document.getElementById(`row-${cat.nombre.replace(/\s+/g, '')}`);
-                        
-                        cat.particulas.forEach(p => {
-                            const card = document.createElement('div');
-                            card.className = 'news-card p-6 flex flex-col justify-between group';
-                            card.onclick = () => openPanel({...p, catName: cat.nombre, consensus: cat.consenso});
-                            
-                            // Determinamos color de proximidad
-                            const pctColor = p.proximidad > 70 ? '#00f2ff' : (p.proximidad > 40 ? '#fde047' : '#ef4444');
-
-                            card.innerHTML = `
-                                <div class="pct-badge" style="color: ${pctColor}">${p.proximidad}%</div>
-                                <div class="space-y-3">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2" style="background: ${p.color_bloque}"></div>
-                                        <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400">${p.bloque}</span>
-                                    </div>
-                                    <h3 class="text-lg font-black leading-tight text-white group-hover:text-cyan-400 transition-colors line-clamp-3">${p.titulo}</h3>
-                                </div>
-                                <div class="text-[9px] font-mono text-slate-600 uppercase tracking-widest">Click para análisis profundo</div>
-                            `;
-                            rowContent.appendChild(card);
-                        });
-                    }
-                });
-
-                document.getElementById('stats').innerText = `${total} NODOS DE INTELIGENCIA ACTIVOS`;
-
-            } catch (e) { console.error(e); }
+            rawData.categorias.forEach((cat, i) => {
+                const card = document.createElement('div');
+                card.className = `glass-card min-w-[350px] p-10 flex flex-col justify-between cursor-pointer group`;
+                card.onclick = () => enterTactical(cat);
+                
+                card.innerHTML = `
+                    <div class="text-[9px] font-mono text-cyan-500 font-bold tracking-widest mb-10">DIMENSIÓN 0${i+1}</div>
+                    <div>
+                        <h3 class="text-4xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase italic leading-none mb-4">${cat.nombre}</h3>
+                        <p class="text-xs text-slate-500 line-clamp-3">${cat.consenso}</p>
+                    </div>
+                    <div class="mt-10 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-400">${cat.particulas.length} NODOS</span>
+                        <span class="text-cyan-500 font-black">→</span>
+                    </div>
+                `;
+                carousel.appendChild(card);
+            });
         }
 
-        function openPanel(d) {
-            document.getElementById('panel-content').innerHTML = `
-                <div class="flex justify-between items-start mb-12">
-                    <div style="background:${d.color_bloque}" class="px-4 py-1 text-xs font-black text-black uppercase tracking-widest">${d.bloque}</div>
-                    <div class="text-right">
-                        <div class="text-[10px] font-mono text-slate-500 uppercase">Convergencia Regional</div>
-                        <div class="text-5xl font-black text-white">${d.proximidad}%</div>
-                    </div>
-                </div>
-                
-                <h2 class="text-4xl font-black text-white mb-8 leading-tight uppercase tracking-tighter">${d.titulo}</h2>
-                
-                <div class="space-y-10">
-                    <div>
-                        <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-4">Análisis del Bloque</h4>
-                        <p class="text-2xl text-slate-200 font-light leading-snug">${d.analisis_regional}</p>
-                    </div>
-                    
-                    <div class="p-8 bg-white/5 border-l-4 border-slate-700">
-                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-2">Consenso en ${d.catName}</h4>
-                        <p class="text-sm text-slate-400 italic font-serif leading-relaxed">"${d.consensus}"</p>
-                    </div>
+        function enterTactical(cat) {
+            document.getElementById('view-home').style.display = 'none';
+            document.getElementById('view-tactical').style.display = 'block';
+            document.getElementById('tactical-title').innerText = cat.nombre;
+            document.getElementById('tactical-consensus').innerText = cat.consenso;
 
-                    <a href="${d.link}" target="_blank" class="block w-full text-center py-5 bg-cyan-500 text-black font-black uppercase text-xs tracking-[0.3em] hover:bg-white transition-all">
-                        ABRIR FUENTE ORIGINAL [RSS FEED]
-                    </a>
-                </div>
-            `;
+            // 1. Dibujar Radar
+            drawRadar(cat);
+
+            // 2. Listar Noticias
+            const newsList = document.getElementById('tactical-news-list');
+            newsList.innerHTML = "";
+            cat.particulas.forEach(p => {
+                const item = document.createElement('div');
+                item.className = "p-6 bg-white/5 border border-white/5 hover:border-cyan-500/50 transition-all cursor-pointer group";
+                item.onclick = () => openSidePanel(p, cat.consenso);
+                item.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[9px] font-bold px-2 py-0.5" style="background:${p.color_bloque}; color:black">${p.bloque}</span>
+                        <span class="text-lg font-black text-white">${p.proximidad}%</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-200 group-hover:text-cyan-400 transition-colors leading-tight">${p.titulo}</h4>
+                `;
+                newsList.appendChild(item);
+            });
+        }
+
+        function drawRadar(cat) {
+            const container = document.getElementById('radar-svg');
+            container.innerHTML = "";
+            const size = 500, MAX_R = 180;
+            const svg = d3.select("#radar-svg").append("svg").attr("width", size).attr("height", size);
+            const g = svg.append("g").attr("transform", `translate(${size/2},${size/2})`);
+
+            // Anillos
+            [0.25, 0.5, 0.75, 1].forEach(r => {
+                g.append("circle").attr("r", MAX_R * r).attr("class", "radar-line");
+                g.append("text").attr("y", -(MAX_R * r) + 12).attr("class", "label-pct").attr("text-anchor", "middle").text(`${Math.round((1-r)*100)}%`);
+            });
+
+            // Partículas
+            cat.particulas.forEach((p, i) => {
+                const angle = (i / cat.particulas.length) * (Math.PI * 2) - Math.PI/2;
+                const rPos = MAX_R - (p.proximidad * (MAX_R / 100)) + 15;
+                const px = rPos * Math.cos(angle);
+                const py = rPos * Math.sin(angle);
+
+                const pg = g.append("g").attr("class", "particle").attr("transform", `translate(${px},${py})`).on("click", () => openSidePanel(p, cat.consenso));
+                pg.append("circle").attr("r", 8).attr("fill", p.color_bloque).style("stroke", "#fff").style("stroke-width", "2px").style("filter", `drop-shadow(0 0 10px ${p.color_bloque})`);
+            });
+        }
+
+        function exitTactical() {
+            document.getElementById('view-tactical').style.display = 'none';
+            document.getElementById('view-home').style.display = 'block';
+        }
+
+        function openSidePanel(p, consensus) {
+            document.getElementById('panel-content').innerHTML = `
+                <div class="text-[10px] font-black px-3 py-1 bg-white text-black mb-10 inline-block uppercase tracking-widest">${p.bloque} | ${p.proximidad}% ALIGNMENT</div>
+                <h2 class="text-4xl font-black text-white mb-8 leading-none uppercase tracking-tighter italic">${p.titulo}</h2>
+                <div class="space-y-10">
+                    <p class="text-2xl text-slate-100 font-light leading-snug">${p.analisis_regional}</p>
+                    <div class="p-8 bg-cyan-950/20 border-l-8 border-cyan-500">
+                        <h4 class="text-[10px] font-bold text-cyan-400 uppercase mb-2">Consenso de la Dimensión</h4>
+                        <p class="text-sm text-slate-400 italic">"${consensus}"</p>
+                    </div>
+                    <a href="${p.link}" target="_blank" class="block w-full py-5 bg-cyan-500 text-black text-center font-black uppercase text-xs tracking-widest hover:bg-white transition-all">ACCESS SOURCE_STREAM ↗</a>
+                </div>`;
             document.getElementById('side-panel').classList.remove('translate-x-full');
         }
 
-        function closePanel() { document.getElementById('side-panel').classList.add('translate-x-full'); }
-        
-        async function exportBriefing() {
-            const data = await d3.json("./latest_news.json?v=" + Date.now());
-            let report = `BRIEFING STREAM - ${new Date().toLocaleDateString()}\n\n`;
-            data.categorias.forEach(cat => {
-                report += `[ ${cat.nombre.toUpperCase()} ]\n`;
-                cat.particulas.forEach(p => report += `- ${p.bloque} (${p.proximidad}%): ${p.titulo}\n`);
-                report += `\n`;
-            });
-            const blob = new Blob([report], {type:'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob); a.download = `Briefing_Stream.txt`; a.click();
-        }
-
+        function closeSidePanel() { document.getElementById('side-panel').classList.add('translate-x-full'); }
         init();
     </script>
 </body>
