@@ -52,7 +52,7 @@ class GeopoliticalCollector:
         self.es_fin_mes = (self.hoy + datetime.timedelta(days=1)).day == 1
 
     def fetch_rss_all(self):
-        print(f"🌍 [{self.hoy.strftime('%Y-%m-%d')}] Escaneando RSS...")
+        print(f"🌍 Iniciando escaneo de RSS...")
         all_news = {reg: [] for reg in FUENTES.keys()}
         
         def fetch_feed(region, url):
@@ -63,8 +63,9 @@ class GeopoliticalCollector:
                     items = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
                     extracted = []
                     for n in items[:8]:
-                        t = (n.find('title') or n.find('{http://www.w3.org/2005/Atom}title')).text
+                        t_node = n.find('title') or n.find('{http://www.w3.org/2005/Atom}title')
                         l_node = n.find('link') or n.find('{http://www.w3.org/2005/Atom}link')
+                        t = t_node.text if t_node is not None else ""
                         l = l_node.attrib.get('href') if (l_node is not None and l_node.attrib) else (l_node.text if l_node is not None else "")
                         if t and l: extracted.append({"title": t.strip(), "link": l.strip()})
                     return region, extracted
@@ -89,16 +90,15 @@ class GeopoliticalCollector:
                     self.link_storage[item['title']] = item['link']
                     return item
             except: return None
-
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             return list(filter(None, executor.map(scrape_one, articles)))
 
-    def analizar_y_sintetizar(self, contexto):
-        print("🧠 Sintetizando proximidad narrativa...")
+    def sintetizar(self, contexto):
+        print("🧠 Generando matriz de gravedad...")
         prompt = f"""
-        Actúa como un motor de inteligencia multipolar. Clasifica en: {list(AREAS_ESTRATEGICAS.keys())}.
+        Actúa como motor geopolítico multipolar. Clasifica en: {list(AREAS_ESTRATEGICAS.keys())}.
         1. PUNTO CERO: Hechos verificados por la mayoría de los 8 bloques.
-        2. PROXIMIDAD: 0-100% de cercanía de cada noticia al Punto Cero.
+        2. PROXIMIDAD: 0-100% de cercanía al Punto Cero.
         JSON: {{ "carousel": [ {{ "area": "...", "punto_cero": "...", "particulas": [ {{ "titulo": "...", "bloque": "...", "proximidad": 0-100, "sesgo": "...", "link": "LINK_REAL" }} ] }} ] }}
         CONTEXTO: {contexto}
         """
@@ -106,79 +106,61 @@ class GeopoliticalCollector:
         return json.loads(res.text.strip())
 
     def actualizar_manifiesto(self):
-        """Genera el índice para los selectores del HTML"""
-        manifiesto = {
-            "diario": sorted(os.listdir(PATH_DIARIO), reverse=True),
-            "semanal": sorted(os.listdir(PATH_SEMANAL), reverse=True),
-            "mensual": sorted(os.listdir(PATH_MENSUAL), reverse=True)
-        }
-        with open("manifest.json", "w", encoding="utf-8") as f:
-            json.dump(manifiesto, f, indent=4, ensure_ascii=False)
-        print("📂 Manifiesto actualizado.")
+        """Genera el índice para el index.html"""
+        try:
+            manifiesto = {
+                "diario": sorted(os.listdir(PATH_DIARIO), reverse=True),
+                "semanal": sorted(os.listdir(PATH_SEMANAL), reverse=True),
+                "mensual": sorted(os.listdir(PATH_MENSUAL), reverse=True)
+            }
+            with open("manifest.json", "w", encoding="utf-8") as f:
+                json.dump(manifiesto, f, indent=4, ensure_ascii=False)
+            print("📂 manifest.json actualizado.")
+        except: print("⚠️ Error al crear manifiesto.")
 
     def run(self):
-        # 1. RSS + Triaje
         rss_raw = self.fetch_rss_all()
-        contexto_final = ""
-        
+        contexto_acumulado = ""
         for region, articles in rss_raw.items():
             if not articles: continue
-            # Triaje Gemini (2 mejores por región)
-            titulos = "\n".join([f"[{i}] {a['title']}" for i, a in enumerate(articles[:15])])
+            titulos = "\n".join([f"[{i}] {a['title']}" for i, a in enumerate(articles[:12])])
             try:
-                res = self.client.models.generate_content(
-                    model="gemini-2.0-flash", 
-                    contents=f"Selecciona los 2 índices más relevantes geopolíticamente para {region}: \n{titulos}",
-                    config={'response_mime_type': 'application/json'}
-                )
+                res = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"Indices de las 2 noticias mas relevantes para {region}:\n{titulos}", config={'response_mime_type': 'application/json'})
                 idxs = json.loads(res.text.strip()).get("idx", [0, 1])
-                selected = [articles[i] for i in idxs if i < len(articles)]
-                
-                # 2. Scraping
-                enriched = self.scrape_articles(selected)
+                enriched = self.scrape_articles([articles[i] for i in idxs if i < len(articles)])
                 for e in enriched:
-                    contexto_final += f"BLOQUE: {region} | TITULO: {e['title']} | TEXTO: {e['text']}\n\n"
+                    contexto_acumulado += f"BLOQUE: {region} | TITULO: {e['title']} | TEXTO: {e['text']}\n\n"
             except: continue
 
-        # 3. Análisis Final
-        data_analisis = self.analizar_y_sintetizar(contexto_final)
-        
-        # Post-procesado de colores y validación de links
-        for slide in data_analisis['carousel']:
+        data_final = self.sintetizar(contexto_acumulado)
+        for slide in data_final['carousel']:
             slide['color'] = AREAS_ESTRATEGICAS.get(slide['area'], "#ffffff")
             for p in slide['particulas']:
                 p['link'] = self.link_storage.get(p['titulo'], p['link'])
                 p['color_bloque'] = BLOQUE_COLORS.get(p['bloque'], "#ffffff")
 
-        # 4. Guardado jerárquico
-        # Siempre guarda la versión más reciente para el index.html
+        # Guardar archivos
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-            json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+            json.dump(data_final, f, indent=4, ensure_ascii=False)
+        
+        path_diario = os.path.join(PATH_DIARIO, f"{self.hoy.strftime('%Y-%m-%d')}.json")
+        with open(path_diario, "w", encoding="utf-8") as f:
+            json.dump(data_final, f, indent=4, ensure_ascii=False)
 
-        # Copia diaria
-        path_d = os.path.join(PATH_DIARIO, f"{self.hoy.strftime('%Y-%m-%d')}.json")
-        with open(path_d, "w", encoding="utf-8") as f:
-            json.dump(data_analisis, f, indent=4, ensure_ascii=False)
-
-        # Si es Domingo -> Semanal
         if self.es_domingo:
-            path_s = os.path.join(PATH_SEMANAL, f"Semana_{self.hoy.strftime('%Y_W%U')}.json")
-            with open(path_s, "w", encoding="utf-8") as f:
-                json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+            path_sem = os.path.join(PATH_SEMANAL, f"Semana_{self.hoy.strftime('%Y_W%U')}.json")
+            with open(path_sem, "w", encoding="utf-8") as f:
+                json.dump(data_final, f, indent=4, ensure_ascii=False)
 
-        # Si es Fin de Mes -> Mensual
         if self.es_fin_mes:
-            path_m = os.path.join(PATH_MENSUAL, f"Mes_{self.hoy.strftime('%Y_%m')}.json")
-            with open(path_m, "w", encoding="utf-8") as f:
-                json.dump(data_analisis, f, indent=4, ensure_ascii=False)
+            path_mes = os.path.join(PATH_MENSUAL, f"Mes_{self.hoy.strftime('%Y_%m')}.json")
+            with open(path_mes, "w", encoding="utf-8") as f:
+                json.dump(data_final, f, indent=4, ensure_ascii=False)
 
-        # 5. Actualizar el manifiesto para el HTML
         self.actualizar_manifiesto()
-        print("✅ Proceso completado exitosamente.")
+        print("✅ Fin del proceso.")
 
 if __name__ == "__main__":
-    API_KEY = os.environ.get("GEMINI_API_KEY")
-    if API_KEY:
-        GeopoliticalCollector(API_KEY).run()
-    else:
-        print("Falta GEMINI_API_KEY")
+    key = os.environ.get("GEMINI_API_KEY")
+    if key: GeopoliticalCollector(key).run()
+    else: print("Error: GEMINI_API_KEY no configurada.")
