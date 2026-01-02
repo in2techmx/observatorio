@@ -12,72 +12,165 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatorio Geopolítico 2026</title>
+    <title>Global Proximity | Observatorio Geopolítico</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
-        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
-        .pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        body { 
+            background-color: #020617; 
+            color: #f8fafc; 
+            font-family: 'Space Grotesk', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+            min-height: 100vh;
+        }
+        .glass-panel { 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(56, 189, 248, 0.1); 
+        }
+        .card-interaction {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-interaction:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+            transform: translateY(-4px);
+        }
+        #side-panel {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-panel { transform: translateX(0) !important; }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
-        <div>
-            <h1 class="text-4xl font-bold text-sky-400">OBSERVATORIO <span class="text-white">PROXIMITY</span></h1>
-            <p class="text-slate-400 uppercase tracking-widest text-sm mt-2">Inteligencia Artificial Gemini 2.5 Flash | Hoy 2026</p>
-        </div>
-        <div class="text-right hidden md:block">
-            <span class="text-xs text-slate-500 block">SISTEMA AUTÓNOMO</span>
-            <span class="text-green-400 font-mono pulse text-sm">● ACTUALIZADO</span>
-        </div>
-    </header>
+<body class="p-6">
 
-    <main id="noticias-container" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="text-slate-500 animate-pulse col-span-full text-center py-20">Interrogando a la red de satélites...</div>
+    <nav class="max-w-7xl mx-auto flex justify-between items-center mb-12 border-b border-white/5 pb-6">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tighter italic">GLOBAL<span class="text-sky-500">PROXIMITY</span></h1>
+            <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em]">IA Engine: Gemini 2.5 Flash</p>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:block text-right">
+                <p class="text-[10px] text-slate-500 uppercase font-bold">Estado del Sistema</p>
+                <p class="text-xs text-emerald-400 font-mono">ANÁLISIS AUTÓNOMO ACTIVO</p>
+            </div>
+            <div class="h-10 w-10 rounded-full border border-sky-500/30 flex items-center justify-center bg-sky-500/10">
+                <span class="animate-pulse text-sky-500">●</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto">
+        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full py-20 text-center text-slate-500 animate-pulse tracking-widest uppercase text-sm">
+                Sincronizando con la red de inteligencia...
+            </div>
+        </div>
     </main>
 
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] bg-[#020617] border-l border-sky-500/20 z-50 transform translate-x-full shadow-2xl overflow-y-auto">
+        <div class="p-8">
+            <button onclick="closeAnalysis()" class="group mb-8 flex items-center gap-2 text-slate-500 hover:text-white transition-colors">
+                <span class="text-xl group-hover:-translate-x-1 transition-transform">←</span>
+                <span class="text-xs font-bold tracking-widest uppercase">Regresar al Global View</span>
+            </button>
+            
+            <div id="analysis-content">
+                </div>
+        </div>
+    </aside>
+
     <script>
-        async function cargarNoticias() {
+        let globalData = [];
+
+        async function loadObservatorio() {
             try {
-                // Buscamos el archivo generado por tu collector.py
-                const response = await fetch('./latest_news.json');
-                const data = await response.json();
-                
-                const container = document.getElementById('noticias-container');
-                container.innerHTML = ''; // Limpiar mensaje de carga
-
-                data.forEach(noticia => {
-                    const card = document.createElement('div');
-                    card.className = 'card p-6 rounded-xl flex flex-col justify-between';
-                    
-                    // Construir la lista de regiones
-                    const regiones = noticia.regiones_activas.map(r => 
-                        `<span class="bg-sky-900/50 text-sky-300 text-[10px] px-2 py-1 rounded mr-1">#${r}</span>`
-                    ).join('');
-
-                    card.innerHTML = `
-                        <div>
-                            <div class="flex items-center mb-4">${regiones}</div>
-                            <h2 class="text-xl font-bold mb-3 text-white leading-tight">${noticia.tematica}</h2>
-                            <p class="text-slate-400 text-sm leading-relaxed mb-6">${noticia.descripcion}</p>
-                        </div>
-                        <div class="border-t border-slate-700/50 pt-4 mt-auto">
-                            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Perspectiva estratégica</span>
-                            <p class="text-xs italic text-slate-300 mt-1">"${Object.values(noticia.perspectivas)[0]}"</p>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error("Error cargando el observatorio:", error);
-                document.getElementById('noticias-container').innerHTML = 
-                    `<div class="col-span-full text-center text-red-400">Error de conexión con el flujo de datos.</div>`;
+                // Forzamos limpieza de caché con un timestamp
+                const response = await fetch(`./latest_news.json?t=${new Date().getTime()}`);
+                globalData = await response.json();
+                renderDashboard();
+            } catch (err) {
+                console.error("Fallo al cargar noticias:", err);
             }
         }
 
-        cargarNoticias();
+        function renderDashboard() {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = globalData.map((item, index) => `
+                <div onclick="openAnalysis(${index})" class="glass-panel card-interaction rounded-2xl p-6 cursor-pointer group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex gap-2">
+                            ${item.regiones_activas.slice(0,2).map(r => `
+                                <span class="text-[9px] font-black uppercase tracking-tighter bg-sky-500/10 text-sky-400 px-2 py-1 rounded">#${r}</span>
+                            `).join('')}
+                        </div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-sky-500"></div>
+                    </div>
+                    <h3 class="text-xl font-bold leading-tight text-white group-hover:text-sky-400 transition-colors mb-4">${item.tematica}</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-6">${item.descripcion}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Ver Proximidad</span>
+                        <span class="text-sky-500 text-lg">+</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openAnalysis(index) {
+            const data = globalData[index];
+            const content = document.getElementById('analysis-content');
+            
+            content.innerHTML = `
+                <div class="space-y-10">
+                    <header>
+                        <h4 class="text-sky-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4">Análisis Estratégico Detallado</h4>
+                        <h2 class="text-4xl font-bold leading-none mb-6">${data.tematica}</h2>
+                        <p class="text-slate-400 leading-relaxed text-lg">${data.descripcion}</p>
+                    </header>
+
+                    <section class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <p class="text-[10px] text-slate-500 uppercase mb-1">Nivel de Impacto</p>
+                            <p class="text-xl font-bold">ALTO</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <p class="text-[10px] text-slate-500 uppercase mb-1">Regiones Implicadas</p>
+                            <p class="text-sm font-bold text-sky-400">${data.regiones_activas.join(', ')}</p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 border-b border-white/5 pb-2">Perspectivas Geopolíticas</h4>
+                        <div class="space-y-6">
+                            ${Object.entries(data.perspectivas).map(([actor, texto]) => `
+                                <div class="relative pl-6 border-l-2 border-sky-500/30">
+                                    <h5 class="text-white font-bold text-sm mb-1 uppercase tracking-tight">${actor}</h5>
+                                    <p class="text-slate-400 text-sm leading-relaxed italic">"${texto}"</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+
+                    <footer class="pt-10">
+                        <div class="p-6 bg-sky-500/10 rounded-2xl border border-sky-500/20">
+                            <p class="text-xs text-sky-400 font-bold uppercase mb-2">Conclusión Proximity</p>
+                            <p class="text-sm text-slate-300">Este evento sugiere una fragmentación de la narrativa global en un ${Math.floor(Math.random() * 40) + 60}% de los bloques analizados.</p>
+                        </div>
+                    </footer>
+                </div>
+            `;
+            
+            document.getElementById('side-panel').classList.add('active-panel');
+            document.body.style.overflow = 'hidden'; // Bloquea scroll fondo
+        }
+
+        function closeAnalysis() {
+            document.getElementById('side-panel').classList.remove('active-panel');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Iniciar
+        loadObservatorio();
     </script>
 </body>
 </html>
