@@ -2,291 +2,115 @@
     "categorias": [
         {
             "nombre": "Seguridad y Conflictos",
-            "consenso": "Tensiones militares y conflictos regionales persisten, con un enfoque en operaciones militares en Ucrania, acusaciones de agresión y preocupaciones sobre la seguridad territorial.",
+            "consenso": "Desarrollo de tensiones y potenciales conflictos geopolíticos derivados de las acciones y políticas de diferentes actores internacionales.",
             "particulas": [
                 {
-                    "titulo": "Battlegroup South downed eight Ukrainian drones over day — spokesman",
-                    "bloque": "Rusia",
+                    "titulo": "Artículo sobre tensiones en el Mar de China Meridional",
+                    "bloque": "USA",
                     "proximidad": 90,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Reporte ruso sobre la destrucción de drones ucranianos, reflejando la narrativa del control de la situación en el conflicto.",
-                    "link": "https://tass.com/politics/2067727"
+                    "color_bloque": "#3b82f6",
+                    "analisis_regional": "EE. UU. enfatiza la importancia de mantener la libertad de navegación y desafiar las reclamaciones territoriales de China en la región.",
+                    "link": "http://example.com/articulo1"
                 },
                 {
-                    "titulo": "National defense system guarantees territorial integrity — Maduro",
-                    "bloque": "Rusia",
-                    "proximidad": 60,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Maduro expresa la capacidad de Venezuela para proteger su soberanía, lo que podría interpretarse como un desafío a la intervención extranjera.",
-                    "link": "https://tass.com/world/2067723"
-                },
-                {
-                    "titulo": "Battlegroup West destroyed 46 heavy quadcopters — spokesman",
-                    "bloque": "Rusia",
-                    "proximidad": 90,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Otro reporte ruso sobre la destrucción de equipo militar, reforzando la narrativa del éxito en operaciones.",
-                    "link": "https://tass.com/politics/2067721"
-                },
-                {
-                    "titulo": "DRC accuses Rwanda of killing 1,500 civilians in past month",
-                    "bloque": "África",
-                    "proximidad": 75,
-                    "color_bloque": "#8b5cf6",
-                    "analisis_regional": "Acusaciones de la RDC contra Ruanda de asesinatos de civiles, destacando conflictos regionales y tensiones en África.",
-                    "link": "http://www.africanews.com/2026/01/01/drc-accuses-rwanda-of-killing-1500-civilians-in-past-month/"
-                },
-                {
-                    "titulo": "Flights from Aden airport in Yemen halted amid latest tensions",
-                    "bloque": "Medio Oriente",
-                    "proximidad": 80,
-                    "color_bloque": "#10b981",
-                    "analisis_regional": "Interrupción de vuelos en Yemen debido a tensiones, señalando la inestabilidad continua en la región y acusaciones entre facciones.",
-                    "link": "https://www.aljazeera.com/news/2026/1/2/flights-from-aden-airport-in-yemen-halted-amid-latest-tensions?traffic_source=rss"
-                },
-                {
-                    "titulo": "Cómo la brutal maquinaria de guerra de Rusia martiriza y explota a sus propios soldados",
-                    "bloque": "LATAM",
+                    "titulo": "Artículo sobre la guerra en Ucrania",
+                    "bloque": "Europa",
                     "proximidad": 85,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Investigación que detalla el maltrato a soldados rusos, ofreciendo una perspectiva crítica de las operaciones militares rusas.",
-                    "link": "https://www.clarin.com/mundo/brutal-maquinaria-guerra-rusia-martiriza-explota-propios-soldados_0_MOAQHbsVYF.html"
+                    "color_bloque": "#fde047",
+                    "analisis_regional": "Europa prioriza la ayuda humanitaria y el apoyo económico a Ucrania, mostrando una disidencia en el enfoque militar directo, aunque apoya las sanciones contra Rusia.",
+                    "link": "http://example.com/articulo2"
                 },
                 {
-                    "titulo": "2025: Mass abductions, killings, Trump’s rhetoric overshadow Tinubu govt’s war on terror",
-                    "bloque": "África",
+                    "titulo": "Artículo sobre la cooperación militar entre Rusia y China",
+                    "bloque": "Rusia",
+                    "proximidad": 95,
+                    "color_bloque": "#ef4444",
+                    "analisis_regional": "Rusia destaca la cooperación militar como una respuesta legítima a la expansión de la OTAN y la percibida hostilidad occidental.",
+                    "link": "http://example.com/articulo3"
+                },
+                {
+                    "titulo": "Artículo sobre la postura de China en el conflicto de Ucrania",
+                    "bloque": "China",
                     "proximidad": 70,
-                    "color_bloque": "#8b5cf6",
-                    "analisis_regional": "Reporte sobre secuestros masivos y asesinatos en Nigeria, mostrando los desafíos en la lucha contra el terrorismo en la región.",
-                    "link": "https://www.premiumtimesng.com/news/top-news/847061-2025-mass-abductions-killings-trumps-rhetoric-overshadow-tinubu-govts-war-on-terror.html"
-                },
-                {
-                    "titulo": "Reprime la policía boliviana protesta de mineros contra el alza a combustibles",
-                    "bloque": "LATAM",
-                    "proximidad": 75,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Represión policial contra mineros en Bolivia, reflejando tensiones internas y descontento social en la región.",
-                    "link": "https://www.jornada.com.mx/2025/12/31/mundo/018n2mun?partner=rss"
+                    "color_bloque": "#f97316",
+                    "analisis_regional": "China mantiene una posición neutral, abogando por la resolución pacífica y criticando las sanciones unilaterales, mostrando una disidencia con la condena directa a Rusia.",
+                    "link": "http://example.com/articulo4"
                 }
             ]
         },
         {
             "nombre": "Economía y Sanciones",
-            "consenso": "Acuerdos comerciales y ajustes económicos globales están en curso, con atención a la influencia de China en el desarrollo económico mundial y negociaciones en torno a recursos como petróleo.",
+            "consenso": "Impacto económico global y regional de las sanciones y políticas comerciales implementadas por diferentes bloques.",
             "particulas": [
                 {
-                    "titulo": "Turkey continues to be top supplier of tangerines to Russian market",
+                    "titulo": "Artículo sobre las sanciones económicas contra Rusia",
+                    "bloque": "USA",
+                    "proximidad": 92,
+                    "color_bloque": "#3b82f6",
+                    "analisis_regional": "EE. UU. considera que las sanciones son una herramienta crucial para presionar a Rusia y modificar su comportamiento, buscando el máximo impacto económico.",
+                    "link": "http://example.com/articulo5"
+                },
+                {
+                    "titulo": "Artículo sobre el impacto de las sanciones en la economía europea",
+                    "bloque": "Europa",
+                    "proximidad": 88,
+                    "color_bloque": "#fde047",
+                    "analisis_regional": "Europa evalúa el impacto negativo de las sanciones en su propia economía, buscando un equilibrio entre la presión a Rusia y la estabilidad económica interna.",
+                    "link": "http://example.com/articulo6"
+                },
+                {
+                    "titulo": "Artículo sobre la resiliencia de la economía rusa ante las sanciones",
                     "bloque": "Rusia",
-                    "proximidad": 70,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Continuación del comercio entre Turquía y Rusia, posiblemente indicando relaciones económicas estables a pesar de las tensiones geopolíticas.",
-                    "link": "https://tass.com/economy/2067729"
-                },
-                {
-                    "titulo": "Venezuela’s Maduro open to talks with US on drugs and oil, but silent on CIA strike",
-                    "bloque": "China",
-                    "proximidad": 65,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Apertura de Maduro a negociaciones con EE.UU. sobre drogas y petróleo, pero silencio sobre el tema del ataque de la CIA, reflejando una postura cautelosa.",
-                    "link": "https://www.scmp.com/news/world/americas/article/3338465/venezuelas-maduro-open-talks-us-drugs-and-oil-silent-cia-strike?utm_source=rss_feed"
-                },
-                {
-                    "titulo": "Maduro suggests Venezuela is open to talks with US despite military attacks",
-                    "bloque": "Europa",
-                    "proximidad": 65,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Similar a la noticia anterior, muestra la apertura de Venezuela a diálogos a pesar de tensiones, resaltando la complejidad de las relaciones bilaterales.",
-                    "link": "https://www.france24.com/en/americas/20260102-maduro-suggests-venezuela-is-open-to-talks-with-us-despite-military-attacks"
-                },
-                {
-                    "titulo": "Senegal: Bassirou Diomaye Faye announces major boost to public investment in 2026",
-                    "bloque": "África",
-                    "proximidad": 70,
-                    "color_bloque": "#8b5cf6",
-                    "analisis_regional": "Anuncio de inversiones públicas en Senegal, destacando esfuerzos para el desarrollo económico en la región.",
-                    "link": "http://www.africanews.com/2026/01/01/senegal-bassirou-diomaye-faye-announces-major-boost-to-public-investment-in-2026/"
-                },
-                {
-                    "titulo": "Tras 146 años, el país más pobre de la Unión Europea abandona su moneda y adopta el Euro",
-                    "bloque": "LATAM",
-                    "proximidad": 80,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Bulgaria adopta el euro, reflejando la integración económica y desafíos dentro de la Unión Europea.",
-                    "link": "https://www.clarin.com/mundo/146-anos-pais-pobre-union-europea-abandona-moneda-adopta-euro_0_nilaiD4L7E.html"
-                },
-                {
-                    "titulo": "Turkmenistan legalises crypto mining and exchanges in shift for economy",
-                    "bloque": "Medio Oriente",
-                    "proximidad": 70,
-                    "color_bloque": "#10b981",
-                    "analisis_regional": "Legalización de criptominería en Turkmenistán, indicando diversificación económica y adopción de nuevas tecnologías.",
-                    "link": "https://www.aljazeera.com/news/2026/1/2/turkmenistan-legalises-crypto-mining-and-exchanges-in-shift-for-economy?traffic_source=rss"
-                }
-            ]
-        },
-        {
-            "nombre": "Soberanía y Alianzas",
-            "consenso": "Se observan movimientos diplomáticos para fortalecer lazos regionales y globales, incluyendo visitas de estado y felicitaciones presidenciales.",
-            "particulas": [
-                {
-                    "titulo": "Xi congratulates Guy Parmelin on assuming Swiss presidency",
-                    "bloque": "China",
-                    "proximidad": 80,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Felicitaciones de Xi a Parmelin, indicando relaciones diplomáticas y cooperación entre China y Suiza.",
-                    "link": "http://www.ecns.cn/news/politics/2026-01-01/detail-iheymvap1610022.shtml"
-                },
-                {
-                    "titulo": "Xi to host South Korea’s Lee in Beijing as China seeks to bolster regional ties",
-                    "bloque": "Europa",
-                    "proximidad": 85,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Visita de estado de Lee a China, mostrando esfuerzos para fortalecer lazos regionales y la influencia de China en la región.",
-                    "link": "https://www.france24.com/en/asia-pacific/20260102-xi-to-host-south-korea-lee-beijing"
-                }
-            ]
-        },
-        {
-            "nombre": "Política Interna y Liderazgo",
-            "consenso": "Eventos políticos internos, como visitas de figuras importantes y cambios en el liderazgo, generan debates y especulaciones sobre sucesiones y agendas políticas.",
-            "particulas": [
-                {
-                    "titulo": "North Korean palace visit by Kim’s daughter renews succession debate",
-                    "bloque": "China",
-                    "proximidad": 85,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Aparición pública de la hija de Kim Jong-un, generando especulaciones sobre la sucesión en Corea del Norte.",
-                    "link": "https://www.scmp.com/week-asia/politics/article/3338470/north-korean-palace-visit-kims-daughter-renews-succession-debate?utm_source=rss_feed"
-                },
-                {
-                    "titulo": "Kim Jong Un’s potential heir makes public visit to N Korean founder’s tomb",
-                    "bloque": "Medio Oriente",
                     "proximidad": 90,
-                    "color_bloque": "#10b981",
-                    "analisis_regional": "Refuerzo de la noticia anterior, visita de la hija de Kim a un mausoleo, incrementando la especulación sobre su posible rol en el futuro.",
-                    "link": "https://www.aljazeera.com/news/2026/1/2/kim-jong-uns-potential-heir-makes-public-visit-to-n-korean-founders-tomb?traffic_source=rss"
+                    "color_bloque": "#ef4444",
+                    "analisis_regional": "Rusia minimiza el impacto de las sanciones, destacando la adaptación de la economía y la búsqueda de nuevos socios comerciales.",
+                    "link": "http://example.com/articulo7"
                 },
                 {
-                    "titulo": "Bolsonaro leaves hospital and returns to prison after being denied house arrest",
+                    "titulo": "Artículo sobre el comercio entre China y Rusia",
+                    "bloque": "China",
+                    "proximidad": 85,
+                    "color_bloque": "#f97316",
+                    "analisis_regional": "China aumenta el comercio con Rusia, viendo una oportunidad para fortalecer la cooperación económica y desafiar el sistema financiero liderado por Occidente.",
+                    "link": "http://example.com/articulo8"
+                }
+            ]
+        },
+        {
+            "nombre": "Energía y Recursos",
+            "consenso": "Dinámicas geopolíticas relacionadas con el acceso, control y distribución de recursos energéticos a nivel global.",
+            "particulas": [
+                {
+                    "titulo": "Artículo sobre la seguridad energética en Europa",
                     "bloque": "Europa",
-                    "proximidad": 80,
+                    "proximidad": 93,
                     "color_bloque": "#fde047",
-                    "analisis_regional": "Bolsonaro regresa a prisión, destacando la situación política interna y el estado del sistema judicial en Brasil.",
-                    "link": "https://www.france24.com/en/americas/20260101-bolsonaro-leaves-hospital-returns-to-prison"
+                    "analisis_regional": "Europa busca diversificar sus fuentes de energía para reducir la dependencia de Rusia, priorizando la transición hacia energías renovables y la cooperación con otros proveedores.",
+                    "link": "http://example.com/articulo9"
                 },
                 {
-                    "titulo": "Jair Bolsonaro recibe el alta médica y vuelve a la prisión en Brasilia tras pasar ocho días en el hospital para cuatro cirugías",
-                    "bloque": "LATAM",
-                    "proximidad": 80,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Similar a la noticia anterior, proporciona detalles adicionales sobre la salud y la situación legal de Bolsonaro.",
-                    "link": "https://www.clarin.com/mundo/jair-bolsonaro-recibe-alta-medica-vuelve-prision-brasilia-pasar-dias-hospital-cirugias_0_wl9yukCKzn.html"
+                    "titulo": "Artículo sobre el papel de Rusia en el mercado energético global",
+                    "bloque": "Rusia",
+                    "proximidad": 91,
+                    "color_bloque": "#ef4444",
+                    "analisis_regional": "Rusia utiliza su posición como proveedor de energía para ejercer influencia política y económica, buscando nuevos mercados y alianzas estratégicas.",
+                    "link": "http://example.com/articulo10"
                 },
                 {
-                    "titulo": "Mamdani vows bold left-wing agenda as he takes office as New York mayor",
-                    "bloque": "Europa",
-                    "proximidad": 75,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Mamdani asume el cargo de alcalde de Nueva York, prometiendo una agenda de izquierda, lo que podría generar tensiones con la política nacional de EE.UU.",
-                    "link": "https://www.france24.com/en/americas/20260101-mamdani-vows-bold-left-wing-agenda-new-york-mayor"
+                    "titulo": "Artículo sobre la inversión china en recursos energéticos africanos",
+                    "bloque": "China",
+                    "proximidad": 87,
+                    "color_bloque": "#f97316",
+                    "analisis_regional": "China invierte en recursos energéticos en África para asegurar su suministro y fortalecer su presencia económica en el continente, mostrando una disidencia con las preocupaciones occidentales sobre sostenibilidad.",
+                    "link": "http://example.com/articulo11"
                 },
                 {
-                    "titulo": "‘We will not wait’: Mamdani kicks off housing plans after inaugural party",
+                    "titulo": "Artículo sobre la producción de petróleo en Medio Oriente",
                     "bloque": "Medio Oriente",
-                    "proximidad": 75,
+                    "proximidad": 89,
                     "color_bloque": "#10b981",
-                    "analisis_regional": "Mamdani inicia planes de vivienda, subrayando la implementación de su agenda y sus prioridades políticas.",
-                    "link": "https://www.aljazeera.com/news/2026/1/2/we-will-not-wait-mamdani-kicks-off-housing-plans-after-inaugural-party?traffic_source=rss"
-                },
-                {
-                    "titulo": "Guinea: Doumbouya supporters express joy after victory in presidential election",
-                    "bloque": "África",
-                    "proximidad": 70,
-                    "color_bloque": "#8b5cf6",
-                    "analisis_regional": "Celebración de la victoria de Doumbouya en Guinea, reflejando la dinámica política y el estado de la democracia en la región.",
-                    "link": "http://www.africanews.com/2026/01/01/guinea-doumbouya-supporters-express-joy-after-victory-in-presidential-election/"
-                }
-            ]
-        },
-        {
-            "nombre": "Cultura y Sociedad",
-            "consenso": "Eventos culturales y sociales reflejan la diversidad y los desafíos dentro de las sociedades, desde celebraciones hasta tragedias inesperadas.",
-            "particulas": [
-                {
-                    "titulo": "Yuen Cheung-yan, veteran Hong Kong actor and action choreographer, dies at 69",
-                    "bloque": "China",
-                    "proximidad": 70,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Fallecimiento de una figura cultural importante en Hong Kong, reflejando eventos y pérdidas significativas en la región.",
-                    "link": "https://www.scmp.com/news/hong-kong/society/article/3338467/yuen-cheung-yan-veteran-hong-kong-actor-and-action-choreographer-dies-69?utm_source=rss_feed"
-                },
-                {
-                    "titulo": "Morocco: Surfers celebrate the New Year on the waves of Taghazout",
-                    "bloque": "África",
-                    "proximidad": 65,
-                    "color_bloque": "#8b5cf6",
-                    "analisis_regional": "Celebración de Año Nuevo por surfistas en Marruecos, mostrando aspectos culturales y recreativos en la región.",
-                    "link": "http://www.africanews.com/2026/01/01/morocco-surfers-celebrate-the-new-year-on-the-waves-of-taghazout/"
-                },
-                {
-                    "titulo": "El peor comienzo: asumió como jefe de policía a la medianoche y una hora después sufrió la tragedia de Año Nuevo en Suiza",
-                    "bloque": "LATAM",
-                    "proximidad": 70,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Tragedia inesperada en Suiza, destacando eventos imprevistos que impactan la región y los individuos.",
-                    "link": "https://www.clarin.com/mundo/afrontar-inesperado-historia-jefe-policia-asumio-cargo-hora-tragedia-suiza_0_GWRcbp4mk3.html"
-                }
-            ]
-        },
-        {
-            "nombre": "Desarrollo y Planificación",
-            "consenso": "Planes quinquenales, proyectos de infraestructura y esfuerzos legislativos marcan el camino hacia el futuro, mostrando prioridades y estrategias para el desarrollo sostenible.",
-            "particulas": [
-                {
-                    "titulo": "(W.E. Talk) Why does the world need China more than ever in 2026?",
-                    "bloque": "China",
-                    "proximidad": 75,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Artículo que analiza la importancia de China en 2026, reflejando la narrativa del creciente rol de China en el mundo.",
-                    "link": "http://www.ecns.cn/cns-wire/2026-01-02/detail-iheymvap1610669.shtml"
-                },
-                {
-                    "titulo": "(W.E. Talk) Experts on 2026: China's 15th Five-Year Plan significant for the World",
-                    "bloque": "China",
-                    "proximidad": 80,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Importancia del plan quinquenal chino para el mundo, reforzando la narrativa de la influencia china en la economía global.",
-                    "link": "http://www.ecns.cn/video/2026-01-02/detail-iheymvap1610658.shtml"
-                },
-                {
-                    "titulo": "(W.E. Talk) Looking ahead to 2026: As geopolitical conflict risks intensify, all parties seek opportunities amid crisis through strategic moves",
-                    "bloque": "China",
-                    "proximidad": 70,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Análisis de conflictos geopolíticos y oportunidades estratégicas, reflejando un enfoque en la dinámica global y la posición de China.",
-                    "link": "http://www.ecns.cn/news/2026-01-01/detail-iheymvap1609956.shtml"
-                },
-                {
-                    "titulo": "En 16 meses se sentaron bases legales para proyectos de la 4T",
-                    "bloque": "LATAM",
-                    "proximidad": 75,
-                    "color_bloque": "#d946ef",
-                    "analisis_regional": "Creación de bases legales para proyectos de la 4T, indicando el avance de la agenda política en México.",
-                    "link": "https://www.jornada.com.mx/2025/12/31/politica/005n2pol?partner=rss"
-                }
-            ]
-        },
-        {
-            "nombre": "Tecnología y Espacio",
-            "consenso": "Avances en tecnología, desde máquinas de hipergravedad hasta la minería de criptomonedas, están transformando las economías y desafiando los límites de la innovación.",
-            "particulas": [
-                {
-                    "titulo": "China’s record hypergravity machine, Nepal’s ‘bride buying’ probe: SCMP’s 7 highlights",
-                    "bloque": "China",
-                    "proximidad": 60,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "Mención de la máquina de hipergravedad china, reflejando avances tecnológicos en la región.",
-                    "link": "https://www.scmp.com/news/china/article/3338453/chinas-record-hypergravity-machine-nepals-bride-buying-probe-scmps-7-highlights?utm_source=rss_feed"
+                    "analisis_regional": "Los países de Medio Oriente buscan maximizar sus ingresos por petróleo mientras adaptan sus economías a un futuro con menor dependencia de los hidrocarburos.",
+                    "link": "http://example.com/articulo12"
                 }
             ]
         }
