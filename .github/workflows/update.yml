@@ -2,7 +2,7 @@ name: Actualizar Observatorio Geopolítico
 
 on:
   schedule:
-    # Se ejecuta cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC)
+    # Se ejecuta cada 6 horas automáticamente
     - cron: '0 */6 * * *'
   workflow_dispatch: # Permite ejecución manual desde la pestaña Actions
 
@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write # Permiso crucial para que el bot pueda guardar archivos
+      contents: write
 
     steps:
       - name: 1. Descarga del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Descarga todo el historial para evitar errores de sincronización
+          fetch-depth: 0 
 
       - name: 2. Configuración de Python
         uses: actions/setup-python@v5
@@ -34,28 +34,26 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python collector.py
 
-      - name: 5. Sincronización y Guardado de Datos
+      - name: 5. Sincronización y Guardado Final
         run: |
           git config --global user.name "Intelligence-Bot"
           git config --global user.email "bot@github.com"
           
-          # Sincronizar con el repositorio remoto para evitar errores 'rejected'
-          git pull origin main --rebase
+          # Sincronización total para evitar errores de "branch behind"
+          git fetch origin main
+          git reset --hard origin main
           
-          # Agregamos los archivos generados por el collector.py
-          # Usamos comprobaciones para que el script no falle si un archivo no existe aún
+          # Agregar archivos de forma segura (no falla si no existen)
+          git add gravity_carousel.json || echo "No existe carousel"
+          git add manifest.json || echo "No existe manifiesto"
           
-          # 1. El JSON principal para la web
-          if [ -f gravity_carousel.json ]; then git add gravity_carousel.json; fi
+          # Agregar carpetas de históricos completas
+          if [ -d "historico_noticias" ]; then
+            git add historico_noticias/
+          fi
           
-          # 2. El manifiesto de navegación automática
-          if [ -f manifest.json ]; then git add manifest.json; fi
+          # Commit con fecha y hora para el registro
+          git commit -m "Actualización estratégica y archivo: $(date +'%Y-%m-%d %H:%M')" || echo "Sin cambios detectados"
           
-          # 3. Las carpetas de históricos (diario, semanal, mensual)
-          if [ -d historico_noticias ]; then git add historico_noticias/; fi
-          
-          # Realizar el commit
-          git commit -m "Actualización estratégica y archivo histórico: $(date +'%Y-%m-%d %H:%M')" || echo "No se detectaron cambios en los datos."
-          
-          # Push final a la rama principal
-          git push origin main
+          # Subida forzada para garantizar la sincronización
+          git push origin main --force
