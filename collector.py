@@ -9,74 +9,79 @@ def collect():
     if not os.path.exists(historico_dir):
         os.makedirs(historico_dir)
 
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        print("❌ Error: No se encontró GEMINI_API_KEY.")
-        return
+    # El cliente busca GEMINI_API_KEY en los Secrets de GitHub automáticamente
+    client = genai.Client()
 
-    client = genai.Client(api_key=api_key)
-    modelo_a_usar = "gemini-1.5-pro" # Valor por defecto
+    # Lista total: Desde versiones futuras hasta las Pro actuales
+    modelos_a_probar = [
+        "gemini-2.5-flash",       # La versión que solicitaste (Futura/Experimental)
+        "gemini-2.0-flash",       # Vanguardia 2026
+        "gemini-2.0-flash-exp",   # Experimental 2.0
+        "gemini-1.5-pro",         # Estándar Pro (Tu cuenta)
+        "gemini-1.5-pro-002",     # Producción Estable
+        "gemini-1.5-flash"        # Respaldo rápido
+    ]
 
-    try:
-        print("Interrogando a la cuenta Pro...")
-        # Intentamos listar para ver si el Pro está disponible
-        modelos = client.models.list()
-        
-        for m in modelos:
-            # Acceso seguro a los nombres de los modelos
-            nombre_modelo = getattr(m, 'name', str(m))
-            if "1.5-pro" in nombre_modelo:
-                modelo_a_usar = nombre_modelo
-                break
-        
-        print(f"✅ Objetivo fijado: {modelo_a_usar}")
+    prompt = """Genera un análisis geopolítico mundial actual para hoy 2026. 
+    Responde ÚNICAMENTE con un array JSON (lista de objetos).
+    Cada objeto: {"tematica": "...", "descripcion": "...", "regiones_activas": [], "perspectivas": {}}"""
+    
+    analisis = []
+    modelo_ganador = None
 
-        prompt = """Genera un análisis geopolítico mundial actual de hoy 2026. 
-        Responde ÚNICAMENTE con un array JSON (lista de objetos).
-        Cada objeto debe tener:
-        - "tematica": Título profesional corto.
-        - "descripcion": Análisis profundo de 2 frases.
-        - "regiones_activas": Lista de regiones.
-        - "perspectivas": Un objeto con visiones breves."""
+    print("--- INICIANDO ESCÁNER DE MODELOS (Incluyendo 2.5) ---")
 
-        print(f"Enviando consulta a {modelo_a_usar}...")
-        response = client.models.generate_content(
-            model=modelo_a_usar,
-            contents=prompt
-        )
-        
-        raw_text = response.text.strip()
-        
-        # Limpiador de Markdown robusto
-        if "```json" in raw_text:
-            raw_text = raw_text.split("```json")[1].split("```")[0].strip()
-        elif "```" in raw_text:
-            raw_text = raw_text.split("```")[1].split("```")[0].strip()
+    for modelo in modelos_a_probar:
+        try:
+            print(f"Probando enlace con: {modelo}...")
+            response = client.models.generate_content(
+                model=modelo,
+                contents=prompt
+            )
+            
+            # Si responde, extraemos el texto
+            raw_text = response.text.strip()
+            
+            # Limpiador de Markdown por si la IA se pone creativa
+            if "```json" in raw_text:
+                raw_text = raw_text.split("```json")[1].split("```")[0].strip()
+            elif "```" in raw_text:
+                raw_text = raw_text.split("```")[1].split("```")[0].strip()
+            
+            # Buscamos el JSON real dentro de la respuesta
+            inicio = raw_text.find("[")
+            fin = raw_text.rfind("]") + 1
+            if inicio != -1:
+                analisis = json.loads(raw_text[inicio:fin])
+                modelo_ganador = modelo
+                print(f"✅ ¡CONEXIÓN EXITOSA! El modelo activo es: {modelo_ganador}")
+                break 
 
-        inicio = raw_text.find("[")
-        fin = raw_text.rfind("]") + 1
-        analisis = json.loads(raw_text[inicio:fin])
-        print(f"✅ ¡ÉXITO! Datos generados.")
+        except Exception as e:
+            # Mostramos el error para saber por qué falló cada uno (ej. 404)
+            print(f"❌ {modelo} no disponible: {str(e)[:60]}")
 
-    except Exception as e:
-        print(f"❌ FALLO: {e}")
-        analisis = [{
-            "tematica": "Sincronización Pro",
-            "descripcion": f"Conexión establecida. Validando flujo de datos. Error: {str(e)[:40]}",
-            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "regiones_activas": ["GLOBAL"],
-            "perspectivas": {"SISTEMA": "Reintentando..."}
-        }]
+    if not modelo_ganador:
+        print("🔴 ERROR: Ningún modelo respondió. Revisa la API KEY.")
+        analisis = [{"tematica": "Error de Conexión", "descripcion": "No se pudo enlazar con la IA."}]
 
-    # Guardado
+    # Guardado de archivos
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')
+    
+    # 1. Archivo para la web (Raíz)
     with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
         json.dump(analisis, f, indent=4, ensure_ascii=False)
 
-    with open(os.path.join(base_dir, "timeline.json"), "w", encoding="utf-8") as f:
-        json.dump([f"analisis_{timestamp}.json"], f, indent=4)
+    # 2. Archivo para el histórico
+    with open(os.path.join(historico_dir, f"analisis_{timestamp}.json"), "w", encoding="utf-8") as f:
+        json.dump(analisis, f, indent=4, ensure_ascii=False)
 
-    print(f"🚀 Proceso terminado a las {timestamp}")
+    # 3. Índice para el timeline
+    files = sorted([f for f in os.listdir(historico_dir) if f.startswith('analisis_')], reverse=True)
+    with open(os.path.join(base_dir, "timeline.json"), "w", encoding="utf-8") as f:
+        json.dump(files[:50], f, indent=4)
+
+    print(f"--- PROCESO FINALIZADO (Ganador: {modelo_ganador}) ---")
 
 if __name__ == "__main__":
     collect()
