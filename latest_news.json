@@ -1,118 +1,117 @@
-{
-    "categorias": [
-        {
-            "nombre": "Seguridad y Conflictos",
-            "consenso": "Desarrollo de tensiones y potenciales conflictos geopolíticos derivados de las acciones y políticas de diferentes actores internacionales.",
-            "particulas": [
-                {
-                    "titulo": "Artículo sobre tensiones en el Mar de China Meridional",
-                    "bloque": "USA",
-                    "proximidad": 90,
-                    "color_bloque": "#3b82f6",
-                    "analisis_regional": "EE. UU. enfatiza la importancia de mantener la libertad de navegación y desafiar las reclamaciones territoriales de China en la región.",
-                    "link": "http://example.com/articulo1"
-                },
-                {
-                    "titulo": "Artículo sobre la guerra en Ucrania",
-                    "bloque": "Europa",
-                    "proximidad": 85,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Europa prioriza la ayuda humanitaria y el apoyo económico a Ucrania, mostrando una disidencia en el enfoque militar directo, aunque apoya las sanciones contra Rusia.",
-                    "link": "http://example.com/articulo2"
-                },
-                {
-                    "titulo": "Artículo sobre la cooperación militar entre Rusia y China",
-                    "bloque": "Rusia",
-                    "proximidad": 95,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Rusia destaca la cooperación militar como una respuesta legítima a la expansión de la OTAN y la percibida hostilidad occidental.",
-                    "link": "http://example.com/articulo3"
-                },
-                {
-                    "titulo": "Artículo sobre la postura de China en el conflicto de Ucrania",
-                    "bloque": "China",
-                    "proximidad": 70,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "China mantiene una posición neutral, abogando por la resolución pacífica y criticando las sanciones unilaterales, mostrando una disidencia con la condena directa a Rusia.",
-                    "link": "http://example.com/articulo4"
-                }
-            ]
+[
+    {
+        "Categoría": "Seguridad y Conflictos",
+        "Consenso Global": "Existe una preocupación generalizada por la inestabilidad y el aumento de conflictos a nivel global, aunque las causas y soluciones propuestas varían significativamente según la región. Hay un consenso en que la cooperación internacional es necesaria, pero existe desacuerdo sobre qué actores deben liderar y cómo debe ser esa cooperación.",
+        "Proximidad": 70,
+        "análisis_regional": {
+            "USA": "Tiende a enfatizar la necesidad de mantener su liderazgo global y proyectar poder para disuadir amenazas. Ve los conflictos como oportunidades para reafirmar su influencia y promover sus valores.",
+            "Europa": "Prioriza la diplomacia y las soluciones multilaterales, aunque internamente está dividida sobre cómo equilibrar la defensa de sus intereses con la cooperación internacional. Existe una preocupación creciente por la seguridad en sus fronteras.",
+            "Rusia": "Considera que muchos conflictos son resultado de la expansión de la influencia occidental y busca desafiar el orden mundial liderado por Estados Unidos. Prioriza la seguridad de sus fronteras y la protección de sus intereses en su vecindario.",
+            "China": "Aboga por la no injerencia en asuntos internos de otros países y promueve soluciones pacíficas a los conflictos, aunque defiende firmemente sus intereses nacionales, incluyendo sus reclamos territoriales.",
+            "LATAM": "Se centra en los desafíos internos relacionados con la delincuencia organizada, la desigualdad y la inestabilidad política. Busca soluciones regionales y multilaterales, pero a menudo carece de los recursos y la influencia para abordar los conflictos de manera efectiva.",
+            "Medio Oriente": "Está marcada por conflictos arraigados y rivalidades regionales. Las perspectivas varían ampliamente según la afiliación política y religiosa, con poca convergencia en la resolución de problemas.",
+            "África": "Enfrenta numerosos conflictos internos y transfronterizos, a menudo exacerbados por la pobreza, la desigualdad y la competencia por recursos. Busca soluciones africanas a los problemas africanos, pero a menudo depende de la ayuda externa."
         },
-        {
-            "nombre": "Economía y Sanciones",
-            "consenso": "Impacto económico global y regional de las sanciones y políticas comerciales implementadas por diferentes bloques.",
-            "particulas": [
-                {
-                    "titulo": "Artículo sobre las sanciones económicas contra Rusia",
-                    "bloque": "USA",
-                    "proximidad": 92,
-                    "color_bloque": "#3b82f6",
-                    "analisis_regional": "EE. UU. considera que las sanciones son una herramienta crucial para presionar a Rusia y modificar su comportamiento, buscando el máximo impacto económico.",
-                    "link": "http://example.com/articulo5"
-                },
-                {
-                    "titulo": "Artículo sobre el impacto de las sanciones en la economía europea",
-                    "bloque": "Europa",
-                    "proximidad": 88,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Europa evalúa el impacto negativo de las sanciones en su propia economía, buscando un equilibrio entre la presión a Rusia y la estabilidad económica interna.",
-                    "link": "http://example.com/articulo6"
-                },
-                {
-                    "titulo": "Artículo sobre la resiliencia de la economía rusa ante las sanciones",
-                    "bloque": "Rusia",
-                    "proximidad": 90,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Rusia minimiza el impacto de las sanciones, destacando la adaptación de la economía y la búsqueda de nuevos socios comerciales.",
-                    "link": "http://example.com/articulo7"
-                },
-                {
-                    "titulo": "Artículo sobre el comercio entre China y Rusia",
-                    "bloque": "China",
-                    "proximidad": 85,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "China aumenta el comercio con Rusia, viendo una oportunidad para fortalecer la cooperación económica y desafiar el sistema financiero liderado por Occidente.",
-                    "link": "http://example.com/articulo8"
-                }
-            ]
-        },
-        {
-            "nombre": "Energía y Recursos",
-            "consenso": "Dinámicas geopolíticas relacionadas con el acceso, control y distribución de recursos energéticos a nivel global.",
-            "particulas": [
-                {
-                    "titulo": "Artículo sobre la seguridad energética en Europa",
-                    "bloque": "Europa",
-                    "proximidad": 93,
-                    "color_bloque": "#fde047",
-                    "analisis_regional": "Europa busca diversificar sus fuentes de energía para reducir la dependencia de Rusia, priorizando la transición hacia energías renovables y la cooperación con otros proveedores.",
-                    "link": "http://example.com/articulo9"
-                },
-                {
-                    "titulo": "Artículo sobre el papel de Rusia en el mercado energético global",
-                    "bloque": "Rusia",
-                    "proximidad": 91,
-                    "color_bloque": "#ef4444",
-                    "analisis_regional": "Rusia utiliza su posición como proveedor de energía para ejercer influencia política y económica, buscando nuevos mercados y alianzas estratégicas.",
-                    "link": "http://example.com/articulo10"
-                },
-                {
-                    "titulo": "Artículo sobre la inversión china en recursos energéticos africanos",
-                    "bloque": "China",
-                    "proximidad": 87,
-                    "color_bloque": "#f97316",
-                    "analisis_regional": "China invierte en recursos energéticos en África para asegurar su suministro y fortalecer su presencia económica en el continente, mostrando una disidencia con las preocupaciones occidentales sobre sostenibilidad.",
-                    "link": "http://example.com/articulo11"
-                },
-                {
-                    "titulo": "Artículo sobre la producción de petróleo en Medio Oriente",
-                    "bloque": "Medio Oriente",
-                    "proximidad": 89,
-                    "color_bloque": "#10b981",
-                    "analisis_regional": "Los países de Medio Oriente buscan maximizar sus ingresos por petróleo mientras adaptan sus economías a un futuro con menor dependencia de los hidrocarburos.",
-                    "link": "http://example.com/articulo12"
-                }
-            ]
+        "color": {
+            "USA": "#3b82f6",
+            "Europa": "#fde047",
+            "Rusia": "#ef4444",
+            "China": "#f97316",
+            "LATAM": "#d946ef",
+            "Medio Oriente": "#10b981",
+            "África": "#8b5cf6"
         }
-    ]
-}
+    },
+    {
+        "Categoría": "Economía y Sanciones",
+        "Consenso Global": "Existe una creciente preocupación por la desaceleración económica global, la inflación y la desigualdad. Hay un debate sobre la efectividad de las sanciones económicas como herramienta de política exterior, con algunos argumentando que son ineficaces y perjudiciales para la población civil.",
+        "Proximidad": 60,
+        "análisis_regional": {
+            "USA": "Utiliza las sanciones económicas como una herramienta clave de política exterior para presionar a otros países a cambiar su comportamiento. Prioriza la protección de sus intereses económicos y la promoción del libre comercio.",
+            "Europa": "Adopta una postura más cautelosa sobre las sanciones, reconociendo su impacto potencial en las economías europeas y en las relaciones internacionales. Busca un equilibrio entre la defensa de sus valores y la protección de sus intereses económicos.",
+            "Rusia": "Considera que las sanciones económicas son una forma de agresión económica y busca diversificar su economía y reducir su dependencia del sistema financiero occidental. Desarrolla sistemas alternativos de pago y comercio.",
+            "China": "Se opone al uso unilateral de sanciones económicas y aboga por un sistema multilateral basado en reglas. Busca fortalecer su influencia económica global y promover el comercio y la inversión con otros países.",
+            "LATAM": "Sufre las consecuencias de la inestabilidad económica global y las fluctuaciones en los precios de las materias primas. Busca diversificar sus economías y atraer inversión extranjera, pero a menudo enfrenta desafíos relacionados con la corrupción y la falta de infraestructura.",
+            "Medio Oriente": "Depende en gran medida de los ingresos del petróleo y el gas, lo que los hace vulnerables a las fluctuaciones en los precios de la energía. Busca diversificar sus economías y atraer inversión extranjera, pero a menudo enfrenta desafíos relacionados con la inestabilidad política y los conflictos.",
+            "África": "Enfrenta desafíos económicos significativos relacionados con la pobreza, la desigualdad y la falta de diversificación económica. Busca atraer inversión extranjera y mejorar su infraestructura, pero a menudo enfrenta desafíos relacionados con la corrupción y la falta de gobernanza."
+        },
+        "color": {
+            "USA": "#3b82f6",
+            "Europa": "#fde047",
+            "Rusia": "#ef4444",
+            "China": "#f97316",
+            "LATAM": "#d946ef",
+            "Medio Oriente": "#10b981",
+            "África": "#8b5cf6"
+        }
+    },
+    {
+        "Categoría": "Energía y Recursos",
+        "Consenso Global": "Existe una creciente conciencia sobre la necesidad de una transición hacia fuentes de energía más limpias y sostenibles para combatir el cambio climático. Sin embargo, hay desacuerdo sobre el ritmo y la forma en que debe ocurrir esta transición, así como sobre la distribución de los costos y beneficios.",
+        "Proximidad": 80,
+        "análisis_regional": {
+            "USA": "Prioriza la seguridad energética y la independencia, buscando explotar sus propios recursos energéticos, incluyendo petróleo, gas y energías renovables. Existe un debate sobre el equilibrio entre el crecimiento económico y la protección del medio ambiente.",
+            "Europa": "Está comprometida con la transición hacia una economía baja en carbono y busca reducir su dependencia de los combustibles fósiles importados. Invierte en energías renovables y promueve la eficiencia energética.",
+            "Rusia": "Es un importante productor de petróleo y gas y busca mantener su posición en el mercado energético global. Reconoce la necesidad de diversificar su economía, pero sigue dependiendo en gran medida de los ingresos de los hidrocarburos.",
+            "China": "Es el mayor consumidor de energía del mundo y enfrenta el desafío de satisfacer su creciente demanda energética al tiempo que reduce sus emisiones de carbono. Invierte masivamente en energías renovables y busca mejorar su eficiencia energética.",
+            "LATAM": "Posee abundantes recursos naturales, incluyendo petróleo, gas, minerales y biodiversidad. Busca explotar estos recursos para impulsar su crecimiento económico, pero a menudo enfrenta desafíos relacionados con la sostenibilidad y la protección del medio ambiente.",
+            "Medio Oriente": "Es la principal región productora de petróleo y gas del mundo y depende en gran medida de los ingresos de los hidrocarburos. Busca diversificar sus economías e invertir en energías renovables, pero sigue siendo vulnerable a las fluctuaciones en los precios de la energía.",
+            "África": "Posee abundantes recursos naturales, incluyendo minerales, petróleo y gas. Busca explotar estos recursos para impulsar su desarrollo económico, pero a menudo enfrenta desafíos relacionados con la gobernanza, la corrupción y la falta de infraestructura."
+        },
+        "color": {
+            "USA": "#3b82f6",
+            "Europa": "#fde047",
+            "Rusia": "#ef4444",
+            "China": "#f97316",
+            "LATAM": "#d946ef",
+            "Medio Oriente": "#10b981",
+            "África": "#8b5cf6"
+        }
+    },
+    {
+        "Categoría": "Soberanía y Alianzas",
+        "Consenso Global": "Existe una tensión creciente entre la defensa de la soberanía nacional y la necesidad de cooperación internacional para abordar los desafíos globales. Las alianzas tradicionales están siendo cuestionadas y surgen nuevas formas de cooperación multilateral.",
+        "Proximidad": 50,
+        "análisis_regional": {
+            "USA": "Defiende su soberanía nacional y busca mantener su liderazgo global. Fortalece sus alianzas tradicionales, pero también está dispuesto a actuar unilateralmente cuando considera que es necesario.",
+            "Europa": "Prioriza la integración regional y la cooperación multilateral, pero enfrenta desafíos relacionados con la cohesión interna y la defensa de sus intereses nacionales. Busca fortalecer su autonomía estratégica.",
+            "Rusia": "Defiende su soberanía nacional y busca desafiar el orden mundial liderado por Estados Unidos. Fortalece sus alianzas con otros países que comparten sus puntos de vista.",
+            "China": "Defiende su soberanía nacional y aboga por un orden mundial multipolar. Fortalece sus alianzas con otros países en desarrollo y busca aumentar su influencia en las organizaciones internacionales.",
+            "LATAM": "Prioriza la integración regional y la cooperación multilateral, pero a menudo enfrenta desafíos relacionados con la falta de recursos y la inestabilidad política. Busca fortalecer su autonomía estratégica.",
+            "Medio Oriente": "Está marcada por rivalidades regionales y la injerencia de potencias externas. Busca defender su soberanía nacional y fortalecer sus alianzas con otros países que comparten sus intereses.",
+            "África": "Prioriza la integración regional y la cooperación multilateral, pero a menudo enfrenta desafíos relacionados con la falta de recursos y la inestabilidad política. Busca fortalecer su autonomía estratégica."
+        },
+        "color": {
+            "USA": "#3b82f6",
+            "Europa": "#fde047",
+            "Rusia": "#ef4444",
+            "China": "#f97316",
+            "LATAM": "#d946ef",
+            "Medio Oriente": "#10b981",
+            "África": "#8b5cf6"
+        }
+    },
+    {
+        "Categoría": "Tecnología y Espacio",
+        "Consenso Global": "Existe un reconocimiento generalizado del papel crucial de la tecnología en el desarrollo económico y social. Sin embargo, hay preocupación por la brecha digital, la seguridad cibernética y el uso ético de la inteligencia artificial. El espacio se está convirtiendo en un nuevo campo de competencia y cooperación.",
+        "Proximidad": 90,
+        "análisis_regional": {
+            "USA": "Lidera en la innovación tecnológica y busca mantener su ventaja competitiva en áreas como la inteligencia artificial, la computación cuántica y el espacio. Prioriza la seguridad cibernética y la protección de la propiedad intelectual.",
+            "Europa": "Invierte en investigación y desarrollo tecnológico y busca promover un ecosistema digital seguro y confiable. Prioriza la regulación de la inteligencia artificial y la protección de los datos personales.",
+            "Rusia": "Busca desarrollar su propia capacidad tecnológica y reducir su dependencia de la tecnología occidental. Invierte en áreas como la inteligencia artificial, la defensa cibernética y el espacio.",
+            "China": "Está invirtiendo masivamente en tecnología y busca convertirse en un líder global en áreas como la inteligencia artificial, la computación cuántica y el espacio. Prioriza la seguridad cibernética y la promoción de su propia visión del internet.",
+            "LATAM": "Enfrenta desafíos relacionados con la brecha digital y la falta de inversión en investigación y desarrollo tecnológico. Busca atraer inversión extranjera y promover la adopción de nuevas tecnologías.",
+            "Medio Oriente": "Invierte en tecnología para diversificar sus economías y mejorar la eficiencia de sus industrias. Busca atraer talento tecnológico y promover la innovación.",
+            "África": "Enfrenta desafíos relacionados con la brecha digital y la falta de infraestructura tecnológica. Busca atraer inversión extranjera y promover la adopción de nuevas tecnologías para impulsar su desarrollo económico y social."
+        },
+        "color": {
+            "USA": "#3b82f6",
+            "Europa": "#fde047",
+            "Rusia": "#ef4444",
+            "China": "#f97316",
+            "LATAM": "#d946ef",
+            "Medio Oriente": "#10b981",
+            "África": "#8b5cf6"
+        }
+    }
+]
