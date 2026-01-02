@@ -2,11 +2,7 @@
     {
         "tematica": "Sincronización de Inteligencia",
         "descripcion": "El búnker está recibiendo los datos. Error reportado: 404 models/gemini-1.5-pro is not found f",
-<<<<<<< Updated upstream
-        "timestamp": "2026-01-02 01:02",
-=======
         "timestamp": "2026-01-02 01:03",
->>>>>>> Stashed changes
         "regiones_activas": [
             "USA",
             "EUROPE"
