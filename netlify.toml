@@ -1,23 +1,21 @@
+[build]
+  publish = "."
+
 [[headers]]
   for = "/*.json"
   [headers.values]
-    # Evita que el navegador guarde versiones viejas de los datos
-    cache-control = "no-cache, no-store, must-revalidate"
     Content-Type = "application/json"
     Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[headers]]
   for = "/historico_noticias/*.json"
   [headers.values]
-    cache-control = "no-cache, no-store, must-revalidate"
-
-[[headers]]
-  for = "/archivos_maestros/*.json"
-  [headers.values]
-    cache-control = "no-cache, no-store, must-revalidate"
+    Content-Type = "application/json"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[redirects]]
-  # Mantiene la navegación fluida si refrescas la página
   from = "/*"
   to = "/index.html"
   status = 200
