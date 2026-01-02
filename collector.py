@@ -8,21 +8,31 @@ def collect():
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key: return
 
-    # FORZAMOS LA VERSIÓN v1 (ESTABLE) para evitar el error 404 de la v1beta
-    client = genai.Client(
-        api_key=api_key,
-        http_options={'api_version': 'v1'}
-    )
+    client = genai.Client(api_key=api_key)
     
-    # Probamos con el nombre puro
-    model_id = "gemini-1.5-pro"
-
-    prompt = "Genera un análisis geopolítico actual en un array JSON de 5 objetos: {'tematica': '...', 'descripcion': '...', 'regiones_activas': [], 'perspectivas': {}}"
+    analisis = []
+    modelo_a_usar = None
 
     try:
-        print(f"Llamando a {model_id} (v1 Estable)...")
+        # PASO 1: Buscar qué modelo tienes realmente disponible
+        print("Buscando modelos disponibles en tu cuenta Pro...")
+        for m in client.models.list():
+            # Buscamos gemini-1.5-pro o gemini-1.5-flash
+            if "generateContent" in m.supported_methods:
+                modelo_a_usar = m.name
+                if "1.5-pro" in m.name: # Preferimos el Pro si aparece
+                    break
+        
+        if not modelo_a_usar:
+            raise Exception("No se encontraron modelos de generación de texto en esta cuenta.")
+
+        print(f"✅ Usando modelo detectado: {modelo_a_usar}")
+
+        # PASO 2: Generar contenido con el modelo encontrado
+        prompt = "Genera un análisis geopolítico actual en un array JSON de 5 objetos: {'tematica': '...', 'descripcion': '...', 'regiones_activas': [], 'perspectivas': {}}"
+        
         response = client.models.generate_content(
-            model=model_id,
+            model=modelo_a_usar,
             contents=prompt
         )
         
@@ -35,26 +45,19 @@ def collect():
             raw_text = raw_text.split("```")[1].split("```")[0].strip()
 
         analisis = json.loads(raw_text)
-        print(f"✅ ¡CONECTADO! IA Pro respondió con éxito.")
+        print(f"✅ ¡ÉXITO! Datos generados con {modelo_a_usar}")
 
     except Exception as e:
-        print(f"❌ Error en v1: {e}")
-        # Si falla, intentamos una última vez con el nombre completo de modelo
-        try:
-            print("Reintentando con nombre de modelo completo...")
-            response = client.models.generate_content(model="models/gemini-1.5-pro", contents=prompt)
-            analisis = json.loads(response.text.strip())
-            print("✅ ¡LOGRADO con nombre completo!")
-        except:
-            analisis = [{
-                "tematica": "Sincronizando...",
-                "descripcion": "El nodo Pro está validando la versión de API.",
-                "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "regiones_activas": ["GLOBAL"],
-                "perspectivas": {"SISTEMA": "Cambiando a endpoint v1..."}
-            }]
+        print(f"❌ Error crítico: {e}")
+        analisis = [{
+            "tematica": "Error de Configuración de API",
+            "descripcion": f"La cuenta Pro no reporta modelos disponibles. Detalle: {str(e)[:40]}",
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "regiones_activas": ["SISTEMA"],
+            "perspectivas": {"ERROR": "Verificar habilitación de modelo en Google Cloud"}
+        }]
 
-    # Guardado simplificado para asegurar que Netlify lo vea
+    # Guardado para la web
     with open(os.path.join(base_dir, "latest_news.json"), "w", encoding="utf-8") as f:
         json.dump(analisis, f, indent=4, ensure_ascii=False)
     
