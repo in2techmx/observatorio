@@ -12,154 +12,133 @@ También he añadido un depurador visual; si algo falla, verás un mensaje técn
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Proximity | Observatorio Geopolítico</title>
+    <title>Global Proximity | Orbit Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background-color: #020617; 
-            color: #f8fafc; 
-            font-family: 'Space Grotesk', sans-serif;
-            background-image: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
-            min-height: 100vh;
-        }
-        .glass-panel { 
-            background: rgba(15, 23, 42, 0.6); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(56, 189, 248, 0.1); 
-        }
-        .card-interaction {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-interaction:hover {
-            border-color: #38bdf8;
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
-            transform: translateY(-4px);
-        }
-        #side-panel {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        body { background: #020617; color: #f8fafc; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; }
+        .bubble { cursor: pointer; transition: filter 0.3s; }
+        .bubble:hover { filter: brightness(1.5) drop-shadow(0 0 15px rgba(56, 189, 248, 0.5)); }
+        .label { pointer-events: none; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; fill: white; font-size: 10px; }
+        #side-panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); }
         .active-panel { transform: translateX(0) !important; }
+        .nav-btn { font-size: 10px; letter-spacing: 0.2em; font-weight: 700; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .active-nav { border-color: #38bdf8; color: #38bdf8; }
     </style>
 </head>
-<body class="p-6">
+<body>
 
-    <nav class="max-w-7xl mx-auto flex justify-between items-center mb-12 border-b border-white/5 pb-6">
-        <div>
+    <nav class="fixed top-0 left-0 w-full p-8 z-40 flex justify-between items-start pointer-events-none">
+        <div class="pointer-events-auto">
             <h1 class="text-2xl font-bold tracking-tighter italic">GLOBAL<span class="text-sky-500">PROXIMITY</span></h1>
-            <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em]">IA Engine: Gemini 2.0 Flash</p>
+            <p class="text-[10px] text-slate-500 uppercase tracking-[0.4em]">Deep Geopolitical Orbit</p>
         </div>
-        <div class="hidden md:block text-right">
-            <p class="text-[10px] text-slate-500 uppercase font-bold">Estado del Sistema</p>
-            <p class="text-xs text-emerald-400 font-mono">ANÁLISIS DE PROXIMIDAD ACTIVO</p>
+        <div class="flex gap-6 pointer-events-auto">
+            <button onclick="updateData('day')" class="nav-btn active-nav uppercase">Día</button>
+            <button onclick="alert('Histórico en formación...')" class="nav-btn text-slate-600 uppercase">Semana</button>
+            <button onclick="alert('Histórico en formación...')" class="nav-btn text-slate-600 uppercase">Mes</button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto">
-        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="col-span-full py-20 text-center text-slate-500 animate-pulse tracking-widest uppercase text-sm">
-                Escaneando señales globales...
-            </div>
-        </div>
-    </main>
+    <div id="canvas-container"></div>
 
-    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[550px] bg-[#020617] border-l border-sky-500/20 z-50 transform translate-x-full shadow-2xl overflow-y-auto">
-        <div class="p-8">
-            <button onclick="closeAnalysis()" class="group mb-8 flex items-center gap-2 text-slate-500 hover:text-white transition-colors">
-                <span class="text-xl group-hover:-translate-x-1 transition-transform">←</span>
-                <span class="text-xs font-bold tracking-widest uppercase">Cerrar Análisis</span>
-            </button>
-            <div id="analysis-content"></div>
-        </div>
+    <aside id="side-panel" class="fixed top-0 right-0 h-full w-full md:w-[600px] border-l border-white/10 z-50 transform translate-x-full overflow-y-auto p-12">
+        <button onclick="closePanel()" class="mb-12 text-[10px] font-black text-slate-500 hover:text-white tracking-[0.5em] uppercase">← Volver al Mapa</button>
+        <div id="content"></div>
     </aside>
 
     <script>
-        let globalData = [];
+        let width = window.innerWidth, height = window.innerHeight;
+        let svg = d3.select("#canvas-container").append("svg").attr("width", width).attr("height", height);
+        let simulation;
 
-        async function loadObservatorio() {
-            try {
-                const response = await fetch(`./latest_news.json?t=${new Date().getTime()}`);
-                globalData = await response.json();
-                renderDashboard();
-            } catch (err) {
-                console.error("Fallo al cargar:", err);
-            }
+        async function updateData(period) {
+            const res = await fetch(`./latest_news.json?t=${Date.now()}`);
+            const data = await res.json();
+            drawBubbles(data);
         }
 
-        function renderDashboard() {
-            const grid = document.getElementById('news-grid');
-            grid.innerHTML = globalData.map((item, index) => `
-                <div onclick="openAnalysis(${index})" class="glass-panel card-interaction rounded-2xl p-6 cursor-pointer group">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-sky-400 bg-sky-500/10 px-2 py-1 rounded">
-                            Prox: ${item.proximidad || 'N/A'}
-                        </span>
-                        <div class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></div>
-                    </div>
-                    <h3 class="text-xl font-bold leading-tight text-white group-hover:text-sky-400 transition-colors mb-4">${item.tematica}</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-6">${item.descripcion}</p>
-                    
-                    <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mb-4">
-                        <div class="h-full bg-sky-500" style="width: ${item.proximidad}"></div>
-                    </div>
+        function drawBubbles(data) {
+            svg.selectAll("*").remove();
 
-                    <div class="flex items-center justify-between pt-4 border-t border-white/5 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                        <span>Ver Inteligencia</span>
-                        <span class="text-sky-500">+</span>
-                    </div>
-                </div>
-            `).join('');
+            // Convertir proximidad (%) a número para el tamaño
+            data.forEach(d => d.radius = 80 + (parseInt(d.proximidad) || 50));
+
+            simulation = d3.forceSimulation(data)
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("charge", d3.forceManyBody().strength(50))
+                .force("collide", d3.forceCollide().radius(d => d.radius + 10))
+                .on("tick", () => {
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                });
+
+            const node = svg.append("g")
+                .selectAll("g")
+                .data(data)
+                .join("g")
+                .attr("class", "node")
+                .on("click", (e, d) => openPanel(d));
+
+            // El círculo de la burbuja
+            node.append("circle")
+                .attr("r", d => d.radius)
+                .attr("fill", d => {
+                    const prox = parseInt(d.proximidad);
+                    return prox < 30 ? "#ef4444" : (prox < 70 ? "#38bdf8" : "#10b981");
+                })
+                .attr("fill-opacity", 0.15)
+                .attr("stroke", d => {
+                    const prox = parseInt(d.proximidad);
+                    return prox < 30 ? "#ef4444" : (prox < 70 ? "#38bdf8" : "#10b981");
+                })
+                .attr("stroke-width", 2);
+
+            // Título dentro de la burbuja
+            node.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", ".3em")
+                .attr("class", "label")
+                .text(d => d.tematica.split(" ")[0]); // Solo primera palabra para estética
+
+            // Porcentaje pequeño
+            node.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "2em")
+                .attr("fill", "white")
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+                .text(d => d.proximidad);
         }
 
-        function openAnalysis(index) {
-            const data = globalData[index];
-            const content = document.getElementById('analysis-content');
-            
-            content.innerHTML = `
-                <div class="space-y-10">
-                    <header>
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="text-sky-500 text-[10px] font-black uppercase tracking-[0.4em]">Análisis Proximity</h4>
-                            <span class="text-2xl font-bold text-white">${data.proximidad}</span>
-                        </div>
-                        <h2 class="text-4xl font-bold leading-none mb-6">${data.tematica}</h2>
-                        <p class="text-slate-400 leading-relaxed text-lg">${data.descripcion}</p>
-                    </header>
-
-                    <section class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <p class="text-[10px] text-slate-500 uppercase mb-1">Regiones</p>
-                            <p class="text-sm font-bold text-sky-400">${data.regiones_activas.join(', ')}</p>
-                        </div>
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <p class="text-[10px] text-slate-500 uppercase mb-1">Status</p>
-                            <p class="text-sm font-bold text-emerald-400">VERIFICADO</p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 border-b border-white/5 pb-2">Perspectivas Actores Clave</h4>
-                        <div class="space-y-6">
-                            ${Object.entries(data.perspectivas).map(([actor, texto]) => `
-                                <div class="relative pl-6 border-l-2 border-sky-500/30">
-                                    <h5 class="text-white font-bold text-xs mb-1 uppercase">${actor}</h5>
-                                    <p class="text-slate-400 text-sm leading-relaxed italic">"${texto}"</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>
+        function openPanel(d) {
+            document.getElementById('content').innerHTML = `
+                <div class="space-y-8">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sky-500 font-bold tracking-[0.3em] text-[10px] uppercase">Eje Detectado</span>
+                        <span class="text-4xl font-bold font-mono">${d.proximidad}</span>
+                    </div>
+                    <h2 class="text-5xl font-bold leading-none">${d.tematica}</h2>
+                    <p class="text-xl text-slate-400 leading-relaxed">${d.descripcion}</p>
+                    <div class="h-[2px] w-full bg-white/10"></div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Contraste Geopolítico</h3>
+                    <div class="space-y-6">
+                        ${Object.entries(d.perspectivas).map(([actor, texto]) => `
+                            <div class="border-l-2 border-sky-500 pl-6 py-2">
+                                <h4 class="text-white text-xs font-bold uppercase mb-2">${actor}</h4>
+                                <p class="text-slate-400 italic">"${texto}"</p>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `;
             document.getElementById('side-panel').classList.add('active-panel');
-            document.body.style.overflow = 'hidden';
         }
 
-        function closeAnalysis() {
-            document.getElementById('side-panel').classList.remove('active-panel');
-            document.body.style.overflow = 'auto';
-        }
-
-        loadObservatorio();
+        function closePanel() { document.getElementById('side-panel').classList.remove('active-panel'); }
+        window.addEventListener('resize', () => { width = window.innerWidth; height = window.innerHeight; updateData(); });
+        updateData();
     </script>
 </body>
 </html>
