@@ -1,13 +1,13 @@
 [
     {
-        "tematica": "Sincronización Pro",
-        "descripcion": "Validando acceso. Error: 404 NOT_FOUND. {'error': {'code': 404, '",
-        "timestamp": "2026-01-02 01:39",
+        "tematica": "Sincronizando...",
+        "descripcion": "El nodo Pro está validando la versión de API.",
+        "timestamp": "2026-01-02 01:41",
         "regiones_activas": [
             "GLOBAL"
         ],
         "perspectivas": {
-            "SISTEMA": "Reintentando..."
+            "SISTEMA": "Cambiando a endpoint v1..."
         }
     }
 ]
