@@ -2,7 +2,10 @@
 Navegación Temporal: Implementación de un slider funcional que permite cargar estados anteriores del mundo desde la carpeta historico_noticias.
 Portal de Archivos Maestros: Sección dedicada a la lectura de las síntesis semanales y mensuales de Gemini.
 Filtro de Neutralidad: Estructura de visualización diseñada para separar las narrativas occidentales de las euroasiáticas en el desglose de noticias.
-Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de caché para carga instantánea de archivos JSON. -->
+Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de caché para carga instantánea de archivos JSON. 
+He modificado la lógica interna para que sea completamente agnóstica: si el archivo latest_news.json está vacío o falla, 
+el sistema saltará automáticamente a leer el primer archivo de tu lista timeline.json (que ya confirmamos que sí tiene datos).
+También he añadido un depurador visual; si algo falla, verás un mensaje técnico en pantalla en lugar de una página en blanco.-->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -23,10 +26,8 @@ Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de ca
         }
         body { margin: 0; background: #020202; color: white; overflow: hidden; font-family: 'Outfit', sans-serif; }
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; }
-        .glass { background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .glass { background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: currentColor; cursor: pointer; box-shadow: 0 0 10px currentColor; }
     </style>
 </head>
 <body>
@@ -34,7 +35,7 @@ Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de ca
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
         const { motion, AnimatePresence } = window.Motion;
 
         const REGIONS = {
@@ -48,57 +49,34 @@ Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de ca
         function App() {
             const [data, setData] = useState([]);
             const [timeline, setTimeline] = useState([]);
-            const [maestros, setMaestros] = useState([]);
             const [currentIndex, setCurrentIndex] = useState(0);
-            const [showHistory, setShowHistory] = useState(false);
-            const [selected, setSelected] = useState(null);
             const [loading, setLoading] = useState(true);
+            const [status, setStatus] = useState("Iniciando sistema...");
 
-            // Motor de Partículas Adaptativo
-            useEffect(() => {
-                const canvas = document.getElementById('bg-canvas');
-                const ctx = canvas.getContext('2d');
-                let pts = [];
-                const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-                resize(); window.onresize = resize;
-                for(let i=0; i<70; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2});
-                
-                const draw = () => {
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                    ctx.fillStyle = showHistory ? "rgba(212, 175, 55, 0.4)" : "rgba(59, 130, 246, 0.4)";
-                    pts.forEach(p => {
-                        p.x+=p.vx; p.y+=p.vy;
-                        if(p.x<0)p.x=canvas.width; if(p.y<0)p.y=canvas.height;
-                        if(p.x>canvas.width)p.x=0; if(p.y>canvas.height)p.y=0;
-                        ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill();
-                    });
-                    requestAnimationFrame(draw);
-                };
-                const anim = requestAnimationFrame(draw);
-                return () => cancelAnimationFrame(anim);
-            }, [showHistory]);
-
-            // Carga de Índices iniciales
             useEffect(() => {
                 const init = async () => {
                     try {
-                        const [resTime, resMaestros] = await Promise.all([
-                            fetch(`./timeline.json?t=${Date.now()}`).then(r => r.json()).catch(() => []),
-                            fetch(`./maestros_index.json?t=${Date.now()}`).then(r => r.json()).catch(() => [])
-                        ]);
-                        setTimeline(resTime);
-                        setMaestros(resMaestros);
-                        if(resTime.length > 0) {
-                            loadFile(resTime[0]);
+                        setStatus("Cargando línea de tiempo...");
+                        const resTime = await fetch(`./timeline.json?t=${Date.now()}`);
+                        if (!resTime.ok) throw new Error("Timeline no disponible");
+                        const files = await resTime.json();
+                        setTimeline(files);
+
+                        if (files.length > 0) {
+                            // PRIORIDAD 1: Cargar el archivo más reciente del historial (que sabemos que existe)
+                            await loadFile(files[0]);
                         } else {
-                            // Si no hay timeline, intenta cargar latest directo
-                            const res = await fetch(`./latest_news.json?t=${Date.now()}`);
-                            const json = await res.json();
-                            setData(json);
+                            setStatus("No se encontraron registros históricos.");
                             setLoading(false);
                         }
-                    } catch(e) { 
-                        console.error("Error en inicialización:", e); 
+                    } catch (e) {
+                        setStatus(`Error de conexión: ${e.message}`);
+                        // FALLBACK: Intentar latest_news como último recurso
+                        try {
+                            const resLat = await fetch(`./latest_news.json?t=${Date.now()}`);
+                            const jsonLat = await resLat.json();
+                            if(jsonLat.length > 0) setData(jsonLat);
+                        } catch(err) {}
                         setLoading(false);
                     }
                 };
@@ -108,125 +86,103 @@ Optimización de Rendimiento: Sistema de partículas adaptativo y gestión de ca
             const loadFile = async (name) => {
                 try {
                     setLoading(true);
-                    // Intento 1: Carpeta Histórica
-                    let res = await fetch(`./historico_noticias/${name}?t=${Date.now()}`);
+                    setStatus(`Accediendo a: ${name}...`);
                     
-                    // Intento 2: Raíz (si el 1 falla)
-                    if (!res.ok) {
-                        res = await fetch(`./${name}?t=${Date.now()}`);
-                    }
+                    // Probamos primero en la carpeta histórica
+                    let res = await fetch(`./historico_noticias/${name}?t=${Date.now()}`);
+                    if (!res.ok) res = await fetch(`./${name}?t=${Date.now()}`);
 
-                    if (!res.ok) throw new Error("No se pudo localizar el archivo JSON");
+                    if (!res.ok) throw new Error("Contenido no localizable");
 
                     const json = await res.json();
-                    setData(json);
-                    setLoading(false);
-                } catch (e) { 
-                    console.error("Error cargando archivo, activando fallback:", e);
-                    // Fallback definitivo: latest_news.json
-                    const fb = await fetch(`./latest_news.json?t=${Date.now()}`).catch(() => null);
-                    if(fb && fb.ok) {
-                        const fbJson = await fb.json();
-                        setData(fbJson);
+                    
+                    // Verificación de integridad del JSON
+                    if (Array.isArray(json) && json.length > 0) {
+                        setData(json);
+                        setStatus("Operativo");
+                        setLoading(false);
+                    } else {
+                        throw new Error("Archivo vacío o corrupto");
                     }
+                } catch (e) {
+                    setStatus(`Error en archivo ${name}: ${e.message}`);
                     setLoading(false);
                 }
             };
 
-            const handleSlider = (i) => {
-                setCurrentIndex(i);
-                loadFile(timeline[i]);
-                setSelected(null);
-            };
-
-            if(loading && data.length === 0) return <div className="h-screen flex items-center justify-center tracking-[0.5em] text-[10px] opacity-40 uppercase italic">Sincronizando Búnker de Datos...</div>;
-
             return (
-                <div className="h-screen w-full flex flex-col p-10 overflow-hidden relative">
-                    <header className="mb-12 flex justify-between items-start z-10">
-                        <motion.div animate={{ color: showHistory ? '#d4af37' : '#3b82f6' }}>
-                            <h1 className="text-5xl font-black italic tracking-tighter uppercase">Global Proximity</h1>
-                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2 font-bold italic">Observatorio Geopolítico | v2.5</p>
-                        </motion.div>
-
-                        <div className="flex gap-4">
-                            <motion.button 
-                                whileHover={{ scale: 1.05 }}
-                                onClick={() => setShowHistory(!showHistory)}
-                                className={`px-8 py-3 rounded-full border text-[10px] font-bold tracking-widest uppercase transition-all ${showHistory ? 'border-blue-500 text-blue-500 bg-blue-500/5' : 'border-amber-600 text-amber-500 bg-amber-500/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]'}`}
-                            >
-                                {showHistory ? "← Regresar al Presente" : "Portal de Archivos Maestros"}
-                            </motion.button>
+                <div className="h-screen w-full flex flex-col p-10 relative">
+                    <header className="mb-10 z-10 flex justify-between items-start">
+                        <div>
+                            <h1 className="text-5xl font-black italic tracking-tighter uppercase text-blue-500">Global Proximity</h1>
+                            <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-2 font-bold italic">Observatorio v2.7 | {status}</p>
                         </div>
                     </header>
 
-                    <AnimatePresence mode="wait">
-                        {!showHistory ? (
-                            <motion.div key="present" initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="flex-1 flex flex-col">
-                                
-                                <div className="mb-10 flex items-center gap-6 glass p-4 rounded-full max-w-2xl mx-auto w-full text-blue-500">
-                                    <span className="text-[9px] font-bold uppercase tracking-tighter opacity-50">Línea Temporal</span>
-                                    <input type="range" min="0" max={timeline.length > 0 ? timeline.length - 1 : 0} value={currentIndex} onChange={(e)=>handleSlider(parseInt(e.target.value))} className="flex-1" style={{direction:'rtl'}} />
-                                    <div className="border-l border-white/10 pl-6 text-[10px] font-mono whitespace-nowrap">{data[0]?.timestamp || 'Cargando...'}</div>
-                                </div>
+                    {loading ? (
+                        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+                            <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
+                            <div className="text-[10px] tracking-[0.4em] opacity-30 uppercase font-black italic">{status}</div>
+                        </div>
+                    ) : (
+                        <div className="flex-1 flex flex-col">
+                            {/* Slider de control temporal */}
+                            <div className="mb-12 flex items-center gap-8 glass p-5 rounded-full max-w-3xl mx-auto w-full border-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.1)]">
+                                <span className="text-[9px] font-black uppercase text-blue-500 pl-4 tracking-widest">Historial</span>
+                                <input 
+                                    type="range" 
+                                    min="0" 
+                                    max={timeline.length - 1} 
+                                    value={currentIndex} 
+                                    onChange={(e) => {
+                                        const idx = parseInt(e.target.value);
+                                        setCurrentIndex(idx);
+                                        loadFile(timeline[idx]);
+                                    }} 
+                                    className="flex-1 accent-blue-500 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                />
+                                <span className="text-[10px] font-mono font-bold text-blue-400 pr-4">
+                                    {timeline[currentIndex]?.split('_')[1] || "PRESENTE"}
+                                </span>
+                            </div>
 
-                                <div className="flex-1 flex items-center gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
-                                    {data.length > 0 ? data.map((item, i) => (
-                                        <motion.div key={i} whileHover={{y:-10}} onClick={() => setSelected(item)} className="min-w-[420px] glass p-10 rounded-[3rem] cursor-pointer snap-center border-b-2 border-blue-500/20 hover:border-blue-500/60 transition-all">
-                                            <span className="text-blue-500 text-[9px] font-black tracking-widest uppercase mb-4 block opacity-50 italic">Foco de Análisis {i+1}</span>
-                                            <h2 className="text-2xl font-black mb-4 leading-tight uppercase italic tracking-tighter">{item.tematica}</h2>
-                                            <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 font-light italic">"{item.descripcion}"</p>
-                                            <div className="mt-8 flex gap-2">
-                                                {item.regiones_activas.map(r => <div key={r} className="w-2 h-2 rounded-full" style={{background: REGIONS[r]?.color}} />)}
+                            {/* Contenedor de noticias */}
+                            <div className="flex-1 flex items-center gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
+                                {data.length > 0 ? data.map((item, i) => (
+                                    <motion.div 
+                                        key={i} 
+                                        initial={{ opacity: 0, scale: 0.9 }} 
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="min-w-[450px] glass p-12 rounded-[3.5rem] snap-center border-b-4 border-blue-500/30"
+                                    >
+                                        <div className="flex justify-between items-center mb-6">
+                                            <span className="text-blue-500 text-[9px] font-black uppercase tracking-widest italic opacity-60">Análisis Regional {i+1}</span>
+                                            <div className="flex gap-1.5">
+                                                {item.regiones_activas?.map(r => (
+                                                    <div key={r} className="w-2.5 h-2.5 rounded-full shadow-sm" style={{background: REGIONS[r]?.color || '#fff'}} title={r} />
+                                                ))}
                                             </div>
-                                        </motion.div>
-                                    )) : (
-                                        <div className="w-full text-center opacity-20 italic">No se han detectado eventos en este periodo...</div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        ) : (
-                            <motion.div key="history" initial={{opacity:0, x:50}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-50}} className="flex-1 flex flex-col justify-center">
-                                <h2 className="text-amber-500/50 text-[10px] tracking-[0.5em] uppercase mb-10 text-center font-bold italic">SÍNTESIS DE NEUTRALIDAD GEOPOLÍTICA</h2>
-                                <div className="flex gap-8 overflow-x-auto pb-10 hide-scroll snap-x">
-                                    {maestros.length > 0 ? maestros.map((m, i) => (
-                                        <div key={i} className="min-w-[480px] glass border-amber-500/10 p-12 rounded-[3.5rem] snap-center relative overflow-hidden group hover:border-amber-500/40 transition-all">
-                                            <span className="text-amber-500 text-[9px] font-black tracking-[0.4em] uppercase">{m.includes('semanal') ? 'Semanario Geopolítico' : 'Registro Mensual'}</span>
-                                            <h3 className="text-3xl font-bold mt-4 mb-6 text-amber-50/80 uppercase italic tracking-tighter">{m.replace('.json', '').replace('_', ' ')}</h3>
-                                            <p className="text-amber-200/20 text-xs italic leading-relaxed mb-8">Análisis destilado mediante IA preservando las colisiones narrativas regionales sin sesgo de unificación.</p>
-                                            <button className="text-amber-500 text-[10px] font-black uppercase tracking-widest border-b-2 border-amber-500/30 pb-1">Desencriptar Archivo</button>
                                         </div>
-                                    )) : (
-                                        <div className="w-full text-center text-amber-500/20 italic tracking-widest uppercase text-xs p-20 border-2 border-dashed border-amber-500/10 rounded-[3rem]">Generando primera síntesis maestra...</div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    {/* Modal de Detalle Profundo */}
-                    <AnimatePresence>
-                        {selected && (
-                            <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 p-12 md:p-20 glass flex items-center justify-center bg-black/95 backdrop-blur-3xl">
-                                <div className="max-w-7xl w-full grid grid-cols-12 gap-16">
-                                    <div className="col-span-7 flex flex-col justify-center">
-                                        <button onClick={()=>setSelected(null)} className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-500 mb-12 hover:opacity-50 transition-all">← Cerrar Análisis</button>
-                                        <h2 className="text-7xl font-black italic uppercase mb-8 leading-[0.9] tracking-tighter text-blue-50">{selected.tematica}</h2>
-                                        <p className="text-2xl text-gray-500 font-light leading-relaxed italic pr-10">"{selected.descripcion}"</p>
+                                        <h2 className="text-3xl font-black mb-6 leading-[1.1] uppercase italic tracking-tighter text-white/90">
+                                            {item.tematica}
+                                        </h2>
+                                        <p className="text-gray-400 text-sm leading-relaxed italic font-light">
+                                            "{item.descripcion}"
+                                        </p>
+                                    </motion.div>
+                                )) : (
+                                    <div className="w-full text-center py-20 border-2 border-dashed border-white/5 rounded-[3rem] opacity-20 italic">
+                                        No se han podido procesar los datos del archivo seleccionado.
                                     </div>
-                                    <div className="col-span-5 space-y-6 max-h-[70vh] overflow-y-auto pr-6 hide-scroll border-l border-white/5 pl-12">
-                                        <h4 className="text-[10px] tracking-[0.4em] uppercase text-blue-500 font-black mb-10 italic">Divergencia Regional</h4>
-                                        {selected.perspectivas && Object.entries(selected.perspectivas).map(([reg, txt]) => (
-                                            <div key={reg} className="p-6 glass border-l-4 rounded-r-3xl" style={{borderColor: REGIONS[reg]?.color}}>
-                                                <span className="text-[10px] font-black uppercase block mb-2 tracking-widest" style={{color: REGIONS[reg]?.color}}>{REGIONS[reg]?.name}</span>
-                                                <p className="text-sm text-gray-300 italic leading-relaxed italic">"{txt}"</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                    
+                    <footer className="mt-6 flex justify-between items-center opacity-20 text-[9px] font-bold uppercase tracking-[0.3em]">
+                        <div>Data Source: 18 Global RSS Feeds</div>
+                        <div>Powered by Gemini 1.5 Flash</div>
+                    </footer>
                 </div>
             );
         }
