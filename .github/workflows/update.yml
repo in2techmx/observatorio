@@ -32,18 +32,19 @@ jobs:
         PYTHONIOENCODING: 'utf-8'   # <--- CRÍTICO: Soporte para caracteres globales
       run: python collector.py
 
-    - name: Publicar Inteligencia (Estrategia Rebase)
+    - name: Publicar Inteligencia (Modo Fuerza)
       run: |
-        # 1. Configurar identidad del Bot
+        # 1. Identidad
         git config --global user.name 'Proximity Bot'
         git config --global user.email 'bot@proximity.ai'
         
-        # 2. Guardar cambios del Bot en local
+        # 2. Guardar lo que acabamos de generar
         git add .
         git commit -m "🧠 Cluster Update: $(date)" || echo "Nada que actualizar"
 
-        # 3. Descargar cambios remotos y fusionar (Evita error 'rejected')
-        git pull origin main --rebase
+        # 3. FUSIONAR CON ESTRATEGIA "THEIRS" (LO NUESTRO GANA)
+        # Esto le dice a Git: "Si hay conflicto, borra lo del servidor y usa lo mío"
+        git pull origin main --rebase -X theirs
 
-        # 4. Subir todo a GitHub
+        # 4. Subir
         git push origin main
