@@ -6,32 +6,16 @@
       "color": "#ef4444",
       "particulas": [
         {
-          "id": "922a538b",
-          "titulo": "Corte Federal de Apelaciones Declara Inconstitucional la Prohibición de Portar Armas a la Vista en California",
-          "link": "https://www.nytimes.com/2026/01/02/us/ninth-circuit-california-gun-law.html",
-          "bloque": "USA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
           "id": "f9151bb8",
-          "titulo": "Dos Miembros del Servicio Naval Acusados de Contraer Matrimonios Falsos con Ciudadanos Chinos",
+          "titulo": "Dos Miembros del Servicio de la Armada Acusados de Contraer Matrimonios Falsos con Ciudadanos Chinos",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/navy-sham-marriage-chinese-nationals.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "c7e59bc3",
-          "titulo": "Excursionista Muere en Presunto Ataque de Puma, el Primero en Colorado en Décadas",
-          "link": "https://www.nytimes.com/2026/01/02/us/mountain-lion-attack-hiker-dead-colorado.html",
-          "bloque": "USA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
           "id": "bd68202d",
-          "titulo": "La Guardia Costera Suspende la Búsqueda de Sobrevivientes del Último Choque de Embarcaciones",
+          "titulo": "Guardia Costera Suspende la Búsqueda de Sobrevivientes de los Últimos Choques de Embarcaciones",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/coast-guard-survivors-boat-strikes.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -39,7 +23,7 @@
         },
         {
           "id": "8c225e6a",
-          "titulo": "Se Ordena que el Sospechoso de la Bomba Casera de D.C. Permanezca en la Cárcel Hasta el Juicio",
+          "titulo": "Sospechoso de Bomba Casera en D.C. Recibe la Orden de Permanecer en la Cárcel Hasta el Juicio",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/dc-pipe-bomb-suspect-jail.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -62,73 +46,89 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "9aa86fb3",
+          "titulo": "La CI.A. Dice que Ucrania No Atacó la Casa de Putin en un Ataque con Drones, Contradiciendo las Afirmaciones de Rusia",
+          "link": "https://www.nytimes.com/2025/12/31/us/politics/ukraine-putin-home-drone-strike-cia.html",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "94c2048c",
-          "titulo": "La Guardia Costera Busca Sobrevivientes Después de Más Choques de Embarcaciones",
+          "titulo": "Guardia Costera Busca Sobrevivientes Después de Más Choques de Embarcaciones",
           "link": "https://www.nytimes.com/2025/12/31/us/politics/coast-guard-survivors-boat-strikes.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "9548c91d",
-          "titulo": "Las fuerzas rusas repelen dos ataques de avance ucranianos cerca de Kupyansk durante el último día",
-          "link": "https://tass.com/defense/2067889",
+          "id": "b42bd9a2",
+          "titulo": "Un miembro de la Guardia Nacional Aérea de Tennessee solicitó ser un sicario en línea, dice el FBI. Era un sitio web de parodia y ahora enfrenta cargos",
+          "link": "https://www.cnn.com/2023/04/17/us/tennessee-air-national-guardsman-hitman-online-application/index.html",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "3d63465d",
+          "titulo": "Ucrania y Rusia analizarán los memorandos intercambiados en las conversaciones - Ministerio de Relaciones Exteriores",
+          "link": "https://tass.com/politics/1968329",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "b3729ad9",
-          "titulo": "Las fuerzas de Kiev perdieron 180 militares durante el último día en la zona de responsabilidad del Grupo de Batalla Norte",
-          "link": "https://tass.com/defense/2067887",
+          "id": "681d0ad5",
+          "titulo": "Rusia y Ucrania acordarán la fecha de una nueva ronda de conversaciones después de estudiar los memorandos",
+          "link": "https://tass.com/politics/1968333",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "3e3c41cb",
-          "titulo": "Las fuerzas de Kiev perdieron más de 430 militares en la zona de responsabilidad del Grupo de Batalla Centro",
-          "link": "https://tass.com/defense/2067885",
+          "id": "9e288930",
+          "titulo": "La frecuencia de las reuniones sobre las conversaciones de Ucrania no puede estandarizarse estrictamente - Kremlin",
+          "link": "https://tass.com/politics/1968321",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "cfd93756",
-          "titulo": "El Grupo de Batalla Este destruyó 8 centros de control de UAV de las fuerzas de Kiev en un día",
-          "link": "https://tass.com/defense/2067883",
+          "id": "b1e04cd7",
+          "titulo": "El Primer Ministro pakistaní pide a Putin que ayude a resolver el conflicto con la India - asesor",
+          "link": "https://tass.com/world/1968319",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "4bb31df8",
-          "titulo": "Las fuerzas ucranianas perdieron hasta 200 militares debido a las acciones del Grupo de Batalla Sur",
-          "link": "https://tass.com/defense/2067881",
+          "id": "6579209a",
+          "titulo": "Rusia tomará todas las medidas para resolver los crímenes relacionados con los ataques a aeródromos - Kremlin",
+          "link": "https://tass.com/politics/1968317",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "2ef0fa8a",
-          "titulo": "Ladrones en Alemania robaron objetos de valor por valor de 100 millones de euros del banco Sparkasse - Bild",
-          "link": "https://tass.com/emergencies/2067879",
+          "id": "c2b94358",
+          "titulo": "Rusia toma medidas derivadas de los ataques de Kiev contra instalaciones pacíficas - Kremlin",
+          "link": "https://tass.com/politics/1968289",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "41d7adef",
-          "titulo": "Helicóptero se estrella en las montañas de Arizona - TV",
-          "link": "https://tass.com/emergencies/2067877",
+          "id": "d83512cb",
+          "titulo": "El puente de Crimea no se vio afectado por el ataque de Kiev, dice el portavoz del Kremlin",
+          "link": "https://tass.com/politics/1968275",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "a27f83e3",
-          "titulo": "Los ataques terroristas de Ucrania contra Rusia podrían verse como un 'suicidio' para Kiev - Ritter",
-          "link": "https://tass.com/world/2067873",
+          "id": "66516791",
+          "titulo": "La capacidad de Polonia para entregar armas a Ucrania está muy limitada - periódico",
+          "link": "https://tass.com/world/1968271",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -143,8 +143,16 @@
         },
         {
           "id": "1673c8c0",
-          "titulo": "Por qué resurge la conversación sobre una opción nuclear japonesa, y por qué alarma a los críticos",
+          "titulo": "¿Por qué resurge la conversación sobre una opción nuclear japonesa y por qué alarma a los críticos?",
           "link": "https://www.scmp.com/week-asia/politics/article/3338570/why-talk-japanese-nuclear-option-resurfacing-and-why-it-alarms-critics?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "7f30747f",
+          "titulo": "Trump ordena a la empresa HieFo, vinculada a China, que se deshaga de los activos de chips estadounidenses, citando la seguridad nacional",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -159,7 +167,7 @@
         },
         {
           "id": "1a919ffc",
-          "titulo": "Cuatro heridos en explosión relacionada con terrorismo en Manhattan",
+          "titulo": "Cuatro heridos en una explosión relacionada con el terrorismo en Manhattan",
           "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2eb0e8a3108bc8c67218fb.html",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -167,7 +175,7 @@
         },
         {
           "id": "f5cfe839",
-          "titulo": "Cuatro heridos en explosión en la ciudad de Nueva York, sospechoso capturado",
+          "titulo": "Cuatro heridos en una explosión en la ciudad de Nueva York, sospechoso capturado",
           "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e884fa3103f77d55ac367.html",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -183,7 +191,7 @@
         },
         {
           "id": "13545c3c",
-          "titulo": "Joven asesinado en un aparente tiroteo selectivo cerca de una estación de policía en el norte interior de Melbourne",
+          "titulo": "Joven asesinado en un aparente tiroteo selectivo cerca de la estación de policía en el norte interior de Melbourne",
           "link": "https://www.theguardian.com/australia-news/2026/jan/03/man-dies-after-shooting-in-melbournes-inner-north-ntwnfb",
           "bloque": "EUROPE",
           "proximidad": 50.0,
@@ -193,14 +201,6 @@
           "id": "389f8725",
           "titulo": "La policía portará rifles de largo alcance en la prueba final de Ashes en Sydney en medio de una mayor seguridad después del ataque de Bondi",
           "link": "https://www.theguardian.com/australia-news/2026/jan/03/police-to-carry-long-arm-rifles-final-ashes-test-sydney-heightened-security-after-bondi-attack-ntwnfb",
-          "bloque": "EUROPE",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "f055d84a",
-          "titulo": "Rusia logra las mayores ganancias territoriales en Ucrania desde la invasión de 2022",
-          "link": "https://www.france24.com/en/live-news/20260102-russia-scores-highest-ukraine-gains-since-first-year-of-war",
           "bloque": "EUROPE",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -214,7 +214,7 @@
       "particulas": [
         {
           "id": "edebc921",
-          "titulo": "El Super PAC de Trump Recaudó Más de $100 Millones en los Últimos Meses",
+          "titulo": "El Súper PAC de Trump Recaudó Más de $100 Millones en los Últimos Meses",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-super-pac-maga-inc-fundraising.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -222,7 +222,7 @@
         },
         {
           "id": "2895087d",
-          "titulo": "McCarthy hace un llamado a los republicanos para que respalden el plan del techo de la deuda",
+          "titulo": "McCarthy hace una súplica a los republicanos para que respalden el plan del techo de deuda",
           "link": "https://www.cnn.com/2023/04/18/politics/mccarthy-debt-limit-plan/index.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -245,16 +245,24 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "e11468bb",
-          "titulo": "La riqueza de los rusos más ricos aumenta en casi $24 mil millones en 2025 - Bloomberg",
-          "link": "https://tass.com/economy/2067845",
+          "id": "caf5cbc3",
+          "titulo": "Precios del diamante mixtos en mayo - agencia de la industria",
+          "link": "https://tass.com/economy/1968279",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "d6daef1d",
+          "titulo": "La Bolsa de Moscú lanza operaciones con futuros de Bitcoin para inversores cualificados",
+          "link": "https://tass.com/economy/1968239",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
           "id": "23f946c6",
-          "titulo": "La economía rusa en 2026: más guerra, crecimiento más lento e impuestos más altos",
+          "titulo": "La economía de Rusia en 2026: Más guerra, crecimiento más lento e impuestos más altos",
           "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
@@ -262,7 +270,7 @@
         },
         {
           "id": "d0ad3c49",
-          "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta después de la incautación estatal",
+          "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta tras la confiscación estatal",
           "link": "https://www.themoscowtimes.com/2025/12/30/moscows-domodedovo-airport-to-go-up-for-auction-after-state-seizure-a91583",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
@@ -277,8 +285,16 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "c3bb8448",
+          "titulo": "La tasa de ocupación en el parque tecnológico de Hong Kong alcanzará el 90% en el primer trimestre de 2026",
+          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338598/occupancy-rate-hong-kong-tech-park-hit-90-first-quarter-2026?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "7384f493",
-          "titulo": "Argentina apunta a los dólares estadounidenses acaparados debajo de los colchones, alivia las reglas de evasión fiscal",
+          "titulo": "Argentina apunta a los dólares estadounidenses guardados debajo de los colchones y facilita las normas de evasión fiscal",
           "link": "https://www.scmp.com/news/world/americas/article/3338587/argentina-targets-us-dollars-hoarded-under-mattresses-eases-tax-evasion-rules?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -286,16 +302,8 @@
         },
         {
           "id": "199e9218",
-          "titulo": "¿Justo o sucio? A Malasia le cuesta digerir su pacto comercial con Estados Unidos",
+          "titulo": "¿Justo o injusto? A Malasia le cuesta digerir su pacto comercial con EE. UU.",
           "link": "https://www.scmp.com/week-asia/economics/article/3338562/fair-or-foul-malaysia-struggles-stomach-its-us-trade-pact?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "7f30747f",
-          "titulo": "Trump ordena a la firma HieFo, vinculada a China, que se deshaga de los activos de chips de EE. UU., citando la seguridad nacional",
-          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -318,7 +326,7 @@
         },
         {
           "id": "c96f82af",
-          "titulo": "La china BYD supera a Tesla como el principal vendedor mundial de vehículos eléctricos",
+          "titulo": "La china BYD supera a Tesla como el principal vendedor de vehículos eléctricos del mundo",
           "link": "https://www.dw.com/en/china-s-byd-overtakes-tesla-as-world-s-top-ev-seller/a-75370504?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
           "proximidad": 50.0,
@@ -342,7 +350,7 @@
         },
         {
           "id": "e77e2e67",
-          "titulo": "En Madrid, los inversores observan a los inquilinos que todavía pagan sólo 7 euros al mes",
+          "titulo": "En Madrid, los inversores echan el ojo a inquilinos que todavía pagan solo 7 euros al mes",
           "link": "https://elpais.com/elpais/2020/01/24/inenglish/1579884770_570150.html#?ref=rss&format=simple&link=link",
           "bloque": "EUROPE",
           "proximidad": 50.0,
@@ -352,14 +360,6 @@
           "id": "2d7633b9",
           "titulo": "Resumen de noticias del Gobierno de Trump y los aranceles de EE.UU. a México, 6 de marzo",
           "link": "https://cnnespanol.cnn.com/2025/03/06/noticias-gobierno-trump-aranceles-eeuu-mexico-trax/",
-          "bloque": "LATAM",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "7b09790d",
-          "titulo": "Resumen de noticias del discurso de Trump ante el Congreso y reacciones a los aranceles",
-          "link": "https://cnnespanol.cnn.com/2025/03/04/trump-noticias-discurso-congreso-aranceles-trax/",
           "bloque": "LATAM",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -390,7 +390,7 @@
         },
         {
           "id": "41b3a524",
-          "titulo": "Jeff Bezos suelta una bomba de verdad: los CEO mienten sobre esto - lo que dijo",
+          "titulo": "Jeff Bezos suelta una bomba de verdad: los CEO mienten sobre esta única cosa, lo que dijo",
           "link": "https://timesofindia.indiatimes.com/technology/tech-news/amazon-founder-jeff-bezos-the-no-1-thing-that-has-made-us-successful-by-far-is-/articleshow/126316726.cms",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -398,7 +398,7 @@
         },
         {
           "id": "46cc8e89",
-          "titulo": "¡15 minutos para el brillo, 10 para la entrega! Cuidado de la piel y la belleza avanzan a toda velocidad en q-comm",
+          "titulo": "¡15 minutos para el brillo, 10 para la entrega! El cuidado de la piel y la belleza se adelantan en el comercio rápido",
           "link": "https://timesofindia.indiatimes.com/business/india-business/15-minutes-for-glow-10-for-delivery-skincare-and-beauty-race-ahead-on-quick-commerce-sales-jump-160/articleshow/126316687.cms",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -420,24 +420,48 @@
       "color": "#10b981",
       "particulas": [
         {
-          "id": "8496f8eb",
-          "titulo": "Petrolero que Huye de la Guardia Costera Ahora Aparece en la Base de Datos de Buques Rusos",
-          "link": "https://www.nytimes.com/2025/12/31/us/politics/russia-oil-tanker-venezuela.html",
+          "id": "240695fe",
+          "titulo": "Un Año de Incendios e Inundaciones en el Sur de California",
+          "link": "https://www.nytimes.com/2026/01/01/us/los-angeles-fires-floods.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "29fdc745",
+          "titulo": "Francia y Bélgica se oponen a la prohibición de las importaciones de gas de Rusia a la UE - Politico",
+          "link": "https://tass.com/economy/1968311",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "71ba4a86",
+          "titulo": "El reabastecimiento de las reservas de gas de Europa es más lento de lo habitual, la situación se vuelve tensa",
+          "link": "https://tass.com/economy/1968299",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "c94a9bec",
-          "titulo": "China promete aumentar la producción de energía de oeste a este a medida que la IA y la fabricación de alta tecnología impulsan la demanda",
+          "titulo": "China se compromete a aumentar la producción de energía de oeste a este a medida que la IA y la fabricación de alta tecnología impulsan la demanda",
           "link": "https://www.scmp.com/economy/china-economy/article/3338522/china-vows-ramp-west-east-power-output-ai-hi-tech-manufacturing-fuel-demand?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "92b3d22c",
+          "titulo": "El trabajador desaparecido podría estar atrapado a 1 km bajo tierra después de que una mina de Queensland colapsara",
+          "link": "https://www.theguardian.com/australia-news/2026/jan/03/missing-worker-could-be-trapped-1km-underground-after-queensland-mine-collapses",
+          "bloque": "EUROPE",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "27303fe8",
-          "titulo": "Las colinas de Aravalli se estremecen con el sonido de la maquinaria",
+          "titulo": "Las colinas de Aravalli se sacuden con el sonido de la maquinaria",
           "link": "https://www.thehindu.com/sci-tech/energy-and-environment/the-aravalli-hills-are-shaken-with-the-sound-of-machinery/article70464970.ece",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -453,32 +477,8 @@
         },
         {
           "id": "1c582762",
-          "titulo": "El imperativo minero de África: Abordar el riesgo climático y la digitalización en 2026",
+          "titulo": "El imperativo minero de África: abordando el riesgo climático y la digitalización en 2026",
           "link": "https://africa.com/africas-mining-imperative-tackling-climate-risk-and-digitalisation-in-2026/",
-          "bloque": "AFRICA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "f25e33ee",
-          "titulo": "Salvando al albatros amenazado de Sudáfrica de las líneas de pesca letales",
-          "link": "https://www.bbc.com/news/articles/cwywv4ndwqxo?at_medium=RSS&at_campaign=rss",
-          "bloque": "AFRICA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "e3798fb4",
-          "titulo": "Investigadores dicen que se están vendiendo grandes tiburones blancos en los mercados de pescado del norte de África",
-          "link": "https://www.bbc.com/news/articles/c9qe9wvq534o?at_medium=RSS&at_campaign=rss",
-          "bloque": "AFRICA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "95d87b06",
-          "titulo": "Liberia: COP30: un punto de inflexión perdido y una línea trazada para las mujeres defensoras de primera línea",
-          "link": "https://allafrica.com/stories/202601020313.html",
           "bloque": "AFRICA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -500,16 +500,8 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "ea31d5d4",
-          "titulo": "Los costos ambientales y de derechos humanos de las inversiones en energía limpia de China en el extranjero",
-          "link": "https://www.wired.com/story/chinas-clean-energy-investments-abroad-are-a-boon-for-climate-but-human-rights-and-the-environment-are-a-different-story/",
-          "bloque": "GLOBAL",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
           "id": "3f3c65bd",
-          "titulo": "El Glaciar del Juicio Final se acerca cada vez más al colapso irreversible",
+          "titulo": "El glaciar del fin del mundo se acerca cada vez más al colapso irreversible",
           "link": "https://www.wired.com/story/the-doomsday-glacier-is-getting-closer-and-closer-to-irreversible-collapse/",
           "bloque": "GLOBAL",
           "proximidad": 50.0,
@@ -540,7 +532,7 @@
       "particulas": [
         {
           "id": "c35644ff",
-          "titulo": "En el Segundo Año de Trump, el Congreso Considera Cómo Reafirmar Su Poder",
+          "titulo": "En el Segundo Año de Trump, el Congreso Considera Cómo Reafirmar su Poder",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-congress-power-republicans-democrats.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -548,7 +540,7 @@
         },
         {
           "id": "b2332671",
-          "titulo": "Después de Watergate, la Presidencia Fue Domesticada. Trump la Está Liberando.",
+          "titulo": "Después de Watergate, la Presidencia Fue Domada. Trump la Está Desatando.",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/president-trump-powers-watergate.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -563,9 +555,9 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "9aa86fb3",
-          "titulo": "CI.A. Dice que Ucrania No Atacó la Casa de Putin en un Ataque con Drones, Contradiciendo las Afirmaciones de Rusia",
-          "link": "https://www.nytimes.com/2025/12/31/us/politics/ukraine-putin-home-drone-strike-cia.html",
+          "id": "8496f8eb",
+          "titulo": "Petrolero que Huye de la Guardia Costera Ahora Figura en la Base de Datos de Buques Rusos",
+          "link": "https://www.nytimes.com/2025/12/31/us/politics/russia-oil-tanker-venezuela.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -579,6 +571,14 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "551ea0f6",
+          "titulo": "En la Transcripción de la Audiencia, Jack Smith Defiende la Decisión de Acusar a Trump",
+          "link": "https://www.nytimes.com/2025/12/31/us/politics/jack-smith-deposition-house-trump.html",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "8b15f828",
           "titulo": "El Partido Republicano se prepara para bloquear la votación para reemplazar a Feinstein en el Comité Judicial del Senado",
           "link": "https://www.cnn.com/2023/04/18/politics/schumer-senate-feinstein-vote-cardin/index.html",
@@ -587,56 +587,32 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "6664bce1",
-          "titulo": "EE.UU. socava la paz y la estabilidad al vender armas a Taiwán - Embajador de China en Rusia",
-          "link": "https://tass.com/world/2067875",
+          "id": "40211d7b",
+          "titulo": "El alcalde de la ciudad de Nueva York, Zohran Mamdani, jura su cargo en una ceremonia pública",
+          "link": "https://www.washingtonpost.com/nation/2026/01/01/nyc-mayor-zohran-mamdani-sworn-in/",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "41480bcf",
+          "titulo": "El ministerio de defensa de Bielorrusia espera fortalecer significativamente la cooperación con Pakistán",
+          "link": "https://tass.com/world/1968325",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "6ccb5d34",
-          "titulo": "La política de La Haya de apoyar a Kiev conduce a su profunda participación en el conflicto - diplomático",
-          "link": "https://tass.com/politics/2067871",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "830cfdc4",
-          "titulo": "El presidente del parlamento checo podría enfrentarse a la dimisión debido a sus declaraciones críticas sobre Ucrania",
-          "link": "https://tass.com/world/2067867",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "595581c2",
-          "titulo": "La cuestión de Taiwán es una línea roja en las relaciones entre China y Estados Unidos - Embajador chino en Rusia",
-          "link": "https://tass.com/world/2067865",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "b50109b7",
-          "titulo": "Kallas quiere que la UE entre en guerra con Rusia y China - Dmitriev",
-          "link": "https://tass.com/politics/2067861",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "e3ab162c",
-          "titulo": "EE.UU. asignará $500 millones para bases militares en Polonia",
-          "link": "https://tass.com/world/2067853",
+          "id": "acb48587",
+          "titulo": "El diálogo con Rusia es crucial mientras Occidente lo evita - oficial francés retirado",
+          "link": "https://tass.com/world/1968229",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
           "id": "1739546c",
-          "titulo": "Discurso de Año Nuevo a la Nación",
+          "titulo": "Mensaje de Año Nuevo a la Nación",
           "link": "http://en.kremlin.ru/events/president/news/78954",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
@@ -651,8 +627,40 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "1feaf52f",
+          "titulo": "Conversación telefónica con el Presidente de Tayikistán, Emomali Rahmon",
+          "link": "http://en.kremlin.ru/events/president/news/78984",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "621c3552",
+          "titulo": "Conversación telefónica con el Presidente de la República Islámica de Irán, Masoud Pezeshkian",
+          "link": "http://en.kremlin.ru/events/president/news/78948",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "361e4eb0",
+          "titulo": "Reunión con la Viceministra de Defensa, Anna Tsivileva",
+          "link": "http://en.kremlin.ru/events/president/news/78946",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "a053add2",
+          "titulo": "Conversación telefónica con el Presidente de Kazajstán, Kassym-Jomart Tokayev",
+          "link": "http://en.kremlin.ru/events/president/news/78947",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "e2987318",
-          "titulo": "Los separatistas de Yemen anuncian la constitución, los Emiratos Árabes Unidos retiran todas sus tropas",
+          "titulo": "Los separatistas de Yemen anuncian una constitución, los Emiratos Árabes Unidos retiran todas sus tropas",
           "link": "https://www.scmp.com/news/world/middle-east/article/3338592/yemens-separatists-announce-constitution-uae-withdraws-all-its-troops?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -660,7 +668,7 @@
         },
         {
           "id": "eb454224",
-          "titulo": "Lawrence Wong agradece a Trump por la invitación al G20, Singapur y EE. UU. celebran el hito de los 60 años",
+          "titulo": "Lawrence Wong agradece a Trump la invitación al G20, Singapur y EE. UU. cumplen 60 años",
           "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338588/lawrence-wong-thanks-trump-g20-invitation-singapore-us-mark-60th-milestone?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -700,7 +708,7 @@
         },
         {
           "id": "9d0fc214",
-          "titulo": "El equipo nacional galés ayuda con los objetivos del fútbol chino",
+          "titulo": "El equipo nacional galés ayuda con los objetivos de fútbol chino",
           "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e57a1a31095b331af444e.html",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -716,24 +724,8 @@
         },
         {
           "id": "3d27921a",
-          "titulo": "El jefe de la junta de Guinea elegido presidente después del boicot de la oposición",
+          "titulo": "El jefe de la junta de Guinea elegido presidente tras el boicot de la oposición",
           "link": "https://www.theguardian.com/world/2025/dec/31/guinea-junta-chief-mamady-doumbouya-elected-president-after-opposition-boycott",
-          "bloque": "EUROPE",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "d5ebb11e",
-          "titulo": "Las tensiones entre saudíes y emiratíes por el futuro de Yemen llegan a un punto de ebullición",
-          "link": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
-          "bloque": "EUROPE",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "7939506f",
-          "titulo": "Maduro insta a Trump a abandonar la 'beligerancia ilegal' y comenzar 'conversaciones serias'",
-          "link": "https://www.theguardian.com/world/2026/jan/02/venezuela-maduro-open-to-talks-drug-trafficking-maduro",
           "bloque": "EUROPE",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
@@ -755,17 +747,9 @@
         },
         {
           "id": "a47ff44c",
-          "titulo": "Las acciones de la matriz de Google caen por temor a que pueda perder cuota de mercado de búsqueda ante rivales impulsados por la IA",
+          "titulo": "Las acciones de la empresa matriz de Google caen por temor a que pueda perder cuota de mercado de búsqueda frente a rivales impulsados ​​por IA",
           "link": "https://www.cnn.com/2023/04/17/tech/google-ai-search-engine-stock-drop/index.html",
           "bloque": "USA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "c3bb8448",
-          "titulo": "La tasa de ocupación en el parque tecnológico de Hong Kong alcanzará el 90% en el primer trimestre de 2026",
-          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338598/occupancy-rate-hong-kong-tech-park-hit-90-first-quarter-2026?utm_source=rss_feed",
-          "bloque": "CHINA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
@@ -779,7 +763,7 @@
         },
         {
           "id": "c6c609c7",
-          "titulo": "Ahora podemos ver bailar a nuestros propios genes",
+          "titulo": "Ahora podemos ver bailar nuestros propios genes",
           "link": "https://www.scmp.com/opinion/world-opinion/article/3338412/we-can-now-watch-our-own-genes-dance?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -802,8 +786,16 @@
           "sesgo": "Sin Datos Vectoriales"
         },
         {
+          "id": "38e03a69",
+          "titulo": "Hombre arrestado en Muzaffarpur, Bihar, por circular videos falsos generados por IA del Primer Ministro y el Presidente",
+          "link": "https://www.thehindu.com/news/national/bihar/man-arrested-in-bihars-muzaffarpur-for-circulating-ai-generated-fake-videos-of-pm-president/article70466445.ece",
+          "bloque": "INDIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "66d3ce39",
-          "titulo": "'El fin de mí': Eric Schmidt de Google sobre la IA; dice que 55 años de codificación fueron eliminados",
+          "titulo": "'El fin de mí': Eric Schmidt de Google sobre la IA; dice que 55 años de programación desaparecieron",
           "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -819,7 +811,7 @@
         },
         {
           "id": "f34f0d5c",
-          "titulo": "Estas ciudades verán la primera superluna de 2026 elevarse en enero",
+          "titulo": "Estas ciudades verán la primera superluna de 2026 salir en enero",
           "link": "https://www.indiatoday.in/science/story/these-cities-will-see-the-first-supermoon-of-2026-rise-in-january-2845614-2026-01-02?utm_source=rss",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -827,7 +819,7 @@
         },
         {
           "id": "055abb8c",
-          "titulo": "Gaganyaan, PSLV, debut privado de SSLV: Se revelan los grandes planes de Isro para 2026",
+          "titulo": "Gaganyaan, PSLV, debut privado de SSLV: se revelan los grandes planes de Isro para 2026",
           "link": "https://www.indiatoday.in/science/story/isro-2026-space-odyssey-launch-schedule-gaganyaan-vyommitra-robot-electric-propulsion-satellite-india-space-missions-pslv-gslv-nvs-science-news-space-news-isro-news-2845459-2026-01-03?utm_source=rss",
           "bloque": "INDIA",
           "proximidad": 50.0,
@@ -835,7 +827,7 @@
         },
         {
           "id": "dc29ebc1",
-          "titulo": "Contempla la Variedad, el Concepto que Cambió la Forma en que los Matemáticos Ven el Espacio",
+          "titulo": "He aquí el múltiple, el concepto que cambió la forma en que los matemáticos ven el espacio",
           "link": "https://www.wired.com/story/behold-the-manifold-the-concept-that-changed-how-mathematicians-view-space/",
           "bloque": "GLOBAL",
           "proximidad": 50.0,
@@ -843,7 +835,7 @@
         },
         {
           "id": "1a3833b3",
-          "titulo": "¿Podrías usar un bote de remos para caminar por el lecho marino como Jack Sparrow?",
+          "titulo": "¿Podrías usar un bote de remos para caminar por el fondo del mar como Jack Sparrow?",
           "link": "https://www.wired.com/story/using-a-rowboat-to-walk-on-the-seafloor-like-jack-sparrow/",
           "bloque": "GLOBAL",
           "proximidad": 50.0,
@@ -875,7 +867,7 @@
         },
         {
           "id": "be385d82",
-          "titulo": "La nueva empresa de Sam Altman, Merge Labs, se derivará de una organización sin fines de lucro",
+          "titulo": "La nueva empresa cerebral de Sam Altman, Merge Labs, se separará de una organización sin fines de lucro",
           "link": "https://www.wired.com/story/sam-altman-brain-computer-interface-merge-labs-spin-out-nonprofit-forest-neurotech/",
           "bloque": "GLOBAL",
           "proximidad": 50.0,
@@ -883,7 +875,7 @@
         },
         {
           "id": "ba29c20d",
-          "titulo": "India ordena a X de Musk que arregle Grok por contenido de IA 'obsceno'",
+          "titulo": "India ordena a la X de Musk que arregle Grok por contenido de IA 'obsceno'",
           "link": "https://techcrunch.com/2026/01/02/india-orders-musks-x-to-fix-grok-over-obscene-ai-content/",
           "bloque": "GLOBAL",
           "proximidad": 50.0,
@@ -905,8 +897,24 @@
       "color": "#ec4899",
       "particulas": [
         {
+          "id": "922a538b",
+          "titulo": "Corte Federal de Apelaciones Declara Inconstitucional la Prohibición de Portación de Armas a la Vista en California",
+          "link": "https://www.nytimes.com/2026/01/02/us/ninth-circuit-california-gun-law.html",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "c7e59bc3",
+          "titulo": "Excursionista Muere en un Presunto Ataque de Puma, el Primero en Décadas en Colorado",
+          "link": "https://www.nytimes.com/2026/01/02/us/mountain-lion-attack-hiker-dead-colorado.html",
+          "bloque": "USA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
           "id": "be5a6bf8",
-          "titulo": "Toby Morton, Escritor de Comedia, Posee la URL del Trump Kennedy Center",
+          "titulo": "Toby Morton, un Escritor de Comedia, Posee la URL del Centro Kennedy de Trump",
           "link": "https://www.nytimes.com/2026/01/01/us/politics/trump-kennedy-center-website-toby-morton.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -914,23 +922,15 @@
         },
         {
           "id": "241ed162",
-          "titulo": "Amenaza de Suspender la Ayuda para los Centros de Cuidado Infantil de Minnesota Alarma a las Familias",
+          "titulo": "Amenaza de Suspender la Ayuda para los Centros de Cuidado Infantil de Minnesota Sacude a las Familias",
           "link": "https://www.nytimes.com/2026/01/01/us/minnesota-child-care-funding-impact-fraud.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "240695fe",
-          "titulo": "Un Año de Incendios e Inundaciones en el Sur de California",
-          "link": "https://www.nytimes.com/2026/01/01/us/los-angeles-fires-floods.html",
-          "bloque": "USA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
           "id": "df833fdd",
-          "titulo": "El Liderazgo de la Cárcel del Condado de Fulton, Georgia, Renuncia Después de la Muerte de un Recluso y Acusaciones de Condiciones Insalubres",
+          "titulo": "El liderazgo de la cárcel del condado de Fulton, Georgia, renuncia tras la muerte de un preso y acusaciones de condiciones insalubres",
           "link": "https://www.cnn.com/2023/04/18/us/fulton-county-jail-leadership-resignations-lashawn-thompson-death/index.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -938,7 +938,7 @@
         },
         {
           "id": "24d1404c",
-          "titulo": "Estuvo libre durante 2 años. Ahora Crosley Green está de vuelta en prisión por un delito que dice que no cometió",
+          "titulo": "Estuvo libre durante 2 años. Ahora Crosley Green está de vuelta en prisión por un crimen que dice no haber cometido.",
           "link": "https://www.cnn.com/2023/04/17/us/crosley-green-prison-return/index.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -946,7 +946,7 @@
         },
         {
           "id": "fbe4b06b",
-          "titulo": "La familia de la víctima y los sobrevivientes del tiroteo masivo de FedEx en Indianápolis presentan una demanda contra el fabricante y los distribuidores de la revista de armas",
+          "titulo": "Familia de la víctima y sobrevivientes del tiroteo masivo de FedEx en Indianápolis presentan una demanda contra el fabricante y los distribuidores de revistas de armas",
           "link": "https://www.cnn.com/2023/04/16/us/lawsuit-indianapolis-fedex-mass-shooting/index.html",
           "bloque": "USA",
           "proximidad": 50.0,
@@ -954,17 +954,33 @@
         },
         {
           "id": "5bb98c5a",
-          "titulo": "Los médicos antiaborto instan a la Corte Suprema a mantener las restricciones de la mifepristona",
+          "titulo": "Los médicos antiaborto instan a la Corte Suprema a mantener las restricciones a la mifepristona",
           "link": "https://www.cnn.com/2023/04/18/politics/abortion-supreme-court-mifepristone-restrictions-filing/index.html",
           "bloque": "USA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "4cced128",
-          "titulo": "La Corte Suprema parece comprensiva con el trabajador postal que no trabajó los domingos en una disputa sobre adaptaciones religiosas",
-          "link": "https://www.cnn.com/2023/04/18/politics/groff-dejoy-supreme-court-religious-liberty/index.html",
-          "bloque": "USA",
+          "id": "877cd9cc",
+          "titulo": "La postura de Putin sobre la moratoria de la pena de muerte se mantiene firme - portavoz del Kremlin",
+          "link": "https://tass.com/politics/1968307",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "3095eba0",
+          "titulo": "Japón reporta la tasa de natalidad más baja en 2024, revela el ministerio",
+          "link": "https://tass.com/society/1968297",
+          "bloque": "RUSSIA",
+          "proximidad": 50.0,
+          "sesgo": "Sin Datos Vectoriales"
+        },
+        {
+          "id": "1a4dbcdd",
+          "titulo": "Más de 20 niños regresan a la República Popular de Lugansk desde Ucrania en dos años",
+          "link": "https://tass.com/politics/1968233",
+          "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
@@ -978,7 +994,7 @@
         },
         {
           "id": "d541e69e",
-          "titulo": "Discurso en el Día del Rescatista",
+          "titulo": "Discurso en el Día del Trabajador de Rescate",
           "link": "http://en.kremlin.ru/events/president/news/78867",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
@@ -1002,39 +1018,15 @@
         },
         {
           "id": "2d74a9a2",
-          "titulo": "'Esperando el fin de la guerra': Los rusos comparten sus deseos de Año Nuevo para 2026",
+          "titulo": "'Esperando el fin de la guerra': los rusos comparten sus deseos de Año Nuevo para 2026",
           "link": "https://www.themoscowtimes.com/2025/12/31/hoping-for-an-end-to-the-war-russians-share-their-new-years-wishes-for-2026-a91573",
           "bloque": "RUSSIA",
           "proximidad": 50.0,
           "sesgo": "Sin Datos Vectoriales"
         },
         {
-          "id": "10b19bf0",
-          "titulo": "El equipo de Navalny afirma que Putin posee una lujosa finca en la costa del Mar Negro de Crimea",
-          "link": "https://www.themoscowtimes.com/2025/12/30/navalny-team-claims-putin-owns-luxury-estate-on-crimeas-black-sea-coast-a91587",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "ca1f8f7b",
-          "titulo": "El ex alcalde opositor de Yaroslavl liberado de prisión después de cumplir su condena por corrupción",
-          "link": "https://www.themoscowtimes.com/2025/12/30/former-opposition-mayor-of-yaroslavl-freed-from-prison-after-serving-sentence-for-corruption-a91584",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
-          "id": "229414c5",
-          "titulo": "En fotos: las imágenes que definieron a Rusia en 2025",
-          "link": "https://www.themoscowtimes.com/2025/12/30/in-photos-the-images-that-defined-russia-in-2025-a91290",
-          "bloque": "RUSSIA",
-          "proximidad": 50.0,
-          "sesgo": "Sin Datos Vectoriales"
-        },
-        {
           "id": "c731034f",
-          "titulo": "El Partido de los Trabajadores en Singapur se pronuncia sobre Pritam Singh, se formará un panel disciplinario",
+          "titulo": "El Partido de los Trabajadores de Singapur se pronuncia sobre Pritam Singh, se formará un panel disciplinario",
           "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338601/workers-party-singapore-rules-pritam-singh-disciplinary-panel-be-formed?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -1042,7 +1034,7 @@
         },
         {
           "id": "70711712",
-          "titulo": "Un tribunal de EE. UU. dictamina que la prohibición de California de portar armas abiertamente es inconstitucional",
+          "titulo": "Un tribunal estadounidense dictamina que la prohibición de California de portar armas abiertamente es inconstitucional",
           "link": "https://www.scmp.com/news/us/politics/article/3338599/us-court-rules-california-ban-openly-carrying-guns-unconstitutional?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -1058,7 +1050,7 @@
         },
         {
           "id": "a741afdd",
-          "titulo": "Asia, que envejece, necesita ayudantes domésticos, pero ¿puede mantenerlos a salvo?",
+          "titulo": "Asia envejecida necesita personal doméstico, pero ¿puede mantenerlos seguros?",
           "link": "https://www.scmp.com/week-asia/health-environment/article/3338555/ageing-asia-needs-domestic-helpers-can-it-keep-them-safe?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -1074,7 +1066,7 @@
         },
         {
           "id": "c559e144",
-          "titulo": "Los refugios de animales de Singapur luchan con los costos y la disminución de la adopción",
+          "titulo": "Los refugios de animales de Singapur luchan con los costos y la caída de la adopción",
           "link": "https://www.scmp.com/week-asia/lifestyle-culture/article/3338563/singapores-animal-shelters-struggle-costs-falling-adoption?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -1090,7 +1082,7 @@
         },
         {
           "id": "a514f01e",
-          "titulo": "Un video de un tío chino que se une a bailarines en una pasarela con una pose divertida gana 10 millones de visitas",
+          "titulo": "El video de un tío chino que se une a los bailarines en una pasarela con una pose divertida gana 10 millones de visitas",
           "link": "https://www.scmp.com/news/people-culture/trending-china/article/3337638/video-china-uncle-who-joins-dancers-walkway-funny-pose-gains-10-million-views?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 50.0,
@@ -1098,7 +1090,7 @@
         },
         {
           "id": "191ceadd",
-          "titulo": "El conductor de Anthony Joshua acusado de conducción peligrosa después de un accidente fatal en Nigeria",
+          "titulo": "El conductor de Anthony Joshua acusado de conducción peligrosa tras un accidente fatal en Nigeria",
           "link": "https://www.theguardian.com/world/2026/jan/02/anthony-joshuas-driver-charged-with-dangerous-driving-after-fatal-crash-in-nigeria",
           "bloque": "EUROPE",
           "proximidad": 50.0,
@@ -1108,10 +1100,10 @@
     }
   ],
   "meta": {
-    "updated": "2026-01-03T05:20:27.470525",
+    "updated": "2026-01-03T05:20:29.042235",
     "stats": {
       "hits": 0,
-      "misses": 254
+      "misses": 262
     }
   }
 }
