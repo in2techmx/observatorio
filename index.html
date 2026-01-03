@@ -107,23 +107,22 @@
                 <div class="text-blue-400 text-lg mb-2">📡</div>
                 <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">1. Ingesta Multi-Regional</h3>
                 <p class="text-slate-400 text-[11px] leading-relaxed">
-                    El sistema escanea en tiempo real feeds de noticias locales (no solo occidentales) de 8 bloques geopolíticos: USA, Rusia, China, Europa, Latam, Medio Oriente, India y África.
+                    El sistema procesa en tiempo real noticias de 8 bloques geopolíticos (incluyendo medios locales de Asia, África y Latam) para evitar el sesgo de fuente única.
                 </p>
             </div>
             <div class="guide-card p-5 rounded-2xl">
                 <div class="text-purple-400 text-lg mb-2">🎯</div>
-                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">2. El Índice de Proximidad</h3>
+                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">2. Proximidad Narrativa</h3>
                 <p class="text-slate-400 text-[11px] leading-relaxed">
-                    Nuestra IA analiza cada noticia y la compara con el consenso global. 
-                    <br><span class="text-white font-bold">100% Prox:</span> Hecho fáctico aceptado por todos.
-                    <br><span class="text-white font-bold">0% Prox:</span> Narrativa aislada o propaganda.
+                    <span class="text-white font-bold">CENTRO:</span> Convergencia. Hechos aceptados por múltiples bloques.<br>
+                    <span class="text-white font-bold">BORDE:</span> Divergencia. Narrativa específica o visión propia de la región.
                 </p>
             </div>
             <div class="guide-card p-5 rounded-2xl">
                 <div class="text-green-400 text-lg mb-2">🔄</div>
-                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">3. Navegación Estratégica</h3>
+                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">3. Navegación Táctica</h3>
                 <p class="text-slate-400 text-[11px] leading-relaxed">
-                    Gira el <span class="text-white">Núcleo Central</span> abajo. Selecciona un Área Estratégica (ej: Economía) para desplegar el Radar Táctico y ver la disputa narrativa en tiempo real.
+                    Gira el <span class="text-white">Núcleo Central</span>. Selecciona un Área Estratégica (ej: Energía) para desplegar el Mapa de Dispersión y analizar las posturas comparadas.
                 </p>
             </div>
         </section>
@@ -162,6 +161,10 @@
                     <div class="relative w-full h-full min-h-[400px]">
                         <canvas id="areaScatterChart"></canvas>
                     </div>
+                    <div class="absolute bottom-4 left-4 flex gap-2">
+                        <span class="text-[9px] bg-black/60 text-slate-400 px-2 py-1 rounded border border-white/10">CENTRO: Convergencia</span>
+                        <span class="text-[9px] bg-black/60 text-slate-400 px-2 py-1 rounded border border-white/10">PERIFERIA: Divergencia</span>
+                    </div>
                 </div>
                 
                 <div class="bg-white/5 rounded-2xl border border-white/5 flex flex-col overflow-hidden">
@@ -184,7 +187,7 @@
             
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Proximidad al Consenso</div>
+                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Proximidad Narrativa</div>
                     <div class="flex items-center gap-3">
                         <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
                             <div id="proximity-fill" class="h-full rounded-full transition-all duration-500"></div>
@@ -193,13 +196,13 @@
                     </div>
                 </div>
                 <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Estado Narrativo</div>
+                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Clasificación</div>
                     <div id="bias-meter" class="text-sm font-medium text-slate-300 font-mono uppercase"></div>
                 </div>
             </div>
             
             <div class="mb-8">
-                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Inteligencia</div>
+                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Posición</div>
                 <p id="detail-sesgo" class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4 py-1"></p>
             </div>
             
@@ -234,7 +237,7 @@
 
                 if (!fullData.carousel) throw new Error("Datos vacíos");
 
-                renderSwiper(); // NUEVO RENDERIZADOR
+                renderSwiper(); 
                 renderStats();
                 updateLoadStatus("Sistema Listo", 100);
 
@@ -284,9 +287,8 @@
             const wrapper = document.getElementById('swiper-wrapper');
             
             wrapper.innerHTML = fullData.carousel.map((area, idx) => {
-                // Preparamos variable CSS para el color del glow
                 const glowColor = area.color || '#fff';
-                const glowAlpha = glowColor + '60'; // Añadir transparencia hex
+                const glowAlpha = glowColor + '60'; 
 
                 return `
                 <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow-color: ${glowColor}; --glow-alpha: ${glowAlpha}">
@@ -325,7 +327,7 @@
                     stretch: 0,
                     depth: 200,
                     modifier: 1,
-                    slideShadows: false, // Desactivado para mejor rendimiento visual con el glow
+                    slideShadows: false, 
                 },
                 pagination: false,
                 autoplay: {
@@ -337,7 +339,7 @@
             });
         }
 
-        // --- LÓGICA DE MODALES Y RADAR (IGUAL QUE ANTES) ---
+        // --- LÓGICA DE MODALES Y RADAR ---
         function openAreaModal(idx) {
             const area = fullData.carousel[idx];
             document.getElementById('modal-area-title').innerText = area.area;
@@ -353,7 +355,6 @@
             const ctx = document.getElementById('areaScatterChart').getContext('2d');
             if (scatterChart) scatterChart.destroy();
 
-            // ÁNGULOS GEOPOLÍTICOS FIJOS
             const BLOCK_ANGLES = {
                 "RUSSIA": 0, "CHINA": Math.PI*0.25, "INDIA": Math.PI*0.5, "EUROPE": Math.PI*0.75,
                 "USA": Math.PI, "LATAM": Math.PI*1.25, "MID_EAST": Math.PI*1.5, "AFRICA": Math.PI*1.75
@@ -405,13 +406,11 @@
                         const cx = (left + right) / 2, cy = (top + bottom) / 2;
                         const scale = Math.min(right - left, bottom - top) / 240; 
                         
-                        // Fondo Radar
                         ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.lineWidth = 1;
                         [25, 50, 75, 100].forEach(r => {
                             ctx.beginPath(); ctx.arc(cx, cy, r * scale, 0, Math.PI * 2); ctx.stroke();
                         });
                         
-                        // Ejes
                         for(let i=0; i<8; i++){
                             const ang = i * (Math.PI/4);
                             ctx.beginPath(); ctx.moveTo(cx, cy); 
@@ -419,7 +418,6 @@
                             ctx.stroke();
                         }
                         
-                        // Labels
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
                         const labels = [{t:"RUS", a:0}, {t:"CHN", a:0.25}, {t:"IND", a:0.5}, {t:"EU", a:0.75}, {t:"USA", a:1}, {t:"LATAM", a:1.25}, {t:"MID-E", a:1.5}, {t:"AFR", a:1.75}];
                         labels.forEach(l => { 
@@ -462,7 +460,8 @@
             fill.style.width = prox + "%";
             fill.style.backgroundColor = prox >= 75 ? '#22c55e' : prox >= 50 ? '#eab308' : '#ef4444';
             
-            document.getElementById('bias-meter').innerText = prox >= 80 ? "Consenso Factual" : prox >= 50 ? "Interpretativo" : "Divergencia";
+            // LÓGICA DE TEXTO NEUTRA
+            document.getElementById('bias-meter').innerText = prox >= 80 ? "Alta Convergencia" : prox >= 50 ? "Perspectiva Regional" : "Narrativa Divergente";
             document.getElementById('bias-meter').style.color = fill.style.backgroundColor;
             
             document.getElementById('news-detail-modal').classList.add('open');
