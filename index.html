@@ -4,264 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROXIMITY | Neural Tactical Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* [Insertar aquí el CSS de la v35.6] */
         :root {
-            --bg: #020617;
-            --cyber-blue: #0ea5e9;
-            --cyber-red: #ef4444;
-            --glass: rgba(15, 23, 42, 0.8);
+            --bg-color: #050507;
+            --panel-color: #0a0a0f;
+            --border-color: #1a1a2e;
+            --text-primary: #e0e0e0;
+            --text-dim: #707080;
+            --consensus-color: #00ff88;
+            --divergent-color: #ffaa00;
+            --anomaly-color: #ff00ff;
+            --accent-cyan: #00fffb;
         }
-        
-        body {
-            background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
-                linear-gradient(rgba(14, 165, 233, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(14, 165, 233, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
-            color: #e2e8f0;
-            font-family: 'JetBrains Mono', monospace;
-            overflow: hidden; /* Evita scroll innecesario en el body */
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cyber-header { font-family: 'Orbitron', sans-serif; }
-
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        /* Swiper Fix para pantallas pequeñas */
-        .swiper { width: 100%; padding: 20px 0; flex-shrink: 0; }
-        .swiper-slide {
-            width: 280px; height: 320px; /* Tamaño ligeramente reducido para visibilidad */
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.6);
-            border-left: 4px solid var(--glow);
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
-            transition: 0.5s;
-            opacity: 0.4;
-            cursor: pointer;
-        }
-        .swiper-slide-active {
-            opacity: 1;
-            transform: scale(1.05);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 30px var(--glow-alpha);
-        }
-
-        /* Radar y Línea de Barrido */
-        #radar-container {
-            position: relative;
-            background: radial-gradient(circle at center, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            aspect-ratio: 1 / 1;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        /* Animación de Barrido Radar */
-        #radar-container::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(14, 165, 233, 0.2) 0deg, transparent 90deg);
-            animation: sweep 4s linear infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes sweep {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .modal {
-            opacity: 0; visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(15px);
-        }
-        .modal.open { opacity: 1; visibility: visible; }
-
-        .scanline {
-            width: 100%; height: 2px;
-            background: rgba(14, 165, 233, 0.1);
-            position: absolute;
-            animation: scan 4s linear infinite;
-            z-index: 5;
-        }
-        @keyframes scan { from { top: 0; } to { top: 100%; } }
-
-        /* Ajuste de scroll interno */
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: var(--cyber-blue); border-radius: 10px; }
+        body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        header { width: 100%; padding: 30px 20px; background: linear-gradient(to bottom, #000, transparent); text-align: center; border-bottom: 1px solid var(--border-color); }
+        .glitch-title { font-family: 'Share Tech Mono', monospace; font-size: 2.8rem; letter-spacing: 8px; color: #fff; text-shadow: 3px 0 #ff004c, -3px 0 var(--accent-cyan); margin: 0 0 25px 0; text-transform: uppercase; }
+        .dashboard { display: flex; justify-content: center; gap: 15px; margin: 25px auto; width: 95%; max-width: 1100px; }
+        .stat-card { background: var(--panel-color); border: 1px solid var(--border-color); padding: 12px 20px; flex: 1; text-align: center; border-left: 3px solid var(--accent-cyan); }
+        .stat-card .value { font-size: 1.6rem; font-family: 'Share Tech Mono', monospace; color: var(--accent-cyan); display: block; }
+        .controls-container { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; align-items: center; }
+        .time-controls, .filter-controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .btn { background: var(--panel-color); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 18px; font-family: 'Share Tech Mono', monospace; cursor: pointer; }
+        .btn.active { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .filter-select { background: var(--panel-color); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 15px; font-family: 'Rajdhani', sans-serif; }
+        #radar-container { position: relative; width: 95%; max-width: 1000px; margin: 20px auto; aspect-ratio: 10 / 7; background: radial-gradient(circle, #0f0f1a 0%, #050507 80%); border: 1px solid var(--border-color); }
+        svg { width: 100%; height: 100%; display: block; }
+        .radar-ring { fill: none; stroke: rgba(255, 255, 255, 0.05); }
+        .node { cursor: pointer; transition: 0.4s; }
+        #tooltip { position: absolute; padding: 15px; background: rgba(5, 5, 10, 0.95); border: 1px solid var(--accent-cyan); color: #fff; display: none; z-index: 1000; max-width: 280px; }
+        .methodology { max-width: 900px; padding: 50px; background: var(--panel-color); border-top: 1px solid var(--border-color); margin: 60px 0; }
+        .loading-overlay { position: absolute; inset: 0; background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 100; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0, 255, 251, 0.1); border-top: 3px solid var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-6">
+<body>
 
-    <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-sky-500/20 pb-4 flex-shrink-0">
-        <div class="text-center md:text-left">
-            <h1 class="cyber-header text-4xl md:text-5xl font-black tracking-tighter italic text-white drop-shadow-[0_0_15px_rgba(14,165,233,0.5)]">
-                PROXIMITY
-            </h1>
-            <div class="flex items-center gap-3 mt-1">
-                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                <p class="text-sky-400 font-bold text-[10px] tracking-[0.3em] uppercase">NEURAL LINK ACTIVE // v28.2</p>
-            </div>
-        </div>
-        <button onclick="openGuide()" class="glass-panel px-6 py-2 mt-4 md:mt-0 text-[10px] skew-x-[-15deg] hover:bg-sky-500/20 transition-all border-sky-400/50">
-            <span class="skew-x-[15deg] block text-sky-400 font-black uppercase tracking-widest">Metodología</span>
-        </button>
-    </header>
-
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper" id="swiper-wrapper"></div>
-    </div>
-
-    <div id="area-modal" class="modal fixed inset-0 z-50 flex justify-center items-center p-2 md:p-6">
-        <div class="modal-content glass-panel w-full max-w-6xl h-[95vh] md:h-[85vh] rounded-none relative overflow-hidden flex flex-col p-4 md:p-8">
-            <div class="scanline"></div>
+<header>
+    <h1 class="glitch-title">Neural Tactical Hub</h1>
+    
+    <div class="controls-container">
+        <div class="time-controls">
+            <button class="btn active" data-type="daily">DIARIO (HOY)</button>
             
-            <div class="flex justify-between items-start mb-4 z-10 flex-shrink-0">
-                <div class="max-w-[80%]">
-                    <h2 id="modal-area-title" class="cyber-header text-2xl md:text-4xl font-black italic uppercase leading-none"></h2>
-                    <p id="modal-consensus" class="text-sky-300/60 text-[10px] md:text-xs mt-2 border-l-2 border-sky-500 pl-4 italic line-clamp-2"></p>
-                </div>
-                <button onclick="closeAreaModal()" class="text-sky-500 hover:text-white text-4xl transition-colors">&times;</button>
-            </div>
+            <select id="week-selector" class="filter-select btn">
+                <option value="">SELECCIONAR SEMANA</option>
+                <option value="s1">Semana 1 (mes_s1.json)</option>
+                <option value="s2">Semana 2 (mes_s2.json)</option>
+                <option value="s3">Semana 3 (mes_s3.json)</option>
+                <option value="s4">Semana 4 (mes_s4.json)</option>
+            </select>
 
-            <div class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden z-10">
-                <div class="lg:col-span-7 flex items-center justify-center bg-sky-950/20 rounded-lg border border-sky-500/10 p-2 relative overflow-hidden">
-                    <div id="radar-container">
-                        <canvas id="areaScatterChart"></canvas>
-                    </div>
-                </div>
+            <select id="month-selector" class="filter-select btn">
+                <option value="">SELECCIONAR MES</option>
+                <option value="ene">Enero (mes_ene.json)</option>
+                <option value="feb">Febrero (mes_feb.json)</option>
+                <option value="mar">Marzo (mes_mar.json)</option>
+            </select>
+        </div>
 
-                <div class="lg:col-span-5 overflow-y-auto pr-2 space-y-3 custom-scroll" id="particles-list"></div>
-            </div>
+        <div class="filter-controls">
+            <select id="block-filter" class="filter-select">
+                <option value="ALL">BLOQUES: TODOS</option>
+                <option value="USA">USA</option>
+                <option value="RUSSIA">RUSSIA</option>
+                <option value="CHINA">CHINA</option>
+                <option value="EUROPE">EUROPE</option>
+                <option value="GLOBAL">GLOBAL</option>
+            </select>
         </div>
     </div>
 
-    <div id="guide-modal" class="modal fixed inset-0 z-[100] flex justify-center items-center p-4">
-        <div class="glass-panel p-8 max-w-xl border-sky-500/50 relative">
-            <h2 class="cyber-header text-2xl text-white mb-4 uppercase">System Intelligence Protocol</h2>
-            <div class="space-y-4 text-[11px] leading-relaxed text-sky-100/70">
-                <p><strong class="text-sky-400">[CENTROIDE]</strong> Núcleo del consenso narrativo global.</p>
-                <p><strong class="text-rose-500">[DIVERGENCIA]</strong> Nodos periféricos con anomalías fácticas.</p>
-                <p><strong class="text-sky-400">[MODO HÍBRIDO]</strong> Análisis resiliente vía metadatos enriquecidos.</p>
-            </div>
-            <button onclick="closeGuide()" class="mt-6 w-full py-3 bg-sky-600/20 border border-sky-500/50 text-sky-400 font-black uppercase text-[10px] hover:bg-sky-600/40">Cerrar</button>
-        </div>
+    <div class="dashboard">
+        <div class="stat-card"><span class="label">Nodos Activos</span><span id="stat-nodes" class="value">---</span></div>
+        <div class="stat-card"><span class="label">Consenso</span><span id="stat-prox" class="value">--%</span></div>
+        <div class="stat-card"><span class="label">Dataset</span><span id="stat-file" class="value">---</span></div>
     </div>
+</header>
 
-    <script>
-        const COLORS = { "USA": "#0ea5e9", "RUSSIA": "#ef4444", "CHINA": "#f97316", "EUROPE": "#fde047", "LATAM": "#d946ef", "MID_EAST": "#10b981", "INDIA": "#8b5cf6", "AFRICA": "#22c55e", "GLOBAL": "#94a3b8" };
-        let fullData = null, scatterChart = null;
+<div id="radar-container">
+    <div id="loading" class="loading-overlay"><div class="spinner"></div></div>
+    <div id="tooltip"></div>
+    <svg id="radarSVG" viewBox="0 0 1000 700">
+        <circle cx="500" cy="350" r="100" class="radar-ring" />
+        <circle cx="500" cy="350" r="200" class="radar-ring" />
+        <circle cx="500" cy="350" r="300" class="radar-ring" />
+        <g id="node-layer"></g>
+    </svg>
+</div>
 
-        async function init() {
-            try {
-                const res = await fetch('./gravity_carousel.json');
-                fullData = await res.json();
-                renderSwiper();
-            } catch (e) { console.error("Error cargando datos", e); }
+<section class="methodology">
+    <h2>MÉTODO: AGREGACIÓN MULTI-CAPA</h2>
+    <p>La inteligencia geopolítica requiere distinguir entre el <strong>ruido diario</strong> y la <strong>tendencia estructural</strong>.</p>
+    
+    <h3>Lógica de Procesamiento</h3>
+    <ul>
+        <li><strong>Nivel 1 (Diario):</strong> Escaneo de 45+ fuentes para detectar señales inmediatas.</li>
+        <li><strong>Nivel 2 (Semanal - mes_sX):</strong> Consolidación de 7 días de datos para filtrar noticias efímeras y resaltar temas persistentes.</li>
+        <li><strong>Nivel 3 (Mensual - mes_XXX):</strong> Fusión de las 4 semanas para identificar cambios en las alianzas globales y el centro de gravedad del poder.</li>
+    </ul>
+</section>
+
+<script>
+    const state = {
+        data: null,
+        filters: { block: 'ALL', area: 'ALL' },
+        currentFile: 'gravity_carousel.json'
+    };
+
+    async function loadRadar(filename) {
+        document.getElementById('loading').style.display = 'flex';
+        state.currentFile = filename;
+        try {
+            const res = await fetch(filename);
+            if(!res.ok) throw new Error("Archivo no encontrado");
+            state.data = await res.json();
+            render();
+        } catch (err) {
+            console.error(err);
+            alert(`Error: No se encontró el archivo ${filename}`);
+        } finally {
+            document.getElementById('loading').style.display = 'none';
         }
+    }
 
-        function renderSwiper() {
-            document.getElementById('swiper-wrapper').innerHTML = fullData.carousel.map((area, idx) => `
-                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow: ${area.color}; --glow-alpha: ${area.color}20">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-[9px] font-bold tracking-widest text-sky-400 bg-sky-400/10 px-2 py-1">${area.particulas.length} NODES</span>
-                        <div class="w-2 h-2 rounded-full" style="background:${area.color}; box-shadow: 0 0 10px ${area.color}"></div>
-                    </div>
-                    <h3 class="cyber-header text-xl font-black uppercase italic mb-2" style="color:white">${area.area}</h3>
-                    <p class="text-slate-400 text-[10px] leading-relaxed border-t border-white/5 pt-2 line-clamp-4">${area.punto_cero}</p>
-                </div>
-            `).join('');
-            
-            new Swiper(".mySwiper", {
-                effect: "coverflow",
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: "auto",
-                coverflowEffect: { rotate: 10, stretch: 0, depth: 100, modifier: 1, slideShadows: false }
+    function render() {
+        const layer = document.getElementById('node-layer');
+        layer.innerHTML = '';
+        let total = 0, sumProx = 0;
+
+        state.data.carousel.forEach(area => {
+            area.particulas.forEach(p => {
+                if (state.filters.block !== 'ALL' && p.bloque !== state.filters.block) return;
+
+                total++; sumProx += p.proximidad;
+                const r = 320 - (p.proximidad * 2.8);
+                const angle = Math.random() * Math.PI * 2;
+                const x = 500 + r * Math.cos(angle);
+                const y = 350 + r * Math.sin(angle);
+
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", x); circle.setAttribute("cy", y);
+                circle.setAttribute("r", p.proximidad > 85 ? 6 : 4);
+                circle.setAttribute("fill", area.color);
+                circle.setAttribute("class", "node");
+                circle.style.setProperty('--glow', area.color);
+                
+                circle.onmouseover = (e) => showTooltip(e, p, area);
+                circle.onmouseout = () => document.getElementById('tooltip').style.display = 'none';
+                circle.onclick = () => window.open(p.link, '_blank');
+
+                layer.appendChild(circle);
             });
-        }
+        });
 
-        function openAreaModal(idx) {
-            const area = fullData.carousel[idx];
-            document.getElementById('modal-area-title').innerText = area.area;
-            document.getElementById('modal-area-title').style.color = area.color;
-            document.getElementById('modal-consensus').innerText = "CORE CONSENSUS: " + area.punto_cero;
-            document.getElementById('area-modal').classList.add('open');
-            renderParticles(area.particulas);
-            setTimeout(() => renderRadar(area.particulas), 300);
-        }
+        document.getElementById('stat-nodes').innerText = total;
+        document.getElementById('stat-prox').innerText = `${Math.round(sumProx/total)}%`;
+        document.getElementById('stat-file').innerText = state.currentFile.toUpperCase();
+    }
 
-        function renderParticles(parts) {
-            document.getElementById('particles-list').innerHTML = parts.map(p => `
-                <div class="glass-panel p-3 mb-2 border-l-4 transition-all hover:translate-x-1" style="border-color:${COLORS[p.bloque] || '#fff'}">
-                    <div class="flex justify-between text-[8px] font-bold mb-1 uppercase tracking-tighter">
-                        <span style="color:${COLORS[p.bloque]}">${p.bloque} // ${p.metodo || 'Hybrid'}</span>
-                        <span class="text-sky-500">PROX: ${p.proximidad}%</span>
-                    </div>
-                    <a href="${p.link}" target="_blank" class="text-xs font-bold text-white hover:text-sky-400 block mb-2 leading-tight">${p.titulo}</a>
-                    <p class="text-[9px] text-slate-400 italic bg-black/40 p-2 border border-white/5 line-clamp-2">${p.sesgo}</p>
-                </div>
-            `).join('');
-        }
+    function showTooltip(e, p, area) {
+        const tt = document.getElementById('tooltip');
+        tt.style.display = 'block';
+        tt.style.left = (e.pageX + 15) + 'px';
+        tt.style.top = (e.pageY + 15) + 'px';
+        tt.innerHTML = `<strong>${p.bloque}</strong><br>${p.titulo}<br>Consenso: ${p.proximidad}%`;
+    }
 
-        function renderRadar(parts) {
-            const ctx = document.getElementById('areaScatterChart').getContext('2d');
-            if(scatterChart) scatterChart.destroy();
-            
-            const ANGLES = { "USA": 0, "RUSSIA": 0.5, "CHINA": 1, "EUROPE": 1.5, "LATAM": 2, "MID_EAST": 2.5, "INDIA": 3, "AFRICA": 3.5, "GLOBAL": 4 };
-            
-            scatterChart = new Chart(ctx, {
-                type: 'scatter',
-                data: {
-                    datasets: [{
-                        data: parts.map(p => {
-                            const r = (100 - p.proximidad) * 1.1; 
-                            const a = (ANGLES[p.bloque] || 0) * Math.PI;
-                            return { x: r * Math.cos(a), y: r * Math.sin(a), b: p.bloque };
-                        }),
-                        pointBackgroundColor: c => COLORS[c.raw.b] + 'aa',
-                        pointBorderColor: c => COLORS[c.raw.b],
-                        pointBorderWidth: 1,
-                        pointRadius: 6,
-                        pointHoverRadius: 9
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { display: false, min: -120, max: 120 },
-                        y: { display: false, min: -120, max: 120 }
-                    },
-                    plugins: {
-                        legend: false,
-                        tooltip: { enabled: false }
-                    }
-                }
-            });
-        }
+    // EVENTOS DE SELECTORES
+    document.querySelector('[data-type="daily"]').onclick = () => loadRadar('gravity_carousel.json');
 
-        function openGuide() { document.getElementById('guide-modal').classList.add('open'); }
-        function closeGuide() { document.getElementById('guide-modal').classList.remove('open'); }
-        function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
-        window.onload = init;
-    </script>
+    document.getElementById('week-selector').onchange = (e) => {
+        if(e.target.value) loadRadar(`mes_${e.target.value}.json`);
+    };
+
+    document.getElementById('month-selector').onchange = (e) => {
+        if(e.target.value) loadRadar(`mes_${e.target.value}.json`);
+    };
+
+    document.getElementById('block-filter').onchange = (e) => {
+        state.filters.block = e.target.value;
+        render();
+    };
+
+    window.onload = () => loadRadar('gravity_carousel.json');
+</script>
+
 </body>
 </html>
