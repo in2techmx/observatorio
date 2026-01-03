@@ -1,10 +1,17 @@
-import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct, logging
+import os
+import json
+import datetime
+import time
+import urllib.request
+import hashlib
+import re
+import sys
+import math
+import struct
+import logging
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from google import genai
-import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct, logging
-import xml.etree.ElementTree as ET
-from collections import defaultdict
+import argparse  # Added for argument parsing
 from google import genai
 
 # ============================================================================
@@ -17,27 +24,42 @@ HIST_DIR = "historico_noticias/diario"
 if os.path.exists(".proximity_env"):
     with open(".proximity_env", "r") as f:
         for line in f:
-            if "CACHE_DIR=" in line: CACHE_DIR = line.split("=")[1].strip()
+            if "CACHE_DIR=" in line:
+                CACHE_DIR = line.split("=")[1].strip()
 
 # Asegurar creación final
 for d in [CACHE_DIR, HIST_DIR]:
-    try: os.makedirs(d, exist_ok=True)
-    except: pass
+    try:
+        os.makedirs(d, exist_ok=True)
+    except:
+        pass
 
 LOG_FILE = "system_audit.log"
-AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
-         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
 
 # ============================================================================
 # CONFIGURACIÓN ESTRATÉGICA
 # ============================================================================
 MAX_PER_REGION_IN_AREA = 10
-AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
+AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos",
          "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
 
-CACHE_DIR = "vector_cache"
-HIST_DIR = "historico_noticias/diario"
-LOG_FILE = "system_audit.log"
+# ============================================================================
+# GESTIÓN DE ARGUMENTOS (NUEVO)
+# ============================================================================
+parser = argparse.ArgumentParser()
+parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategic, full')
+args, _ = parser.parse_known_args()
+
+# Configurar límites según el modo
+if args.mode == 'full':
+    FETCH_LIMIT = 50
+    logging.info("🔥 MODO FULL: Escaneo profundo activado")
+elif args.mode == 'strategic':
+    FETCH_LIMIT = 25
+    logging.info("🛡️ MODO ESTRATÉGICO: Escaneo medio")
+else:
+    FETCH_LIMIT = 12
+    logging.info("⚡ MODO TÁCTICO: Escaneo rápido")
 
 # ============================================================================
 # CONFIGURACIÓN DE FUENTES (OPTIMIZADA)
@@ -296,7 +318,7 @@ class IroncladCollectorPro:
     # ------------------------------------------------------------------------
     def fetch_signals(self):
         """Recolección robusta de feeds RSS"""
-        logging.info("📡 FASE 1: Recolección multi-fuente...")
+        logging.info(f"📡 FASE 1: Recolección multi-fuente (Límite: {FETCH_LIMIT})...")
         
         item_counter = 0
         
@@ -321,7 +343,8 @@ class IroncladCollectorPro:
                                 root.findall('.//entry') or 
                                 root.findall('.//{*}item'))
                         
-                        for item in items[:12]:  # Límite por feed
+                        # USAR LÍMITE DINÁMICO AQUÍ
+                        for item in items[:FETCH_LIMIT]:
                             # Extraer título
                             title_elem = item.find('title') or item.find('{*}title')
                             title = title_elem.text if title_elem is not None else ""
@@ -788,4 +811,3 @@ if __name__ == "__main__":
     else:
         print("\n⚠️  El análisis encontró problemas. Revisa los logs.")
         sys.exit(1)
-
