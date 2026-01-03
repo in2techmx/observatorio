@@ -3,165 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROXIMITY | Deep Intelligence Hub</title>
+    <title>PROXIMITY | Global Intelligence Observatory</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* VARIABLES & ESTILOS BASE */
+        /* --- ESTILOS NUCLEARES --- */
         :root {
-            --color-bg: #020617;
-            --color-glass: rgba(15, 23, 42, 0.90);
+            --bg-color: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.85);
         }
-        body { background-color: var(--color-bg); color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
+        body { background-color: var(--bg-color); color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
         
-        /* UI COMPONENTS */
-        .glass { background: var(--color-glass); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-        .glass-heavy { background: rgba(11, 17, 32, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        /* Efectos de Cristal */
+        .glass { background: var(--glass-bg); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .glass-heavy { background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
         
-        .guide-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .guide-card:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.1); }
+        /* --- EL CARRETE (SWIPER 3D) --- */
+        .swiper { width: 100%; padding-top: 40px; padding-bottom: 60px; overflow: visible; }
         
-        /* CARRUSEL */
-        .carousel-container { display: flex; overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; padding: 24px 0; gap: 1.5rem; scrollbar-width: thin; scrollbar-color: rgba(59, 130, 246, 0.5) rgba(15, 23, 42, 0.1); }
-        .area-card { flex: 0 0 320px; scroll-snap-align: start; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; overflow: hidden; }
-        .area-card:hover { transform: translateY(-8px) scale(1.02); z-index: 10; border-top-width: 6px; }
-        
-        /* MODALES */
-        .modal { opacity: 0; visibility: hidden; transition: all 0.3s ease-out; display: flex; align-items: center; justify-content: center; z-index: 1000; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); }
+        .swiper-slide {
+            width: 300px;
+            height: 380px;
+            background: #1e293b;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.3; /* Los inactivos son transparentes */
+            transform: scale(0.8);
+            display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;
+            cursor: grab;
+            position: relative; overflow: hidden;
+        }
+
+        /* La Tarjeta Activa (Seleccionada) */
+        .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1.1) translateY(-10px); /* Se hace grande y flota */
+            z-index: 50;
+            border-color: var(--glow-color); /* Borde del color del área */
+            box-shadow: 0 0 50px var(--glow-alpha); /* GLOW INTENSO */
+            background: #0f172a;
+        }
+
+        .swiper-slide-active::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
+            background: linear-gradient(to bottom, var(--glow-alpha) 0%, transparent 40%);
+            opacity: 0.2; pointer-events: none;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .guide-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
+        .guide-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+        .modal { opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; }
         .modal.open { opacity: 1; visibility: visible; }
-        .modal-content { transform: translateY(30px) scale(0.98); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 95%; max-width: 1400px; max-height: 95vh; overflow: hidden; display: flex; flex-direction: column; }
-        .modal.open .modal-content { transform: translateY(0) scale(1); }
-        
-        /* ANIMACIONES & UTILS */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        .skeleton { background: linear-gradient(90deg, rgba(30, 41, 59, 0.4) 25%, rgba(51, 65, 85, 0.4) 50%, rgba(30, 41, 59, 0.4) 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
-        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        
-        .radar-container { position: relative; width: 100%; height: 50vh; min-height: 300px; }
-        @media (min-width: 1024px) { .radar-container { height: 100%; min-height: 600px; } }
-        
-        .bloque-tag { display: inline-block; padding: 4px 12px; border-radius: 4px; fontSize: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; transition: all 0.3s; font-family: 'JetBrains Mono', monospace; }
-        .custom-scroll { scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+        .modal-content { transform: scale(0.95) translateY(20px); transition: 0.4s; width: 95%; max-width: 1400px; max-height: 95vh; display: flex; flex-direction: column; }
+        .modal.open .modal-content { transform: scale(1) translateY(0); }
+
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         
-        .particle-active { background-color: rgba(255, 255, 255, 0.15) !important; border-left-width: 4px !important; padding-left: 1rem !important; }
+        /* Animaciones */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[2000] bg-slate-950 transition-opacity duration-500">
-        <div class="text-center mb-12">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-4">Proximity</h1>
-            <p class="text-blue-500 font-mono text-xs tracking-[0.3em] uppercase">Deep Intelligence v13.5</p>
-        </div>
-        <div class="w-64">
-            <div class="h-1 bg-slate-800 rounded-full overflow-hidden mb-2">
-                <div id="load-progress" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
+    <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[2000] bg-[#020617] transition-opacity duration-700">
+        <div class="text-center">
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-6">Proximity</h1>
+            <div class="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mx-auto mb-4">
+                <div id="load-progress" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%"></div>
             </div>
-            <div id="load-status" class="text-slate-500 font-mono text-[10px] text-center">Iniciando protocolos...</div>
+            <div id="load-status" class="text-slate-500 font-mono text-[10px] uppercase tracking-widest">Iniciando Protocolos...</div>
         </div>
     </div>
 
-    <div id="main-interface" class="max-w-7xl mx-auto p-6 md:p-12 opacity-0">
+    <div id="main-interface" class="max-w-7xl mx-auto p-6 md:p-8 opacity-0">
         
-        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/5 pb-8 gap-6">
-            <div class="animate-fade-in-up">
-                <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-white uppercase italic">Proximity</h1>
-                <p class="text-slate-400 font-mono text-[10px] tracking-widest mt-2 uppercase">Sistema de Inteligencia Multipolar</p>
+        <header class="flex flex-col md:flex-row justify-between items-end border-b border-white/5 pb-6 mb-8 gap-6 animate-up">
+            <div>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase italic leading-none">Proximity</h1>
+                <p class="text-slate-400 font-mono text-xs tracking-[0.2em] mt-2 uppercase">Observatorio de Inteligencia Global</p>
             </div>
-            <div class="flex flex-col md:items-end gap-3 w-full md:w-auto">
-                <div class="flex gap-2">
-                    <button onclick="document.getElementById('guide-section').scrollIntoView({behavior: 'smooth'})" class="text-[9px] font-mono text-slate-400 hover:text-white px-3 py-2 rounded border border-white/10 bg-white/5 hover:bg-white/10 transition-all cursor-pointer">
-                        [?] GUÍA DE LECTURA
-                    </button>
-                    <div id="update-tag" class="text-[9px] font-mono text-slate-400 px-4 py-2 rounded border border-white/10 bg-white/5 flex items-center gap-4">
-                        <span id="sync-status">OFFLINE</span>
-                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    </div>
+            <div class="flex gap-4 text-[10px] font-mono text-slate-500 uppercase">
+                <div class="px-3 py-1 border border-white/10 rounded bg-white/5">
+                    <span class="text-blue-400">Estado:</span> <span id="sync-status" class="text-white">ONLINE</span>
                 </div>
-                <div class="flex gap-4 text-[9px] font-mono uppercase justify-end">
-                    <span class="text-blue-400"><span id="total-signals">0</span> Señales</span>
-                    <span class="text-purple-400"><span id="total-areas">0</span> Áreas</span>
+                <div class="px-3 py-1 border border-white/10 rounded bg-white/5">
+                    <span class="text-purple-400">Nodos:</span> <span id="total-signals" class="text-white">0</span>
                 </div>
             </div>
         </header>
 
-        <section id="guide-section" class="mb-12 animate-fade-in-up" style="animation-delay: 0.05s">
-            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Protocolos de Decodificación</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="guide-card rounded-xl p-5">
-                    <h4 class="text-white text-xs font-bold uppercase mb-1">Brújula Geopolítica</h4>
-                    <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Las noticias se organizan por origen geográfico fijo (ej: USA=Oeste, Rusia=Este). Observa hacia dónde gravita la información.
-                    </p>
-                </div>
-                <div class="guide-card rounded-xl p-5">
-                    <h4 class="text-white text-xs font-bold uppercase mb-1">Consenso vs Anomalía</h4>
-                    <p class="text-[10px] text-slate-400 leading-relaxed">
-                        <span class="text-blue-400 font-bold">CENTRO:</span> Consenso Factual. Distancia cero entre narrativas.<br>
-                        <span class="text-red-400 font-bold">BORDE:</span> Divergencia. Narrativa ideológica o propaganda.
-                    </p>
-                </div>
-                <div class="guide-card rounded-xl p-5">
-                    <h4 class="text-white text-xs font-bold uppercase mb-1">Deep Intelligence</h4>
-                    <p class="text-[10px] text-slate-400 leading-relaxed">
-                        Haz clic en cualquier nodo para leer el análisis de la IA sobre la discrepancia narrativa detectada.
-                    </p>
-                </div>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16 animate-up" style="animation-delay: 0.1s;">
+            <div class="guide-card p-5 rounded-2xl">
+                <div class="text-blue-400 text-lg mb-2">📡</div>
+                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">1. Ingesta Multi-Regional</h3>
+                <p class="text-slate-400 text-[11px] leading-relaxed">
+                    El sistema escanea en tiempo real feeds de noticias locales (no solo occidentales) de 8 bloques geopolíticos: USA, Rusia, China, Europa, Latam, Medio Oriente, India y África.
+                </p>
+            </div>
+            <div class="guide-card p-5 rounded-2xl">
+                <div class="text-purple-400 text-lg mb-2">🎯</div>
+                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">2. El Índice de Proximidad</h3>
+                <p class="text-slate-400 text-[11px] leading-relaxed">
+                    Nuestra IA analiza cada noticia y la compara con el consenso global. 
+                    <br><span class="text-white font-bold">100% Prox:</span> Hecho fáctico aceptado por todos.
+                    <br><span class="text-white font-bold">0% Prox:</span> Narrativa aislada o propaganda.
+                </p>
+            </div>
+            <div class="guide-card p-5 rounded-2xl">
+                <div class="text-green-400 text-lg mb-2">🔄</div>
+                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">3. Navegación Estratégica</h3>
+                <p class="text-slate-400 text-[11px] leading-relaxed">
+                    Gira el <span class="text-white">Núcleo Central</span> abajo. Selecciona un Área Estratégica (ej: Economía) para desplegar el Radar Táctico y ver la disputa narrativa en tiempo real.
+                </p>
             </div>
         </section>
 
-        <section class="animate-fade-in-up" style="animation-delay: 0.1s">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Radar Estratégico</h2>
-                <button onclick="refreshData()" id="refresh-btn" class="text-[10px] font-mono text-blue-400 hover:text-white px-3 py-1 border border-blue-500/30 rounded hover:bg-blue-500/20 transition-all">↻ REFRESH</button>
+        <section class="mb-12 animate-up" style="animation-delay: 0.2s;">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Núcleo de Áreas Estratégicas</h2>
+                <span class="text-[10px] font-mono text-slate-600 animate-pulse">↔ DESLIZA O ARRASTRA PARA GIRAR</span>
             </div>
-            
-            <div id="skeleton-carousel" class="carousel-container">
-                <div class="area-card skeleton rounded-[2rem] p-8 h-[240px]"></div>
-                <div class="area-card skeleton rounded-[2rem] p-8 h-[240px]"></div>
-                <div class="area-card skeleton rounded-[2rem] p-8 h-[240px]"></div>
+
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper" id="swiper-wrapper">
+                    </div>
             </div>
-            
-            <div id="area-carousel" class="carousel-container hidden"></div>
         </section>
-        
-        <section class="mt-12 animate-fade-in-up" style="animation-delay: 0.2s">
-            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Distribución de Señales</h2>
+
+        <section class="animate-up" style="animation-delay: 0.3s;">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-6">Distribución de Señales por Bloque</h2>
             <div id="block-distribution" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3"></div>
         </section>
+
     </div>
 
     <div id="area-modal" class="modal">
         <div class="modal-content glass-heavy rounded-[2rem] p-4 md:p-8">
             <div class="flex justify-between items-start mb-6 pb-4 border-b border-white/5">
                 <div>
-                    <h3 id="modal-area-title" class="text-2xl md:text-3xl font-black text-white uppercase italic tracking-tighter mb-1"></h3>
-                    <p id="modal-punto-cero" class="text-slate-400 text-xs md:text-sm font-light leading-relaxed max-w-4xl"></p>
+                    <h3 id="modal-area-title" class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-2"></h3>
+                    <p id="modal-punto-cero" class="text-slate-400 text-sm font-light max-w-4xl"></p>
                 </div>
-                <button onclick="closeAreaModal()" class="text-slate-500 hover:text-white text-3xl p-2">&times;</button>
+                <button onclick="closeAreaModal()" class="text-white hover:text-red-500 text-4xl leading-none">&times;</button>
             </div>
             
             <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
                 <div class="lg:col-span-2 bg-black/40 rounded-2xl border border-white/5 relative flex flex-col">
-                    <div class="radar-container p-4">
+                    <div class="relative w-full h-full min-h-[400px]">
                         <canvas id="areaScatterChart"></canvas>
-                    </div>
-                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 pointer-events-none opacity-60">
-                         <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">Borde: Divergencia</span>
-                        <span class="text-[9px] text-slate-300 font-mono bg-black/80 px-2 py-1 rounded border border-white/10">Centro: Consenso</span>
                     </div>
                 </div>
                 
                 <div class="bg-white/5 rounded-2xl border border-white/5 flex flex-col overflow-hidden">
-                    <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-widest">Encuadres Detectados</h4>
-                        <span class="text-[9px] text-slate-500">SCROLL &darr;</span>
+                    <div class="p-4 border-b border-white/5 bg-white/5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-widest">Señales Detectadas</h4>
                     </div>
                     <div id="particles-list" class="flex-grow overflow-y-auto custom-scroll p-3 space-y-2"></div>
                 </div>
@@ -173,7 +178,8 @@
         <div class="modal-content glass-heavy rounded-[2rem] p-8 max-w-2xl border border-white/10 shadow-2xl relative h-auto">
             <button onclick="closeNewsDetailModal()" class="absolute top-6 right-8 text-slate-500 hover:text-white text-2xl">&times;</button>
             
-            <div id="detail-tag" class="bloque-tag mb-6"></div>
+            <div id="detail-tag" class="inline-block px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider border mb-6"></div>
+            
             <h4 id="detail-title" class="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight font-serif"></h4>
             
             <div class="grid grid-cols-2 gap-4 mb-8">
@@ -193,7 +199,7 @@
             </div>
             
             <div class="mb-8">
-                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Discrepancia (IA)</div>
+                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Inteligencia</div>
                 <p id="detail-sesgo" class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4 py-1"></p>
             </div>
             
@@ -204,54 +210,44 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN DE BLOQUES ---
+        // CONFIGURACIÓN DE COLORES
         const BLOQUE_COLORS = { 
             "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
             "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
             "INDIA": "#8b5cf6", "AFRICA": "#22c55e" 
         };
-        const BLOQUE_NAMES = {
-            "USA": "Estados Unidos", "EUROPE": "Unión Europea", "RUSSIA": "Rusia",
-            "CHINA": "China", "LATAM": "América Latina", "MID_EAST": "Medio Oriente",
-            "INDIA": "India", "AFRICA": "África"
-        };
-
+        
         let fullData = null;
         let scatterChart = null;
-        let currentAreaIndex = null;
+        let swiper = null;
 
-        // --- INICIALIZACIÓN ---
+        // INICIAR
         async function init() {
             try {
-                updateLoadStatus("Iniciando conexión satelital...", 10);
+                updateLoadStatus("Conectando con Satélite...", 10);
                 const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
                 if (!res.ok) throw new Error("Error de conexión");
-                updateLoadStatus("Descargando inteligencia...", 40);
+                updateLoadStatus("Descargando Paquetes...", 50);
                 
                 fullData = await res.json();
-                updateLoadStatus("Calibrando nodos...", 70);
+                updateLoadStatus("Renderizando Núcleo...", 80);
 
-                if (!fullData.carousel) throw new Error("Datos corruptos");
+                if (!fullData.carousel) throw new Error("Datos vacíos");
 
-                calculateStats();
-                renderCarousel();
-                renderBlockDistribution();
-                updateSyncStatus();
+                renderSwiper(); // NUEVO RENDERIZADOR
+                renderStats();
+                updateLoadStatus("Sistema Listo", 100);
 
-                updateLoadStatus("Sistema Operativo Online", 100);
                 setTimeout(() => {
                     document.getElementById('splash-screen').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('splash-screen').style.display = 'none';
-                        document.getElementById('main-interface').style.opacity = '1';
-                    }, 500);
-                }, 500);
+                    setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 500);
+                    document.getElementById('main-interface').style.opacity = '1';
+                }, 800);
+
             } catch (e) {
                 console.error(e);
-                document.getElementById('load-error').innerText = `FALLO CRÍTICO: ${e.message}`;
-                document.getElementById('load-error').classList.remove('hidden');
-                document.getElementById('load-progress').classList.remove('bg-blue-500');
-                document.getElementById('load-progress').classList.add('bg-red-500');
+                document.getElementById('load-status').innerText = "ERROR CRÍTICO DE CONEXIÓN";
+                document.getElementById('load-status').classList.add('text-red-500');
             }
         }
 
@@ -259,110 +255,119 @@
             document.getElementById('load-status').innerText = msg;
             document.getElementById('load-progress').style.width = pct + '%';
         }
-        function calculateStats() {
+
+        function renderStats() {
             let total = 0;
-            fullData.carousel.forEach(c => total += (c.particulas?.length || 0));
-            document.getElementById('total-signals').innerText = total;
-            document.getElementById('total-areas').innerText = fullData.carousel.length;
-        }
-        function updateSyncStatus() {
-            document.getElementById('sync-status').innerText = `ONLINE // ${new Date().toLocaleTimeString()}`;
-        }
-        function renderCarousel() {
-            document.getElementById('skeleton-carousel').classList.add('hidden');
-            const container = document.getElementById('area-carousel');
-            container.classList.remove('hidden');
-            container.innerHTML = fullData.carousel.map((area, idx) => `
-                <div class="area-card glass rounded-[2rem] p-8 border-t-4" 
-                     style="border-top-color: ${area.color}" onclick="openAreaModal(${idx})">
-                    <h3 class="text-2xl font-black text-white uppercase italic tracking-tighter mb-4">${area.area}</h3>
-                    <p class="text-slate-400 text-xs leading-relaxed line-clamp-3 mb-6 font-medium">${area.punto_cero}</p>
-                    <div class="flex justify-between items-center text-[10px] font-mono text-blue-400">
-                        <span>${area.particulas?.length || 0} SEÑALES</span>
-                        <span class="font-bold text-white/50">EXPLORAR &rarr;</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-        function renderBlockDistribution() {
             const counts = {};
-            fullData.carousel.forEach(a => a.particulas?.forEach(p => {
-                const b = p.bloque || 'OTRO';
-                counts[b] = (counts[b] || 0) + 1;
-            }));
-            const container = document.getElementById('block-distribution');
-            container.innerHTML = Object.entries(counts).sort((a,b) => b[1] - a[1]).map(([block, count]) => `
-                <div class="glass rounded-xl p-4 text-center border-t-2 hover:bg-white/5 transition-colors" style="border-color:${BLOQUE_COLORS[block] || '#fff'}">
-                    <div class="text-2xl font-black text-white mb-1">${count}</div>
-                    <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">${BLOQUE_NAMES[block] || block}</div>
+            
+            fullData.carousel.forEach(area => {
+                total += (area.particulas?.length || 0);
+                area.particulas?.forEach(p => {
+                    const b = p.bloque || 'OTRO';
+                    counts[b] = (counts[b] || 0) + 1;
+                });
+            });
+
+            document.getElementById('total-signals').innerText = total;
+
+            const distContainer = document.getElementById('block-distribution');
+            distContainer.innerHTML = Object.entries(counts).sort((a,b) => b[1] - a[1]).map(([block, count]) => `
+                <div class="glass rounded-xl p-3 text-center border-t-2 hover:bg-white/5 transition-colors" style="border-color:${BLOQUE_COLORS[block] || '#fff'}">
+                    <div class="text-xl font-black text-white">${count}</div>
+                    <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">${block}</div>
                 </div>
             `).join('');
         }
 
-        // --- LÓGICA DE BRÚJULA GEOPOLÍTICA ---
+        // --- EL NUEVO SWIPER (CARRUSEL) ---
+        function renderSwiper() {
+            const wrapper = document.getElementById('swiper-wrapper');
+            
+            wrapper.innerHTML = fullData.carousel.map((area, idx) => {
+                // Preparamos variable CSS para el color del glow
+                const glowColor = area.color || '#fff';
+                const glowAlpha = glowColor + '60'; // Añadir transparencia hex
+
+                return `
+                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow-color: ${glowColor}; --glow-alpha: ${glowAlpha}">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="text-[10px] font-bold text-white bg-white/10 px-2 py-1 rounded border border-white/10 uppercase tracking-wider">
+                            ${area.particulas?.length || 0} Señales
+                        </div>
+                        <div class="w-2 h-2 rounded-full animate-pulse" style="background-color: ${glowColor}"></div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-black text-white uppercase italic leading-none mb-4" style="text-shadow: 0 0 20px ${glowAlpha}">
+                        ${area.area}
+                    </h3>
+                    
+                    <p class="text-slate-400 text-xs leading-relaxed line-clamp-4 mb-auto">
+                        ${area.punto_cero}
+                    </p>
+
+                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
+                        <span class="text-[9px] font-mono text-slate-500 uppercase">Estado: ACTIVO</span>
+                        <span class="text-[10px] font-bold text-white group-hover:translate-x-1 transition-transform">EXPLORAR &rarr;</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // INICIALIZAR SWIPER
+            swiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                initialSlide: 1,
+                coverflowEffect: {
+                    rotate: 30,
+                    stretch: 0,
+                    depth: 200,
+                    modifier: 1,
+                    slideShadows: false, // Desactivado para mejor rendimiento visual con el glow
+                },
+                pagination: false,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                },
+                keyboard: { enabled: true }
+            });
+        }
+
+        // --- LÓGICA DE MODALES Y RADAR (IGUAL QUE ANTES) ---
         function openAreaModal(idx) {
-            currentAreaIndex = idx;
             const area = fullData.carousel[idx];
             document.getElementById('modal-area-title').innerText = area.area;
+            document.getElementById('modal-area-title').style.color = area.color;
             document.getElementById('modal-punto-cero').innerText = area.punto_cero;
             
             renderParticlesList(area.particulas || []);
             document.getElementById('area-modal').classList.add('open');
-            setTimeout(() => renderRadar(area.particulas || []), 350);
-        }
-
-        function renderParticlesList(particulas) {
-            const list = document.getElementById('particles-list');
-            if(particulas.length === 0) {
-                list.innerHTML = '<div class="p-4 text-center text-slate-500 text-xs">Sin datos</div>';
-                return;
-            }
-            const sorted = [...particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
-
-            list.innerHTML = sorted.map((p, i) => `
-                <div id="particle-${i}" class="p-3 rounded bg-white/5 hover:bg-white/10 cursor-pointer border-l-2 transition-all group" 
-                     style="border-color:${BLOQUE_COLORS[p.bloque]}"
-                     onclick="highlightParticle(${i})">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-bold text-white bg-white/10 px-2 py-0.5 rounded">${p.bloque}</span>
-                        <span class="text-[9px] font-mono ${getProximityClass(p.proximidad)}">${p.proximidad}%</span>
-                    </div>
-                    <div class="text-xs font-bold text-white mb-1 line-clamp-2 leading-tight group-hover:text-blue-400 transition-colors">${p.titulo}</div>
-                    <div class="text-[10px] text-slate-400 italic border-l border-white/20 pl-2 leading-tight mt-1">
-                        "${p.sesgo || 'Sin análisis'}"
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function highlightParticle(index) {
-            const area = fullData.carousel[currentAreaIndex];
-            const sorted = [...area.particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
-            openNewsDetail(sorted[index]);
+            setTimeout(() => renderRadar(area.particulas || []), 300);
         }
 
         function renderRadar(particulas) {
             const ctx = document.getElementById('areaScatterChart').getContext('2d');
             if (scatterChart) scatterChart.destroy();
 
-            // COORDENADAS FIJAS (BRÚJULA)
+            // ÁNGULOS GEOPOLÍTICOS FIJOS
             const BLOCK_ANGLES = {
                 "RUSSIA": 0, "CHINA": Math.PI*0.25, "INDIA": Math.PI*0.5, "EUROPE": Math.PI*0.75,
                 "USA": Math.PI, "LATAM": Math.PI*1.25, "MID_EAST": Math.PI*1.5, "AFRICA": Math.PI*1.75
             };
 
-            const sortedParticles = [...particulas].sort((a,b) => a.bloque.localeCompare(b.bloque));
-
             const datasets = [{
                 label: 'Señales',
-                data: sortedParticles.map((p, i) => {
+                data: particulas.map((p, i) => {
                     const prox = parseFloat(p.proximidad) || 0;
-                    // LÓGICA INVERTIDA: 100% Proximidad = Centro (Radio 0)
                     let radius = 100 - prox; 
-                    if (radius < 2) radius = Math.random() * 4;
+                    if (radius < 2) radius = Math.random() * 5;
 
                     let baseAngle = BLOCK_ANGLES[p.bloque] !== undefined ? BLOCK_ANGLES[p.bloque] : Math.random()*2*Math.PI;
-                    const jitter = (Math.random() - 0.5) * 0.4; // Pequeña variación para evitar solapamiento
+                    const jitter = (Math.random() - 0.5) * 0.5;
                     const finalAngle = baseAngle + jitter;
 
                     return {
@@ -372,85 +377,71 @@
                     };
                 }),
                 pointBackgroundColor: (ctx) => ctx.raw ? (BLOQUE_COLORS[ctx.raw.original.bloque] || '#fff') : '#fff',
-                pointBorderColor: '#0f172a', pointBorderWidth: 2, pointRadius: 6,
-                pointHoverRadius: 15, pointHoverBorderWidth: 3, pointHoverBorderColor: '#fff'
+                pointBorderColor: '#000', pointBorderWidth: 1, pointRadius: 6,
+                pointHoverRadius: 12, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff'
             }];
 
             scatterChart = new Chart(ctx, {
                 type: 'scatter',
                 data: { datasets },
                 options: {
-                    responsive: true, maintainAspectRatio: false, layout: { padding: 10 },
-                    scales: { x: { display: false, min: -115, max: 115 }, y: { display: false, min: -115, max: 115 } },
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { x: { display: false, min: -120, max: 120 }, y: { display: false, min: -120, max: 120 } },
                     plugins: { 
                         legend: { display: false },
                         tooltip: { 
-                            enabled: true, backgroundColor: 'rgba(2, 6, 23, 0.95)',
-                            titleColor: '#fff', bodyColor: '#cbd5e1', borderColor: 'rgba(255, 255, 255, 0.2)',
-                            borderWidth: 1, padding: 12, displayColors: true,
+                            enabled: true, backgroundColor: 'rgba(0,0,0,0.9)', titleColor: '#fff',
                             callbacks: {
-                                title: (ctx) => `[${ctx[0].raw.original.bloque}]`,
-                                label: (ctx) => {
-                                    const t = ctx.raw.original.titulo;
-                                    return t.length > 40 ? t.substr(0,40)+'...' : t;
-                                }
+                                label: (ctx) => ctx.raw.original.titulo.substr(0,40)+'...'
                             }
-                        }
-                    },
-                    onHover: (event, chartElement) => {
-                        document.querySelectorAll('.particle-active').forEach(el => el.classList.remove('particle-active'));
-                        if (chartElement.length) {
-                            const idx = chartElement[0].element.$context.raw.index;
-                            const listEl = document.getElementById(`particle-${idx}`);
-                            if (listEl) {
-                                listEl.classList.add('particle-active');
-                                listEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                            event.native.target.style.cursor = 'pointer';
-                        } else { event.native.target.style.cursor = 'default'; }
-                    },
-                    onClick: (e, el) => { if (el.length) openNewsDetail(el[0].element.$context.raw.original); }
+                        },
+                        onClick: (e, el) => { if (el.length) openNewsDetail(el[0].element.$context.raw.original); }
+                    }
                 },
                 plugins: [{
                     id: 'radarBackground',
                     beforeDraw: (chart) => {
                         const {ctx, chartArea: {left, top, right, bottom}} = chart;
                         const cx = (left + right) / 2, cy = (top + bottom) / 2;
-                        const scale = Math.min(right - left, bottom - top) / 230; 
-                        ctx.save();
-
-                        // Fondo Gradiente (Centro Azul = Consenso, Borde Oscuro/Rojo = Caos)
-                        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 110 * scale);
-                        grd.addColorStop(0, 'rgba(59, 130, 246, 0.15)'); 
-                        grd.addColorStop(0.6, 'rgba(15, 23, 42, 0.5)');
-                        grd.addColorStop(1, 'rgba(239, 68, 68, 0.1)');   
-                        ctx.fillStyle = grd; ctx.fillRect(left, top, right-left, bottom-top);
-
-                        // Líneas de Sectores
-                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)'; ctx.lineWidth = 1;
+                        const scale = Math.min(right - left, bottom - top) / 240; 
+                        
+                        // Fondo Radar
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.lineWidth = 1;
+                        [25, 50, 75, 100].forEach(r => {
+                            ctx.beginPath(); ctx.arc(cx, cy, r * scale, 0, Math.PI * 2); ctx.stroke();
+                        });
+                        
+                        // Ejes
                         for(let i=0; i<8; i++){
                             const ang = i * (Math.PI/4);
-                            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(ang)*115*scale, cy + Math.sin(ang)*115*scale); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(cx, cy); 
+                            ctx.lineTo(cx + Math.cos(ang)*110*scale, cy + Math.sin(ang)*110*scale); 
+                            ctx.stroke();
                         }
                         
-                        // Anillos
-                        [25, 50, 75, 100].forEach(r => {
-                            const radius = r * scale;
-                            ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                            ctx.strokeStyle = r===100 ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.05)'; ctx.lineWidth = r===100?1.5:1; ctx.stroke();
+                        // Labels
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+                        const labels = [{t:"RUS", a:0}, {t:"CHN", a:0.25}, {t:"IND", a:0.5}, {t:"EU", a:0.75}, {t:"USA", a:1}, {t:"LATAM", a:1.25}, {t:"MID-E", a:1.5}, {t:"AFR", a:1.75}];
+                        labels.forEach(l => { 
+                            ctx.fillText(l.t, cx + Math.cos(l.a*Math.PI) * (120 * scale), cy + Math.sin(l.a*Math.PI) * (120 * scale)); 
                         });
-
-                        // Etiquetas de Región
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'; ctx.font = '9px "JetBrains Mono"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                        const labels = [{txt:"RUSSIA", ang:0}, {txt:"CHINA", ang:Math.PI*0.25}, {txt:"INDIA", ang:Math.PI*0.5}, {txt:"EU", ang:Math.PI*0.75}, {txt:"USA", ang:Math.PI}, {txt:"LATAM", ang:Math.PI*1.25}, {txt:"MID-E", ang:Math.PI*1.5}, {txt:"AFRICA", ang:Math.PI*1.75}];
-                        labels.forEach(l => { ctx.fillText(l.txt, cx + Math.cos(l.ang) * (125 * scale), cy + Math.sin(l.ang) * (125 * scale)); });
-
-                        // Núcleo
-                        ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI*2); ctx.fillStyle = '#3b82f6'; ctx.fill();
-                        ctx.restore();
                     }
                 }]
             });
+        }
+
+        function renderParticlesList(particulas) {
+            const list = document.getElementById('particles-list');
+            list.innerHTML = particulas.map((p, i) => `
+                <div class="p-3 rounded bg-white/5 hover:bg-white/10 cursor-pointer border-l-2 transition-all" 
+                     style="border-color:${BLOQUE_COLORS[p.bloque]}" onclick="openNewsDetail(fullData.carousel[swiper.activeIndex].particulas[${i}])">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[9px] font-bold text-slate-300 uppercase">${p.bloque}</span>
+                        <span class="text-[9px] font-mono text-white">${p.proximidad}%</span>
+                    </div>
+                    <div class="text-xs font-bold text-white line-clamp-2">${p.titulo}</div>
+                </div>
+            `).join('');
         }
 
         function openNewsDetail(p) {
@@ -464,27 +455,21 @@
             tag.innerText = p.bloque;
             tag.style.color = BLOQUE_COLORS[p.bloque];
             tag.style.borderColor = BLOQUE_COLORS[p.bloque];
-            tag.style.backgroundColor = `${BLOQUE_COLORS[p.bloque]}10`;
+            tag.style.backgroundColor = `${BLOQUE_COLORS[p.bloque]}20`;
             
             const prox = parseFloat(p.proximidad);
             const fill = document.getElementById('proximity-fill');
             fill.style.width = prox + "%";
             fill.style.backgroundColor = prox >= 75 ? '#22c55e' : prox >= 50 ? '#eab308' : '#ef4444';
             
-            document.getElementById('bias-meter').innerText = prox >= 80 ? "Consenso Factual" : prox >= 50 ? "Interpretativo" : "Divergencia/Propaganda";
+            document.getElementById('bias-meter').innerText = prox >= 80 ? "Consenso Factual" : prox >= 50 ? "Interpretativo" : "Divergencia";
             document.getElementById('bias-meter').style.color = fill.style.backgroundColor;
+            
             document.getElementById('news-detail-modal').classList.add('open');
         }
 
-        function getProximityClass(val) {
-            const v = parseFloat(val);
-            if(v >= 75) return 'text-green-400';
-            if(v >= 50) return 'text-yellow-400';
-            return 'text-red-400';
-        }
         function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
         function closeNewsDetailModal() { document.getElementById('news-detail-modal').classList.remove('open'); }
-        function refreshData() { location.reload(); }
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
