@@ -25,6 +25,9 @@ function App() {
                         return (categoryBlock.particulas || []).map(p => ({
                             ...p,
                             category: categoryBlock.area, // Map 'area' to 'category'
+                            title: p.titulo,              // Map 'titulo' to 'title'
+                            country: p.bloque,            // Map 'bloque' to 'country'
+                            analysis: p.titulo,           // Fallback: use title as analysis since no summary exists in JSON
                             proximity_score: (p.proximidad / 10).toFixed(1) // Map 0-100 to 0-10
                         }));
                     });
