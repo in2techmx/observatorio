@@ -1,476 +1,153 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROXIMITY | Global Intelligence Observatory</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- ESTILOS NUCLEARES --- */
-        :root {
-            --bg-color: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.85);
-        }
-        body { background-color: var(--bg-color); color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
+import os, json, datetime, time, ssl, urllib.request, urllib.error, hashlib, re, sys, random, math
+import xml.etree.ElementTree as ET
+from collections import defaultdict
+from google import genai
+from bs4 import BeautifulSoup
+
+# --- CONFIGURACIÓN ---
+if sys.stdout.encoding != 'utf-8':
+    try: sys.stdout.reconfigure(encoding='utf-8')
+    except: pass
+
+PATHS = { "diario": "historico_noticias/diario" }
+for p in PATHS.values(): os.makedirs(p, exist_ok=True)
+
+AREAS_ESTRATEGICAS = [
+    "Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
+    "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
+]
+
+FUENTES = {
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.foreignaffairs.com/rss.xml"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "http://www.xinhuanet.com/english/rss/world.xml", "http://www.ecns.cn/rss/rss.xml", "https://www.chinadaily.com.cn/rss/world_rss.xml"],
+    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.euronews.com/rss?level=vertical&name=news", "https://www.france24.com/en/rss", "https://www.dw.com/xml/rss/rss-en-all"],
+    "LATAM": ["https://www.infobae.com/america/arc/outboundfeeds/rss/", "https://elpais.com/america/rss/", "https://en.mercopress.com/rss", "https://www.bbc.com/mundo/ultimas_noticias/index.xml", "https://cnnespanol.cnn.com/feed"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.middleeasteye.net/rss", "https://www.arabnews.com/cat/2/rss.xml", "https://www.jpost.com/rss/rssfeedsheadlines.aspx", "https://english.alarabiya.net/.mrss/en/news.xml", "https://www.trtworld.com/rss"],
+    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss", "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"],
+    "AFRICA": ["https://africa.com/feed", "https://newafricanmagazine.com/feed", "http://feeds.bbci.co.uk/news/world/africa/rss.xml", "https://www.news24.com/news24/partners24/rss", "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf"]
+}
+
+class DeepIntelligenceEngine:
+    def __init__(self, api_key):
+        self.client = genai.Client(api_key=api_key)
+        self.clean_sample = [] 
+        self.clusters = defaultdict(list)
+
+    def clean_text(self, text):
+        if not text: return ""
+        text = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', text)
+        return re.sub(r'<[^>]+>', '', text).strip()
+
+    def get_embeddings(self, texts):
+        if not texts: return []
+        try:
+            res = self.client.models.embed_content(model="text-embedding-004", content=texts, config={'task_type': 'RETRIEVAL_DOCUMENT'})
+            return [e.values for e in res.embeddings]
+        except: return [None] * len(texts)
+
+    def smart_scrape(self, url):
+        """Extracción profunda de la sustancia noticiosa."""
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=8) as response:
+                soup = BeautifulSoup(response.read(), 'html.parser')
+                for s in soup(["script", "style", "nav", "footer", "aside", "header", "form"]):
+                    s.extract()
+                paragraphs = soup.find_all('p')
+                text = " ".join([p.get_text() for p in paragraphs])
+                return re.sub(r'\s+', ' ', text).strip()[:2500]
+        except: return ""
+
+    def cosine_sim(self, v1, v2):
+        if v1 is None or v2 is None: return 0
+        dot = sum(a*b for a,b in zip(v1, v2))
+        n1, n2 = math.sqrt(sum(a*a for a in v1)), math.sqrt(sum(b*b for b in v2))
+        return dot / (n1 * n2) if n1*n2 > 0 else 0
+
+    # --- FASE 1 & 2: MUESTRA REPRESENTATIVA ---
+    def build_representative_sample(self):
+        print("🌍 FASE 1: Ingesta y Deduplicación Vectorial...")
+        raw_list = []
+        for region, urls in FUENTES.items():
+            for url in urls:
+                try:
+                    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                    root = ET.fromstring(urllib.request.urlopen(req, timeout=5).read())
+                    items = root.findall('.//item') or root.findall('.//{*}entry')
+                    for n in items[:30]:
+                        t = self.clean_text((n.find('title') or n.find('{*}title')).text)
+                        l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
+                        if t and l: raw_list.append({"title": t, "link": l, "region": region})
+                except: continue
+
+        # Deduplicación por titulares
+        vectors = self.get_embeddings([x['title'] for x in raw_list])
+        unique_indices = []
+        for i, v_i in enumerate(vectors):
+            if not any(self.cosine_sim(v_i, vectors[j]) > 0.88 for j in unique_indices):
+                unique_indices.append(i)
         
-        /* Efectos de Cristal */
-        .glass { background: var(--glass-bg); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .glass-heavy { background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        
-        /* --- EL CARRETE (SWIPER 3D) --- */
-        .swiper { width: 100%; padding-top: 40px; padding-bottom: 60px; overflow: visible; }
-        
-        .swiper-slide {
-            width: 300px;
-            height: 380px;
-            background: #1e293b;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.3; /* Los inactivos son transparentes */
-            transform: scale(0.8);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;
-            cursor: grab;
-            position: relative; overflow: hidden;
-        }
+        self.clean_sample = [raw_list[i] for i in unique_indices]
+        print(f"   ✅ Muestra representativa: {len(self.clean_sample)} noticias únicas.")
 
-        /* La Tarjeta Activa (Seleccionada) */
-        .swiper-slide-active {
-            opacity: 1;
-            transform: scale(1.1) translateY(-10px); /* Se hace grande y flota */
-            z-index: 50;
-            border-color: var(--glow-color); /* Borde del color del área */
-            box-shadow: 0 0 50px var(--glow-alpha); /* GLOW INTENSO */
-            background: #0f172a;
-        }
-
-        .swiper-slide-active::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
-            background: linear-gradient(to bottom, var(--glow-alpha) 0%, transparent 40%);
-            opacity: 0.2; pointer-events: none;
-        }
-
-        /* --- UI ELEMENTS --- */
-        .guide-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
-        .guide-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
-
-        .modal { opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; }
-        .modal.open { opacity: 1; visibility: visible; }
-        .modal-content { transform: scale(0.95) translateY(20px); transition: 0.4s; width: 95%; max-width: 1400px; max-height: 95vh; display: flex; flex-direction: column; }
-        .modal.open .modal-content { transform: scale(1) translateY(0); }
-
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        
-        /* Animaciones */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    </style>
-</head>
-<body>
-
-    <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[2000] bg-[#020617] transition-opacity duration-700">
-        <div class="text-center">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic mb-6">Proximity</h1>
-            <div class="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mx-auto mb-4">
-                <div id="load-progress" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%"></div>
-            </div>
-            <div id="load-status" class="text-slate-500 font-mono text-[10px] uppercase tracking-widest">Iniciando Protocolos...</div>
-        </div>
-    </div>
-
-    <div id="main-interface" class="max-w-7xl mx-auto p-6 md:p-8 opacity-0">
-        
-        <header class="flex flex-col md:flex-row justify-between items-end border-b border-white/5 pb-6 mb-8 gap-6 animate-up">
-            <div>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase italic leading-none">Proximity</h1>
-                <p class="text-slate-400 font-mono text-xs tracking-[0.2em] mt-2 uppercase">Observatorio de Inteligencia Global</p>
-            </div>
-            <div class="flex gap-4 text-[10px] font-mono text-slate-500 uppercase">
-                <div class="px-3 py-1 border border-white/10 rounded bg-white/5">
-                    <span class="text-blue-400">Estado:</span> <span id="sync-status" class="text-white">ONLINE</span>
-                </div>
-                <div class="px-3 py-1 border border-white/10 rounded bg-white/5">
-                    <span class="text-purple-400">Nodos:</span> <span id="total-signals" class="text-white">0</span>
-                </div>
-            </div>
-        </header>
-
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16 animate-up" style="animation-delay: 0.1s;">
-            <div class="guide-card p-5 rounded-2xl">
-                <div class="text-blue-400 text-lg mb-2">📡</div>
-                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">1. Ingesta Multi-Regional</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">
-                    El sistema procesa en tiempo real noticias de 8 bloques geopolíticos (incluyendo medios locales de Asia, África y Latam) para evitar el sesgo de fuente única.
-                </p>
-            </div>
-            <div class="guide-card p-5 rounded-2xl">
-                <div class="text-purple-400 text-lg mb-2">🎯</div>
-                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">2. Proximidad Narrativa</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">
-                    <span class="text-white font-bold">CENTRO:</span> Convergencia. Hechos aceptados por múltiples bloques.<br>
-                    <span class="text-white font-bold">BORDE:</span> Divergencia. Narrativa específica o visión propia de la región.
-                </p>
-            </div>
-            <div class="guide-card p-5 rounded-2xl">
-                <div class="text-green-400 text-lg mb-2">🔄</div>
-                <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-2">3. Navegación Táctica</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">
-                    Gira el <span class="text-white">Núcleo Central</span>. Selecciona un Área Estratégica (ej: Energía) para desplegar el Mapa de Dispersión y analizar las posturas comparadas.
-                </p>
-            </div>
-        </section>
-
-        <section class="mb-12 animate-up" style="animation-delay: 0.2s;">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Núcleo de Áreas Estratégicas</h2>
-                <span class="text-[10px] font-mono text-slate-600 animate-pulse">↔ DESLIZA O ARRASTRA PARA GIRAR</span>
-            </div>
-
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper" id="swiper-wrapper">
-                    </div>
-            </div>
-        </section>
-
-        <section class="animate-up" style="animation-delay: 0.3s;">
-            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-6">Distribución de Señales por Bloque</h2>
-            <div id="block-distribution" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3"></div>
-        </section>
-
-    </div>
-
-    <div id="area-modal" class="modal">
-        <div class="modal-content glass-heavy rounded-[2rem] p-4 md:p-8">
-            <div class="flex justify-between items-start mb-6 pb-4 border-b border-white/5">
-                <div>
-                    <h3 id="modal-area-title" class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-2"></h3>
-                    <p id="modal-punto-cero" class="text-slate-400 text-sm font-light max-w-4xl"></p>
-                </div>
-                <button onclick="closeAreaModal()" class="text-white hover:text-red-500 text-4xl leading-none">&times;</button>
-            </div>
+    # --- FASE 3: SCRAPING Y CLASIFICACIÓN ---
+    def process_deep_content(self):
+        print("🧠 FASE 2: Scraping Profundo y Clasificación...")
+        batch_size = 35
+        for i in range(0, len(self.clean_sample), batch_size):
+            batch = self.clean_sample[i:i+batch_size]
+            prompt = f"Clasifica en: {AREAS_ESTRATEGICAS}. Traduce a español. Si no es estratégico usa area:'NONE'. JSON: {{ 'res': [{{ 'idx': int, 'area': '...', 'titulo_es': '...' }}] }}\n\n"
+            prompt += "\n".join([f"IDX:{idx+i} | T:{item['title']}" for idx, item in enumerate(batch)])
             
-            <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
-                <div class="lg:col-span-2 bg-black/40 rounded-2xl border border-white/5 relative flex flex-col">
-                    <div class="relative w-full h-full min-h-[400px]">
-                        <canvas id="areaScatterChart"></canvas>
-                    </div>
-                    <div class="absolute bottom-4 left-4 flex gap-2">
-                        <span class="text-[9px] bg-black/60 text-slate-400 px-2 py-1 rounded border border-white/10">CENTRO: Convergencia</span>
-                        <span class="text-[9px] bg-black/60 text-slate-400 px-2 py-1 rounded border border-white/10">PERIFERIA: Divergencia</span>
-                    </div>
-                </div>
-                
-                <div class="bg-white/5 rounded-2xl border border-white/5 flex flex-col overflow-hidden">
-                    <div class="p-4 border-b border-white/5 bg-white/5">
-                        <h4 class="text-xs font-bold text-white uppercase tracking-widest">Señales Detectadas</h4>
-                    </div>
-                    <div id="particles-list" class="flex-grow overflow-y-auto custom-scroll p-3 space-y-2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+            try:
+                res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
+                data = json.loads(res.text)
+                for r in data.get('res', []):
+                    if r['area'] in AREAS_ESTRATEGICAS:
+                        idx = r['idx']
+                        # SCRAPING SOLO DE LA MUESTRA GANADORA
+                        content = self.smart_scrape(self.clean_sample[idx]['link'])
+                        if len(content) > 200:
+                            self.clean_sample[idx].update({"area": r['area'], "titulo_es": r['titulo_es'], "full_content": content})
+                            self.clusters[r['area']].append(self.clean_sample[idx])
+            except: continue
 
-    <div id="news-detail-modal" class="modal z-[1100]">
-        <div class="modal-content glass-heavy rounded-[2rem] p-8 max-w-2xl border border-white/10 shadow-2xl relative h-auto">
-            <button onclick="closeNewsDetailModal()" class="absolute top-6 right-8 text-slate-500 hover:text-white text-2xl">&times;</button>
+    # --- FASE 4: RADAR VECTORIAL ---
+    def run_radar(self):
+        print("📐 FASE 3: Generando Radar de Convergencia...")
+        final_carousel = []
+        for area in AREAS_ESTRATEGICAS:
+            nodes = self.clusters.get(area, [])
+            if len(nodes) < 2: continue
             
-            <div id="detail-tag" class="inline-block px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider border mb-6"></div>
+            # Vectores basados en contenido profundo
+            vectors = self.get_embeddings([n['full_content'] for n in nodes])
+            valid_v = [v for v in vectors if v]
+            centroid = [sum(v[i] for v in valid_v)/len(valid_v) for i in range(len(valid_v[0]))]
             
-            <h4 id="detail-title" class="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight font-serif"></h4>
-            
-            <div class="grid grid-cols-2 gap-4 mb-8">
-                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Proximidad Narrativa</div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                            <div id="proximity-fill" class="h-full rounded-full transition-all duration-500"></div>
-                        </div>
-                        <span id="detail-proximidad" class="font-mono text-lg font-bold text-white"></span>
-                    </div>
-                </div>
-                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Clasificación</div>
-                    <div id="bias-meter" class="text-sm font-medium text-slate-300 font-mono uppercase"></div>
-                </div>
-            </div>
-            
-            <div class="mb-8">
-                <div class="text-[10px] uppercase text-slate-500 mb-2 font-bold">Análisis de Posición</div>
-                <p id="detail-sesgo" class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4 py-1"></p>
-            </div>
-            
-            <a id="detail-link" href="#" target="_blank" class="block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all uppercase text-xs tracking-widest">
-                Leer Fuente Original
-            </a>
-        </div>
-    </div>
+            particles = []
+            for idx, node in enumerate(nodes):
+                sim = self.cosine_sim(vectors[idx], centroid)
+                prox = round(max(0, min(100, (sim - 0.7) * 333.3)), 1)
+                particles.append({
+                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:6],
+                    "titulo": node['titulo_es'], "link": node['link'], "bloque": node['region'],
+                    "proximidad": prox, "sesgo": "Convergencia fáctica." if prox > 75 else "Divergencia narrativa."
+                })
+            final_carousel.append({"area": area, "punto_cero": "Análisis vectorial de contenido profundo.", "color": self.get_color(area), "particulas": particles})
 
-    <script>
-        // CONFIGURACIÓN DE COLORES
-        const BLOQUE_COLORS = { 
-            "USA": "#3b82f6", "EUROPE": "#fde047", "RUSSIA": "#ef4444", 
-            "CHINA": "#f97316", "LATAM": "#d946ef", "MID_EAST": "#10b981", 
-            "INDIA": "#8b5cf6", "AFRICA": "#22c55e" 
-        };
-        
-        let fullData = null;
-        let scatterChart = null;
-        let swiper = null;
+        with open("gravity_carousel.json", "w", encoding="utf-8") as f:
+            json.dump({"carousel": final_carousel}, f, indent=2, ensure_ascii=False)
+        print("✅ Observatorio actualizado.")
 
-        // INICIAR
-        async function init() {
-            try {
-                updateLoadStatus("Conectando con Satélite...", 10);
-                const res = await fetch(`./gravity_carousel.json?t=${Date.now()}`);
-                if (!res.ok) throw new Error("Error de conexión");
-                updateLoadStatus("Descargando Paquetes...", 50);
-                
-                fullData = await res.json();
-                updateLoadStatus("Renderizando Núcleo...", 80);
+    def get_color(self, a):
+        return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(a, "#fff")
 
-                if (!fullData.carousel) throw new Error("Datos vacíos");
-
-                renderSwiper(); 
-                renderStats();
-                updateLoadStatus("Sistema Listo", 100);
-
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.opacity = '0';
-                    setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 500);
-                    document.getElementById('main-interface').style.opacity = '1';
-                }, 800);
-
-            } catch (e) {
-                console.error(e);
-                document.getElementById('load-status').innerText = "ERROR CRÍTICO DE CONEXIÓN";
-                document.getElementById('load-status').classList.add('text-red-500');
-            }
-        }
-
-        function updateLoadStatus(msg, pct) {
-            document.getElementById('load-status').innerText = msg;
-            document.getElementById('load-progress').style.width = pct + '%';
-        }
-
-        function renderStats() {
-            let total = 0;
-            const counts = {};
-            
-            fullData.carousel.forEach(area => {
-                total += (area.particulas?.length || 0);
-                area.particulas?.forEach(p => {
-                    const b = p.bloque || 'OTRO';
-                    counts[b] = (counts[b] || 0) + 1;
-                });
-            });
-
-            document.getElementById('total-signals').innerText = total;
-
-            const distContainer = document.getElementById('block-distribution');
-            distContainer.innerHTML = Object.entries(counts).sort((a,b) => b[1] - a[1]).map(([block, count]) => `
-                <div class="glass rounded-xl p-3 text-center border-t-2 hover:bg-white/5 transition-colors" style="border-color:${BLOQUE_COLORS[block] || '#fff'}">
-                    <div class="text-xl font-black text-white">${count}</div>
-                    <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">${block}</div>
-                </div>
-            `).join('');
-        }
-
-        // --- EL NUEVO SWIPER (CARRUSEL) ---
-        function renderSwiper() {
-            const wrapper = document.getElementById('swiper-wrapper');
-            
-            wrapper.innerHTML = fullData.carousel.map((area, idx) => {
-                const glowColor = area.color || '#fff';
-                const glowAlpha = glowColor + '60'; 
-
-                return `
-                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow-color: ${glowColor}; --glow-alpha: ${glowAlpha}">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="text-[10px] font-bold text-white bg-white/10 px-2 py-1 rounded border border-white/10 uppercase tracking-wider">
-                            ${area.particulas?.length || 0} Señales
-                        </div>
-                        <div class="w-2 h-2 rounded-full animate-pulse" style="background-color: ${glowColor}"></div>
-                    </div>
-                    
-                    <h3 class="text-2xl font-black text-white uppercase italic leading-none mb-4" style="text-shadow: 0 0 20px ${glowAlpha}">
-                        ${area.area}
-                    </h3>
-                    
-                    <p class="text-slate-400 text-xs leading-relaxed line-clamp-4 mb-auto">
-                        ${area.punto_cero}
-                    </p>
-
-                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
-                        <span class="text-[9px] font-mono text-slate-500 uppercase">Estado: ACTIVO</span>
-                        <span class="text-[10px] font-bold text-white group-hover:translate-x-1 transition-transform">EXPLORAR &rarr;</span>
-                    </div>
-                </div>
-                `;
-            }).join('');
-
-            // INICIALIZAR SWIPER
-            swiper = new Swiper(".mySwiper", {
-                effect: "coverflow",
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: "auto",
-                initialSlide: 1,
-                coverflowEffect: {
-                    rotate: 30,
-                    stretch: 0,
-                    depth: 200,
-                    modifier: 1,
-                    slideShadows: false, 
-                },
-                pagination: false,
-                autoplay: {
-                    delay: 4000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true
-                },
-                keyboard: { enabled: true }
-            });
-        }
-
-        // --- LÓGICA DE MODALES Y RADAR ---
-        function openAreaModal(idx) {
-            const area = fullData.carousel[idx];
-            document.getElementById('modal-area-title').innerText = area.area;
-            document.getElementById('modal-area-title').style.color = area.color;
-            document.getElementById('modal-punto-cero').innerText = area.punto_cero;
-            
-            renderParticlesList(area.particulas || []);
-            document.getElementById('area-modal').classList.add('open');
-            setTimeout(() => renderRadar(area.particulas || []), 300);
-        }
-
-        function renderRadar(particulas) {
-            const ctx = document.getElementById('areaScatterChart').getContext('2d');
-            if (scatterChart) scatterChart.destroy();
-
-            const BLOCK_ANGLES = {
-                "RUSSIA": 0, "CHINA": Math.PI*0.25, "INDIA": Math.PI*0.5, "EUROPE": Math.PI*0.75,
-                "USA": Math.PI, "LATAM": Math.PI*1.25, "MID_EAST": Math.PI*1.5, "AFRICA": Math.PI*1.75
-            };
-
-            const datasets = [{
-                label: 'Señales',
-                data: particulas.map((p, i) => {
-                    const prox = parseFloat(p.proximidad) || 0;
-                    let radius = 100 - prox; 
-                    if (radius < 2) radius = Math.random() * 5;
-
-                    let baseAngle = BLOCK_ANGLES[p.bloque] !== undefined ? BLOCK_ANGLES[p.bloque] : Math.random()*2*Math.PI;
-                    const jitter = (Math.random() - 0.5) * 0.5;
-                    const finalAngle = baseAngle + jitter;
-
-                    return {
-                        x: radius * Math.cos(finalAngle),
-                        y: radius * Math.sin(finalAngle),
-                        original: p, index: i
-                    };
-                }),
-                pointBackgroundColor: (ctx) => ctx.raw ? (BLOQUE_COLORS[ctx.raw.original.bloque] || '#fff') : '#fff',
-                pointBorderColor: '#000', pointBorderWidth: 1, pointRadius: 6,
-                pointHoverRadius: 12, pointHoverBorderWidth: 2, pointHoverBorderColor: '#fff'
-            }];
-
-            scatterChart = new Chart(ctx, {
-                type: 'scatter',
-                data: { datasets },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { x: { display: false, min: -120, max: 120 }, y: { display: false, min: -120, max: 120 } },
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: { 
-                            enabled: true, backgroundColor: 'rgba(0,0,0,0.9)', titleColor: '#fff',
-                            callbacks: {
-                                label: (ctx) => ctx.raw.original.titulo.substr(0,40)+'...'
-                            }
-                        },
-                        onClick: (e, el) => { if (el.length) openNewsDetail(el[0].element.$context.raw.original); }
-                    }
-                },
-                plugins: [{
-                    id: 'radarBackground',
-                    beforeDraw: (chart) => {
-                        const {ctx, chartArea: {left, top, right, bottom}} = chart;
-                        const cx = (left + right) / 2, cy = (top + bottom) / 2;
-                        const scale = Math.min(right - left, bottom - top) / 240; 
-                        
-                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.lineWidth = 1;
-                        [25, 50, 75, 100].forEach(r => {
-                            ctx.beginPath(); ctx.arc(cx, cy, r * scale, 0, Math.PI * 2); ctx.stroke();
-                        });
-                        
-                        for(let i=0; i<8; i++){
-                            const ang = i * (Math.PI/4);
-                            ctx.beginPath(); ctx.moveTo(cx, cy); 
-                            ctx.lineTo(cx + Math.cos(ang)*110*scale, cy + Math.sin(ang)*110*scale); 
-                            ctx.stroke();
-                        }
-                        
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
-                        const labels = [{t:"RUS", a:0}, {t:"CHN", a:0.25}, {t:"IND", a:0.5}, {t:"EU", a:0.75}, {t:"USA", a:1}, {t:"LATAM", a:1.25}, {t:"MID-E", a:1.5}, {t:"AFR", a:1.75}];
-                        labels.forEach(l => { 
-                            ctx.fillText(l.t, cx + Math.cos(l.a*Math.PI) * (120 * scale), cy + Math.sin(l.a*Math.PI) * (120 * scale)); 
-                        });
-                    }
-                }]
-            });
-        }
-
-        function renderParticlesList(particulas) {
-            const list = document.getElementById('particles-list');
-            list.innerHTML = particulas.map((p, i) => `
-                <div class="p-3 rounded bg-white/5 hover:bg-white/10 cursor-pointer border-l-2 transition-all" 
-                     style="border-color:${BLOQUE_COLORS[p.bloque]}" onclick="openNewsDetail(fullData.carousel[swiper.activeIndex].particulas[${i}])">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-bold text-slate-300 uppercase">${p.bloque}</span>
-                        <span class="text-[9px] font-mono text-white">${p.proximidad}%</span>
-                    </div>
-                    <div class="text-xs font-bold text-white line-clamp-2">${p.titulo}</div>
-                </div>
-            `).join('');
-        }
-
-        function openNewsDetail(p) {
-            if(!p) return;
-            document.getElementById('detail-title').innerText = p.titulo;
-            document.getElementById('detail-sesgo').innerText = p.sesgo;
-            document.getElementById('detail-link').href = p.link;
-            document.getElementById('detail-proximidad').innerText = p.proximidad + "%";
-            
-            const tag = document.getElementById('detail-tag');
-            tag.innerText = p.bloque;
-            tag.style.color = BLOQUE_COLORS[p.bloque];
-            tag.style.borderColor = BLOQUE_COLORS[p.bloque];
-            tag.style.backgroundColor = `${BLOQUE_COLORS[p.bloque]}20`;
-            
-            const prox = parseFloat(p.proximidad);
-            const fill = document.getElementById('proximity-fill');
-            fill.style.width = prox + "%";
-            fill.style.backgroundColor = prox >= 75 ? '#22c55e' : prox >= 50 ? '#eab308' : '#ef4444';
-            
-            // LÓGICA DE TEXTO NEUTRA
-            document.getElementById('bias-meter').innerText = prox >= 80 ? "Alta Convergencia" : prox >= 50 ? "Perspectiva Regional" : "Narrativa Divergente";
-            document.getElementById('bias-meter').style.color = fill.style.backgroundColor;
-            
-            document.getElementById('news-detail-modal').classList.add('open');
-        }
-
-        function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
-        function closeNewsDetailModal() { document.getElementById('news-detail-modal').classList.remove('open'); }
-
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+if __name__ == "__main__":
+    key = os.environ.get("GEMINI_API_KEY")
+    if key:
+        engine = DeepIntelligenceEngine(key)
+        engine.build_representative_sample()
+        engine.process_deep_content()
+        engine.run_radar()
