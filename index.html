@@ -1,153 +1,147 @@
-import os, json, datetime, time, ssl, urllib.request, urllib.error, hashlib, re, sys, random, math
-import xml.etree.ElementTree as ET
-from collections import defaultdict
-from google import genai
-from bs4 import BeautifulSoup
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROXIMITY | Intelligence Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <style>
+        body { background: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-heavy { background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .modal { opacity: 0; visibility: hidden; transition: 0.4s; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; }
+        .modal.open { opacity: 1; visibility: visible; }
+        .swiper-slide { width: 300px; height: 350px; border-radius: 20px; padding: 20px; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); transform: scale(0.9); transition: 0.4s; }
+        .swiper-slide-active { transform: scale(1.1); border-color: var(--glow); box-shadow: 0 0 30px var(--glow-alpha); }
+        .custom-scroll::-webkit-scrollbar { width: 3px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
 
-# --- CONFIGURACIÓN ---
-if sys.stdout.encoding != 'utf-8':
-    try: sys.stdout.reconfigure(encoding='utf-8')
-    except: pass
+    <header class="flex justify-between items-end border-b border-white/10 pb-8 mb-10">
+        <div>
+            <h1 class="text-6xl font-black tracking-tighter italic uppercase text-white">Proximity</h1>
+            <p class="text-blue-500 font-mono text-xs tracking-widest uppercase">Deep Intelligence v26.0</p>
+        </div>
+        <button onclick="openGuide()" class="bg-blue-600/10 border border-blue-500/30 px-6 py-2 rounded-full text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
+            METODOLOGÍA ?
+        </button>
+    </header>
 
-PATHS = { "diario": "historico_noticias/diario" }
-for p in PATHS.values(): os.makedirs(p, exist_ok=True)
+    <div class="swiper mySwiper mb-20">
+        <div class="swiper-wrapper" id="swiper-wrapper"></div>
+    </div>
 
-AREAS_ESTRATEGICAS = [
-    "Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
-    "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
-]
+    <div id="guide-modal" class="modal">
+        <div class="modal-content glass-heavy rounded-[2.5rem] p-10 max-w-4xl relative">
+            <button onclick="closeGuide()" class="absolute top-8 right-10 text-4xl">&times;</button>
+            <h1 class="text-4xl font-black italic uppercase mb-8">Manual de Operaciones</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
+                    <h3 class="text-blue-400 font-bold mb-2 uppercase">Centroide (Consenso)</h3>
+                    <p class="text-slate-400">Es el promedio matemático de la narrativa global. El punto donde coinciden la mayoría de las fuentes.</p>
+                </div>
+                <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
+                    <h3 class="text-red-400 font-bold mb-2 uppercase">Divergencia</h3>
+                    <p class="text-slate-400">Noticias alejadas del centro. Revelan datos que otros omiten o enfoques regionales únicos analizados por IA.</p>
+                </div>
+            </div>
+            <button onclick="closeGuide()" class="w-full mt-8 py-4 bg-white text-black font-black uppercase rounded-xl">Entendido</button>
+        </div>
+    </div>
 
-FUENTES = {
-    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.foreignaffairs.com/rss.xml"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "http://www.xinhuanet.com/english/rss/world.xml", "http://www.ecns.cn/rss/rss.xml", "https://www.chinadaily.com.cn/rss/world_rss.xml"],
-    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.euronews.com/rss?level=vertical&name=news", "https://www.france24.com/en/rss", "https://www.dw.com/xml/rss/rss-en-all"],
-    "LATAM": ["https://www.infobae.com/america/arc/outboundfeeds/rss/", "https://elpais.com/america/rss/", "https://en.mercopress.com/rss", "https://www.bbc.com/mundo/ultimas_noticias/index.xml", "https://cnnespanol.cnn.com/feed"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.middleeasteye.net/rss", "https://www.arabnews.com/cat/2/rss.xml", "https://www.jpost.com/rss/rssfeedsheadlines.aspx", "https://english.alarabiya.net/.mrss/en/news.xml", "https://www.trtworld.com/rss"],
-    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss", "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"],
-    "AFRICA": ["https://africa.com/feed", "https://newafricanmagazine.com/feed", "http://feeds.bbci.co.uk/news/world/africa/rss.xml", "https://www.news24.com/news24/partners24/rss", "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf"]
-}
+    <div id="area-modal" class="modal">
+        <div class="modal-content glass-heavy rounded-[2rem] p-8 w-[95%] max-w-7xl h-[85vh] flex flex-col">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h3 id="modal-area-title" class="text-4xl font-black uppercase italic"></h3>
+                    <p id="modal-consensus" class="text-slate-400 text-sm italic mt-1"></p>
+                </div>
+                <button onclick="closeAreaModal()" class="text-4xl">&times;</button>
+            </div>
+            <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-hidden">
+                <div class="lg:col-span-2 bg-black/30 rounded-3xl relative p-4">
+                    <canvas id="areaScatterChart"></canvas>
+                </div>
+                <div id="particles-list" class="overflow-y-auto custom-scroll space-y-3 pr-2"></div>
+            </div>
+        </div>
+    </div>
 
-class DeepIntelligenceEngine:
-    def __init__(self, api_key):
-        self.client = genai.Client(api_key=api_key)
-        self.clean_sample = [] 
-        self.clusters = defaultdict(list)
+    <script>
+        const COLORS = { "USA": "#3b82f6", "RUSSIA": "#ef4444", "CHINA": "#f97316", "EUROPE": "#fde047", "LATAM": "#d946ef", "MID_EAST": "#10b981", "INDIA": "#8b5cf6", "AFRICA": "#22c55e" };
+        let fullData = null, scatterChart = null;
 
-    def clean_text(self, text):
-        if not text: return ""
-        text = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', text)
-        return re.sub(r'<[^>]+>', '', text).strip()
+        async function init() {
+            const res = await fetch('./gravity_carousel.json');
+            fullData = await res.json();
+            renderSwiper();
+        }
 
-    def get_embeddings(self, texts):
-        if not texts: return []
-        try:
-            res = self.client.models.embed_content(model="text-embedding-004", content=texts, config={'task_type': 'RETRIEVAL_DOCUMENT'})
-            return [e.values for e in res.embeddings]
-        except: return [None] * len(texts)
+        function renderSwiper() {
+            document.getElementById('swiper-wrapper').innerHTML = fullData.carousel.map((area, idx) => `
+                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow: ${area.color}; --glow-alpha: ${area.color}30">
+                    <div class="text-[10px] font-bold text-white mb-2">${area.particulas.length} SEÑALES</div>
+                    <h3 class="text-2xl font-black uppercase italic text-white mb-4" style="color:${area.color}">${area.area}</h3>
+                    <p class="text-slate-400 text-xs line-clamp-4 leading-relaxed">${area.punto_cero}</p>
+                </div>
+            `).join('');
+            new Swiper(".mySwiper", { effect: "coverflow", centeredSlides: true, slidesPerView: "auto", coverflowEffect: { rotate: 20, stretch: 0, depth: 100, modifier: 1, slideShadows: false } });
+        }
 
-    def smart_scrape(self, url):
-        """Extracción profunda de la sustancia noticiosa."""
-        try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=8) as response:
-                soup = BeautifulSoup(response.read(), 'html.parser')
-                for s in soup(["script", "style", "nav", "footer", "aside", "header", "form"]):
-                    s.extract()
-                paragraphs = soup.find_all('p')
-                text = " ".join([p.get_text() for p in paragraphs])
-                return re.sub(r'\s+', ' ', text).strip()[:2500]
-        except: return ""
+        function openAreaModal(idx) {
+            const area = fullData.carousel[idx];
+            document.getElementById('modal-area-title').innerText = area.area;
+            document.getElementById('modal-area-title').style.color = area.color;
+            document.getElementById('modal-consensus').innerText = "Consenso: " + area.punto_cero;
+            document.getElementById('area-modal').classList.add('open');
+            renderParticles(area.particulas);
+            setTimeout(() => renderRadar(area.particulas), 300);
+        }
 
-    def cosine_sim(self, v1, v2):
-        if v1 is None or v2 is None: return 0
-        dot = sum(a*b for a,b in zip(v1, v2))
-        n1, n2 = math.sqrt(sum(a*a for a in v1)), math.sqrt(sum(b*b for b in v2))
-        return dot / (n1 * n2) if n1*n2 > 0 else 0
+        function renderParticles(parts) {
+            document.getElementById('particles-list').innerHTML = parts.map(p => `
+                <div class="p-4 bg-white/5 rounded-2xl border-l-4 transition-all hover:bg-white/10" style="border-color:${COLORS[p.bloque]}">
+                    <div class="flex justify-between text-[10px] font-bold mb-1">
+                        <span style="color:${COLORS[p.bloque]}">${p.bloque}</span>
+                        <span class="text-slate-500">PROX: ${p.proximidad}%</span>
+                    </div>
+                    <a href="${p.link}" target="_blank" class="text-sm font-bold text-white hover:text-blue-400">${p.titulo}</a>
+                    <div class="text-[10px] mt-2 text-slate-400 italic bg-black/20 p-2 rounded-lg border border-white/5">${p.sesgo}</div>
+                </div>
+            `).join('');
+        }
 
-    # --- FASE 1 & 2: MUESTRA REPRESENTATIVA ---
-    def build_representative_sample(self):
-        print("🌍 FASE 1: Ingesta y Deduplicación Vectorial...")
-        raw_list = []
-        for region, urls in FUENTES.items():
-            for url in urls:
-                try:
-                    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-                    root = ET.fromstring(urllib.request.urlopen(req, timeout=5).read())
-                    items = root.findall('.//item') or root.findall('.//{*}entry')
-                    for n in items[:30]:
-                        t = self.clean_text((n.find('title') or n.find('{*}title')).text)
-                        l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
-                        if t and l: raw_list.append({"title": t, "link": l, "region": region})
-                except: continue
-
-        # Deduplicación por titulares
-        vectors = self.get_embeddings([x['title'] for x in raw_list])
-        unique_indices = []
-        for i, v_i in enumerate(vectors):
-            if not any(self.cosine_sim(v_i, vectors[j]) > 0.88 for j in unique_indices):
-                unique_indices.append(i)
-        
-        self.clean_sample = [raw_list[i] for i in unique_indices]
-        print(f"   ✅ Muestra representativa: {len(self.clean_sample)} noticias únicas.")
-
-    # --- FASE 3: SCRAPING Y CLASIFICACIÓN ---
-    def process_deep_content(self):
-        print("🧠 FASE 2: Scraping Profundo y Clasificación...")
-        batch_size = 35
-        for i in range(0, len(self.clean_sample), batch_size):
-            batch = self.clean_sample[i:i+batch_size]
-            prompt = f"Clasifica en: {AREAS_ESTRATEGICAS}. Traduce a español. Si no es estratégico usa area:'NONE'. JSON: {{ 'res': [{{ 'idx': int, 'area': '...', 'titulo_es': '...' }}] }}\n\n"
-            prompt += "\n".join([f"IDX:{idx+i} | T:{item['title']}" for idx, item in enumerate(batch)])
+        function renderRadar(parts) {
+            const ctx = document.getElementById('areaScatterChart').getContext('2d');
+            if(scatterChart) scatterChart.destroy();
+            const ANGLES = { "USA": 0, "RUSSIA": 0.5, "CHINA": 1, "EUROPE": 1.5, "LATAM": 2, "MID_EAST": 2.5, "INDIA": 3, "AFRICA": 3.5 };
             
-            try:
-                res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
-                data = json.loads(res.text)
-                for r in data.get('res', []):
-                    if r['area'] in AREAS_ESTRATEGICAS:
-                        idx = r['idx']
-                        # SCRAPING SOLO DE LA MUESTRA GANADORA
-                        content = self.smart_scrape(self.clean_sample[idx]['link'])
-                        if len(content) > 200:
-                            self.clean_sample[idx].update({"area": r['area'], "titulo_es": r['titulo_es'], "full_content": content})
-                            self.clusters[r['area']].append(self.clean_sample[idx])
-            except: continue
+            scatterChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        data: parts.map(p => {
+                            const r = 100 - p.proximidad, a = (ANGLES[p.bloque] || 0) * Math.PI;
+                            return { x: r * Math.cos(a), y: r * Math.sin(a), b: p.bloque };
+                        }),
+                        pointBackgroundColor: c => COLORS[c.raw.b] || '#fff', pointRadius: 9, pointHoverRadius: 12
+                    }]
+                },
+                options: {
+                    scales: { x: { display: false, min: -110, max: 110 }, y: { display: false, min: -110, max: 110 } },
+                    plugins: { legend: false }
+                }
+            });
+        }
 
-    # --- FASE 4: RADAR VECTORIAL ---
-    def run_radar(self):
-        print("📐 FASE 3: Generando Radar de Convergencia...")
-        final_carousel = []
-        for area in AREAS_ESTRATEGICAS:
-            nodes = self.clusters.get(area, [])
-            if len(nodes) < 2: continue
-            
-            # Vectores basados en contenido profundo
-            vectors = self.get_embeddings([n['full_content'] for n in nodes])
-            valid_v = [v for v in vectors if v]
-            centroid = [sum(v[i] for v in valid_v)/len(valid_v) for i in range(len(valid_v[0]))]
-            
-            particles = []
-            for idx, node in enumerate(nodes):
-                sim = self.cosine_sim(vectors[idx], centroid)
-                prox = round(max(0, min(100, (sim - 0.7) * 333.3)), 1)
-                particles.append({
-                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:6],
-                    "titulo": node['titulo_es'], "link": node['link'], "bloque": node['region'],
-                    "proximidad": prox, "sesgo": "Convergencia fáctica." if prox > 75 else "Divergencia narrativa."
-                })
-            final_carousel.append({"area": area, "punto_cero": "Análisis vectorial de contenido profundo.", "color": self.get_color(area), "particulas": particles})
-
-        with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-            json.dump({"carousel": final_carousel}, f, indent=2, ensure_ascii=False)
-        print("✅ Observatorio actualizado.")
-
-    def get_color(self, a):
-        return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(a, "#fff")
-
-if __name__ == "__main__":
-    key = os.environ.get("GEMINI_API_KEY")
-    if key:
-        engine = DeepIntelligenceEngine(key)
-        engine.build_representative_sample()
-        engine.process_deep_content()
-        engine.run_radar()
+        function openGuide() { document.getElementById('guide-modal').classList.add('open'); }
+        function closeGuide() { document.getElementById('guide-modal').classList.remove('open'); }
+        function closeAreaModal() { document.getElementById('area-modal').classList.remove('open'); }
+        window.onload = init;
+    </script>
+</body>
+</html>
