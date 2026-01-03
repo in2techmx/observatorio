@@ -6,32 +6,16 @@
       "color": "#ef4444",
       "particulas": [
         {
-          "id": "922a538b",
-          "titulo": "Tribunal de Apelaciones Federal Dice que la Prohibición de Portar Armas a la Vista de California es Inconstitucional",
-          "link": "https://www.nytimes.com/2026/01/02/us/ninth-circuit-california-gun-law.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "f9151bb8",
-          "titulo": "Dos Miembros del Servicio de la Marina Acusados de Contraer Matrimonios Falsos con Ciudadanos Chinos",
+          "titulo": "Dos Miembros del Servicio Naval Acusados de Contraer Matrimonios Falsos con Ciudadanos Chinos",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/navy-sham-marriage-chinese-nationals.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "c7e59bc3",
-          "titulo": "Excursionista Muere en Presunto Ataque de León de Montaña, el Primero en Colorado en Décadas",
-          "link": "https://www.nytimes.com/2026/01/02/us/mountain-lion-attack-hiker-dead-colorado.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "bd68202d",
-          "titulo": "Guardia Costera Suspende la Búsqueda de Sobrevivientes de los Últimos Impactos de Embarcaciones",
+          "titulo": "La Guardia Costera Suspende la Búsqueda de Sobrevivientes de los Últimos Choques de Embarcaciones",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/coast-guard-survivors-boat-strikes.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -39,7 +23,7 @@
         },
         {
           "id": "8c225e6a",
-          "titulo": "Sospechoso de Bomba Casera en D.C. Ordenado a Permanecer en la Cárcel Hasta el Juicio",
+          "titulo": "Se Ordena Que el Sospechoso de la Bomba Casera de D.C. Permanezca en la Cárcel Hasta el Juicio",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/dc-pipe-bomb-suspect-jail.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -55,7 +39,7 @@
         },
         {
           "id": "9aa86fb3",
-          "titulo": "CI.A. Dice que Ucrania No Apuntó a la Casa de Putin en un Ataque con Drones, Contradiciendo las Afirmaciones de Rusia",
+          "titulo": "CI.A. Dice Que Ucrania No Atacó la Casa de Putin en un Ataque con Drones, Contradiciendo las Afirmaciones de Rusia",
           "link": "https://www.nytimes.com/2025/12/31/us/politics/ukraine-putin-home-drone-strike-cia.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -63,72 +47,88 @@
         },
         {
           "id": "94c2048c",
-          "titulo": "Guardia Costera Busca Sobrevivientes Después de Más Impactos de Embarcaciones",
+          "titulo": "La Guardia Costera Busca Sobrevivientes Después de Más Choques de Embarcaciones",
           "link": "https://www.nytimes.com/2025/12/31/us/politics/coast-guard-survivors-boat-strikes.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "9548c91d",
-          "titulo": "Las fuerzas rusas repelen dos ataques de avance ucranianos cerca de Kupyansk durante el último día",
-          "link": "https://tass.com/defense/2067889",
+          "id": "b42bd9a2",
+          "titulo": "Un miembro de la Guardia Nacional Aérea de Tennessee solicitó ser un sicario en línea, dice el FBI. Era un sitio web falso y ahora enfrenta cargos",
+          "link": "https://www.cnn.com/2023/04/17/us/tennessee-air-national-guardsman-hitman-online-application/index.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "03b6e555",
+          "titulo": "La persecución en coche termina con un tiroteo con participación policial",
+          "link": "https://abc7ny.com/police-involved-shooting-grand-concourse-section-suspect-shot-in-head-and-leg-bronx/12524318",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "3290750b",
+          "titulo": "El Presidente visitó el puesto de mando de la Fuerza Conjunta",
+          "link": "http://en.kremlin.ru/events/president/news/78870",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "b3729ad9",
-          "titulo": "Las fuerzas de Kiev perdieron 180 militares durante el último día en la zona de responsabilidad del Grupo de Batalla Norte",
-          "link": "https://tass.com/defense/2067887",
+          "id": "940d9a57",
+          "titulo": "Reunión con miembros permanentes del Consejo de Seguridad",
+          "link": "http://en.kremlin.ru/events/president/news/78869",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "3e3c41cb",
-          "titulo": "Las fuerzas de Kiev perdieron más de 430 militares en la zona de responsabilidad del Grupo de Batalla Centro",
-          "link": "https://tass.com/defense/2067885",
+          "id": "d43fee9e",
+          "titulo": "Reunión sobre los parámetros principales del Programa Estatal de Armamento para 2027–2036",
+          "link": "http://en.kremlin.ru/events/president/news/78866",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "cfd93756",
-          "titulo": "El Grupo de Batalla Este destruyó 8 centros de control de UAV de las fuerzas de Kiev en un día",
-          "link": "https://tass.com/defense/2067883",
+          "id": "c9679344",
+          "titulo": "El ejército ruso logra las mayores ganancias territoriales en 2025 desde el primer año de la invasión a gran escala",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russian-army-makes-biggest-territorial-gains-in-2025-since-first-year-of-full-scale-invasion-a91601",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "4bb31df8",
-          "titulo": "Las fuerzas ucranianas perdieron hasta 200 militares debido a las acciones del Grupo de Batalla Sur",
-          "link": "https://tass.com/defense/2067881",
+          "id": "70c82eac",
+          "titulo": "Drones ucranianos matan a 28 personas en la ciudad turística ocupada de Kherson, dice el gobernador pro-Kremlin",
+          "link": "https://www.themoscowtimes.com/2026/01/02/ukrainian-drones-kill-28-in-occupied-kherson-resort-town-pro-kremlin-governor-says-a91596",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "2ef0fa8a",
-          "titulo": "Ladrones en Alemania robaron objetos de valor por valor de 100 millones de euros del Banco Sparkasse - Bild",
-          "link": "https://tass.com/emergencies/2067879",
+          "id": "2e42bf67",
+          "titulo": "El líder del Cuerpo de Voluntarios Rusos sigue vivo, dice el GUR de Ucrania",
+          "link": "https://www.themoscowtimes.com/2026/01/01/russian-volunteer-corps-leader-is-still-alive-ukraines-gur-says-a91599",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "41d7adef",
-          "titulo": "Helicóptero se estrella en las montañas de Arizona - TV",
-          "link": "https://tass.com/emergencies/2067877",
+          "id": "73f56aa8",
+          "titulo": "Finlandia incauta un buque de carga sospechoso de dañar un cable submarino",
+          "link": "https://www.themoscowtimes.com/2026/01/01/finland-seizes-cargo-ship-suspected-of-damaging-undersea-cable-a91598",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "a27f83e3",
-          "titulo": "Los ataques terroristas de Ucrania contra Rusia podrían verse como un 'suicidio' para Kiev - Ritter",
-          "link": "https://tass.com/world/2067873",
+          "id": "d3fb7b3c",
+          "titulo": "EE. UU. Descubre que Ucrania no atacó la residencia Valdai de Putin - WSJ",
+          "link": "https://www.themoscowtimes.com/2026/01/01/us-finds-ukraine-did-not-attack-putins-valdai-residence-wsj-a91597",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -143,7 +143,7 @@
         },
         {
           "id": "e2987318",
-          "titulo": "Los separatistas de Yemen anuncian la constitución, EAU retira todas sus tropas",
+          "titulo": "Los separatistas de Yemen anuncian la constitución, los EAU retiran todas sus tropas",
           "link": "https://www.scmp.com/news/world/middle-east/article/3338592/yemens-separatists-announce-constitution-uae-withdraws-all-its-troops?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -151,7 +151,7 @@
         },
         {
           "id": "1673c8c0",
-          "titulo": "Por qué resurge el debate sobre la opción nuclear japonesa, y por qué alarma a los críticos",
+          "titulo": "Por qué resurge el debate sobre una opción nuclear japonesa, y por qué alarma a los críticos",
           "link": "https://www.scmp.com/week-asia/politics/article/3338570/why-talk-japanese-nuclear-option-resurfacing-and-why-it-alarms-critics?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -174,7 +174,7 @@
       "particulas": [
         {
           "id": "edebc921",
-          "titulo": "El Súper PAC de Trump Recaudó Más de $100 Millones en los Últimos Meses",
+          "titulo": "Super PAC de Trump Recaudó Más de $100 Millones en los Últimos Meses",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-super-pac-maga-inc-fundraising.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -182,7 +182,7 @@
         },
         {
           "id": "2895087d",
-          "titulo": "McCarthy hace un llamado a los republicanos para que respalden el plan de techo de deuda",
+          "titulo": "McCarthy hace un llamamiento a los republicanos para que respalden el plan del techo de deuda",
           "link": "https://www.cnn.com/2023/04/18/politics/mccarthy-debt-limit-plan/index.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -190,7 +190,7 @@
         },
         {
           "id": "c6835e83",
-          "titulo": "La economía de China tiene un sólido comienzo, con un aumento del 4,5% en el primer trimestre de 2023",
+          "titulo": "La economía de China tiene un comienzo sólido, aumentando un 4,5% en el primer trimestre de 2023",
           "link": "https://www.cnn.com/2023/04/17/economy/china-gdp-q1-2023-intl-hnk/index.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -205,16 +205,16 @@
           "sesgo": "Divergente"
         },
         {
-          "id": "e11468bb",
-          "titulo": "La riqueza de los rusos más ricos aumenta en casi $24 mil millones en 2025 - Bloomberg",
-          "link": "https://tass.com/economy/2067845",
-          "bloque": "RUSSIA",
+          "id": "88203d83",
+          "titulo": "El estudio del agua podría retrasar la construcción comercial",
+          "link": "https://poststar.com/news/local/lake-george-water-study-could-delay-commercial-construction/article_dc5e67ce-718d-11ed-82c2-ef3febaf7e24.html",
+          "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
           "id": "23f946c6",
-          "titulo": "La economía de Rusia en 2026: más guerra, menor crecimiento y mayores impuestos",
+          "titulo": "La economía rusa en 2026: más guerra, crecimiento más lento e impuestos más altos",
           "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
@@ -222,7 +222,7 @@
         },
         {
           "id": "d0ad3c49",
-          "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta tras la incautación estatal",
+          "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta después de la confiscación estatal",
           "link": "https://www.themoscowtimes.com/2025/12/30/moscows-domodedovo-airport-to-go-up-for-auction-after-state-seizure-a91583",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
@@ -245,16 +245,8 @@
           "sesgo": "Divergente"
         },
         {
-          "id": "c3bb8448",
-          "titulo": "La tasa de ocupación en el parque tecnológico de Hong Kong alcanzará el 90% en el primer trimestre de 2026",
-          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338598/occupancy-rate-hong-kong-tech-park-hit-90-first-quarter-2026?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "7384f493",
-          "titulo": "Argentina apunta a los dólares estadounidenses acaparados bajo los colchones, alivia las normas de evasión fiscal",
+          "titulo": "Argentina apunta a los dólares estadounidenses guardados debajo de los colchones y suaviza las normas de evasión fiscal",
           "link": "https://www.scmp.com/news/world/americas/article/3338587/argentina-targets-us-dollars-hoarded-under-mattresses-eases-tax-evasion-rules?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -262,23 +254,39 @@
         },
         {
           "id": "199e9218",
-          "titulo": "¿Justo o sucio? Malasia se resiste a su pacto comercial con Estados Unidos",
+          "titulo": "¿Justo o falso? Malasia lucha por digerir su pacto comercial con Estados Unidos",
           "link": "https://www.scmp.com/week-asia/economics/article/3338562/fair-or-foul-malaysia-struggles-stomach-its-us-trade-pact?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
+          "id": "7f30747f",
+          "titulo": "Trump ordena a la empresa HieFo, vinculada a China, que se deshaga de los activos de chips estadounidenses, citando la seguridad nacional",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "6baa1a4b",
-          "titulo": "El sector biofarmacéutico de China está 'en una posición privilegiada para desafiar el liderazgo de Estados Unidos'",
+          "titulo": "El sector biofarmacéutico de China 'en una posición privilegiada para desafiar el liderazgo de EE.UU.'",
           "link": "https://www.scmp.com/news/china/science/article/3338481/chinas-biopharma-sector-prime-position-challenge-us-leadership?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
+          "id": "106fe341",
+          "titulo": "Reino Unido y China permiten más vuelos directos",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2ebd50a3108bc8c67218fe.html",
+          "bloque": "CHINA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "1cb6965c",
-          "titulo": "Reino Unido y la UE podrían cerrar un acuerdo comercial en un año, dice el jefe del Brexit",
+          "titulo": "Reino Unido y la UE podrían llegar a un acuerdo comercial en un año, dice el jefe del Brexit",
           "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2df983a310eefe3e9a271a.html",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -286,16 +294,8 @@
         },
         {
           "id": "1cb6965c",
-          "titulo": "Reino Unido y la UE podrían cerrar un acuerdo comercial en un año, dice el jefe del Brexit",
+          "titulo": "Reino Unido y la UE podrían llegar a un acuerdo comercial en un año, dice el jefe del Brexit",
           "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2df983a310eefe3e9a271a.html",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "b709079e",
-          "titulo": "Pato DaDong listo para la apertura en Nueva York",
-          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e230fa310eefe3e9a28eb.html",
           "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -310,8 +310,16 @@
         },
         {
           "id": "31df4c0d",
-          "titulo": "Se prevé que China haya vendido uno de cada 10 autos nuevos en el Reino Unido en 2025",
+          "titulo": "Se pronostica que China habrá vendido uno de cada 10 autos nuevos en el Reino Unido en 2025",
           "link": "https://www.theguardian.com/business/2025/dec/31/china-forecast-to-have-sold-one-in-every-10-new-cars-in-uk-in-2025",
+          "bloque": "EUROPE",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "80504a94",
+          "titulo": "Los términos de EE. UU. 'adaptarse, reducirse o morir' para un fondo de ayuda de $ 2 mil millones significarán que la ONU se inclinará ante Washington, dicen los expertos",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
           "bloque": "EUROPE",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -320,14 +328,6 @@
           "id": "5c9462fe",
           "titulo": "¿La recesión de las relaciones?",
           "link": "https://www.france24.com/en/tv-shows/the-51/20260102-the-relationship-recession",
-          "bloque": "EUROPE",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "33275098",
-          "titulo": "Por qué las prohibiciones de plástico no funcionan y qué debe cambiar",
-          "link": "https://www.dw.com/en/why-plastic-bans-aren-t-working-and-what-needs-to-change/a-74980708?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -341,87 +341,31 @@
       "particulas": [
         {
           "id": "c80eb1c4",
-          "titulo": "Petrolero que Huye de la Guardia Costera de EE. UU. Transmite Ubicación en el Atlántico Norte",
+          "titulo": "Petrolero Que Huye de la Guardia Costera de EE. UU. Transmite Su Ubicación en el Atlántico Norte",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/oil-tanker-russia-north-atlantic.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "240695fe",
-          "titulo": "Un Año de Incendios e Inundaciones en el Sur de California",
-          "link": "https://www.nytimes.com/2026/01/01/us/los-angeles-fires-floods.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "8496f8eb",
-          "titulo": "Petrolero que Huye de la Guardia Costera Ahora Está Listado en la Base de Datos de Buques Rusos",
+          "titulo": "Petrolero Que Huye de la Guardia Costera Ahora Aparece en la Base de Datos de Buques Rusos",
           "link": "https://www.nytimes.com/2025/12/31/us/politics/russia-oil-tanker-venezuela.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "88203d83",
-          "titulo": "El estudio del agua podría retrasar la construcción comercial",
-          "link": "https://poststar.com/news/local/lake-george-water-study-could-delay-commercial-construction/article_dc5e67ce-718d-11ed-82c2-ef3febaf7e24.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "3b36fd4a",
-          "titulo": "El primer día de 2026 fue el más frío en Siberia, Rusia",
-          "link": "https://tass.com/society/2067821",
-          "bloque": "RUSSIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "c556a95d",
-          "titulo": "Terremoto de magnitud 6.5 sacude la costa de México",
-          "link": "https://tass.com/emergencies/2067807",
-          "bloque": "RUSSIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "d02414ab",
-          "titulo": "La temperatura en Hong Kong baja a 11,4 grados Celsius, la más baja de este invierno",
-          "link": "https://www.scmp.com/news/hong-kong/health-environment/article/3338590/temperature-hong-kong-falls-114-degrees-celsius-lowest-winter?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "c94a9bec",
-          "titulo": "China se compromete a aumentar la producción de energía de oeste a este, ya que la IA y la fabricación de alta tecnología impulsan la demanda",
+          "titulo": "China se compromete a aumentar la producción de energía de oeste a este a medida que la IA y la fabricación de alta tecnología impulsan la demanda",
           "link": "https://www.scmp.com/economy/china-economy/article/3338522/china-vows-ramp-west-east-power-output-ai-hi-tech-manufacturing-fuel-demand?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "27303fe8",
-          "titulo": "Las colinas de Aravalli se sacuden con el sonido de la maquinaria",
-          "link": "https://www.thehindu.com/sci-tech/energy-and-environment/the-aravalli-hills-are-shaken-with-the-sound-of-machinery/article70464970.ece",
-          "bloque": "INDIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "8acef12d",
-          "titulo": "Los desastres naturales están causando un gran impacto en Himachal, dice el informe; los expertos buscan cambios de política",
-          "link": "https://www.thehindu.com/news/national/himachal-pradesh/natural-disasters-taking-heavy-toll-on-himachal-says-report-experts-seek-policy-changes/article70464082.ece",
-          "bloque": "INDIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "f25e33ee",
-          "titulo": "Salvando al albatros amenazado de Sudáfrica de las mortales líneas de pesca",
+          "titulo": "Salvando al albatros amenazado de Sudáfrica de las letales líneas de pesca",
           "link": "https://www.bbc.com/news/articles/cwywv4ndwqxo?at_medium=RSS&at_campaign=rss",
           "bloque": "AFRICA",
           "proximidad": 20.0,
@@ -436,8 +380,16 @@
           "sesgo": "Divergente"
         },
         {
+          "id": "4aaac189",
+          "titulo": "Ghana: Ghana reducirá las importaciones de gasolina de Nigeria cuando se reinicien las operaciones de la refinería de Tema",
+          "link": "https://allafrica.com/stories/202601020311.html",
+          "bloque": "AFRICA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "9b5ca553",
-          "titulo": "Malawi: Los buenos patrones de lluvia en la región meridional aumentan las esperanzas de mejores rendimientos",
+          "titulo": "Malaui: Los buenos patrones de lluvia en la región meridional aumentan las esperanzas de mejores rendimientos",
           "link": "https://allafrica.com/stories/202601020309.html",
           "bloque": "AFRICA",
           "proximidad": 20.0,
@@ -451,6 +403,14 @@
       "color": "#f59e0b",
       "particulas": [
         {
+          "id": "922a538b",
+          "titulo": "Tribunal de Apelaciones Federal Dice Que La Prohibición de Portar Armas a la Vista de California Es Inconstitucional",
+          "link": "https://www.nytimes.com/2026/01/02/us/ninth-circuit-california-gun-law.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "c35644ff",
           "titulo": "En el Segundo Año de Trump, el Congreso Sopesa Cómo Reafirmar Su Poder",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-congress-power-republicans-democrats.html",
@@ -460,7 +420,7 @@
         },
         {
           "id": "b2332671",
-          "titulo": "Después de Watergate, la Presidencia Fue Domada. Trump la Está Desatando.",
+          "titulo": "Después de Watergate, la Presidencia Fue Domesticada. Trump La Está Desatando.",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/president-trump-powers-watergate.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -468,7 +428,7 @@
         },
         {
           "id": "249008b4",
-          "titulo": "Rusia Pide a Estados Unidos que Detenga la Persecución del Petrolero en Fuga",
+          "titulo": "Rusia Pide a Estados Unidos Que Detenga la Persecución del Petrolero Que Huye",
           "link": "https://www.nytimes.com/2026/01/01/us/politics/russia-oil-tanker-venezuela-us-pursuit.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -476,8 +436,16 @@
         },
         {
           "id": "74bb546b",
-          "titulo": "Trump Debe Devolver el Mando de la Guardia Nacional de California a Newsom, Dictamina la Corte",
+          "titulo": "Trump Debe Devolver el Mando de la Guardia Nacional de California a Newsom, Dictamina el Tribunal",
           "link": "https://www.nytimes.com/2025/12/31/us/trump-national-guard-california-newsom.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "551ea0f6",
+          "titulo": "En la Transcripción de la Audiencia, Jack Smith Defiende la Decisión de Acusar a Trump",
+          "link": "https://www.nytimes.com/2025/12/31/us/politics/jack-smith-deposition-house-trump.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -491,72 +459,72 @@
           "sesgo": "Divergente"
         },
         {
-          "id": "6664bce1",
-          "titulo": "EE.UU. socava la paz y la estabilidad vendiendo armas a Taiwán - Embajador de China en Rusia",
-          "link": "https://tass.com/world/2067875",
+          "id": "ae975701",
+          "titulo": "Reunión con el Gobernador de la Región de Moscú, Andrei Vorobyov",
+          "link": "http://en.kremlin.ru/events/president/news/78885",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "6ccb5d34",
-          "titulo": "La política de La Haya de apoyar a Kiev conduce a su profunda participación en el conflicto - diplomático",
-          "link": "https://tass.com/politics/2067871",
+          "id": "40add430",
+          "titulo": "Comentario del Asistente del Presidente, Yury Ushakov, tras la conversación telefónica entre Vladimir Putin y el Presidente de los Estados Unidos, Donald Trump",
+          "link": "http://en.kremlin.ru/events/president/news/78872",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "830cfdc4",
-          "titulo": "El presidente del parlamento checo puede enfrentar la renuncia debido a sus declaraciones críticas sobre Ucrania",
-          "link": "https://tass.com/world/2067867",
+          "id": "9042bfb7",
+          "titulo": "Reunión con Nursultan Nazarbayev",
+          "link": "http://en.kremlin.ru/events/president/news/78871",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "595581c2",
-          "titulo": "El tema de Taiwán es una línea roja en las relaciones China-EE.UU. - Embajador chino en Rusia",
-          "link": "https://tass.com/world/2067865",
+          "id": "e8a3573a",
+          "titulo": "Rusia designa a la Universidad George Washington como organización 'indeseable'",
+          "link": "https://www.themoscowtimes.com/2025/12/29/russia-designates-george-washington-university-undesirable-organization-a91577",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "b50109b7",
-          "titulo": "Kallas quiere que la UE entre en guerra con Rusia y China - Dmitriev",
-          "link": "https://tass.com/politics/2067861",
+          "id": "79da11a9",
+          "titulo": "El primer ministro checo detiene la ayuda de Ucrania del presupuesto nacional",
+          "link": "https://sputnikglobe.com/20260103/czech-pm-halts-ukraine-aid-from-national-budget-1123405343.html",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "b18f141d",
-          "titulo": "EAU completa la retirada de tropas de Yemen - Ministerio de Defensa",
-          "link": "https://tass.com/world/2067859",
+          "id": "89907bb0",
+          "titulo": "El jefe de política exterior de la UE, Kallas, quiere a la UE en guerra con Rusia y China - Dmitriev",
+          "link": "https://sputnikglobe.com/20260103/eu-foreign-policy-chief-kallas-wants-eu-at-war-with-russia-china--dmitriev-1123404829.html",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "e3ab162c",
-          "titulo": "EE.UU. asignará $500 millones para bases militares en Polonia",
-          "link": "https://tass.com/world/2067853",
+          "id": "bf6cbde5",
+          "titulo": "Trump dice que los médicos de la Casa Blanca informaron que aprobó la prueba cognitiva nuevamente",
+          "link": "https://sputnikglobe.com/20260102/trump-says-white-house-doctors-reported-he-aced-cognitive-test-again-1123404080.html",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "d0a5a8dd",
-          "titulo": "El jefe de inteligencia ucraniano es nombrado jefe de la oficina de Zelensky",
-          "link": "https://tass.com/world/2067851",
+          "id": "0ebd4822",
+          "titulo": "Venezuela lista para discutir acuerdo antidrogas con EEUU - Maduro",
+          "link": "https://sputnikglobe.com/20260102/venezuela-ready-to-discuss-anti-drug-agreement-with-us---maduro-1123403229.html",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
           "id": "eb454224",
-          "titulo": "Lawrence Wong agradece a Trump la invitación al G20, Singapur-EE.UU. marcan el hito de los 60",
+          "titulo": "Lawrence Wong agradece a Trump la invitación al G20, Singapur y EE.UU. marcan un hito de 60 años",
           "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338588/lawrence-wong-thanks-trump-g20-invitation-singapore-us-mark-60th-milestone?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -564,7 +532,7 @@
         },
         {
           "id": "112b6483",
-          "titulo": "Zelensky propone el nombramiento del primer viceministro Fedorov como nuevo ministro de defensa de Ucrania",
+          "titulo": "Zelensky propone nombrar al Primer Viceprimer Ministro Fedorov como nuevo ministro de defensa de Ucrania",
           "link": "https://www.scmp.com/news/world/europe/article/3338585/zelensky-proposes-appointing-first-deputy-pm-fedorov-ukraines-new-defence-minister?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -580,24 +548,8 @@
         },
         {
           "id": "1cfdb247",
-          "titulo": "Trump se reunirá con el enviado de EE.UU. a China después de llamar al primer ministro japonés Takaichi mientras concluyen los simulacros de Taiwán",
+          "titulo": "Trump se reunirá con el enviado de EE.UU. a China tras una llamada con el primer ministro japonés Takaichi al concluir los ejercicios de Taiwán",
           "link": "https://www.scmp.com/news/us/diplomacy/article/3338582/trump-meet-us-envoy-perdue-after-call-japans-takaichi-taiwan-drills-conclude?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "ff8880a1",
-          "titulo": "Se reúnen ministros chinos, rusos e indios",
-          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f0d6ca3108bc8c6721934.html",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "ff8880a1",
-          "titulo": "Se reúnen ministros chinos, rusos e indios",
-          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f0d6ca3108bc8c6721934.html",
           "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -619,7 +571,7 @@
       "particulas": [
         {
           "id": "31344ea9",
-          "titulo": "Error de Software Obligará a 325,000 Californianos a Reemplazar Identificaciones Reales",
+          "titulo": "Error de Software Obligará a 325,000 Californianos a Reemplazar las Identificaciones Reales",
           "link": "https://www.nytimes.com/2026/01/02/us/california-real-id-dmv-error.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -627,9 +579,17 @@
         },
         {
           "id": "a47ff44c",
-          "titulo": "Las acciones de la empresa matriz de Google caen por temor a que pueda perder participación de mercado de búsqueda ante rivales impulsados por la IA",
+          "titulo": "Las acciones de la matriz de Google caen por temor a que pueda perder cuota de mercado de búsqueda frente a rivales impulsados por la IA",
           "link": "https://www.cnn.com/2023/04/17/tech/google-ai-search-engine-stock-drop/index.html",
           "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "c3bb8448",
+          "titulo": "La tasa de ocupación en el parque tecnológico de Hong Kong alcanzará el 90% en el primer trimestre de 2026",
+          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338598/occupancy-rate-hong-kong-tech-park-hit-90-first-quarter-2026?utm_source=rss_feed",
+          "bloque": "CHINA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
@@ -650,16 +610,8 @@
           "sesgo": "Divergente"
         },
         {
-          "id": "7f30747f",
-          "titulo": "Trump ordena a la empresa HieFo, vinculada a China, que se deshaga de los activos de chips estadounidenses, alegando seguridad nacional",
-          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "554f4846",
-          "titulo": "Satélite elevado para el primer país árabe",
+          "titulo": "Satélite lanzado para el primer país árabe",
           "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f225ea3108bc8c67219dd.html",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -667,33 +619,9 @@
         },
         {
           "id": "554f4846",
-          "titulo": "Satélite elevado para el primer país árabe",
+          "titulo": "Satélite lanzado para el primer país árabe",
           "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f225ea3108bc8c67219dd.html",
           "bloque": "CHINA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "00b6bc92",
-          "titulo": "El sector de la aviación despegará en A.P. mientras que el aeropuerto de Bhogapuram está listo para la prueba de validación de vuelo el 4 de enero",
-          "link": "https://www.thehindu.com/news/national/andhra-pradesh/aviation-sector-to-take-wings-in-ap-as-bhogapuram-airport-all-set-for-flight-validation-test-on-january-4/article70462753.ece",
-          "bloque": "INDIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "66d3ce39",
-          "titulo": "'El fin de mí': Eric Schmidt de Google sobre la IA; dice que 55 años de codificación fueron borrados",
-          "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
-          "bloque": "INDIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "7a7a63ae",
-          "titulo": "El ex jefe de IA de Tesla: Google Waymo no puede igualar la tecnología de conducción autónoma de Tesla; explica por qué",
-          "link": "https://timesofindia.indiatimes.com/technology/tech-news/after-being-called-out-by-elon-musk-teslas-ex-ai-director-andrej-karpathy-says-google-waymo-cannot-do/articleshow/126285839.cms",
-          "bloque": "INDIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
@@ -713,8 +641,16 @@
       "color": "#ec4899",
       "particulas": [
         {
+          "id": "c7e59bc3",
+          "titulo": "Excursionista Muere en Presunto Ataque de Puma, el Primero en Colorado en Décadas",
+          "link": "https://www.nytimes.com/2026/01/02/us/mountain-lion-attack-hiker-dead-colorado.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "be5a6bf8",
-          "titulo": "Toby Morton, un Escritor de Comedia, Posee la URL de Trump Kennedy Center",
+          "titulo": "Toby Morton, un Escritor de Comedias, Es Dueño de la URL del Kennedy Center de Trump",
           "link": "https://www.nytimes.com/2026/01/01/us/politics/trump-kennedy-center-website-toby-morton.html",
           "bloque": "USA",
           "proximidad": 20.0,
@@ -722,8 +658,16 @@
         },
         {
           "id": "241ed162",
-          "titulo": "Amenaza de Suspender la Ayuda para los Centros de Cuidado Infantil de Minnesota Sacude a las Familias",
+          "titulo": "La Amenaza de Suspender la Ayuda Para los Centros de Cuidado Infantil de Minnesota Sacude a las Familias",
           "link": "https://www.nytimes.com/2026/01/01/us/minnesota-child-care-funding-impact-fraud.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "240695fe",
+          "titulo": "Un Año de Incendios e Inundaciones en el Sur de California",
+          "link": "https://www.nytimes.com/2026/01/01/us/los-angeles-fires-floods.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
@@ -738,63 +682,31 @@
         },
         {
           "id": "24d1404c",
-          "titulo": "Estuvo libre durante 2 años. Ahora Crosley Green está de vuelta en prisión por un crimen que dice que no cometió",
+          "titulo": "Estuvo libre durante 2 años. Ahora Crosley Green está de vuelta en prisión por un delito que dice que no cometió",
           "link": "https://www.cnn.com/2023/04/17/us/crosley-green-prison-return/index.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
+          "id": "fbe4b06b",
+          "titulo": "Familia de la víctima y sobrevivientes del tiroteo masivo de FedEx en Indianápolis presentan una demanda contra el fabricante y los distribuidores de la revista de armas",
+          "link": "https://www.cnn.com/2023/04/16/us/lawsuit-indianapolis-fedex-mass-shooting/index.html",
+          "bloque": "USA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "5bb98c5a",
-          "titulo": "Los médicos antiaborto instan a la Corte Suprema a mantener las restricciones de mifepristona vigentes",
+          "titulo": "Los médicos antiaborto instan a la Corte Suprema a mantener las restricciones de mifepristona",
           "link": "https://www.cnn.com/2023/04/18/politics/abortion-supreme-court-mifepristone-restrictions-filing/index.html",
           "bloque": "USA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
-          "id": "4cced128",
-          "titulo": "La Corte Suprema parece mostrarse comprensiva con el trabajador postal que no trabajaba los domingos en una disputa sobre adaptaciones religiosas",
-          "link": "https://www.cnn.com/2023/04/18/politics/groff-dejoy-supreme-court-religious-liberty/index.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "d1b4000f",
-          "titulo": "Incluso cuando las esposas ganan tanto como los maridos, todavía hacen más en casa",
-          "link": "https://www.cnn.com/2023/04/16/success/husbands-wives-earning-division-of-labor-pew-survey/index.html",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "0f7b5171",
-          "titulo": "La familia organiza una fiesta de cumpleaños sorpresa en el estacionamiento de Eagles para un veterano de Vietnam",
-          "link": "https://6abc.com/philadelphia-eagles-tailgate-south-vietnam-veteran/12524946/",
-          "bloque": "USA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "f2981ab4",
-          "titulo": "Felicitaciones al personal del Museo Estatal al Aire Libre de Historia, Arquitectura y Etnografía de Kizhi",
-          "link": "http://en.kremlin.ru/events/president/news/78987",
-          "bloque": "RUSSIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
-          "id": "1739546c",
-          "titulo": "Discurso de Año Nuevo a la Nación",
-          "link": "http://en.kremlin.ru/events/president/news/78954",
-          "bloque": "RUSSIA",
-          "proximidad": 20.0,
-          "sesgo": "Divergente"
-        },
-        {
           "id": "d541e69e",
-          "titulo": "Discurso en el Día del Trabajador de Rescate",
+          "titulo": "Discurso en el Día del Rescatista",
           "link": "http://en.kremlin.ru/events/president/news/78867",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
@@ -834,15 +746,31 @@
         },
         {
           "id": "ca1f8f7b",
-          "titulo": "Ex alcalde opositor de Yaroslavl liberado de prisión después de cumplir condena por corrupción",
+          "titulo": "Ex alcalde opositor de Yaroslavl liberado de prisión después de cumplir su condena por corrupción",
           "link": "https://www.themoscowtimes.com/2025/12/30/former-opposition-mayor-of-yaroslavl-freed-from-prison-after-serving-sentence-for-corruption-a91584",
           "bloque": "RUSSIA",
           "proximidad": 20.0,
           "sesgo": "Divergente"
         },
         {
+          "id": "229414c5",
+          "titulo": "En fotos: las imágenes que definieron a Rusia en 2025",
+          "link": "https://www.themoscowtimes.com/2025/12/30/in-photos-the-images-that-defined-russia-in-2025-a91290",
+          "bloque": "RUSSIA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
+          "id": "286bddb5",
+          "titulo": "Un juez de Moscú desestima la demanda colectiva de los usuarios de WhatsApp contra Roskomnadzor",
+          "link": "https://www.themoscowtimes.com/2025/12/29/moscow-judge-tosses-whatsapp-users-class-action-lawsuit-against-roskomnadzor-a91574",
+          "bloque": "RUSSIA",
+          "proximidad": 20.0,
+          "sesgo": "Divergente"
+        },
+        {
           "id": "70711712",
-          "titulo": "Un tribunal estadounidense dictamina que la prohibición de California de portar armas abiertamente es inconstitucional",
+          "titulo": "Un tribunal de EE.UU. dictamina que la prohibición de California de portar armas abiertamente es inconstitucional",
           "link": "https://www.scmp.com/news/us/politics/article/3338599/us-court-rules-california-ban-openly-carrying-guns-unconstitutional?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -850,7 +778,7 @@
         },
         {
           "id": "0f9bf3a1",
-          "titulo": "Eximir a los profesores suplentes de Hong Kong de los certificados de práctica, dicen los directores",
+          "titulo": "Eximir a los profesores sustitutos de Hong Kong de los certificados de práctica, dicen los directores",
           "link": "https://www.scmp.com/news/hong-kong/education/article/3338589/exempt-hong-kong-substitute-teachers-practising-certificates-principals-say?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -858,7 +786,7 @@
         },
         {
           "id": "a741afdd",
-          "titulo": "El envejecimiento de Asia necesita ayuda doméstica, pero ¿puede mantenerlos a salvo?",
+          "titulo": "El envejecimiento de Asia necesita empleadas domésticas, pero ¿puede mantenerlas seguras?",
           "link": "https://www.scmp.com/week-asia/health-environment/article/3338555/ageing-asia-needs-domestic-helpers-can-it-keep-them-safe?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -866,7 +794,7 @@
         },
         {
           "id": "81c794d5",
-          "titulo": "El incendio causado por un cortocircuito de un cargador de teléfono en un piso de Hong Kong hiere a 4 y mata a un gato",
+          "titulo": "Un incendio causado por un cortocircuito en un cargador de teléfono en un piso de Hong Kong hiere a 4 personas y mata a un gato",
           "link": "https://www.scmp.com/news/hong-kong/society/article/3338594/fire-caused-short-circuit-phone-charger-hong-kong-flat-injures-4-kills-cat?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 20.0,
@@ -876,6 +804,6 @@
     }
   ],
   "meta": {
-    "updated": "2026-01-03T04:52:50.011426"
+    "updated": "2026-01-03T04:52:53.915122"
   }
 }
