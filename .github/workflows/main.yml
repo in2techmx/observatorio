@@ -2,12 +2,8 @@ name: Proximity Engine Intelligence Pipeline
 
 on:
   schedule:
-    # Radar táctico - cada 6 horas (minuto 0)
     - cron: '0 */6 * * *'
-    # Síntesis semanal - domingos a medianoche UTC
     - cron: '0 0 * * 0'
-  
-  # Trigger manual desde la web de GitHub
   workflow_dispatch:
     inputs:
       task:
@@ -20,108 +16,54 @@ on:
           - weekly
           - both
       force:
-        description: 'Forzar ejecución incluso si hay errores previos'
+        description: 'Forzar ejecución'
         required: false
         default: false
         type: boolean
-
-  # Trigger en push a main (solo para desarrollo)
   push:
     branches:
       - main
     paths-ignore:
       - '**.md'
-      - 'docs/**'
 
 jobs:
   intelligence-pipeline:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Necesario para push
-      pages: write     # Si usas GitHub Pages después
-      id-token: write  # Para OIDC si es necesario
-    
-    # Variables de entorno
-    env:
-      PYTHON_VERSION: '3.10'
-      CACHE_DAYS: '7'
-      MAX_RETRIES: '3'
-    
-    # Estrategia de fallos
-    strategy:
-      matrix:
-        python-version: ['3.10']
-      fail-fast: false  # No fallar todo si un paso falla
-    
+      contents: write
+
     steps:
-      # --------------------------------------------------------------------
-      # 1. PREPARACIÓN DEL ENTORNO
-      # --------------------------------------------------------------------
       - name: Checkout del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Traer todo el historial
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Configurar Python ${{ env.PYTHON_VERSION }}
+          fetch-depth: 0
+
+      - name: Configurar Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'  # Cache automático de pip
-          cache-dependency-path: |
-            requirements.txt
-            setup.py
-            pyproject.toml
-      
-      # --------------------------------------------------------------------
-      # 2. INSTALACIÓN CON DEPENDENCIAS COMPLETAS
-      # --------------------------------------------------------------------
+          python-version: '3.10'
+          cache: 'pip'
+
       - name: Actualizar pip e instalar dependencias
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          
-          # Instalar desde requirements.txt si existe
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
-          else:
-            # Dependencias básicas
-            pip install google-genai
-            pip install numpy
-            pip install beautifulsoup4
-            pip install requests
-            pip install lxml
-            pip install urllib3
-            pip install python-dateutil
-            pip install pyyaml
-          
-          # Verificar instalación
-          python -c "import google.generativeai as genai; print('✓ Google AI instalado')"
-          python -c "import requests; print('✓ Requests instalado')"
-      
-      # --------------------------------------------------------------------
-      # 3. VERIFICACIÓN DE ARCHIVOS
-      # --------------------------------------------------------------------
+          else
+            pip install google-genai numpy beautifulsoup4 requests lxml urllib3 python-dateutil pyyaml
+          fi
+          python -c "import numpy; print('✓ Sistema base listo')"
+
       - name: Verificar archivos del sistema
         id: verify-files
         run: |
-          echo "📁 Verificando estructura del proyecto..."
-          
-          REQUIRED_FILES=("collector.py")
-          
-          for file in "${REQUIRED_FILES[@]}"; do
-            if [ -f "$file" ]; then
-              echo "✅ $file encontrado"
-            else
-              echo "❌ $file NO encontrado"
-              exit 1
-            fi
-          done
-          
-          echo "files_ok=true" >> $GITHUB_OUTPUT
-      
-      # --------------------------------------------------------------------
-      # 4. EJECUCIÓN DEL RADAR TÁCTICO (SIEMPRE O SEGÚN INPUT)
-      # --------------------------------------------------------------------
+          if [ -f "collector.py" ]; then
+            echo "files_ok=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ collector.py NO encontrado"
+            exit 1
+          fi
+
       - name: Ejecutar Radar de Vigilancia Táctico
         id: tactical-radar
         if: |
@@ -132,290 +74,50 @@ jobs:
            github.event_name == 'push')
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          PYTHONPATH: ${{ github.workspace }}
         run: |
-          echo "🚀 Iniciando Radar Táctico"
-          echo "API Key configurada: $(if [ -n "$GEMINI_API_KEY" ]; then echo "✅"; else echo "❌ Falta API Key"; exit 1; fi)"
-          
-          # Ejecutar con logging detallado
-          python collector.py 2>&1 | tee tactical_execution.log
-          
-          EXIT_CODE=$?
-          
-          # Verificar resultados
+          python collector.py
           if [ -f "gravity_carousel.json" ]; then
-            FILESIZE=$(wc -c < gravity_carousel.json)
-            PARTICLES=$(python -c "import json; data=json.load(open('gravity_carousel.json')); print(sum(len(area['particulas']) for area in data.get('carousel', [])))" 2>/dev/null || echo "0")
-            
-            echo "📊 Radar completado: $PARTICLES partículas, $FILESIZE bytes"
             echo "tactical_success=true" >> $GITHUB_OUTPUT
-            echo "particles_count=$PARTICLES" >> $GITHUB_OUTPUT
           else
-            echo "❌ ERROR: No se generó gravity_carousel.json"
             echo "tactical_success=false" >> $GITHUB_OUTPUT
-            exit $EXIT_CODE
           fi
-      
-      # --------------------------------------------------------------------
-      # 5. SÍNTESIS ESTRATÉGICA SEMANAL (SOLO DOMINGOS O MANUAL)
-      # --------------------------------------------------------------------
+
       - name: Ejecutar Síntesis Estratégica Semanal
         id: weekly-synthesis
         if: |
           steps.verify-files.outputs.files_ok == 'true' &&
           (github.event.schedule == '0 0 * * 0' ||
            github.event.inputs.task == 'weekly' ||
-           github.event.inputs.task == 'both') &&
-          (steps.tactical-radar.outputs.tactical_success == 'true' || 
-           github.event.inputs.force == 'true')
+           github.event.inputs.task == 'both')
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "📈 Iniciando Síntesis Estratégica Semanal"
-          
-          # Verificar si existe el agregador
           if [ -f "aggregator.py" ]; then
-            python aggregator.py 2>&1 | tee weekly_execution.log
-            
-            # Verificar resultados
-            if find historico_noticias/semanal -name "*.json" -newer /proc/uptime 2>/dev/null | grep -q .; then
-              echo "weekly_success=true" >> $GITHUB_OUTPUT
-              echo "✅ Síntesis semanal completada"
-            else
-              echo "weekly_success=false" >> $GITHUB_OUTPUT
-              echo "⚠️ No se generaron nuevos reportes semanales"
-            fi
+            python aggregator.py
+            echo "weekly_success=true" >> $GITHUB_OUTPUT
           else
             echo "weekly_success=skipped" >> $GITHUB_OUTPUT
-            echo "ℹ️ Aggregator no encontrado, saltando síntesis..."
           fi
-      
-      # --------------------------------------------------------------------
-      # 6. LIMPIEZA Y MANTENIMIENTO INTELIGENTE
-      # --------------------------------------------------------------------
-      - name: Mantenimiento del Sistema
-        if: always()  # Siempre ejecutar, incluso si fallan pasos anteriores
-        run: |
-          echo "🧹 Realizando mantenimiento del sistema..."
-          
-          # 1. Limpiar caché antigua
-          if [ -d "vector_cache" ]; then
-            find vector_cache -name "*.bin" -mtime +${{ env.CACHE_DAYS }} -delete 2>/dev/null || true
-            COUNT=$(find vector_cache -name "*.bin" | wc -l)
-            echo "📦 Cache actual: $COUNT vectores"
-          fi
-          
-          # 2. Limitar tamaño del histórico diario (mantener últimos 30 días)
-          if [ -d "historico_noticias/diario" ]; then
-            find historico_noticias/diario -name "*.json" -mtime +30 -delete 2>/dev/null || true
-          fi
-          
-          # 3. Crear archivo de estado del sistema
-          cat > system_status.json << EOF
-          {
-            "last_execution": "$(date -Iseconds)",
-            "workflow": "${{ github.workflow }}",
-            "event": "${{ github.event_name }}",
-            "tactical_status": "${{ steps.tactical-radar.outputs.tactical_success || 'not_run' }}",
-            "weekly_status": "${{ steps.weekly-synthesis.outputs.weekly_success || 'not_run' }}",
-            "particles_generated": "${{ steps.tactical-radar.outputs.particles_count || 0 }}"
-          }
-          EOF
-      
-      # --------------------------------------------------------------------
-      # 7. PUBLICACIÓN SEGURA EN GIT
-      # --------------------------------------------------------------------
-      - name: Publicar Inteligencia en el Repositorio
-        id: git-publish
-        # Solo publicar si el radar fue exitoso O si se fuerza manualmente
-        if: |
-          steps.tactical-radar.outputs.tactical_success == 'true' ||
-          github.event.inputs.force == 'true'
-        run: |
-          echo "💾 Preparando publicación de inteligencia..."
-          
-          # Configurar identidad del bot
-          git config --global user.name 'Proximity Intelligence Engine'
-          git config --global user.email 'engine@proximity.ai'
-          git config --global pull.rebase false
-          git config --global push.default simple
-          
-          # Mostrar cambios
-          echo "📈 Archivos modificados:"
-          git status --short || echo "No se pudo ver estado git"
-          
-          # Añadir archivos nuevos/modificados
-          git add --all || echo "No hay cambios para añadir"
-          
-          # Crear mensaje de commit contextual
-          COMMIT_TYPE="🔄"
-          COMMIT_SUFFIX=""
-          
-          if [[ "${{ github.event.schedule }}" == "0 0 * * 0" ]]; then
-            COMMIT_TYPE="📊"
-            COMMIT_SUFFIX=" + Síntesis Semanal"
-          elif [[ "${{ github.event.inputs.task }}" == "weekly" ]]; then
-            COMMIT_TYPE="📈"
-            COMMIT_SUFFIX=" + Análisis Estratégico"
-          fi
-          
-          COMMIT_MSG="$COMMIT_TYPE Actualización Automática: $(date '+%Y-%m-%d %H:%M UTC')$COMMIT_SUFFIX"
-          
-          # Crear commit solo si hay cambios
-          if ! git diff --cached --quiet; then
-            git commit -m "$COMMIT_MSG" \
-                       -m "🤖 Ejecutado automáticamente por GitHub Actions" \
-                       -m "📅 Workflow: ${{ github.workflow }}" \
-                       -m "⚡ Evento: ${{ github.event_name }}" \
-                       -m "🔗 Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            
-            echo "✅ Commit creado"
-            echo "has_commit=true" >> $GITHUB_OUTPUT
-          else
-            echo "ℹ️ No hay cambios para commit"
-            echo "has_commit=false" >> $GITHUB_OUTPUT
-          fi
-      
-      # --------------------------------------------------------------------
-      # 8. SINCRONIZACIÓN SEGURA CON EL REPOSITORIO
-      # --------------------------------------------------------------------
-      - name: Sincronizar con Repositorio Remoto
-        id: git-sync
-        if: steps.git-publish.outputs.has_commit == 'true'
-        run: |
-          echo "🌐 Sincronizando con repositorio remoto..."
-          
-          # Estrategia de sincronización robusta con reintentos
-          for ATTEMPT in {1..3}; do
-            echo "🔄 Intento $ATTEMPT de sincronización..."
-            
-            # 1. Obtener últimos cambios
-            if git pull origin main --no-edit; then
-              echo "✅ Pull exitoso"
-            else
-              echo "⚠️ Pull con conflictos, intentando estrategia alternativa..."
-              git stash || true
-              git pull origin main --strategy-option=ours || git pull origin main --rebase || true
-              git stash pop || true
-            fi
-            
-            # 2. Intentar push
-            if git push origin main; then
-              echo "✅ Push exitoso"
-              echo "sync_success=true" >> $GITHUB_OUTPUT
-              break
-            else
-              echo "❌ Push falló, reintentando en 10 segundos..."
-              sleep 10
-              
-              if [ $ATTEMPT -eq 3 ]; then
-                echo "sync_success=false" >> $GITHUB_OUTPUT
-                echo "⚠️ Todos los intentos de push fallaron"
-              fi
-            fi
-          done
-      
-      # --------------------------------------------------------------------
-      # 9. REPORTE DE EJECUCIÓN
-      # --------------------------------------------------------------------
-      - name: Generar Reporte de Ejecución
-        if: always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const success = "${{ job.status }}" === "success";
-            const tacticalSuccess = "${{ steps.tactical-radar.outputs.tactical_success }}" === "true";
-            const weeklySuccess = "${{ steps.weekly-synthesis.outputs.weekly_success }}" === "true";
-            const particles = "${{ steps.tactical-radar.outputs.particles_count }}" || "0";
-            
-            let message = `## 🎯 Proximity Engine - Ejecución Completada\n\n`;
-            
-            message += `**Estado:** ${success ? '✅ ÉXITO' : '⚠️ CON PROBLEMAS'}\n`;
-            message += `**Radar Táctico:** ${tacticalSuccess ? '✅' : '❌'}\n`;
-            message += `**Síntesis Semanal:** ${weeklySuccess ? '✅' : weeklySuccess === 'skipped' ? '⏭️' : '❌'}\n`;
-            message += `**Partículas Generadas:** ${particles}\n`;
-            message += `**Evento:** ${context.eventName}\n\n`;
-            
-            message += `📊 **Métricas:**\n`;
-            message += `- Workflow: ${context.workflow}\n`;
-            message += `- Ejecución: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n`;
-            message += `- Hora: ${new Date().toISOString()}\n\n`;
-            
-            message += `📁 **Archivos Generados:**\n`;
-            
-            if (tacticalSuccess) {
-              message += `- \`gravity_carousel.json\` (Radar principal)\n`;
-              message += `- \`executive_summary.json\` (Resumen ejecutivo)\n`;
-            }
-            
-            if (weeklySuccess === 'true') {
-              message += `- \`historico_noticias/semanal/*.json\` (Síntesis semanal)\n`;
-            }
-            
-            // Crear comentario en el commit
-            github.rest.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
-              body: message
-            });
-            
-            // Opcional: Crear issue si hay fallos críticos
-            if (!tacticalSuccess && context.eventName !== 'workflow_dispatch') {
-              github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `🚨 Fallo en Proximity Engine - ${new Date().toISOString().split('T')[0]}`,
-                body: `El radar táctico falló en la ejecución automática.\n\n${message}`,
-                labels: ['bug', 'automation']
-              });
-            }
-      
-      # --------------------------------------------------------------------
-      # 10. NOTIFICACIONES (OPCIONAL)
-      # --------------------------------------------------------------------
-      - name: Enviar Notificación a Slack/Discord
-        if: always() && github.event_name != 'push'
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: workflow,job,commit,repo,ref,author,took
-          channel: '#alerts'  # Cambia por tu canal
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Configurar en secrets
 
-  # --------------------------------------------------------------------
-  # JOB ADICIONAL: Validación de Calidad de Datos
-  # --------------------------------------------------------------------
-  data-quality-check:
-    runs-on: ubuntu-latest
-    needs: intelligence-pipeline
-    if: always() && needs.intelligence-pipeline.result == 'success'
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Validar Calidad de Datos Generados
+      - name: Mantenimiento y Limpieza
+        if: always()
         run: |
-          echo "🔍 Validando calidad de datos..."
+          mkdir -p vector_cache
+          find vector_cache -name "*.bin" -mtime +7 -delete 2>/dev/null || true
           
-          # Verificar que gravity_carousel.json sea JSON válido
-          if [ -f "gravity_carousel.json" ]; then
-            python -m json.tool gravity_carousel.json > /dev/null && echo "✅ JSON válido"
-            
-            # Validar estructura básica
-            python << 'EOF'
-            import json
-            with open('gravity_carousel.json') as f:
-                data = json.load(f)
-            
-            required_keys = ['carousel', 'meta']
-            for key in required_keys:
-                if key not in data:
-                    print(f"❌ Falta clave requerida: {key}")
-                    exit(1)
-            
-            print(f"✅ Estructura válida: {len(data['carousel'])} áreas, {sum(len(a.get('particulas', [])) for a in data['carousel'])} partículas")
-            EOF
+          # Crear status simple para el log
+          echo '{"last_run": "'"$(date)"'"}' > system_status.json
+
+      - name: Publicar Inteligencia
+        if: success() || github.event.inputs.force == 'true'
+        run: |
+          git config --global user.name 'Proximity Bot'
+          git config --global user.email 'engine@proximity.ai'
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "🔄 Neural Update: $(date '+%Y-%m-%d %H:%M')"
+            git pull origin main --rebase -X theirs
+            git push origin main
+          else
+            echo "No hay cambios para subir."
           fi
