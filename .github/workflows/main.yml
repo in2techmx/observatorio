@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '0 */6 * * *'
     - cron: '0 0 * * 0'
+  
   workflow_dispatch:
     inputs:
       task:
@@ -15,109 +16,228 @@ on:
           - tactical
           - weekly
           - both
-      force:
-        description: 'Forzar ejecución'
-        required: false
-        default: false
-        type: boolean
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
 
 jobs:
   intelligence-pipeline:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+    
+    # EVITA EJECUCIONES PARALELAS - CRÍTICO
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    
+    env:
+      PYTHON_VERSION: '3.10'
+    
     steps:
+      # ----------------------------------------------------------------
+      # 1. CHECKOUT
+      # ----------------------------------------------------------------
       - name: Checkout del repositorio
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Configurar Python 3.10
+      
+      # ----------------------------------------------------------------
+      # 2. CONFIGURAR PYTHON (SIN CACHE PARA EVITAR PROBLEMAS)
+      # ----------------------------------------------------------------
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          cache: 'pip'
-
-      - name: Actualizar pip e instalar dependencias
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      # ----------------------------------------------------------------
+      # 3. PREPARAR DIRECTORIOS DE FORMA SEGURA
+      # ----------------------------------------------------------------
+      - name: Preparar estructura de directorios
+        id: prepare-dirs
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install google-genai numpy beautifulsoup4 requests lxml urllib3 python-dateutil pyyaml
-          fi
-          python -c "import numpy; print('✓ Sistema base listo')"
-
-      - name: Verificar archivos del sistema
-        id: verify-files
+          echo "🛠️ Preparando estructura de directorios..."
+          
+          # FORMA SEGURA: Crear si no existe, ignorar si ya existe
+          mkdir vector_cache 2>/dev/null || true
+          mkdir -p historico_noticias/diario 2>/dev/null || true
+          mkdir -p historico_noticias/semanal 2>/dev/null || true
+          
+          # Verificar permisos (sin fallar)
+          chmod 755 vector_cache 2>/dev/null || echo "⚠️ No se pudieron cambiar permisos de vector_cache"
+          chmod -R 755 historico_noticias 2>/dev/null || echo "⚠️ No se pudieron cambiar permisos de historico_noticias"
+          
+          # Listar para verificación
+          echo "📁 Estructura actual:"
+          ls -la
+          echo "✅ Directorios preparados"
+      
+      # ----------------------------------------------------------------
+      # 4. INSTALAR DEPENDENCIAS
+      # ----------------------------------------------------------------
+      - name: Instalar dependencias
         run: |
-          if [ -f "collector.py" ]; then
-            echo "files_ok=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ collector.py NO encontrado"
-            exit 1
-          fi
-
-      - name: Ejecutar Radar de Vigilancia Táctico
-        id: tactical-radar
-        if: |
-          steps.verify-files.outputs.files_ok == 'true' &&
-          (github.event.schedule == '0 */6 * * *' ||
-           github.event.inputs.task == 'tactical' ||
-           github.event.inputs.task == 'both' ||
-           github.event_name == 'push')
+          python -m pip install --upgrade pip
+          
+          # Instalar directamente sin requirements.txt para evitar problemas
+          pip install google-genai==0.3.0
+          pip install requests==2.31.0
+          pip install beautifulsoup4==4.12.0
+          pip install lxml==4.9.0
+          pip install numpy==1.24.0
+      
+      # ----------------------------------------------------------------
+      # 5. EJECUTAR COLECTOR (CON MECANISMO DE FALLBACK)
+      # ----------------------------------------------------------------
+      - name: Ejecutar Proximity Collector
+        id: run-collector
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python collector.py
-          if [ -f "gravity_carousel.json" ]; then
-            echo "tactical_success=true" >> $GITHUB_OUTPUT
-          else
-            echo "tactical_success=false" >> $GITHUB_OUTPUT
+          echo "🚀 Iniciando Proximity Collector..."
+          
+          # INTENTO 1: Ejecución normal
+          echo "🔧 Intento 1: Ejecución estándar"
+          python collector.py 2>&1 | tee collector_output.log
+          
+          COLLECTOR_EXIT=$?
+          
+          # Si falla, intentar con entorno alternativo
+          if [ $COLLECTOR_EXIT -ne 0 ]; then
+            echo "⚠️ Falló intento 1, probando entorno alternativo..."
+            
+            # Crear directorios dentro del script como fallback
+            python -c "
+import os
+try:
+    os.makedirs('vector_cache', exist_ok=True)
+    os.makedirs('historico_noticias/diario', exist_ok=True)
+    print('✅ Directorios creados desde Python')
+except Exception as e:
+    print(f'⚠️ Error creando directorios: {e}')
+    # Usar directorio temporal
+    import tempfile
+    temp_dir = tempfile.mkdtemp()
+    print(f'📁 Usando directorio temporal: {temp_dir}')
+            " 2>&1
+            
+            # INTENTO 2: Con timeout
+            echo "🔧 Intento 2: Con timeout extendido"
+            timeout 300 python collector.py 2>&1 | tee -a collector_output.log
+            COLLECTOR_EXIT=$?
           fi
-
-      - name: Ejecutar Síntesis Estratégica Semanal
-        id: weekly-synthesis
+          
+          # Evaluar resultado
+          if [ $COLLECTOR_EXIT -eq 0 ] && [ -f "gravity_carousel.json" ]; then
+            echo "✅ Collector ejecutado exitosamente"
+            echo "collector_success=true" >> $GITHUB_OUTPUT
+            
+            # Mostrar estadísticas
+            echo "📊 Resumen de ejecución:"
+            python -c "
+import json, os
+try:
+    with open('gravity_carousel.json') as f:
+        data = json.load(f)
+    areas = len(data.get('carousel', []))
+    particles = sum(len(a.get('particulas', [])) for a in data.get('carousel', []))
+    print(f'  • Áreas procesadas: {areas}')
+    print(f'  • Partículas generadas: {particles}')
+except Exception as e:
+    print(f'  • Error leyendo resultados: {e}')
+            "
+          else
+            echo "❌ Collector falló con código: $COLLECTOR_EXIT"
+            echo "collector_success=false" >> $GITHUB_OUTPUT
+            
+            # Mostrar logs de error
+            echo "=== ÚLTIMAS 20 LÍNEAS DEL LOG ==="
+            tail -20 collector_output.log || echo "No hay logs disponibles"
+          fi
+      
+      # ----------------------------------------------------------------
+      # 6. EJECUTAR AGREGADOR (OPCIONAL)
+      # ----------------------------------------------------------------
+      - name: Ejecutar Agregador Semanal
+        id: run-aggregator
         if: |
-          steps.verify-files.outputs.files_ok == 'true' &&
-          (github.event.schedule == '0 0 * * 0' ||
-           github.event.inputs.task == 'weekly' ||
+          steps.run-collector.outputs.collector_success == 'true' &&
+          (github.event.schedule == '0 0 * * 0' || 
+           github.event.inputs.task == 'weekly' || 
            github.event.inputs.task == 'both')
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
+          echo "📈 Ejecutando agregador semanal..."
+          
           if [ -f "aggregator.py" ]; then
-            python aggregator.py
-            echo "weekly_success=true" >> $GITHUB_OUTPUT
+            python aggregator.py 2>&1 | tee aggregator_output.log
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ Agregador ejecutado exitosamente"
+              echo "aggregator_success=true" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Agregador falló"
+              echo "aggregator_success=false" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "weekly_success=skipped" >> $GITHUB_OUTPUT
+            echo "⏭️ aggregator.py no encontrado"
+            echo "aggregator_success=skipped" >> $GITHUB_OUTPUT
           fi
-
-      - name: Mantenimiento y Limpieza
+      
+      # ----------------------------------------------------------------
+      # 7. COMMIT Y PUSH (SOLO SI HUBO ÉXITO)
+      # ----------------------------------------------------------------
+      - name: Commit y Push de Resultados
+        if: steps.run-collector.outputs.collector_success == 'true'
+        run: |
+          echo "💾 Preparando commit de resultados..."
+          
+          # Configurar git
+          git config --global user.name 'Proximity Engine Bot'
+          git config --global user.email 'bot@proximity.ai'
+          
+          # Añadir solo archivos de datos
+          git add gravity_carousel.json 2>/dev/null || echo "⚠️ No se pudo añadir gravity_carousel.json"
+          git add executive_summary.json 2>/dev/null || echo "⚠️ No se pudo añadir executive_summary.json"
+          git add historico_noticias/ 2>/dev/null || echo "⚠️ No se pudo añadir historico_noticias/"
+          
+          # Verificar si hay cambios
+          if git diff --cached --quiet; then
+            echo "ℹ️ No hay cambios para commit"
+          else
+            # Crear commit
+            git commit -m "🤖 Actualización automática: $(date +'%Y-%m-%d %H:%M UTC')"
+            
+            # Pull con estrategia segura
+            git pull origin main --strategy-option=ours --no-edit 2>/dev/null || \
+            git pull origin main --rebase 2>/dev/null || \
+            echo "⚠️ No se pudo hacer pull, continuando..."
+            
+            # Push con reintentos
+            for i in {1..3}; do
+              echo "🔄 Intento $i de push..."
+              if git push origin main; then
+                echo "✅ Push exitoso"
+                break
+              else
+                echo "⚠️ Push falló, esperando 5s..."
+                sleep 5
+                git pull origin main --rebase 2>/dev/null || true
+              fi
+            done
+          fi
+      
+      # ----------------------------------------------------------------
+      # 8. LIMPIEZA Y REPORTE FINAL
+      # ----------------------------------------------------------------
+      - name: Limpieza y reporte final
         if: always()
         run: |
-          mkdir -p vector_cache
-          find vector_cache -name "*.bin" -mtime +7 -delete 2>/dev/null || true
+          echo "🧹 Limpiando archivos temporales..."
+          rm -f collector_output.log aggregator_output.log 2>/dev/null || true
           
-          # Crear status simple para el log
-          echo '{"last_run": "'"$(date)"'"}' > system_status.json
-
-      - name: Publicar Inteligencia
-        if: success() || github.event.inputs.force == 'true'
-        run: |
-          git config --global user.name 'Proximity Bot'
-          git config --global user.email 'engine@proximity.ai'
-          git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "🔄 Neural Update: $(date '+%Y-%m-%d %H:%M')"
-            git pull origin main --rebase -X theirs
-            git push origin main
-          else
-            echo "No hay cambios para subir."
-          fi
+          echo "📋 REPORTE FINAL DE EJECUCIÓN:"
+          echo "----------------------------------------"
+          echo "Collector: ${{ steps.run-collector.outputs.collector_success || 'unknown' }}"
+          echo "Agregador: ${{ steps.run-aggregator.outputs.aggregator_success || 'not_run' }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Evento: ${{ github.event_name }}"
+          echo "Fecha: $(date)"
+          echo "----------------------------------------"
