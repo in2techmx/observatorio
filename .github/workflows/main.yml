@@ -2,22 +2,26 @@ name: Proximity Engine Intelligence Pipeline
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
-    - cron: '0 0 * * 0'
+    - cron: '0 */6 * * *'    # Ejecución automática cada 6 horas
+    - cron: '30 3 * * *'     # Mantenimiento diario 3:30 AM
+  
   workflow_dispatch:
     inputs:
       task:
-        description: 'Tipo de análisis'
+        description: 'Modo de análisis'
         required: false
         default: 'tactical'
         type: choice
         options:
           - tactical
-          - weekly
-          - both
+          - strategic
+          - full
+  
   push:
     branches:
       - main
+    paths:
+      - 'collector.py'
 
 jobs:
   intelligence-pipeline:
@@ -25,11 +29,13 @@ jobs:
     permissions:
       contents: write
     
+    # Evita que dos ejecuciones choquen y corrompan datos
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     
     steps:
+      # 1. Preparar el terreno
       - name: Checkout del repositorio
         uses: actions/checkout@v4
 
@@ -38,135 +44,108 @@ jobs:
         with:
           python-version: '3.10'
       
+      # 2. Infraestructura segura
       - name: Preparar directorios
         run: |
           mkdir -p vector_cache
           mkdir -p historico_noticias/diario
           mkdir -p historico_noticias/semanal
-          echo "📁 Estructura de directorios lista"
-      
+          echo "✅ Directorios verificados"
+
+      # 3. Instalación Determinista (Versiones fijas para estabilidad)
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
           pip install google-genai==0.3.0 requests==2.31.0 beautifulsoup4==4.12.0 lxml==4.9.0 numpy==1.24.0
-          echo "📦 Dependencias instaladas"
-      
+
+      # 4. EJECUCIÓN DEL CEREBRO (Con paso de argumentos)
       - name: Ejecutar Proximity Collector
         id: run-collector
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Captura el input manual, o usa 'tactical' por defecto si es automático
+          MODE: ${{ github.event.inputs.task || 'tactical' }}
         run: |
           set -e
-          echo "🚀 Iniciando collector..."
-          python collector.py
+          echo "🚀 Iniciando collector en modo: $MODE"
+          
+          # Pasamos el modo como variable de entorno o argumento
+          # Asegúrate que tu python pueda leer sys.argv o os.environ['MODE']
+          python collector.py --mode "$MODE"
           
           if [ -f "gravity_carousel.json" ]; then
             echo "collector_success=true" >> $GITHUB_OUTPUT
-            echo "✅ Collector completado exitosamente"
+            echo "✅ Collector finalizado y archivo generado."
           else
-            echo "❌ ERROR: Archivo de salida no generado"
+            echo "❌ ERROR CRÍTICO: No se generó gravity_carousel.json"
             exit 1
           fi
-      
-      - name: Validar JSON generado
+
+      # 5. CONTROL DE CALIDAD (Script Python Inline)
+      - name: Validar integridad del JSON
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
-          echo "🔍 Validando estructura JSON..."
-          # Crear script de validación temporal
-          cat > validate_json.py << 'VALIDATE_EOF'
-import json
-import sys
-import os
+          echo "🔍 Auditando JSON generado..."
+          python3 -c "
+import json, sys, os
+try:
+    if not os.path.exists('gravity_carousel.json'): sys.exit(1)
+    with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Validaciones críticas
+    if 'carousel' not in data or not isinstance(data['carousel'], list):
+        print('❌ Error: Falta array carousel'); sys.exit(1)
+    
+    total = sum(len(a.get('particulas', [])) for a in data['carousel'])
+    print(f'✅ JSON Válido. Áreas: {len(data['carousel'])}, Partículas: {total}')
+    
+    if total == 0:
+        print('⚠️ Advertencia: JSON válido pero vacío'); 
+        # Opcional: sys.exit(1) si no quieres subir archivos vacíos
 
-def main():
-    try:
-        # Verificar que el archivo existe
-        if not os.path.exists('gravity_carousel.json'):
-            print('❌ ERROR: Archivo gravity_carousel.json no encontrado')
-            return False
-        
-        # Cargar y validar JSON
-        with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        # Validar estructura básica
-        if not isinstance(data, dict):
-            print('❌ ERROR: JSON no es un objeto/diccionario')
-            return False
-        
-        if 'carousel' not in data:
-            print('❌ ERROR: Falta campo "carousel"')
-            return False
-        
-        carousel = data['carousel']
-        if not isinstance(carousel, list):
-            print('❌ ERROR: "carousel" no es una lista')
-            return False
-        
-        areas_count = len(carousel)
-        print(f'✅ JSON válido con {areas_count} áreas')
-        
-        # Validar cada área
-        valid_areas = 0
-        total_particles = 0
-        
-        for i, area in enumerate(carousel):
-            if not isinstance(area, dict):
-                print(f'⚠️ Advertencia: Área {i} no es un diccionario')
-                continue
-            
-            if 'area' not in area:
-                print(f'⚠️ Advertencia: Área {i} no tiene campo "area"')
-                continue
-            
-            particles = area.get('particulas', [])
-            if isinstance(particles, list):
-                total_particles += len(particles)
-                valid_areas += 1
-        
-        print(f'✅ {valid_areas} áreas válidas')
-        print(f'✅ Total de partículas: {total_particles}')
-        
-        # Verificar metadatos
-        if 'meta' in data and isinstance(data['meta'], dict):
-            meta = data['meta']
-            if 'updated' in meta:
-                print(f'⏰ Última actualización: {meta["updated"]}')
-        
-        return True
-        
-    except json.JSONDecodeError as e:
-        print(f'❌ ERROR: JSON inválido - {e}')
-        return False
-    except Exception as e:
-        print(f'❌ ERROR inesperado: {e}')
-        return False
+except Exception as e:
+    print(f'❌ JSON Corrupto: {e}'); sys.exit(1)
+          "
 
-if __name__ == '__main__':
-    success = main()
-    sys.exit(0 if success else 1)
-VALIDATE_EOF
-          
-          # Ejecutar validación
-          python3 validate_json.py
-      
-      - name: Commit y Push de Resultados
+      # 6. DESPLIEGUE SEGURO (Git Rebase Strategy)
+      - name: Guardar y Publicar
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
+          # Configurar identidad del bot
           git config --global user.name 'Proximity Engine Bot'
           git config --global user.email 'bot@proximity.ai'
           
-          # Verificar si hay cambios
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "📭 No hay cambios para commit"
+          # Verificar si hay cambios reales
+          git add .
+          if git diff --staged --quiet; then
+            echo "📭 No hay cambios nuevos en las noticias. Saltando commit."
             exit 0
           fi
           
-          git add .
-          git commit -m "🤖 Actualización automática: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # Commit
+          git commit -m "🤖 INTEL UPDATE: $(date -u +'%Y-%m-%d %H:%M UTC') [${{ github.event.inputs.task || 'auto' }}]"
           
-          # Sincronizar con el repositorio
-          git pull --rebase origin main || true
-          git push origin main
+          # Bucle de reintento para evitar colisiones
+          MAX_RETRIES=5
+          count=0
+          success=false
           
-          echo "✅ Cambios subidos exitosamente"
+          until [ $count -ge $MAX_RETRIES ]
+          do
+            echo "🔄 Intento de sincronización $((count+1))/$MAX_RETRIES..."
+            
+            # Traer cambios remotos y aplicarlos sobre los nuestros (Rebase)
+            git pull origin main --rebase && git push origin main && success=true && break
+            
+            count=$((count+1))
+            echo "⚠️ Conflicto detectado, esperando 5s..."
+            sleep 5
+          done
+          
+          if [ "$success" = true ]; then
+            echo "✅ Despliegue exitoso."
+          else
+            echo "❌ Falló el push después de varios intentos."
+            exit 1
+          fi
