@@ -56,7 +56,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          set -e  # Fail on error
+          set -e
           echo "🚀 Iniciando collector..."
           python collector.py
           
@@ -72,46 +72,83 @@ jobs:
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
           echo "🔍 Validando estructura JSON..."
-          python3 -c "
-import json, sys
+          # Crear script de validación temporal
+          cat > validate_json.py << 'VALIDATE_EOF'
+import json
+import sys
+import os
 
-try:
-    with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    
-    # Validaciones básicas
-    if 'carousel' not in data:
-        print('❌ ERROR: Falta campo \"carousel\"')
-        sys.exit(1)
-    
-    if not isinstance(data['carousel'], list):
-        print('❌ ERROR: \"carousel\" no es una lista')
-        sys.exit(1)
-    
-    areas_count = len(data['carousel'])
-    print(f'✅ JSON válido con {areas_count} áreas')
-    
-    # Contar partículas
-    total_particles = 0
-    for area in data['carousel']:
-        particles = area.get('particulas', [])
-        total_particles += len(particles)
-    
-    print(f'✅ Total de partículas: {total_particles}')
-    
-    # Verificar timestamp
-    if 'meta' in data and 'updated' in data['meta']:
-        print(f'⏰ Última actualización: {data[\"meta\"][\"updated\"]}')
-    
-    sys.exit(0)
-    
-except json.JSONDecodeError as e:
-    print(f'❌ ERROR: JSON inválido - {e}')
-    sys.exit(1)
-except Exception as e:
-    print(f'❌ ERROR inesperado: {e}')
-    sys.exit(1)
-          "
+def main():
+    try:
+        # Verificar que el archivo existe
+        if not os.path.exists('gravity_carousel.json'):
+            print('❌ ERROR: Archivo gravity_carousel.json no encontrado')
+            return False
+        
+        # Cargar y validar JSON
+        with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        # Validar estructura básica
+        if not isinstance(data, dict):
+            print('❌ ERROR: JSON no es un objeto/diccionario')
+            return False
+        
+        if 'carousel' not in data:
+            print('❌ ERROR: Falta campo "carousel"')
+            return False
+        
+        carousel = data['carousel']
+        if not isinstance(carousel, list):
+            print('❌ ERROR: "carousel" no es una lista')
+            return False
+        
+        areas_count = len(carousel)
+        print(f'✅ JSON válido con {areas_count} áreas')
+        
+        # Validar cada área
+        valid_areas = 0
+        total_particles = 0
+        
+        for i, area in enumerate(carousel):
+            if not isinstance(area, dict):
+                print(f'⚠️ Advertencia: Área {i} no es un diccionario')
+                continue
+            
+            if 'area' not in area:
+                print(f'⚠️ Advertencia: Área {i} no tiene campo "area"')
+                continue
+            
+            particles = area.get('particulas', [])
+            if isinstance(particles, list):
+                total_particles += len(particles)
+                valid_areas += 1
+        
+        print(f'✅ {valid_areas} áreas válidas')
+        print(f'✅ Total de partículas: {total_particles}')
+        
+        # Verificar metadatos
+        if 'meta' in data and isinstance(data['meta'], dict):
+            meta = data['meta']
+            if 'updated' in meta:
+                print(f'⏰ Última actualización: {meta["updated"]}')
+        
+        return True
+        
+    except json.JSONDecodeError as e:
+        print(f'❌ ERROR: JSON inválido - {e}')
+        return False
+    except Exception as e:
+        print(f'❌ ERROR inesperado: {e}')
+        return False
+
+if __name__ == '__main__':
+    success = main()
+    sys.exit(0 if success else 1)
+VALIDATE_EOF
+          
+          # Ejecutar validación
+          python3 validate_json.py
       
       - name: Commit y Push de Resultados
         if: steps.run-collector.outputs.collector_success == 'true'
@@ -119,17 +156,17 @@ except Exception as e:
           git config --global user.name 'Proximity Engine Bot'
           git config --global user.email 'bot@proximity.ai'
           
-          # Verificar si hay cambios reales
-          if git diff --quiet && git diff --staged --quiet; then
+          # Verificar si hay cambios
+          if [ -z "$(git status --porcelain)" ]; then
             echo "📭 No hay cambios para commit"
             exit 0
           fi
           
           git add .
-          git commit -m "🤖 Actualización automática: $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "⚠️ No se pudo hacer commit"
+          git commit -m "🤖 Actualización automática: $(date -u +'%Y-%m-%d %H:%M UTC')"
           
-          # Pull con estrategia segura
-          git pull origin main --rebase || git pull origin main --no-ff
-          
+          # Sincronizar con el repositorio
+          git pull --rebase origin main || true
           git push origin main
+          
           echo "✅ Cambios subidos exitosamente"
