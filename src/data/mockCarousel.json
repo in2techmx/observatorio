@@ -1,0 +1,100 @@
+[
+    {
+        "id": 101,
+        "title": "Crisis de Semiconductores: Nueva Planta en Arizona",
+        "category": "Economia",
+        "country": "USA",
+        "proximity_score": 9.5,
+        "analysis": "La administración Biden acelera la producción doméstica de chips para reducir dependencia de Asia. TSMC confirma expansión.",
+        "url": "#",
+        "perspectives": {
+            "USA": {
+                "weight": 9
+            }
+        }
+    },
+    {
+        "id": 102,
+        "title": "Inflación Global: Bancos Centrales Coordinan Tasas",
+        "category": "Economia",
+        "country": "Global",
+        "proximity_score": 8.8,
+        "analysis": "FED y BCE anuncian subidas simultáneas. Mercados emergentes sufren presión cambiaria.",
+        "url": "#",
+        "perspectives": {
+            "EU": {
+                "weight": 8
+            }
+        }
+    },
+    {
+        "id": 103,
+        "title": "Startups de IA reciben financiamiento récord",
+        "category": "Economia",
+        "country": "China",
+        "proximity_score": 7.2,
+        "analysis": "A pesar de la desaceleración, el sector tecnológico chino recibe inyecciones masivas de capital estatal.",
+        "url": "#",
+        "perspectives": {
+            "CHINA": {
+                "weight": 7
+            }
+        }
+    },
+    {
+        "id": 201,
+        "title": "Reforma al Sistema de Salud Universal",
+        "category": "Salud",
+        "country": "Colombia",
+        "proximity_score": 9.0,
+        "analysis": "Debate parlamentario intenso sobre la gestión de fondos públicos y aseguradoras privadas.",
+        "url": "#",
+        "perspectives": {
+            "LATAM": {
+                "weight": 9
+            }
+        }
+    },
+    {
+        "id": 202,
+        "title": "Brote de Nueva Variante Viral en el Sudeste Asiático",
+        "category": "Salud",
+        "country": "Vietnam",
+        "proximity_score": 8.5,
+        "analysis": "OMS emite alerta temprana. Restricciones de viaje bajo consideración.",
+        "url": "#",
+        "perspectives": {
+            "ASIA": {
+                "weight": 8
+            }
+        }
+    },
+    {
+        "id": 301,
+        "title": "Elecciones Generales: Polarización Extrema",
+        "category": "Politica",
+        "country": "España",
+        "proximity_score": 9.8,
+        "analysis": "Resultados ajustados obligan a coaliciones complejas. Incertidumbre en los mercados.",
+        "url": "#",
+        "perspectives": {
+            "EUROPE": {
+                "weight": 10
+            }
+        }
+    },
+    {
+        "id": 302,
+        "title": "Cumbre Climática COP29: Compromisos y Reticencias",
+        "category": "Politica",
+        "country": "UAE",
+        "proximity_score": 7.5,
+        "analysis": "Naciones productoras de petróleo defienden transición lenta. Activistas protestan.",
+        "url": "#",
+        "perspectives": {
+            "Middle East": {
+                "weight": 7
+            }
+        }
+    }
+]

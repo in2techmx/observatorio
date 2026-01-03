@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Gravity Observatory V2</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Libraries via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                        'void': '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #050505;
+            --region-usa: #3b82f6;
+            /* Blue */
+            --region-china: #ef4444;
+            /* Red */
+            --region-russia: #b91c1c;
+            /* Dark Red */
+            --region-europe: #8b5cf6;
+            /* Purple */
+            --region-india: #f59e0b;
+            /* Orange */
+            --region-mideast: #10b981;
+            /* Emerald */
+            --region-latam: #ec4899;
+            /* Pink */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            /* Deep Space Background */
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(20, 20, 30, 0.5) 0%, transparent 60%),
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.05) 0%, transparent 40%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        /* Text Utilities */
+        .text-xs-nano {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // --- 1. ARCHITECTURE & DATA ---
+
+        const REGIONS = {
+            USA: { id: 'USA', name: 'USA', color: 'var(--region-usa)', framing: 'Interés Nacional & Mercado' },
+            CHINA: { id: 'CHINA', name: 'China', color: 'var(--region-china)', framing: 'Estabilidad & Soberanía' },
+            RUSSIA: { id: 'RUSSIA', name: 'Rusia', color: 'var(--region-russia)', framing: 'Seguridad Indivisible' },
+            EUROPE: { id: 'EUROPE', name: 'Europa', color: 'var(--region-europe)', framing: 'Derechos & Normativa' },
+            INDIA: { id: 'INDIA', name: 'India', color: 'var(--region-india)', framing: 'Autonomía Estratégica' },
+            MID_EAST: { id: 'MID_EAST', name: 'Medio Oriente', color: 'var(--region-mideast)', framing: 'Diversificación & Fe' },
+            LATAM: { id: 'LATAM', name: 'LATAM', color: 'var(--region-latam)', framing: 'Justicia Social & Recursos' },
+        };
+
+        const PILLARS = ['Economía', 'Conflicto', 'Tecnología', 'Clima', 'Sociedad', 'Soberanía'];
+
+        // Mock Data reflecting "Reason of State" logic (FALLBACK)
+        const MOCK_EVENTS = [
+            {
+                id: 1,
+                title: "Tratado Comercial Global Sur-Sur",
+                category: "Economía",
+                // GGI: Volume (How many regions cover it), Affinity (Category match)
+                regions_coverage: ['CHINA', 'RUSSIA', 'INDIA', 'LATAM', 'MID_EAST'],
+                blind_spots: ['USA', 'EUROPE'],
+                perspectives: {
+                    CHINA: { weight: 9, synthesis: "Consolidación de la ruta de la seda digital y des-dolarización del comercio.", keyword: "Hegemonía Alternativa" },
+                    RUSSIA: { weight: 8, synthesis: "Ruptura efectiva del cerco de sanciones occidentales.", keyword: "Resistencia Económica" },
+                    INDIA: { weight: 7, synthesis: "Oportunidad para liderar manufactura sin alineación política estricta.", keyword: "Pragmatismo" },
+                    LATAM: { weight: 9, synthesis: "Soberanía sobre recursos críticos (Litio/Agua) frente a corporaciones.", keyword: "Nacionalismo de Recursos" },
+                    MID_EAST: { weight: 6, synthesis: "Diversificación de activos energéticos hacia mercados asiáticos.", keyword: "Nuevos Mercados" },
+                    // Low weight/Phantom perspectives for blind spots (what they *would* say if they covered it fully, or brief dismissals)
+                    USA: { weight: 2, synthesis: "Nota breve sobre riesgos de seguridad en cadenas de suministro no aliadas.", keyword: "Riesgo Seguridad" },
+                    EUROPE: { weight: 3, synthesis: "Preocupación por estándares ambientales en nuevos acuerdos.", keyword: "Estándares Bajos" }
+                }
+            },
+            {
+                id: 2,
+                title: "Regulación IA: El Protocolo de Ginebra",
+                category: "Tecnología",
+                regions_coverage: ['USA', 'EUROPE', 'CHINA', 'INDIA', 'LATAM', 'RUSSIA', 'MID_EAST'], // Global Convergence
+                blind_spots: [],
+                perspectives: {
+                    USA: { weight: 10, synthesis: "Protección de la innovación frente a regulaciones estatales asfixiantes.", keyword: "Libertad de Innovación" },
+                    EUROPE: { weight: 10, synthesis: "Marco ético centrado en el humano y privacidad de datos.", keyword: "Etica Digital" },
+                    CHINA: { weight: 9, synthesis: "La IA debe servir a la estabilidad social y seguridad del estado.", keyword: "Ciber-Soberanía" },
+                    RUSSIA: { weight: 8, synthesis: "Prevención de la dominación cultural algorítmica occidental.", keyword: "Soberanía Cognitiva" },
+                    INDIA: { weight: 7, synthesis: "IA como bien público digital para el desarrollo (DPI).", keyword: "Inclusión Digital" },
+                    LATAM: { weight: 6, synthesis: "Riesgos de automatización en economías laborales intensivas.", keyword: "Desempleo Tecnológico" },
+                    MID_EAST: { weight: 8, synthesis: "Inversión masiva en LLMs soberanos para preservar cultura árabe.", keyword: "Identidad Cultural" }
+                }
+            },
+            {
+                id: 3,
+                title: "Crisis Hídrica en el Sahel",
+                category: "Clima",
+                regions_coverage: ['EUROPE', 'MID_EAST'],
+                blind_spots: ['USA', 'CHINA', 'RUSSIA', 'LATAM', 'INDIA'], // Massive Silence
+                perspectives: {
+                    EUROPE: { weight: 8, synthesis: "Urgencia migratoria y necesidad de estabilidad en la frontera sur.", keyword: "Seguridad Fronteriza" },
+                    MID_EAST: { weight: 7, synthesis: "Solidaridad islámica y seguridad alimentaria regional.", keyword: "Hermandad" },
+                    USA: { weight: 1, synthesis: "Mención en reportes científicos, sin relevancia política.", keyword: "Irrelevante" },
+                    CHINA: { weight: 2, synthesis: "Foco en disputas locales, tangencial a intereses estratégicos.", keyword: "Distante" },
+                    RUSSIA: { weight: 1, synthesis: "Sin cobertura significativa.", keyword: "Silencio" },
+                    LATAM: { weight: 1, synthesis: "Sin cobertura significativa.", keyword: "Silencio" },
+                    INDIA: { weight: 1, synthesis: "Sin cobertura significativa.", keyword: "Silencio" }
+                }
+            }
+        ];
+
+        // --- 2. ALGORITHMS (GGI) ---
+
+        // Calculate Global Gravity Index for an event
+        const calculateGGI = (event) => {
+            const coverageCount = event.regions_coverage.length;
+            const totalRegions = Object.keys(REGIONS).length;
+            const volumeScore = (coverageCount / totalRegions) * 100;
+
+            // "Void Differential": Inverse of volume, weighted by importance of missing regions (mocked simple here)
+            const voidScore = 100 - volumeScore;
+
+            return { volumeScore, voidScore };
+        };
+
+        // --- 3. COMPONENTS (The 3 Engines) ---
+
+        // ENGINE A: THE PRISM (Visualizing Divergence)
+        const PrismEngine = ({ event }) => {
+            if (!event) return null;
+
+            const regionKeys = Object.keys(REGIONS);
+
+            // Physics: Higher weight = closer to center (gravity)
+            // Silence = High distance/Ghost
+
+            return (
+                <div className="relative w-full h-[600px] flex items-center justify-center">
+                    {/* Central Star: The News Item */}
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="z-50 text-center p-8 glass-panel rounded-full w-64 h-64 flex flex-col items-center justify-center border-t border-white/20"
+                    >
+                        <span className="text-xs-nano text-blue-400 mb-2">{event.category}</span>
+                        <h1 className="text-xl font-bold leading-tight">{event.title}</h1>
+                        <div className="mt-4 flex gap-4 text-xs text-gray-400">
+                            <div>
+                                <span className="block font-bold text-white">{calculateGGI(event).volumeScore.toFixed(0)}%</span>
+                                Vol. Global
+                            </div>
+                            <div>
+                                <span className="block font-bold text-red-400">{event.blind_spots.length}</span>
+                                Puntos Ciegos
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Orbiting Regions */}
+                    {regionKeys.map((key, i) => {
+                        const region = REGIONS[key];
+                        const persp = event.perspectives[key];
+                        const isBlindSpot = event.blind_spots.includes(key);
+                        const weight = persp.weight || 1;
+
+                        // Orbit Logic
+                        const angle = (i / 7) * Math.PI * 2 - (Math.PI / 2);
+                        // Heavier = Closer. Max dist 350, Min dist 180.
+                        const distance = isBlindSpot ? 380 : 180 + ((10 - weight) * 15);
+
+                        return (
+                            <motion.div
+                                key={key}
+                                className="absolute"
+                                initial={{ x: 0, y: 0, opacity: 0 }}
+                                animate={{
+                                    x: Math.cos(angle) * distance,
+                                    y: Math.sin(angle) * distance,
+                                    opacity: isBlindSpot ? 0.3 : 1
+                                }}
+                                transition={{ type: "spring", stiffness: 50, damping: 20, delay: i * 0.1 }}
+                            >
+                                <div className={`w-48 p-4 glass-panel flex flex-col relative transition-all duration-500 hover:scale-110 hover:z-50 ${isBlindSpot ? 'grayscale opacity-50' : ''}`}
+                                    style={{ borderTop: `3px solid ${region.color}` }}>
+
+                                    {/* Connection Line */}
+                                    <div className="absolute top-1/2 left-1/2 w-[500px] bg-white/5 h-[1px] origin-left -z-10"
+                                        style={{
+                                            transform: `rotate(${angle + Math.PI}rad)`,
+                                            width: `${distance}px`,
+                                            left: `${-distance + 96}px` // rough center fix
+                                        }}
+                                    />
+
+                                    <div className="flex justify-between items-center mb-2">
+                                        <span className="text-xs-nano" style={{ color: region.color }}>{region.name}</span>
+                                        {isBlindSpot && <span className="text-[10px] bg-red-500/20 text-red-500 px-1 rounded">VACÍO</span>}
+                                    </div>
+
+                                    {!isBlindSpot ? (
+                                        <>
+                                            <h3 className="font-bold text-sm mb-1 text-white">{persp.keyword}</h3>
+                                            <p className="text-xs text-gray-400 leading-snug">"{persp.synthesis}"</p>
+                                        </>
+                                    ) : (
+                                        <p className="text-xs text-gray-600 italic">Sin narrativa relevante detectada.</p>
+                                    )}
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        // ENGINE B: THE SILENCE MAP (Void Differential)
+        const SilenceEngine = ({ event }) => {
+            const blindRegionKeys = event.blind_spots;
+
+            if (blindRegionKeys.length === 0) {
+                return (
+                    <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-50">
+                        <span className="text-4xl mb-4">🌍</span>
+                        <h3 className="text-xl font-bold">Sin Silencios Críticos</h3>
+                        <p className="text-sm">Esta narrativa tiene cobertura global omnipresente.</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="h-full p-8 overflow-y-auto">
+                    <h3 className="text-xs-nano text-red-400 mb-6 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        Alertas de Vacío Informativo
+                    </h3>
+
+                    <div className="grid gap-4">
+                        {blindRegionKeys.map(key => {
+                            const region = REGIONS[key];
+                            return (
+                                <div key={key} className="glass-panel p-5 border-l-4" style={{ borderLeftColor: region.color }}>
+                                    <div className="flex justify-between mb-2">
+                                        <h4 className="font-bold text-lg" style={{ color: region.color }}>{region.name}</h4>
+                                        <span className="text-xs text-gray-500 p-1 border border-gray-700 rounded">Ignorado</span>
+                                    </div>
+                                    <p className="text-sm text-gray-300">
+                                        El tema "{event.title}" no supera el umbral de relevancia en los feeds de {region.name}.
+                                    </p>
+                                    <div className="mt-3 text-xs text-gray-500 bg-black/20 p-2 rounded">
+                                        <strong>Hipótesis del Sistema:</strong> Incompatibilidad con el marco "{region.framing}".
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        // ENGINE C: VALIDATOR (Lexical Analysis - Simplified)
+        const ValidatorEngine = ({ event }) => {
+            return (
+                <div className="h-full p-8">
+                    <h3 className="text-xs-nano text-blue-400 mb-6">Validador de Omisiones</h3>
+                    <div className="space-y-6">
+                        {Object.keys(REGIONS).map(key => {
+                            if (event.blind_spots.includes(key)) return null;
+                            const r = REGIONS[key];
+                            const p = event.perspectives[key];
+                            return (
+                                <div key={key} className="relative pl-4 border-l border-white/10">
+                                    <div className="absolute left-[-2px] top-0 w-[3px] h-4 bg-blue-500" style={{ backgroundColor: r.color }}></div>
+                                    <div className="flex items-baseline gap-2 mb-1">
+                                        <span className="font-bold text-sm" style={{ color: r.color }}>{r.name}</span>
+                                        <span className="text-xs text-gray-500">Enfoque: {p.keyword}</span>
+                                    </div>
+                                    <p className="text-sm text-gray-300">"{p.synthesis}"</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )
+        };
+
+        // ENGINE D: FEED (The Landing Layer)
+        const FeedEngine = ({ events, onSelectEvent }) => {
+            // Split events by Global Convergence (Volume Score)
+            // High Volume (> 50%) = Convergent. Low Volume / High Void = Divergent.
+            const convergentEvents = events.filter(e => calculateGGI(e).volumeScore >= 50);
+            const divergentEvents = events.filter(e => calculateGGI(e).volumeScore < 50);
+
+            return (
+                <div className="max-w-6xl mx-auto h-full p-8 overflow-y-auto">
+
+                    {/* Hero Header */}
+                    <div className="text-center mb-12">
+                        <h1 className="font-display font-bold text-5xl tracking-tight mb-2">GLOBAL <span className="font-light text-blue-400">GRAVITY</span></h1>
+                        <p className="text-gray-400 uppercase tracking-widest text-xs">Observatorio de Divergencia Narrativa</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+                        {/* COLUMN 1: CONVERGENT (High Gravity) */}
+                        <section>
+                            <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-white">
+                                <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_white]"></span>
+                                Gravedad Compartida
+                                <span className="text-xs text-gray-500 font-normal ml-auto">Agenda Global (Consenso)</span>
+                            </h2>
+                            <div className="space-y-4">
+                                {convergentEvents.map(ev => (
+                                    <motion.div
+                                        key={ev.id}
+                                        onClick={() => onSelectEvent(ev)}
+                                        whileHover={{ scale: 1.02 }}
+                                        className="glass-panel p-6 cursor-pointer border-l-4 border-blue-500 transition-colors hover:bg-white/5"
+                                    >
+                                        <span className="text-xs-nano text-blue-300">{ev.category}</span>
+                                        <h3 className="text-xl font-bold leading-tight mt-1 mb-2">{ev.title}</h3>
+                                        <div className="flex gap-4 text-xs text-gray-400">
+                                            <span>Volumen: {calculateGGI(ev).volumeScore.toFixed(0)}%</span>
+                                            <span>Cobertura: {ev.regions_coverage.length}/7 Regiones</span>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* COLUMN 2: DIVERGENT (Blind Spots) */}
+                        <section>
+                            <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-white">
+                                <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_red]"></span>
+                                Anomalías de Vacío
+                                <span className="text-xs text-gray-500 font-normal ml-auto">Puntos Ciegos (Divergencia)</span>
+                            </h2>
+                            <div className="space-y-4">
+                                {divergentEvents.map(ev => {
+                                    const ggi = calculateGGI(ev);
+                                    return (
+                                        <motion.div
+                                            key={ev.id}
+                                            onClick={() => onSelectEvent(ev)}
+                                            whileHover={{ scale: 1.02 }}
+                                            className="glass-panel p-6 cursor-pointer border-l-4 border-red-500 transition-colors hover:bg-white/5 relative overflow-hidden"
+                                        >
+                                            {/* Ghost Effect for Divergence */}
+                                            <div className="absolute top-0 right-0 p-4 opacity-10 font-[1000] text-6xl text-red-500 -rotate-12 select-none">
+                                                ø
+                                            </div>
+
+                                            <span className="text-xs-nano text-red-300">{ev.category}</span>
+                                            <h3 className="text-xl font-bold leading-tight mt-1 mb-2">{ev.title}</h3>
+                                            <div className="flex flex-wrap gap-2 mt-3">
+                                                {ev.blind_spots.map(bs => (
+                                                    <span key={bs} className="px-2 py-0.5 rounded bg-red-500/10 text-red-400 text-[10px] border border-red-500/20">
+                                                        Ignorado por {REGIONS[bs].name}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )
+                                })}
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+            );
+        };
+
+
+        // --- MAIN APP ---
+
+        const App = () => {
+            // Initialize with Mock Data (fallback)
+            const [eventsData, setEventsData] = useState(MOCK_EVENTS);
+            const [mode, setMode] = useState('feed'); // 'feed' | 'analysis'
+            const [activeEventId, setActiveEventId] = useState(null);
+            const [view, setView] = useState('prism'); // prism, silence, validator
+
+            // LOAD EXTERNAL JSON
+            React.useEffect(() => {
+                const loadData = async () => {
+                    try {
+                        console.log("Attempting to fetch ./latest_news.json...");
+                        const response = await fetch('./latest_news.json');
+                        if (!response.ok) throw new Error("JSON not found");
+                        const jsonData = await response.json();
+                        if (Array.isArray(jsonData) && jsonData.length > 0) {
+                            console.log("Successfully loaded external data:", jsonData);
+                            setEventsData(jsonData);
+                        }
+                    } catch (error) {
+                        console.log("Using fallback mock data (latest_news.json not found or invalid).");
+                    }
+                };
+                loadData();
+            }, []);
+
+            // Safety: If analyzing but no event, go feed
+            if (mode === 'analysis' && !activeEventId) setMode('feed');
+
+            const activeEvent = eventsData.find(e => e.id === activeEventId);
+
+            const handleSelectEvent = (event) => {
+                setActiveEventId(event.id);
+                setMode('analysis');
+                setView('prism'); // Reset to prism on new entry
+            };
+
+            const handleBackToFeed = () => {
+                setMode('feed');
+            };
+
+            return (
+                <div className="flex h-screen w-full font-inter">
+
+                    {/* FEED MODE */}
+                    {mode === 'feed' && (
+                        <main className="w-full h-full relative">
+                            {/* Pass dynamic data to FeedEngine */}
+                            <FeedEngine
+                                events={eventsData}
+                                onSelectEvent={handleSelectEvent}
+                            />
+                        </main>
+                    )}
+
+                    {/* ANALYSIS MODE */}
+                    {mode === 'analysis' && activeEvent && (
+                        <div className="flex h-full w-full animate-in fade-in zoom-in duration-300">
+                            {/* FEED SIDEBAR UI (Condensed) */}
+                            <aside className="w-80 glass-panel m-4 mr-0 flex flex-col z-20">
+                                <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                                    <button onClick={handleBackToFeed} className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-1">
+                                        ← Volver
+                                    </button>
+                                </div>
+                                <div className="p-4 border-b border-white/5 bg-white/5">
+                                    <h2 className="font-bold text-sm text-white mb-1">{activeEvent.title}</h2>
+                                    <span className="text-xs text-blue-400">{activeEvent.category}</span>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                                    <h3 className="text-xs-nano text-gray-500 mb-2">Otras Señales</h3>
+                                    {eventsData.filter(e => e.id !== activeEventId).map(ev => (
+                                        <div
+                                            key={ev.id}
+                                            onClick={() => setActiveEventId(ev.id)}
+                                            className="p-3 rounded-lg cursor-pointer hover:bg-white/5 opacity-60 text-xs"
+                                        >
+                                            {ev.title}
+                                        </div>
+                                    ))}
+                                </div>
+                            </aside>
+
+                            {/* MAIN STAGE */}
+                            <main className="flex-1 flex flex-col relative overflow-hidden">
+
+                                {/* Engine Selector */}
+                                <div className="absolute top-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 p-1 glass-panel rounded-full">
+                                    {['prism', 'silence', 'validator'].map(v => (
+                                        <button
+                                            key={v}
+                                            onClick={() => setView(v)}
+                                            className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${view === v ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                                        >
+                                            {v === 'prism' ? 'Prisma' : v === 'silence' ? 'Silencios' : 'Validador'}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex-1 relative">
+                                    <motion.div
+                                        key={`${activeEventId}-${view}`}
+                                        initial={{ opacity: 0, scale: 0.98 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="w-full h-full p-8 pt-20"
+                                    >
+                                        {view === 'prism' && <PrismEngine event={activeEvent} />}
+                                        {view === 'silence' && (
+                                            <div className="max-w-3xl mx-auto h-full">
+                                                <SilenceEngine event={activeEvent} />
+                                            </div>
+                                        )}
+                                        {view === 'validator' && (
+                                            <div className="max-w-3xl mx-auto h-full glass-panel overflow-y-auto">
+                                                <ValidatorEngine event={activeEvent} />
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </main>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
