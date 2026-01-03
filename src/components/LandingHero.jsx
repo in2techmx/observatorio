@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const LandingHero = () => {
     return (
-        <div className="relative w-full h-[80vh] flex flex-col justify-center items-start px-12 md:px-24 overflow-hidden">
+        <div className="relative w-full min-h-screen flex flex-col justify-center items-start px-12 md:px-24 overflow-hidden py-20 pb-40">
             {/* Background Effects */}
             <div className="absolute inset-0 bg-black z-0">
                 <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
