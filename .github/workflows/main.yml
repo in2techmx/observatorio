@@ -1,14 +1,13 @@
-¡name: Proximity Engine Intelligence Pipeline
+name: Proximity Engine Intelligence Pipeline
 
 on:
   schedule:
-    - cron: '0 */6 * * *'    # Ejecución automática cada 6 horas
-    - cron: '30 3 * * *'     # Mantenimiento diario 3:30 AM
-  
+    - cron: '0 */6 * * *'
+    - cron: '30 3 * * *'
   workflow_dispatch:
     inputs:
       task:
-        description: 'Modo de análisis'
+        description: 'Tipo de análisis'
         required: false
         default: 'tactical'
         type: choice
@@ -16,48 +15,48 @@ on:
           - tactical
           - strategic
           - full
-  
   push:
     branches:
       - main
     paths:
       - 'collector.py'
+      - 'requirements.txt'
 
 jobs:
   intelligence-pipeline:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     
     steps:
-      # 1. Preparar el terreno
       - name: Checkout del repositorio
         uses: actions/checkout@v4
-
+      
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'pip'
       
-      # 2. Infraestructura segura
       - name: Preparar directorios
         run: |
           mkdir -p vector_cache
           mkdir -p historico_noticias/diario
           mkdir -p historico_noticias/semanal
-          echo "✅ Directorios verificados"
+          echo "✅ Directorios listos"
 
-      # 3. Instalación Determinista
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install google-genai==0.3.0 requests==2.31.0 beautifulsoup4==4.12.0 lxml==4.9.0 numpy==1.24.0
+          # Si tienes requirements.txt usa: pip install -r requirements.txt
+          # Si no, usamos la instalación directa:
+          pip install google-genai==0.3.0 requests==2.31.0 beautifulsoup4==4.12.0 lxml==4.9.0 numpy==1.24.0 argparse
 
-      # 4. EJECUCIÓN DEL CEREBRO (Con paso de argumentos)
       - name: Ejecutar Proximity Collector
         id: run-collector
         env:
@@ -66,95 +65,51 @@ jobs:
         run: |
           set -e
           echo "🚀 Iniciando collector en modo: $MODE"
-          
-          # NOTA: Asegúrate de añadir el bloque argparse en tu collector.py
           python collector.py --mode "$MODE"
           
           if [ -f "gravity_carousel.json" ]; then
             echo "collector_success=true" >> $GITHUB_OUTPUT
-            echo "✅ Collector finalizado y archivo generado."
+            echo "✅ Collector finalizado exitosamente."
           else
-            echo "❌ ERROR CRÍTICO: No se generó gravity_carousel.json"
+            echo "❌ ERROR: No se generó el archivo JSON."
             exit 1
           fi
 
-      # 5. CONTROL DE CALIDAD (Método Seguro EOF)
       - name: Validar integridad del JSON
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
           echo "🔍 Auditando JSON generado..."
-          
-          # Escribimos el script a un archivo temporal para evitar conflictos de comillas
           cat << 'EOF' > validate_integrity.py
           import json, sys, os
-          
           try:
-              if not os.path.exists('gravity_carousel.json'):
-                  sys.exit(1)
-                  
+              if not os.path.exists('gravity_carousel.json'): sys.exit(1)
               with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
                   data = json.load(f)
-              
-              # Validaciones críticas
               if 'carousel' not in data or not isinstance(data['carousel'], list):
-                  print('❌ Error: Falta array carousel')
-                  sys.exit(1)
-              
+                  print('❌ Error: Estructura inválida'); sys.exit(1)
               total = sum(len(a.get('particulas', [])) for a in data['carousel'])
-              
-              # CORRECCIÓN APLICADA: Uso de comillas dobles dentro del f-string
               print(f'✅ JSON Válido. Áreas: {len(data["carousel"])}, Partículas: {total}')
-              
-              if total == 0:
-                  print('⚠️ Advertencia: JSON válido pero vacío')
-                  # Opcional: sys.exit(1) si quieres fallar en vacío
-
           except Exception as e:
-              print(f'❌ JSON Corrupto: {e}')
-              sys.exit(1)
+              print(f'❌ Error: {e}'); sys.exit(1)
           EOF
-          
-          # Ejecutamos el validador
           python3 validate_integrity.py
 
-      # 6. DESPLIEGUE SEGURO (Git Rebase Strategy)
       - name: Guardar y Publicar
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
-          # Configurar identidad del bot
           git config --global user.name 'Proximity Engine Bot'
           git config --global user.email 'bot@proximity.ai'
           
-          # Verificar si hay cambios reales
           git add .
+          
           if git diff --staged --quiet; then
-            echo "📭 No hay cambios nuevos en las noticias. Saltando commit."
+            echo "📭 No hay cambios nuevos."
             exit 0
           fi
           
-          # Commit con fecha y modo
           git commit -m "🤖 INTEL UPDATE: $(date -u +'%Y-%m-%d %H:%M UTC') [${{ github.event.inputs.task || 'auto' }}]"
           
-          # Bucle de reintento para evitar colisiones
-          MAX_RETRIES=5
-          count=0
-          success=false
-          
-          until [ $count -ge $MAX_RETRIES ]
-          do
-            echo "🔄 Intento de sincronización $((count+1))/$MAX_RETRIES..."
-            
-            # Traer cambios remotos y aplicarlos sobre los nuestros (Rebase)
-            git pull origin main --rebase && git push origin main && success=true && break
-            
-            count=$((count+1))
-            echo "⚠️ Conflicto detectado, esperando 5s..."
-            sleep 5
+          # Reintento robusto
+          for i in {1..5}; do
+            git pull origin main --rebase && git push origin main && break || sleep 5;
           done
-          
-          if [ "$success" = true ]; then
-            echo "✅ Despliegue exitoso."
-          else
-            echo "❌ Falló el push después de varios intentos."
-            exit 1
-          fi
