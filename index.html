@@ -4,230 +4,1278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROXIMITY | Neural Tactical Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --bg: #050507;
             --cyan: #00fffb;
             --red: #ff004c;
+            --green: #00ff9d;
+            --yellow: #ffcc00;
+            --purple: #8b5cf6;
+            --orange: #f59e0b;
+            --pink: #ec4899;
             --panel: #0a0a0f;
             --border: #1a1a2e;
             --text: #e0e0e0;
+            --card-bg: rgba(15, 15, 26, 0.8);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             background: var(--bg);
             color: var(--text);
             font-family: 'Rajdhani', sans-serif;
-            margin: 0;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
+        /* HEADER CON EFECTO GLITCH */
         header {
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
+            background: linear-gradient(180deg, rgba(5,5,7,0.95) 0%, rgba(5,5,7,0.85) 100%);
             border-bottom: 1px solid var(--border);
-            background: rgba(10, 10, 15, 0.8);
+            padding: 20px 40px;
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .glitch-title {
-            font-family: 'Share Tech Mono';
-            font-size: 2rem;
-            letter-spacing: 4px;
-            margin: 0 0 10px 0;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            text-shadow: 2px 0 var(--red), -2px 0 var(--cyan);
+            position: relative;
+            color: var(--cyan);
         }
 
-        .controls {
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-title::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--red);
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-title::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--cyan);
+            animation: glitch-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            5% { clip: rect(12px, 9999px, 85px, 0); }
+            10% { clip: rect(65px, 9999px, 73px, 0); }
+            15% { clip: rect(6px, 9999px, 79px, 0); }
+            20% { clip: rect(67px, 9999px, 62px, 0); }
+            100% { clip: rect(0, 9999px, 0, 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip: rect(24px, 9999px, 90px, 0); }
+            5% { clip: rect(85px, 9999px, 140px, 0); }
+            10% { clip: rect(65px, 9999px, 54px, 0); }
+            15% { clip: rect(92px, 9999px, 71px, 0); }
+            20% { clip: rect(11px, 9999px, 14px, 0); }
+            100% { clip: rect(0, 9999px, 0, 0); }
+        }
+
+        /* CONTROLES TÁCTICOS */
+        .tactical-controls {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            gap: 15px;
+            align-items: center;
         }
 
-        select, button {
+        .control-btn {
+            background: linear-gradient(145deg, var(--panel), #05050a);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 251, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .control-btn:hover::before {
+            left: 100%;
+        }
+
+        .control-btn:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 251, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(145deg, rgba(0, 255, 251, 0.1), rgba(0, 255, 251, 0.05));
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        /* SELECT ESTILIZADO */
+        .styled-select {
             background: var(--panel);
             border: 1px solid var(--border);
-            color: #fff;
-            padding: 6px 12px;
+            color: var(--text);
+            padding: 10px 35px 10px 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
             cursor: pointer;
-            font-family: 'Share Tech Mono';
-            font-size: 0.8rem;
-            transition: 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='%2300fffb'%3E%3Cpath d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            border-radius: 4px;
+            transition: var(--transition);
         }
 
-        button:hover, select:hover {
+        .styled-select:hover {
             border-color: var(--cyan);
             box-shadow: 0 0 10px rgba(0, 255, 251, 0.2);
         }
 
-        /* Viewport principal */
-        #main-container {
-            width: 95vw;
+        /* INDICADORES DE ESTADO */
+        .status-indicators {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cyan);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online { background: var(--green); }
+        .status-dot.offline { background: var(--red); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* MODOS DE VISUALIZACIÓN */
+        .view-mode {
+            display: none;
+            width: 100%;
             height: calc(100vh - 120px);
-            margin: 10px auto;
-            position: relative;
+        }
+
+        .view-mode.active {
+            display: block;
+        }
+
+        /* MODO NETFLIX - CARDS */
+        #netflix-view {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .netflix-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .area-section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-badge {
+            background: var(--card-bg);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid currentColor;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--cyan) var(--panel);
+        }
+
+        .cards-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .cards-container::-webkit-scrollbar-track {
+            background: var(--panel);
+            border-radius: 4px;
+        }
+
+        .cards-container::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 4px;
+        }
+
+        .news-card {
+            flex: 0 0 300px;
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            background: radial-gradient(circle at center, #0f0f1a 0%, #050507 100%);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--cyan);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-region {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .card-proximity {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 15px;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .keyword {
+            background: rgba(0, 255, 251, 0.1);
+            color: var(--cyan);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 255, 251, 0.3);
+        }
+
+        .card-footer {
+            padding: 10px 15px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .card-consensus {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .consensus-bar {
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .consensus-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        /* MODO RADAR */
+        #radar-view {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        svg { width: 100%; height: 100%; }
-
-        /* Estilos de Informe (Modo Texto) */
-        #intel-report {
-            display: none;
+        .radar-container {
             width: 100%;
             height: 100%;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            line-height: 1.6;
-            max-width: 800px;
+            position: relative;
         }
 
-        #intel-report h2 { color: var(--cyan); border-bottom: 1px solid var(--cyan); padding-bottom: 10px; }
-        #intel-report strong { color: var(--cyan); }
-        #intel-report ul { border-left: 2px solid var(--border); padding-left: 20px; }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
 
-        /* Elementos de Radar */
-        .node { cursor: pointer; transition: r 0.3s, filter 0.3s; }
-        .node:hover { filter: drop-shadow(0 0 8px var(--cyan)); }
-        
-        .radar-line { stroke: rgba(0, 255, 251, 0.05); stroke-width: 1; pointer-events: none; }
+        .radar-grid {
+            stroke: rgba(0, 255, 251, 0.1);
+            stroke-width: 1;
+            fill: none;
+        }
 
+        .radar-center {
+            fill: var(--cyan);
+            r: 8;
+            animation: radar-pulse 3s infinite;
+        }
+
+        @keyframes radar-pulse {
+            0% { r: 8; opacity: 1; }
+            50% { r: 12; opacity: 0.5; }
+            100% { r: 8; opacity: 1; }
+        }
+
+        .radar-particle {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+
+        .radar-particle:hover {
+            r: 8;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        /* MODO INFORME DETALLADO */
+        #report-view {
+            padding: 40px;
+            overflow-y: auto;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--cyan);
+            padding-bottom: 20px;
+        }
+
+        .report-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--cyan);
+            margin-bottom: 10px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .micro-report {
+            background: var(--card-bg);
+            border-left: 4px solid var(--cyan);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .report-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: var(--cyan);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .particle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .particle-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            transition: var(--transition);
+        }
+
+        .particle-item:hover {
+            border-color: var(--cyan);
+            background: rgba(0, 255, 251, 0.05);
+        }
+
+        .particle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .particle-region {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .particle-proximity {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* TOOLTIP */
         .tooltip {
             position: fixed;
-            padding: 12px;
             background: rgba(5, 5, 7, 0.95);
             border: 1px solid var(--cyan);
-            color: #fff;
+            border-radius: 6px;
+            padding: 15px;
+            color: white;
+            z-index: 10000;
             pointer-events: none;
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translate(-50%, -100%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            color: var(--cyan);
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .tooltip-body {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .tooltip-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* MODAL DE DETALLE */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
             z-index: 2000;
-            font-size: 0.85rem;
-            max-width: 250px;
             display: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border: 2px solid var(--cyan);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--cyan);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 255, 251, 0.1);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .cards-container {
+                padding: 15px 5px;
+            }
+            
+            .news-card {
+                flex: 0 0 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glitch-title {
+                font-size: 1.8rem;
+            }
+            
+            .tactical-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .news-card {
+                flex: 0 0 250px;
+            }
+            
+            #report-view, #netflix-view {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 class="glitch-title">Tactical Hub v36</h1>
-    <div class="controls">
-        <button onclick="loadData('gravity_carousel.json', 'live')">📡 LIVE FEED</button>
-        <select id="week-selector" onchange="if(this.value) loadData(this.value, 'semanal')">
-            <option value="">ANÁLISIS HISTÓRICO...</option>
-            <option value="mes_s01.json">Semana 1 (Ene)</option>
-            <option value="mes_s02.json">Semana 2 (Ene)</option>
-        </select>
+    <div class="header-content">
+        <div class="logo-section">
+            <div class="glitch-title" data-text="PROXIMITY HUB">PROXIMITY HUB</div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>LIVE FEED</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>IA: ACTIVE</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tactical-controls">
+            <button class="control-btn active" onclick="switchView('netflix')">
+                <i class="fas fa-film"></i> CARDS
+            </button>
+            <button class="control-btn" onclick="switchView('radar')">
+                <i class="fas fa-radar"></i> RADAR
+            </button>
+            <button class="control-btn" onclick="switchView('report')">
+                <i class="fas fa-file-alt"></i> INFORME
+            </button>
+            
+            <select class="styled-select" id="data-source" onchange="loadData()">
+                <option value="gravity_carousel.json">📡 LIVE INTELLIGENCE</option>
+                <option value="executive_summary.json">📊 EXECUTIVE SUMMARY</option>
+                <option value="" disabled>――――――――――</option>
+                <optgroup label="HISTORICAL ANALYSIS">
+                    <option value="historico/2024-01-01.json">2024-01-01</option>
+                    <option value="historico/2024-01-02.json">2024-01-02</option>
+                    <option value="historico/2024-01-03.json">2024-01-03</option>
+                </optgroup>
+            </select>
+            
+            <button class="control-btn" onclick="refreshData()">
+                <i class="fas fa-sync-alt"></i> REFRESH
+            </button>
+        </div>
     </div>
 </header>
 
-<div id="main-container">
-    <div id="tooltip" class="tooltip"></div>
-    
-    <div id="intel-report"></div>
+<!-- MODO NETFLIX - CARDS -->
+<div id="netflix-view" class="view-mode active">
+    <div class="netflix-container" id="netflix-container">
+        <!-- Las tarjetas se generan dinámicamente aquí -->
+    </div>
+</div>
 
-    <svg id="radarSVG" viewBox="0 0 1000 600">
-        <circle cx="500" cy="300" r="100" class="radar-line" fill="none"/>
-        <circle cx="500" cy="300" r="200" class="radar-line" fill="none"/>
-        <circle cx="500" cy="300" r="280" class="radar-line" fill="none"/>
-        <line x1="500" y1="20" x2="500" y2="580" class="radar-line"/>
-        <line x1="200" y1="300" x2="800" y2="300" class="radar-line"/>
-        
-        <g id="particle-layer"></g>
-    </svg>
+<!-- MODO RADAR -->
+<div id="radar-view" class="view-mode">
+    <div class="radar-container">
+        <svg id="radar-svg">
+            <!-- Grid del radar -->
+            <circle cx="50%" cy="50%" r="40%" class="radar-grid" />
+            <circle cx="50%" cy="50%" r="30%" class="radar-grid" />
+            <circle cx="50%" cy="50%" r="20%" class="radar-grid" />
+            <circle cx="50%" cy="50%" r="10%" class="radar-grid" />
+            <circle cx="50%" cy="50%" r="5" class="radar-center" />
+            
+            <!-- Líneas del radar -->
+            <line x1="50%" y1="10%" x2="50%" y2="90%" class="radar-grid" />
+            <line x1="10%" y1="50%" x2="90%" y2="50%" class="radar-grid" />
+            
+            <!-- Capa de partículas -->
+            <g id="particle-layer"></g>
+        </svg>
+    </div>
+</div>
+
+<!-- MODO INFORME DETALLADO -->
+<div id="report-view" class="view-mode">
+    <div id="report-container">
+        <!-- El informe se genera dinámicamente aquí -->
+    </div>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<!-- MODAL DE DETALLE -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="modal-content"></div>
+    </div>
 </div>
 
 <script>
-    async function loadData(filename, type) {
-        const path = type === 'live' ? filename : `historico_noticias/semanal/${filename}`;
+    // ============================================================================
+    // CONFIGURACIÓN GLOBAL
+    // ============================================================================
+    let currentData = null;
+    let currentView = 'netflix';
+    
+    // Mapa de colores por área
+    const areaColors = {
+        "Seguridad y Conflictos": "#ef4444",
+        "Economía y Sanciones": "#3b82f6",
+        "Energía y Recursos": "#10b981",
+        "Soberanía y Alianzas": "#f59e0b",
+        "Tecnología y Espacio": "#8b5cf6",
+        "Sociedad y Derechos": "#ec4899"
+    };
+    
+    // Mapa de iconos por área
+    const areaIcons = {
+        "Seguridad y Conflictos": "fa-shield-alt",
+        "Economía y Sanciones": "fa-chart-line",
+        "Energía y Recursos": "fa-bolt",
+        "Soberanía y Alianzas": "fa-handshake",
+        "Tecnología y Espacio": "fa-satellite",
+        "Sociedad y Derechos": "fa-users"
+    };
+    
+    // ============================================================================
+    // FUNCIONES PRINCIPALES
+    // ============================================================================
+    
+    async function loadData() {
+        const select = document.getElementById('data-source');
+        const filename = select.value;
+        
+        if (!filename) return;
         
         try {
-            const response = await fetch(path + "?t=" + Date.now());
-            if (!response.ok) throw new Error("Archivo no encontrado");
-            const data = await response.json();
-            renderHub(data);
-        } catch (err) {
-            console.error(err);
-            alert("⚠️ Error de sistema: No se pudo cargar el módulo de datos.");
+            showLoading();
+            const response = await fetch(filename + '?t=' + Date.now());
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            currentData = await response.json();
+            renderCurrentView();
+            
+            // Actualizar indicador de última actualización
+            updateLastUpdated();
+            
+        } catch (error) {
+            console.error('Error cargando datos:', error);
+            alert(`⚠️ ERROR DE SISTEMA: ${error.message}`);
+        } finally {
+            hideLoading();
         }
     }
-
-    function renderHub(data) {
-        const svg = document.getElementById('radarSVG');
-        const report = document.getElementById('intel-report');
-        const layer = document.getElementById('particle-layer');
-        layer.innerHTML = '';
-
-        // MODO INFORME (Si hay síntesis de texto de Gemini)
-        if (data.sintesis_estrategica) {
-            svg.style.display = 'none';
-            report.style.display = 'block';
-            // Usamos Marked para renderizar el Markdown profesionalmente
-            report.innerHTML = marked.parse(data.sintesis_estrategica);
+    
+    function refreshData() {
+        loadData();
+    }
+    
+    function switchView(viewName) {
+        // Actualizar botones activos
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.control-btn[onclick*="${viewName}"]`).classList.add('active');
+        
+        // Ocultar todas las vistas
+        document.querySelectorAll('.view-mode').forEach(view => {
+            view.classList.remove('active');
+        });
+        
+        // Mostrar vista seleccionada
+        document.getElementById(`${viewName}-view`).classList.add('active');
+        currentView = viewName;
+        
+        // Re-renderizar si hay datos
+        if (currentData) {
+            renderCurrentView();
+        }
+    }
+    
+    function renderCurrentView() {
+        switch(currentView) {
+            case 'netflix':
+                renderNetflixView();
+                break;
+            case 'radar':
+                renderRadarView();
+                break;
+            case 'report':
+                renderReportView();
+                break;
+        }
+    }
+    
+    // ============================================================================
+    // MODO NETFLIX - CARDS
+    // ============================================================================
+    function renderNetflixView() {
+        const container = document.getElementById('netflix-container');
+        
+        if (!currentData || !currentData.carousel) {
+            container.innerHTML = '<div class="no-data">No hay datos disponibles</div>';
             return;
         }
-
-        // MODO RADAR (Diario)
-        svg.style.display = 'block';
-        report.style.display = 'none';
-
-        data.carousel.forEach(area => {
-            area.particulas.forEach(p => {
-                // Cálculo de coordenadas (Centro 500, 300)
-                // Proximidad alta (100) -> r pequeño (cerca del centro)
-                const r = 290 - (p.proximidad * 2.6);
+        
+        let html = '';
+        
+        currentData.carousel.forEach(area => {
+            if (!area.particulas || area.particulas.length === 0) return;
+            
+            // Calcular métricas del área
+            const avgProximity = area.particulas.reduce((sum, p) => sum + p.proximidad, 0) / area.particulas.length;
+            const consensusLevel = getConsensusLevel(avgProximity);
+            const consensusColor = getConsensusColor(avgProximity);
+            
+            html += `
+                <div class="area-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas ${areaIcons[area.area] || 'fa-newspaper'}"></i>
+                            ${area.area}
+                            <span class="section-badge" style="color: ${area.color || areaColors[area.area]}">
+                                ${area.particulas.length} señales
+                            </span>
+                        </div>
+                        <div class="consensus-indicator">
+                            <div class="card-consensus">
+                                <span>CONSENSO:</span>
+                                <div class="consensus-bar">
+                                    <div class="consensus-fill" style="width: ${avgProximity}%; background: ${consensusColor};"></div>
+                                </div>
+                                <span style="color: ${consensusColor}">${consensusLevel}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="micro-report">
+                        <strong><i class="fas fa-analytics"></i> MICRO-INFORME:</strong><br>
+                        ${area.punto_cero || 'Análisis en tiempo real generado por IA.'}
+                    </div>
+                    
+                    <div class="cards-container">
+            `;
+            
+            // Generar tarjetas para cada partícula
+            area.particulas.forEach(particle => {
+                const particleColor = getProximityColor(particle.proximidad);
+                
+                html += `
+                    <div class="news-card" onclick="showParticleDetail(${JSON.stringify(particle).replace(/"/g, '&quot;')}, '${area.area}', '${area.color || areaColors[area.area]}')">
+                        <div class="card-header">
+                            <span class="card-region" style="border-color: ${particleColor}">${particle.bloque}</span>
+                            <span class="card-proximity" style="color: ${particleColor}">${particle.proximidad}%</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">${particle.titulo}</div>
+                            ${particle.keywords && particle.keywords.length > 0 ? `
+                                <div class="card-keywords">
+                                    ${particle.keywords.slice(0, 3).map(kw => `<span class="keyword">${kw}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-consensus">
+                                <span>${getBiasLabel(particle.proximidad)}</span>
+                                <div class="consensus-bar">
+                                    <div class="consensus-fill" style="width: ${particle.proximidad}%; background: ${particleColor};"></div>
+                                </div>
+                            </div>
+                            <span style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">
+                                <i class="fas fa-external-link-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+    
+    // ============================================================================
+    // MODO RADAR
+    // ============================================================================
+    function renderRadarView() {
+        const svg = document.getElementById('radar-svg');
+        const particleLayer = document.getElementById('particle-layer');
+        
+        // Limpiar partículas anteriores
+        particleLayer.innerHTML = '';
+        
+        if (!currentData || !currentData.carousel) return;
+        
+        const centerX = svg.clientWidth / 2;
+        const centerY = svg.clientHeight / 2;
+        const maxRadius = Math.min(centerX, centerY) * 0.8;
+        
+        // Renderizar cada partícula
+        currentData.carousel.forEach(area => {
+            if (!area.particulas) return;
+            
+            area.particulas.forEach(particle => {
+                // Calcular posición radial basada en proximidad
+                // Proximidad 100% = centro, 0% = borde
+                const radius = maxRadius * (1 - particle.proximidad / 100);
                 const angle = Math.random() * Math.PI * 2;
-                const x = 500 + r * Math.cos(angle);
-                const y = 300 + r * Math.sin(angle);
-
+                
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                
+                const particleColor = getProximityColor(particle.proximidad);
+                
+                // Crear elemento SVG
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 circle.setAttribute("cx", x);
                 circle.setAttribute("cy", y);
-                circle.setAttribute("r", 4);
-                circle.setAttribute("fill", area.color || "#00fffb");
-                circle.setAttribute("class", "node");
+                circle.setAttribute("r", particle.proximidad > 80 ? 6 : particle.proximidad > 50 ? 5 : 4);
+                circle.setAttribute("fill", particleColor);
+                circle.setAttribute("class", "radar-particle");
+                circle.setAttribute("data-particle", JSON.stringify(particle));
+                circle.setAttribute("data-area", area.area);
                 
-                // Interacción
-                circle.onmouseover = (e) => showTooltip(e, p);
-                circle.onmouseout = hideTooltip;
-                circle.onclick = () => window.open(p.link, '_blank');
+                // Eventos
+                circle.addEventListener('mouseenter', showTooltip);
+                circle.addEventListener('mouseleave', hideTooltip);
+                circle.addEventListener('click', () => showParticleDetail(particle, area.area, area.color));
                 
-                layer.appendChild(circle);
+                particleLayer.appendChild(circle);
             });
         });
+        
+        // Actualizar viewBox para responsividad
+        svg.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
     }
-
-    function showTooltip(e, p) {
-        const tt = document.getElementById('tooltip');
-        tt.style.display = 'block';
-        tt.style.left = (e.clientX + 15) + 'px';
-        tt.style.top = (e.clientY + 15) + 'px';
-        tt.innerHTML = `
-            <div style="color:var(--cyan); font-weight:bold; margin-bottom:5px;">${p.bloque}</div>
-            <div style="font-size:0.8rem; margin-bottom:5px;">${p.titulo}</div>
-            <div style="font-family:'Share Tech Mono'; color:rgba(255,255,255,0.5)">CONSENSO: ${p.proximidad}%</div>
+    
+    // ============================================================================
+    // MODO INFORME DETALLADO
+    // ============================================================================
+    function renderReportView() {
+        const container = document.getElementById('report-container');
+        
+        if (!currentData || !currentData.carousel) {
+            container.innerHTML = '<div class="no-data">No hay datos disponibles</div>';
+            return;
+        }
+        
+        let html = `
+            <div class="report-header">
+                <h1 class="report-title">INFORME DE INTELIGENCIA</h1>
+                <div class="report-meta">
+                    <span><i class="fas fa-clock"></i> ${currentData.meta?.updated || 'Fecha desconocida'}</span>
+                    <span><i class="fas fa-microchip"></i> ${currentData.meta?.version || 'v1.0'}</span>
+                    <span><i class="fas fa-signal"></i> ${currentData.carousel.reduce((sum, area) => sum + (area.particulas?.length || 0), 0)} señales</span>
+                </div>
+            </div>
         `;
+        
+        // Resumen ejecutivo si existe
+        if (currentData.meta?.stats) {
+            html += `
+                <div class="micro-report">
+                    <h3><i class="fas fa-chart-bar"></i> RESUMEN EJECUTIVO</h3>
+                    <p>Procesado en ${currentData.meta.execution_seconds || '?'} segundos | 
+                    ${currentData.meta.stats.items_classified || '?'} señales clasificadas |
+                    Eficiencia de caché: ${currentData.meta.cache_efficiency || '?'}%</p>
+                </div>
+            `;
+        }
+        
+        // Secciones por área
+        currentData.carousel.forEach(area => {
+            if (!area.particulas || area.particulas.length === 0) return;
+            
+            const avgProximity = area.particulas.reduce((sum, p) => sum + p.proximidad, 0) / area.particulas.length;
+            
+            html += `
+                <div class="report-section">
+                    <h2 class="section-title" style="color: ${area.color || areaColors[area.area]}">
+                        <i class="fas ${areaIcons[area.area] || 'fa-newspaper'}"></i>
+                        ${area.area}
+                        <span style="font-size: 1rem; color: rgba(255,255,255,0.7); margin-left: 15px;">
+                            Consenso promedio: ${avgProximity.toFixed(1)}%
+                        </span>
+                    </h2>
+                    
+                    <div class="micro-report">
+                        <strong>ANÁLISIS TÁCTICO:</strong><br>
+                        ${area.punto_cero || 'Análisis generado por IA en tiempo real.'}
+                    </div>
+                    
+                    <div class="particle-list">
+            `;
+            
+            // Lista de partículas
+            area.particulas.forEach(particle => {
+                const particleColor = getProximityColor(particle.proximidad);
+                
+                html += `
+                    <div class="particle-item" onclick="showParticleDetail(${JSON.stringify(particle).replace(/"/g, '&quot;')}, '${area.area}', '${area.color || areaColors[area.area]}')">
+                        <div class="particle-header">
+                            <span class="particle-region" style="border-color: ${particleColor}">${particle.bloque}</span>
+                            <span class="particle-proximity" style="color: ${particleColor}">${particle.proximidad}% consenso</span>
+                        </div>
+                        <div class="particle-body">
+                            <p style="margin-bottom: 10px;">${particle.titulo}</p>
+                            ${particle.keywords && particle.keywords.length > 0 ? `
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    ${particle.keywords.map(kw => `<span style="background: rgba(0,255,251,0.1); color: var(--cyan); padding: 2px 8px; border-radius: 12px; font-size: 0.8rem;">${kw}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+                            <i class="fas fa-bullseye"></i> ${getBiasLabel(particle.proximidad)} | 
+                            <i class="fas fa-certificate"></i> ${particle.confianza || 'N/A'}% confianza
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
     }
-
+    
+    // ============================================================================
+    // FUNCIONES UTILITARIAS
+    // ============================================================================
+    
+    function getProximityColor(proximity) {
+        if (proximity >= 80) return "#00ff9d"; // Verde - Alto consenso
+        if (proximity >= 60) return "#ffcc00"; // Amarillo - Consenso moderado
+        if (proximity >= 40) return "#f59e0b"; // Naranja - Tensión
+        return "#ff004c"; // Rojo - Fricción
+    }
+    
+    function getConsensusColor(proximity) {
+        if (proximity >= 80) return "#00ff9d";
+        if (proximity >= 60) return "#ffcc00";
+        if (proximity >= 40) return "#f59e0b";
+        return "#ff004c";
+    }
+    
+    function getConsensusLevel(proximity) {
+        if (proximity >= 80) return "ALTO";
+        if (proximity >= 60) return "MODERADO";
+        if (proximity >= 40) return "TENSIÓN";
+        return "FRICCIÓN";
+    }
+    
+    function getBiasLabel(proximity) {
+        if (proximity >= 85) return "Consenso Global";
+        if (proximity >= 70) return "Alineación";
+        if (proximity >= 55) return "Tensión Moderada";
+        if (proximity >= 40) return "Divergencia";
+        return "Contraste Radical";
+    }
+    
+    // ============================================================================
+    // TOOLTIP Y MODAL
+    // ============================================================================
+    
+    function showTooltip(event) {
+        const tooltip = document.getElementById('tooltip');
+        const particle = JSON.parse(event.target.getAttribute('data-particle'));
+        const area = event.target.getAttribute('data-area');
+        
+        tooltip.innerHTML = `
+            <div class="tooltip-header">${particle.bloque} | ${area}</div>
+            <div class="tooltip-body">${particle.titulo}</div>
+            <div class="tooltip-footer">
+                <span style="color: ${getProximityColor(particle.proximidad)}">${particle.proximidad}% proximidad</span>
+                <span>${getBiasLabel(particle.proximidad)}</span>
+            </div>
+        `;
+        
+        tooltip.style.left = `${event.clientX}px`;
+        tooltip.style.top = `${event.clientY - tooltip.offsetHeight - 10}px`;
+        tooltip.classList.add('show');
+    }
+    
     function hideTooltip() {
-        document.getElementById('tooltip').style.display = 'none';
+        document.getElementById('tooltip').classList.remove('show');
     }
-
-    // Carga inicial
-    window.onload = () => loadData('gravity_carousel.json', 'live');
+    
+    function showParticleDetail(particle, area, areaColor) {
+        const modal = document.getElementById('modal-overlay');
+        const content = document.getElementById('modal-content');
+        
+        content.innerHTML = `
+            <h2 style="color: ${areaColor}; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas ${areaIcons[area] || 'fa-newspaper'}"></i>
+                ${area}
+            </h2>
+            
+            <div style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 6px;">
+                <h3 style="color: var(--cyan); margin-bottom: 10px;">SEÑAL DETECTADA</h3>
+                <p style="font-size: 1.1rem; line-height: 1.5;">${particle.titulo}</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">BLOQUE</div>
+                    <div style="font-size: 1.2rem; font-weight: bold;">${particle.bloque}</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">PROXIMIDAD</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: ${getProximityColor(particle.proximidad)}">${particle.proximidad}%</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">SESGO NARRATIVO</div>
+                    <div style="font-size: 1.2rem; font-weight: bold;">${getBiasLabel(particle.proximidad)}</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">CONFIANZA IA</div>
+                    <div style="font-size: 1.2rem; font-weight: bold;">${particle.confianza || 'N/A'}%</div>
+                </div>
+            </div>
+            
+            ${particle.keywords && particle.keywords.length > 0 ? `
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: var(--cyan); margin-bottom: 10px;">ETIQUETAS TÁCTICAS</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${particle.keywords.map(kw => `<span style="background: rgba(0,255,251,0.1); color: var(--cyan); padding: 6px 12px; border-radius: 20px; font-size: 0.9rem;">${kw}</span>`).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <button onclick="window.open('${particle.link}', '_blank')" style="
+                    background: linear-gradient(145deg, var(--cyan), #00ccd6);
+                    border: none;
+                    color: #000;
+                    padding: 12px 30px;
+                    font-family: 'Share Tech Mono', monospace;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    border-radius: 6px;
+                    font-weight: bold;
+                    transition: all 0.3s;
+                ">
+                    <i class="fas fa-external-link-alt"></i> VER FUENTE ORIGINAL
+                </button>
+            </div>
+        `;
+        
+        modal.classList.add('show');
+    }
+    
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.remove('show');
+    }
+    
+    function updateLastUpdated() {
+        if (currentData && currentData.meta && currentData.meta.updated) {
+            const date = new Date(currentData.meta.updated);
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            
+            const formattedDate = date.toLocaleDateString('es-ES', options);
+            document.querySelector('.status-item:nth-child(1) span').textContent = `ÚLTIMA ACTUALIZACIÓN: ${formattedDate}`;
+        }
+    }
+    
+    function showLoading() {
+        // Implementar spinner si es necesario
+        console.log('Cargando datos...');
+    }
+    
+    function hideLoading() {
+        console.log('Datos cargados');
+    }
+    
+    // ============================================================================
+    // INICIALIZACIÓN
+    // ============================================================================
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Cargar datos iniciales
+        loadData();
+        
+        // Actualizar tamaño del radar en resize
+        window.addEventListener('resize', () => {
+            if (currentView === 'radar') {
+                renderRadarView();
+            }
+        });
+        
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('modal-overlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal-overlay')) {
+                closeModal();
+            }
+        });
+    });
 </script>
 </body>
 </html>
