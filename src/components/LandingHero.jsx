@@ -77,7 +77,12 @@ const LandingHero = () => {
             </motion.div>
 
             {/* Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <div
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce cursor-pointer z-50 hover:text-white transition-colors"
+                onClick={() => {
+                    document.getElementById('main-monitor')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+            >
                 <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-2">Scroll to Monitor</span>
                 <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
             </div>

@@ -66,7 +66,7 @@ function App() {
             <LandingHero />
 
             {/* 2. MAIN CONTENT (The Decks) */}
-            <main className="relative z-10 -mt-20 pb-20 space-y-2">
+            <main id="main-monitor" className="relative z-10 -mt-20 pb-20 space-y-2">
                 <div className="px-6 md:px-12 mb-4">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500">
                         Monitor de Inteligencia en Tiempo Real
