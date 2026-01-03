@@ -28,7 +28,7 @@ FUENTES = {
     "GLOBAL": ["https://www.wired.com/feed/category/science/latest/rss", "https://techcrunch.com/feed/", "https://www.nature.com/nature.rss"]
 }
 
-class CollectorV28_4:
+class CollectorV28_5:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
         self.matrix = defaultdict(list)
@@ -71,7 +71,7 @@ class CollectorV28_4:
                     with urllib.request.urlopen(req, timeout=5) as response:
                         root = ET.fromstring(response.read())
                         items = root.findall('.//item') or root.findall('.//{*}entry')
-                        for n in items[:40]:
+                        for n in items[:45]:
                             t = self.clean_text((n.find('title') or n.find('{*}title')).text)
                             l_node = n.find('link')
                             l = (l_node.text if l_node is not None and l_node.text else l_node.attrib.get('href', '') if l_node is not None else "").strip()
@@ -120,7 +120,7 @@ class CollectorV28_4:
             centroid = [sum(v[j] for v in valid_v)/len(valid_v) for j in range(dim)]
             
             try:
-                c_res = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"Resume el consenso fáctico de {area} en 15 palabras: " + ". ".join([n['titulo_es'] for n in nodes[:10]]))
+                c_res = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"Resume el consenso fáctico de {area} en 15 palabras: " + ". ".join([n['titulo_es'] for n in nodes[:12]]))
                 consensus = c_res.text.strip()
             except: consensus = "Divergencia informativa en flujos globales."
 
@@ -135,13 +135,21 @@ class CollectorV28_4:
                     "titulo": node['titulo_es'], "link": node['link'], 
                     "bloque": NORMALIZER_REGIONS.get(node['region'], "GLOBAL"), 
                     "proximidad": prox, "metodo": "Vector Analysis",
-                    "sesgo": "Consenso detectado." if prox > 80 else "Enfoque regional específico."
+                    "sesgo": "Narrativa de consenso global." if prox > 80 else "Perspectiva con matiz regional."
                 })
             
-            final_carousel.append({"area": area, "punto_cero": consensus, "color": self.get_color(area), "particulas": particles})
+            # Línea Crítica: Agregar el área procesada a la lista final
+            final_carousel.append({
+                "area": area, 
+                "punto_cero": consensus, 
+                "color": self.get_color(area), 
+                "particulas": particles
+            })
 
+        # Guardado del JSON fuera del bucle de áreas
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump({"carousel": final_carousel}, f, indent=2, ensure_ascii=False)
+        
         print(f"✅ RADAR COMPLETADO. Áreas activas: {len(final_carousel)}")
 
     def get_color(self, a):
@@ -149,4 +157,4 @@ class CollectorV28_4:
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
-    if key: CollectorV28_4(key).run()
+    if key: CollectorV28_5(key).run()
