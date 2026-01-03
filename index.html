@@ -3,76 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXIMITY | Intelligence Hub</title>
+    <title>PROXIMITY | Neural Tactical Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-        .glass-heavy { background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
-        .modal { opacity: 0; visibility: hidden; transition: 0.4s; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; }
+        :root {
+            --bg: #020617;
+            --cyber-blue: #0ea5e9;
+            --cyber-red: #ef4444;
+            --glass: rgba(15, 23, 42, 0.8);
+        }
+        
+        body {
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(14, 165, 233, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        .cyber-header { font-family: 'Orbitron', sans-serif; }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        /* Swiper Customization */
+        .swiper-slide {
+            width: 320px; height: 380px;
+            border-radius: 2px;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 4px solid var(--glow);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+            transition: 0.5s;
+            opacity: 0.4;
+        }
+
+        .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1.1);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 30px var(--glow-alpha);
+        }
+
+        /* Radar Container */
+        #radar-container {
+            position: relative;
+            background: radial-gradient(circle at center, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .modal {
+            opacity: 0; visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
         .modal.open { opacity: 1; visibility: visible; }
-        .swiper-slide { width: 300px; height: 350px; border-radius: 20px; padding: 20px; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); transform: scale(0.9); transition: 0.4s; }
-        .swiper-slide-active { transform: scale(1.1); border-color: var(--glow); box-shadow: 0 0 30px var(--glow-alpha); }
-        .custom-scroll::-webkit-scrollbar { width: 3px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; }
+
+        .scanline {
+            width: 100%; height: 2px;
+            background: rgba(14, 165, 233, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan { from { top: 0; } to { top: 100%; } }
     </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="p-4 md:p-10">
 
-    <header class="flex justify-between items-end border-b border-white/10 pb-8 mb-10">
-        <div>
-            <h1 class="text-6xl font-black tracking-tighter italic uppercase text-white">Proximity</h1>
-            <p class="text-blue-500 font-mono text-xs tracking-widest uppercase">Deep Intelligence v26.0</p>
+    <header class="flex flex-col md:flex-row justify-between items-center mb-12 border-b border-sky-500/20 pb-6">
+        <div class="text-center md:text-left mb-6 md:mb-0">
+            <h1 class="cyber-header text-5xl md:text-7xl font-black tracking-tighter italic text-white drop-shadow-[0_0_15px_rgba(14,165,233,0.5)]">
+                PROXIMITY
+            </h1>
+            <div class="flex items-center gap-3 mt-2">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+                <p class="text-sky-400 font-bold text-xs tracking-[0.3em] uppercase">NEURAL LINK ACTIVE // v27.6</p>
+            </div>
         </div>
-        <button onclick="openGuide()" class="bg-blue-600/10 border border-blue-500/30 px-6 py-2 rounded-full text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
-            METODOLOGÍA ?
+        <button onclick="openGuide()" class="glass-panel px-8 py-3 rounded-none skew-x-[-15deg] hover:bg-sky-500/20 transition-all border-sky-400/50">
+            <span class="skew-x-[15deg] block text-sky-400 font-black text-xs uppercase tracking-widest">Metodología // Protocol</span>
         </button>
     </header>
 
-    <div class="swiper mySwiper mb-20">
+    <div class="swiper mySwiper mb-16">
         <div class="swiper-wrapper" id="swiper-wrapper"></div>
     </div>
 
-    <div id="guide-modal" class="modal">
-        <div class="modal-content glass-heavy rounded-[2.5rem] p-10 max-w-4xl relative">
-            <button onclick="closeGuide()" class="absolute top-8 right-10 text-4xl">&times;</button>
-            <h1 class="text-4xl font-black italic uppercase mb-8">Manual de Operaciones</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                    <h3 class="text-blue-400 font-bold mb-2 uppercase">Centroide (Consenso)</h3>
-                    <p class="text-slate-400">Es el promedio matemático de la narrativa global. El punto donde coinciden la mayoría de las fuentes.</p>
+    <div id="area-modal" class="modal fixed inset-0 z-50 flex justify-center items-center p-4">
+        <div class="modal-content glass-panel w-full max-w-7xl h-[90vh] rounded-none relative overflow-hidden flex flex-col p-6 md:p-10">
+            <div class="scanline"></div>
+            
+            <div class="flex justify-between items-start mb-8 z-10">
+                <div>
+                    <h2 id="modal-area-title" class="cyber-header text-4xl md:text-6xl font-black italic uppercase"></h2>
+                    <p id="modal-consensus" class="text-sky-300/60 text-sm mt-3 border-l-2 border-sky-500 pl-4 max-w-2xl italic"></p>
                 </div>
-                <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                    <h3 class="text-red-400 font-bold mb-2 uppercase">Divergencia</h3>
-                    <p class="text-slate-400">Noticias alejadas del centro. Revelan datos que otros omiten o enfoques regionales únicos analizados por IA.</p>
-                </div>
+                <button onclick="closeAreaModal()" class="text-sky-500 hover:text-white text-5xl transition-colors">&times;</button>
             </div>
-            <button onclick="closeGuide()" class="w-full mt-8 py-4 bg-white text-black font-black uppercase rounded-xl">Entendido</button>
+
+            <div class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-10 overflow-hidden z-10">
+                <div class="lg:col-span-7 flex items-center justify-center bg-sky-950/20 rounded-lg border border-sky-500/10 p-4" id="radar-container">
+                    <canvas id="areaScatterChart"></canvas>
+                </div>
+
+                <div class="lg:col-span-5 overflow-y-auto pr-4 space-y-4 custom-scroll" id="particles-list"></div>
+            </div>
         </div>
     </div>
 
-    <div id="area-modal" class="modal">
-        <div class="modal-content glass-heavy rounded-[2rem] p-8 w-[95%] max-w-7xl h-[85vh] flex flex-col">
-            <div class="flex justify-between items-start mb-6">
-                <div>
-                    <h3 id="modal-area-title" class="text-4xl font-black uppercase italic"></h3>
-                    <p id="modal-consensus" class="text-slate-400 text-sm italic mt-1"></p>
-                </div>
-                <button onclick="closeAreaModal()" class="text-4xl">&times;</button>
+    <div id="guide-modal" class="modal fixed inset-0 z-[100] flex justify-center items-center p-4">
+        <div class="glass-panel p-10 max-w-2xl border-sky-500/50 relative">
+            <h2 class="cyber-header text-3xl text-white mb-6 uppercase tracking-tighter">System Intelligence Protocol</h2>
+            <div class="space-y-6 text-sm leading-relaxed text-sky-100/70">
+                <p><strong class="text-sky-400">[CENTROIDE]</strong> El núcleo del radar representa el consenso matemático del área. Cuanto más cerca esté un punto, más alineada está la noticia con la narrativa global dominante.</p>
+                <p><strong class="text-rose-500">[DIVERGENCIA]</strong> Los nodos periféricos indican anomalías narrativas, datos que otras regiones omiten o perspectivas analizadas por el motor de IA como disruptivas.</p>
+                <p><strong class="text-sky-400">[MODO HÍBRIDO]</strong> Si el sistema encuentra muros de pago, activa el análisis de metadatos (Título+Sinopsis) para no perder la señal fáctica.</p>
             </div>
-            <div class="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-hidden">
-                <div class="lg:col-span-2 bg-black/30 rounded-3xl relative p-4">
-                    <canvas id="areaScatterChart"></canvas>
-                </div>
-                <div id="particles-list" class="overflow-y-auto custom-scroll space-y-3 pr-2"></div>
-            </div>
+            <button onclick="closeGuide()" class="mt-8 w-full py-4 bg-sky-600/20 border border-sky-500/50 text-sky-400 font-black uppercase hover:bg-sky-600/40 transition-all">Cerrar Protocolo</button>
         </div>
     </div>
 
     <script>
-        const COLORS = { "USA": "#3b82f6", "RUSSIA": "#ef4444", "CHINA": "#f97316", "EUROPE": "#fde047", "LATAM": "#d946ef", "MID_EAST": "#10b981", "INDIA": "#8b5cf6", "AFRICA": "#22c55e" };
+        const COLORS = { "USA": "#0ea5e9", "RUSSIA": "#ef4444", "CHINA": "#f97316", "EUROPE": "#fde047", "LATAM": "#d946ef", "MID_EAST": "#10b981", "INDIA": "#8b5cf6", "AFRICA": "#22c55e", "GLOBAL": "#94a3b8" };
         let fullData = null, scatterChart = null;
 
         async function init() {
@@ -83,20 +147,30 @@
 
         function renderSwiper() {
             document.getElementById('swiper-wrapper').innerHTML = fullData.carousel.map((area, idx) => `
-                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow: ${area.color}; --glow-alpha: ${area.color}30">
-                    <div class="text-[10px] font-bold text-white mb-2">${area.particulas.length} SEÑALES</div>
-                    <h3 class="text-2xl font-black uppercase italic text-white mb-4" style="color:${area.color}">${area.area}</h3>
-                    <p class="text-slate-400 text-xs line-clamp-4 leading-relaxed">${area.punto_cero}</p>
+                <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow: ${area.color}; --glow-alpha: ${area.color}20">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-[10px] font-bold tracking-widest text-sky-400 bg-sky-400/10 px-2 py-1">${area.particulas.length} NODES</span>
+                        <div class="w-2 h-2 rounded-full" style="background:${area.color}; box-shadow: 0 0 10px ${area.color}"></div>
+                    </div>
+                    <h3 class="cyber-header text-2xl font-black uppercase italic mb-4" style="color:white">${area.area}</h3>
+                    <p class="text-slate-400 text-[11px] leading-relaxed border-t border-white/5 pt-4">${area.punto_cero}</p>
                 </div>
             `).join('');
-            new Swiper(".mySwiper", { effect: "coverflow", centeredSlides: true, slidesPerView: "auto", coverflowEffect: { rotate: 20, stretch: 0, depth: 100, modifier: 1, slideShadows: false } });
+            
+            new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: { rotate: 15, stretch: 0, depth: 100, modifier: 1, slideShadows: false }
+            });
         }
 
         function openAreaModal(idx) {
             const area = fullData.carousel[idx];
             document.getElementById('modal-area-title').innerText = area.area;
             document.getElementById('modal-area-title').style.color = area.color;
-            document.getElementById('modal-consensus').innerText = "Consenso: " + area.punto_cero;
+            document.getElementById('modal-consensus').innerText = "CORE CONSENSUS: " + area.punto_cero;
             document.getElementById('area-modal').classList.add('open');
             renderParticles(area.particulas);
             setTimeout(() => renderRadar(area.particulas), 300);
@@ -104,13 +178,13 @@
 
         function renderParticles(parts) {
             document.getElementById('particles-list').innerHTML = parts.map(p => `
-                <div class="p-4 bg-white/5 rounded-2xl border-l-4 transition-all hover:bg-white/10" style="border-color:${COLORS[p.bloque]}">
-                    <div class="flex justify-between text-[10px] font-bold mb-1">
-                        <span style="color:${COLORS[p.bloque]}">${p.bloque}</span>
-                        <span class="text-slate-500">PROX: ${p.proximidad}%</span>
+                <div class="glass-panel p-4 mb-3 border-l-4 transition-all hover:translate-x-2" style="border-color:${COLORS[p.bloque] || '#fff'}">
+                    <div class="flex justify-between text-[10px] font-bold mb-2">
+                        <span style="color:${COLORS[p.bloque]}">${p.bloque} // ${p.metodo}</span>
+                        <span class="text-sky-500">PROXIMITY: ${p.proximidad}%</span>
                     </div>
-                    <a href="${p.link}" target="_blank" class="text-sm font-bold text-white hover:text-blue-400">${p.titulo}</a>
-                    <div class="text-[10px] mt-2 text-slate-400 italic bg-black/20 p-2 rounded-lg border border-white/5">${p.sesgo}</div>
+                    <a href="${p.link}" target="_blank" class="text-sm font-bold text-white hover:text-sky-400 block mb-3 leading-tight">${p.titulo}</a>
+                    <p class="text-[10px] text-slate-400 italic bg-black/40 p-3 border border-white/5">${p.sesgo}</p>
                 </div>
             `).join('');
         }
@@ -118,22 +192,36 @@
         function renderRadar(parts) {
             const ctx = document.getElementById('areaScatterChart').getContext('2d');
             if(scatterChart) scatterChart.destroy();
-            const ANGLES = { "USA": 0, "RUSSIA": 0.5, "CHINA": 1, "EUROPE": 1.5, "LATAM": 2, "MID_EAST": 2.5, "INDIA": 3, "AFRICA": 3.5 };
+            
+            const ANGLES = { "USA": 0, "RUSSIA": 0.5, "CHINA": 1, "EUROPE": 1.5, "LATAM": 2, "MID_EAST": 2.5, "INDIA": 3, "AFRICA": 3.5, "GLOBAL": 4 };
             
             scatterChart = new Chart(ctx, {
                 type: 'scatter',
                 data: {
                     datasets: [{
                         data: parts.map(p => {
-                            const r = 100 - p.proximidad, a = (ANGLES[p.bloque] || 0) * Math.PI;
+                            const r = (100 - p.proximidad) * 1.1; 
+                            const a = (ANGLES[p.bloque] || 0) * Math.PI;
                             return { x: r * Math.cos(a), y: r * Math.sin(a), b: p.bloque };
                         }),
-                        pointBackgroundColor: c => COLORS[c.raw.b] || '#fff', pointRadius: 9, pointHoverRadius: 12
+                        pointBackgroundColor: c => COLORS[c.raw.b] + 'aa',
+                        pointBorderColor: c => COLORS[c.raw.b],
+                        pointBorderWidth: 2,
+                        pointRadius: 7,
+                        pointHoverRadius: 10
                     }]
                 },
                 options: {
-                    scales: { x: { display: false, min: -110, max: 110 }, y: { display: false, min: -110, max: 110 } },
-                    plugins: { legend: false }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: false, min: -120, max: 120 },
+                        y: { display: false, min: -120, max: 120 }
+                    },
+                    plugins: {
+                        legend: false,
+                        tooltip: { enabled: false }
+                    }
                 }
             });
         }
