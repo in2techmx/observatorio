@@ -1,0 +1,132 @@
+name: Proximity Engine Intelligence Pipeline
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Tipo de análisis'
+        required: false
+        default: 'tactical'
+        type: choice
+        options:
+          - tactical
+          - strategic
+          - full
+  push:
+    branches:
+      - main
+    paths:
+      - 'collector.py'
+      - 'requirements.txt'
+
+jobs:
+  intelligence-pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+      
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Preparar directorios
+        run: |
+          mkdir -p vector_cache
+          mkdir -p historico_noticias/diario
+          mkdir -p historico_noticias/semanal
+          echo "✅ Directorios listos"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          # Si tienes requirements.txt usa: pip install -r requirements.txt
+          # Si no, usamos la instalación directa:
+          pip install google-genai==0.3.0 requests==2.31.0 beautifulsoup4==4.12.0 lxml==4.9.0 numpy==1.24.0 argparse
+
+      - name: Ejecutar Proximity Collector
+        id: run-collector
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODE: ${{ github.event.inputs.task || 'tactical' }}
+        run: |
+          set -e
+          echo "🚀 Iniciando collector en modo: $MODE"
+          python collector.py --mode "$MODE"
+          
+          if [ -f "gravity_carousel.json" ]; then
+            echo "collector_success=true" >> $GITHUB_OUTPUT
+            echo "✅ Collector finalizado exitosamente."
+          else
+            echo "❌ ERROR: No se generó el archivo JSON."
+            exit 1
+          fi
+
+      - name: Validar integridad del JSON
+        if: steps.run-collector.outputs.collector_success == 'true'
+        run: |
+          echo "🔍 Auditando JSON generado..."
+          
+          cat << 'EOF' > validate_integrity.py
+          import json, sys, os
+          
+          try:
+              if not os.path.exists('gravity_carousel.json'):
+                  sys.exit(1)
+                  
+              with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+              
+              if 'carousel' not in data or not isinstance(data['carousel'], list):
+                  print('❌ Error: Falta array carousel')
+                  sys.exit(1)
+              
+              total = sum(len(a.get('particulas', [])) for a in data['carousel'])
+              
+              print(f'✅ JSON Válido. Áreas: {len(data["carousel"])}, Partículas: {total}')
+              
+              # --- AQUÍ ESTÁ EL FRENO DE EMERGENCIA ---
+              if total == 0:
+                  print('⛔ ALERTA ROJA: El JSON está vacío (0 partículas). Cancelando despliegue para proteger la web.')
+                  sys.exit(1) # Esto fuerza el error y detiene el proceso
+              # ----------------------------------------
+
+          except Exception as e:
+              print(f'❌ JSON Corrupto: {e}')
+              sys.exit(1)
+          EOF
+          
+          python3 validate_integrity.py
+
+      - name: Guardar y Publicar
+        if: steps.run-collector.outputs.collector_success == 'true'
+        run: |
+          git config --global user.name 'Proximity Engine Bot'
+          git config --global user.email 'bot@proximity.ai'
+          
+          git add .
+          
+          if git diff --staged --quiet; then
+            echo "📭 No hay cambios nuevos."
+            exit 0
+          fi
+          
+          git commit -m "🤖 INTEL UPDATE: $(date -u +'%Y-%m-%d %H:%M UTC') [${{ github.event.inputs.task || 'auto' }}]"
+          
+          # Reintento robusto
+          for i in {1..5}; do
+            git pull origin main --rebase && git push origin main && break || sleep 5;
+          done

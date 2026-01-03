@@ -1,0 +1,40 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "Análisis agregado.",
+      "color": "#ef4444",
+      "particulas": []
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "Análisis agregado.",
+      "color": "#f59e0b",
+      "particulas": []
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "Análisis agregado.",
+      "color": "#8b5cf6",
+      "particulas": []
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "Análisis agregado.",
+      "color": "#10b981",
+      "particulas": []
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Análisis agregado.",
+      "color": "#ec4899",
+      "particulas": []
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "Análisis agregado.",
+      "color": "#3b82f6",
+      "particulas": []
+    }
+  ]
+}

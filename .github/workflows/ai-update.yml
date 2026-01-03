@@ -1,0 +1,41 @@
+name: Actualización Automática AI
+
+on:
+  repository_dispatch:
+    types: [ai-update-trigger]
+  workflow_dispatch: # Permite ejecución manual si lo necesitas
+
+jobs:
+  update-code:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Da permiso a la IA para escribir en el repo
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GOOGLE_AI_TOKEN }}
+
+      # --- AQUÍ ES DONDE SUCEDE LA MAGIA ---
+      # En este espacio intermedio es donde tu herramienta "Antigravity"
+      # o el script de Google ejecutará sus cambios.
+      # Si Antigravity funciona via API externa, no necesitas poner nada aquí.
+      # -------------------------------------
+
+      - name: Configurar Git y Guardar Cambios (Si existen)
+        run: |
+          git config --global user.name 'Antigravity AI'
+          git config --global user.email 'ai-bot@google.com'
+          
+          # Añadir todo lo que haya cambiado
+          git add .
+          
+          # Lógica condicional: Solo hace commit si hay cambios reales
+          if [[ -n $(git status -s) ]]; then
+            echo "✅ Cambios detectados. Guardando en el repositorio..."
+            git commit -m "Auto-update: Actualización por Antigravity AI"
+            git push
+          else
+            echo "zzz No se detectaron cambios nuevos. Todo está al día."
+          fi

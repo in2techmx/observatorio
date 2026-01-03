@@ -1,0 +1,240 @@
+{
+  "carousel": [
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "El panorama económico global en 2026 se presenta mixto, con algunos países experimentando crecimiento mientras que otros luchan contra la inflación y las sanciones. La competencia en el mercado de vehículos eléctricos se intensifica.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "ece43844",
+          "titulo": "Análisis de la Tarjeta de Crédito Citi Simplicity",
+          "proximidad": 10.0,
+          "sesgo": "Publicidad de The Motley Fool sobre una tarjeta de crédito, irrelevante para la economía global.",
+          "link": "https://www.fool.com/the-ascent/credit-cards/landing/citi-simplicity-review/?utm_site=theascent&utm_campaign=ta-cc-co-cnn-citisimp2-ron-5-hp-sfpb&utm_medium=cpc&utm_source=cnn",
+          "bloque": "USA"
+        },
+        {
+          "id": "9fe05d55",
+          "titulo": "BYD de China destrona a Tesla como el principal fabricante mundial de vehículos eléctricos en medio de la política de Musk y los problemas de créditos fiscales",
+          "proximidad": 50.0,
+          "sesgo": "Resalta el éxito de BYD, atribuyéndolo en parte a factores políticos relacionados con Elon Musk. Podría ser visto como una narrativa favorable a China.",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338573/tesla-dethroned-chinas-byd-worlds-top-ev-maker-amid-musks-politics-tax-credit-woes?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "7b867519",
+          "titulo": "La economía de Rusia en 2026: más guerra, crecimiento más lento e impuestos más altos",
+          "proximidad": 80.0,
+          "sesgo": "Describe los desafíos económicos de Rusia debido a la guerra y las sanciones occidentales, lo cual es consistente con los reportes de otras fuentes occidentales.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "e565481b",
+          "titulo": "El Presidente paraguayo destaca el crecimiento económico y la inflación del 3,1%",
+          "proximidad": 90.0,
+          "sesgo": "Reporte positivo sobre la economía de Paraguay, con cifras concretas sobre inflación y crecimiento del PIB. Alineado con datos del Banco Central.",
+          "link": "https://en.mercopress.com/2025/12/31/paraguayan-president-highlights-economic-growth-and-3.1-inflation?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "833ebc2a",
+          "titulo": "Texto ilegible",
+          "proximidad": 0.0,
+          "sesgo": "Imposible determinar el contenido de la noticia debido a formato incorrecto.",
+          "link": "http://www.euronews.com/2026/01/02/maduro-suggests-venezuela-is-open-to-talks-on-drug-trafficking-with-the-us-despite-militar",
+          "bloque": "EUROPE"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Las noticias cubren una variedad de eventos, desde iniciativas filantrópicas y premios culturales hasta crisis humanitarias y accidentes. Se observa un enfoque en eventos deportivos, especialmente la Copa Africana de Naciones (AFCON).",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "7e2814b9",
+          "titulo": "Héroes de CNN: Compartiendo el Protagonismo",
+          "proximidad": 50.0,
+          "sesgo": "Promoción de figuras públicas estadounidenses y sus esfuerzos filantrópicos. Sesgo occidental.",
+          "link": "https://www.cnn.com/specials/cnn-heroes-salutes-special",
+          "bloque": "USA"
+        },
+        {
+          "id": "2ffd423c",
+          "titulo": "Premios TECNO Glory Night Celebran a Influencers Africanos",
+          "proximidad": 50.0,
+          "sesgo": "Enfoque positivo en la marca TECNO y su asociación con la Copa Africana de Naciones (AFCON). Sesgo regional africano.",
+          "link": "https://africa.com/tecno-glory-night-awards-co-hosted-with-tiktok-live-and-caf-celebrated-africas-top-influencers-and-the-power-your-moment-spirit-at-afcon-morocco/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "cb51b353",
+          "titulo": "TECNO Lleva Experiencia Inmersiva a la AFCON 2025 con Tiendas Pop-Up",
+          "proximidad": 50.0,
+          "sesgo": "Promoción de la marca TECNO y su participación en la Copa Africana de Naciones (AFCON). Sesgo regional africano.",
+          "link": "https://africa.com/tecno-brings-immersive-fan-experience-to-afcon-2025-with-pop-up-stores-and-interactive-zones-across-morocco/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "ec670f27",
+          "titulo": "Policía de Nigeria Acusa a Conductor en Accidente Fatal de Anthony Joshua por Conducción Peligrosa",
+          "proximidad": 80.0,
+          "sesgo": "Reporte de un evento factual (accidente automovilístico) con seguimiento legal. Fuente europea.",
+          "link": "http://www.euronews.com/2026/01/02/nigeria-police-charge-driver-in-fatal-anthony-joshua-car-crash-with-dangerous-driving",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "0a1c1f0e",
+          "titulo": "Contaminación del Agua en Indore: 200 Aún Hospitalizados, 32 en UCI; Remueven al Comisionado Municipal",
+          "proximidad": 85.0,
+          "sesgo": "Reporte de una crisis de salud pública con consecuencias políticas. Fuente India.",
+          "link": "https://timesofindia.indiatimes.com/india/indore-water-contamination-200-still-hospitalised-32-in-icus-municipal-commissioner-removed/articleshow/126313190.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "901a6f6a",
+          "titulo": "Irán Enfrenta Crecientes Protestas en Medio de una Profundización de la Crisis Económica",
+          "proximidad": 60.0,
+          "sesgo": "Reporte de protestas y crisis económica.  Al Jazeera (Qatar) tiene una perspectiva particular sobre los eventos en Irán.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/iran-faces-growing-protests-amid-deepening-economic-crisis?traffic_source=rss",
+          "bloque": "MID_EAST"
+        }
+      ]
+    },
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "El panorama global se ve afectado por conflictos armados, inestabilidad política interna y crisis humanitarias. Las noticias reflejan una polarización en la narrativa de los eventos, especialmente en torno a Ucrania y las acciones de Rusia.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "b505c16e",
+          "titulo": "Nuevo Estado de Emergencia declarado en Ecuador tras matanza masiva.",
+          "proximidad": 70.0,
+          "sesgo": "Reporte directo de la situación de seguridad en Ecuador, sin sesgos evidentes, aunque enfocado en la respuesta gubernamental.",
+          "link": "https://en.mercopress.com/2026/01/02/new-state-of-emergency-declared-in-ecuador-after-mass-killing?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "b50dd492",
+          "titulo": "Aumenta a 28 el número de muertos por ataque con drones ucranianos en la aldea de Khorly, región de Kherson.",
+          "proximidad": 30.0,
+          "sesgo": "Perspectiva rusa, atribuye el ataque a Ucrania y enfatiza el número de víctimas, sin contexto sobre la situación general del conflicto.",
+          "link": "https://tass.com/emergencies/2067823",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "3e20d2da",
+          "titulo": "Ucrania lanzó un ataque con drones contra la residencia de Valdai de Putin, afirma Lavrov.",
+          "proximidad": 10.0,
+          "sesgo": "Afirmación rusa negada por Ucrania, con potencial desinformación y justificación para represalias.",
+          "link": "https://www.themoscowtimes.com/2025/12/29/ukraine-launched-drone-attack-on-putins-valdai-residence-lavrov-claims-a91576",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "659bb895",
+          "titulo": "Explosión en Nalagarh: Dos grupos se atribuyen la responsabilidad; la policía de Himachal analiza las imágenes de CCTV para detener a los acusados.",
+          "proximidad": 60.0,
+          "sesgo": "Reporte de un evento aislado, con atribución de responsabilidad aún no confirmada. Sin sesgo geopolítico directo.",
+          "link": "https://www.thehindu.com/news/national/himachal-nalagarh-blast-investigation-january-3-2026/article70465643.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "3bdbd357",
+          "titulo": "Países exigen a Israel que levante las restricciones a la ayuda a Gaza mientras los palestinos sufren.",
+          "proximidad": 75.0,
+          "sesgo": "Enfoque en la crisis humanitaria en Gaza y la presión internacional sobre Israel. Refleja una preocupación generalizada.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/countries-demand-israel-lift-gaza-aid-restrictions-as-palestinians-suffer?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "733df3cb",
+          "titulo": "Drones ucranianos atacan sitios energéticos y hogares en toda Rusia, dicen funcionarios.",
+          "proximidad": 40.0,
+          "sesgo": "Perspectiva rusa sobre los ataques ucranianos, minimizando el contexto y el posible daño militar estratégico.",
+          "link": "https://www.themoscowtimes.com/2025/12/31/ukrainian-drones-strike-energy-sites-and-homes-across-russia-officials-say-a91592",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "05586621",
+          "titulo": "Trump ordena a la empresa HieFo, vinculada a China, que se deshaga de los activos de chips estadounidenses, citando la seguridad nacional.",
+          "proximidad": 70.0,
+          "sesgo": "Reporte de una acción proteccionista de EE.UU. contra una empresa china, con implicaciones en la competencia tecnológica.",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "4a44044c",
+          "titulo": "Rusia lleva la guerra a 2026 con más de 200 drones lanzados contra Ucrania, dice Zelenskyy.",
+          "proximidad": 40.0,
+          "sesgo": "Visión ucraniana del conflicto, enfatizando la agresión rusa y el ataque a la infraestructura energética.",
+          "link": "http://www.euronews.com/2026/01/01/russia-carries-war-into-2026-with-over-200-drones-launched-at-ukraine-zelenskyy-says",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "734f875a",
+          "titulo": "Vladimir Putin utiliza el discurso de Año Nuevo para unir a los rusos en torno a la guerra.",
+          "proximidad": 20.0,
+          "sesgo": "Propaganda rusa, presenta una visión unificada y patriótica de la guerra, omitiendo disensiones internas.",
+          "link": "https://www.themoscowtimes.com/2025/12/31/vladimir-putin-uses-new-years-address-to-rally-russians-around-war-a91594",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "044539b6",
+          "titulo": "Dos personas mueren confirmadas mientras las protestas en Irán se convierten en 'campo de batalla'.",
+          "proximidad": 65.0,
+          "sesgo": "Reporte sobre la inestabilidad interna en Irán, con posible limitación de información debido al control estatal.",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/two-people-dead-iran-economic-crisis-protests-battlefield",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "3d60261a",
+          "titulo": "Siete muertos y docenas de desaparecidos después de que un barco con destino a las Islas Canarias naufraga en Gambia.",
+          "proximidad": 80.0,
+          "sesgo": "Reporte de una tragedia migratoria, sin sesgos geopolíticos evidentes.",
+          "link": "https://www.bbc.com/news/articles/clynvkwglx4o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "44b96d06",
+          "titulo": "Bolsonaro sale del hospital y regresa al cuartel general de la policía.",
+          "proximidad": 90.0,
+          "sesgo": "Reporte objetivo de la situación legal y de salud de Bolsonaro.",
+          "link": "https://en.mercopress.com/2026/01/02/bolsonaro-leaves-hospital-goes-back-to-police-hqs?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "El año 2025/2026 se presenta como un período de evaluación de logros y desafíos políticos y económicos a nivel global, marcado por la finalización de planes quinquenales en China y la observación de eventos políticos significativos en África.",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "id": "c5e16da1",
+          "titulo": "Mensaje de Año Nuevo 2026 del Presidente Chino Xi Jinping",
+          "proximidad": 90.0,
+          "sesgo": "Presenta los logros económicos de China, coincidiendo con las métricas internas del país.",
+          "link": "http://www.ecns.cn/news/politics/2025-12-31/detail-iheymvap1609456.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "51de03b4",
+          "titulo": "El año de África en política: Golpes, elecciones y protestas",
+          "proximidad": 50.0,
+          "sesgo": "Reporte noticioso que refleja la perspectiva occidental sobre la inestabilidad política en África.",
+          "link": "https://www.bbc.com/news/articles/c1lr70jg2zgo?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "b62a7c18",
+          "titulo": "Noticia irrelevante o corrupta",
+          "proximidad": 0.0,
+          "sesgo": "Datos corruptos que impiden la evaluación.",
+          "link": "http://www.euronews.com/2026/01/01/taiwans-president-pledges-to-defend-islands-sovereignty-after-chinese-military-drills",
+          "bloque": "EUROPE"
+        }
+      ]
+    }
+  ]
+}

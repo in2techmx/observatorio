@@ -1,0 +1,114 @@
+{
+    "categorias": [
+        {
+            "nombre": "Seguridad y Conflictos",
+            "consenso": "Resumen ejecutivo de Seguridad y Conflictos",
+            "particulas": [
+                {
+                    "titulo": "Título de la noticia de Seguridad y Conflictos 1",
+                    "bloque": "USA",
+                    "proximidad": 85,
+                    "analisis_regional": "Breve sesgo de la noticia de Seguridad y Conflictos 1",
+                    "link": "URL_REAL_1",
+                    "color_bloque": "#3b82f6"
+                },
+                {
+                    "titulo": "Título de la noticia de Seguridad y Conflictos 2",
+                    "bloque": "Rusia",
+                    "proximidad": 70,
+                    "analisis_regional": "Breve sesgo de la noticia de Seguridad y Conflictos 2",
+                    "link": "URL_REAL_2",
+                    "color_bloque": "#ef4444"
+                }
+            ]
+        },
+        {
+            "nombre": "Economía y Sanciones",
+            "consenso": "Resumen ejecutivo de Economía y Sanciones",
+            "particulas": [
+                {
+                    "titulo": "Título de la noticia de Economía y Sanciones 1",
+                    "bloque": "Europa",
+                    "proximidad": 90,
+                    "analisis_regional": "Breve sesgo de la noticia de Economía y Sanciones 1",
+                    "link": "URL_REAL_3",
+                    "color_bloque": "#fde047"
+                },
+                {
+                    "titulo": "Título de la noticia de Economía y Sanciones 2",
+                    "bloque": "China",
+                    "proximidad": 65,
+                    "analisis_regional": "Breve sesgo de la noticia de Economía y Sanciones 2",
+                    "link": "URL_REAL_4",
+                    "color_bloque": "#f97316"
+                }
+            ]
+        },
+        {
+            "nombre": "Energía y Recursos",
+            "consenso": "Resumen ejecutivo de Energía y Recursos",
+            "particulas": [
+                {
+                    "titulo": "Título de la noticia de Energía y Recursos 1",
+                    "bloque": "Medio Oriente",
+                    "proximidad": 75,
+                    "analisis_regional": "Breve sesgo de la noticia de Energía y Recursos 1",
+                    "link": "URL_REAL_5",
+                    "color_bloque": "#10b981"
+                },
+                {
+                    "titulo": "Título de la noticia de Energía y Recursos 2",
+                    "bloque": "África",
+                    "proximidad": 80,
+                    "analisis_regional": "Breve sesgo de la noticia de Energía y Recursos 2",
+                    "link": "URL_REAL_6",
+                    "color_bloque": "#8b5cf6"
+                }
+            ]
+        },
+        {
+            "nombre": "Soberanía y Alianzas",
+            "consenso": "Resumen ejecutivo de Soberanía y Alianzas",
+            "particulas": [
+                {
+                    "titulo": "Título de la noticia de Soberanía y Alianzas 1",
+                    "bloque": "LATAM",
+                    "proximidad": 95,
+                    "analisis_regional": "Breve sesgo de la noticia de Soberanía y Alianzas 1",
+                    "link": "URL_REAL_7",
+                    "color_bloque": "#d946ef"
+                },
+                {
+                    "titulo": "Título de la noticia de Soberanía y Alianzas 2",
+                    "bloque": "USA",
+                    "proximidad": 60,
+                    "analisis_regional": "Breve sesgo de la noticia de Soberanía y Alianzas 2",
+                    "link": "URL_REAL_8",
+                    "color_bloque": "#3b82f6"
+                }
+            ]
+        },
+        {
+            "nombre": "Tecnología y Espacio",
+            "consenso": "Resumen ejecutivo de Tecnología y Espacio",
+            "particulas": [
+                {
+                    "titulo": "Título de la noticia de Tecnología y Espacio 1",
+                    "bloque": "China",
+                    "proximidad": 88,
+                    "analisis_regional": "Breve sesgo de la noticia de Tecnología y Espacio 1",
+                    "link": "URL_REAL_9",
+                    "color_bloque": "#f97316"
+                },
+                {
+                    "titulo": "Título de la noticia de Tecnología y Espacio 2",
+                    "bloque": "Rusia",
+                    "proximidad": 72,
+                    "analisis_regional": "Breve sesgo de la noticia de Tecnología y Espacio 2",
+                    "link": "URL_REAL_10",
+                    "color_bloque": "#ef4444"
+                }
+            ]
+        }
+    ]
+}

@@ -1,228 +1,486 @@
-import os, json, datetime, urllib.request, ssl, re, time
+import os
+import json
+import datetime
+import time
+import urllib.request
+import hashlib
+import re
+import sys
+import math
+import struct
+import logging
+import random
 import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
+from collections import defaultdict
+import argparse
 from google import genai
 
-# --- CONFIGURACIÓN TÉCNICA ---
-ssl_context = ssl._create_unverified_context()
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
+# ============================================================================
+# CONFIGURACIÓN GLOBAL Y ARGUMENTOS
+# ============================================================================
+CACHE_DIR = "vector_cache"
+HIST_DIR = "historico_noticias/diario"
+LOG_FILE = "system_audit.log"
 
-# --- FUENTES ESTRATÉGICAS (3+ POR REGIÓN) ---
-# Mapeado estricto a las 7 Regiones del Observatorio V2
+# Cargar configuración dinámica
+if os.path.exists(".proximity_env"):
+    with open(".proximity_env", "r") as f:
+        for line in f:
+            if "CACHE_DIR=" in line:
+                CACHE_DIR = line.split("=")[1].strip()
+
+# Gestión de Argumentos
+parser = argparse.ArgumentParser()
+parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategic, full')
+args, _ = parser.parse_known_args()
+
+if args.mode == 'full':
+    FETCH_LIMIT = 50
+    print("🔥 MODO FULL: Límite 50 items/feed")
+elif args.mode == 'strategic':
+    FETCH_LIMIT = 25
+    print("🛡️ MODO ESTRATÉGICO: Límite 25 items/feed")
+else:
+    FETCH_LIMIT = 12
+    print("⚡ MODO TÁCTICO: Límite 12 items/feed")
+
+# ============================================================================
+# CONFIGURACIÓN DE ÁREAS Y FUENTES
+# ============================================================================
+AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos",
+         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
+
 FUENTES = {
-    "USA": [
-        "https://www.npr.org/rss/rss.php?id=1004", 
-        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-        "https://api.washingtontimes.com/rss/headlines/news/world/",
-        "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml"
-    ],
-    "RUSSIA": [
-        "https://tass.com/rss/v2.xml", 
-        "https://rt.com/rss/news/",
-        "https://en.interfax.ru/rss/",
-        "https://themoscowtimes.com/rss/news"
-    ],
-    "CHINA": [
-        "https://www.scmp.com/rss/91/feed", 
-        "http://www.ecns.cn/rss/rss.xml",
-        "https://www.globaltimes.cn/rss/index.xml",
-        "http://www.xinhuanet.com/english/rss/world.xml"
-    ],
-    "EUROPE": [
-        "https://www.france24.com/en/rss", 
-        "https://www.dw.com/xml/rss-en-all",
-        "https://www.euronews.com/rss?level=vertical&name=news",
-        "https://www.theguardian.com/world/rss"
-    ],
-    "LATAM": [
-        "https://www.jornada.com.mx/rss/edicion.xml", 
-        "https://www.clarin.com/rss/mundo/",
-        "https://www.infobae.com/america/rss/",
-        "https://elpais.com/rss/elpais/americas.xml"
-    ],
-    "MID_EAST": [
-        "https://www.aljazeera.com/xml/rss/all.xml", 
-        "https://www.trtworld.com/rss",
-        "https://www.timesofisrael.com/feed/",
-        "https://www.arabnews.com/rss.xml"
-    ],
-    "INDIA": [ 
-        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", 
-        "https://www.thehindu.com/news/national/feeder/default.rss",
-        "https://zeenews.india.com/rss/india-national-news.xml",
-        "https://idsa.in/rss.xml"
-    ]
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml"],
+    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.arabnews.com/cat/1/rss.xml"],
+    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://techcrunch.com/feed/", "https://www.wired.com/feed/category/science/latest/rss"]
 }
 
-def clean_html(html_content):
-    """Deep Scraping: Limpieza profunda de HTML para extraer solo texto relevante."""
-    try:
-        soup = BeautifulSoup(html_content, 'html.parser')
-        # Eliminar ruido
-        for noisy in soup(["script", "style", "nav", "footer", "header", "aside", "form", "ad", "iframe"]):
-            noisy.decompose()
-        
-        # Extraer párrafos sustantivos (> 60 caracteres)
-        paragraphs = [p.get_text().strip() for p in soup.find_all('p') if len(p.get_text()) > 60]
-        
-        # Tomar los primeros 6 párrafos o 2500 caracteres
-        text = " ".join(paragraphs[:6])
-        return re.sub(r'\s+', ' ', text).strip()[:2500]
-    except:
-        return ""
-
-def fetch_rss_items(url, limit=5):
-    """Descarga y parsea RSS con manejo robusto de errores."""
-    items_found = []
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
-            xml_data = resp.read()
-            # Intento 1: Parseo directo
-            try:
-                root = ET.fromstring(xml_data)
-            except:
-                # Intento 2: Decode manual
-                root = ET.fromstring(xml_data.decode('utf-8', errors='ignore'))
-            
-            # Soportar RSS <item> y Atom <entry>
-            nodes = root.findall('.//item') or root.findall('.//{http://www.w3.org/2005/Atom}entry')
-            
-            for node in nodes[:limit]:
-                t_node = node.find('title') or node.find('{http://www.w3.org/2005/Atom}title')
-                l_node = node.find('link') or node.find('{http://www.w3.org/2005/Atom}link')
-                
-                title = t_node.text.strip() if t_node is not None and t_node.text else "Sin Título"
-                
-                # Manejo de Link (Atributo href o texto interno)
-                link = ""
-                if l_node is not None:
-                    link = l_node.attrib.get('href') if l_node.attrib.get('href') else l_node.text
-                
-                if link:
-                    items_found.append({"title": title, "link": link.strip()})
-                    
-    except Exception as e:
-        print(f"   [!] Error en fuente {url[:40]}...: {str(e)[:50]}")
+# ============================================================================
+# INICIALIZACIÓN DE DIRECTORIOS
+# ============================================================================
+def initialize_directories():
+    global CACHE_DIR
+    targets = [CACHE_DIR, HIST_DIR]
     
-    return items_found
-
-def get_full_content(url):
-    """Wrapper para obtener contenido limpio de una URL."""
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, timeout=10, context=ssl_context) as resp:
-            return clean_html(resp.read())
-    except:
-        return ""
-
-def collect():
-    print("\n" + "═"*70 + "\n🛰️  OBSERVATORIO V2: INICIANDO ESCANEO GLOBAL\n" + "═"*70)
-    
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        print("❌ ERROR CRÍTICO: Variable de entorno GEMINI_API_KEY no encontrada.")
-        return
-
-    client = genai.Client(api_key=api_key)
-    accumulated_context = ""
-    stats = {"scanned": 0, "processed": 0}
-
-    # 1. RECOLECCIÓN (FASE DE INGESTA)
-    for region, urls in FUENTES.items():
-        print(f"\n🌍 Escaneando Región: {region}...")
-        region_pool = []
-        
-        for url in urls:
-            items = fetch_rss_items(url, limit=4) # Top 4 por fuente
-            region_pool.extend(items)
-            stats["scanned"] += len(items)
-        
-        if not region_pool:
-            continue
-
-        # 2. TRIAJE IA (CAPA 1: SELECCIÓN)
-        # Pedimos a Gemini que seleccione las 2 más relevantes geopolíticamente para ahorrar tokens
-        list_str = "\n".join([f"[{i}] {n['title']}" for i, n in enumerate(region_pool)])
-        prompt_triaje = f"""
-        Actúa como Editor Jefe de Inteligencia {region}. 
-        De esta lista, selecciona los índices (0-N) de las 2 noticias con mayor impacto geopolítico global (Conflictos, Economía, Alianzas).
-        Responde SOLO JSON: {{"indices": [x, y]}}
-        LISTA:
-        {list_str}
-        """
-        
+    for d in targets:
         try:
-            res = client.models.generate_content(model="gemini-2.0-flash", contents=prompt_triaje, config={'response_mime_type': 'application/json'})
-            indices = json.loads(res.text.strip().replace('```json', '').replace('```', '')).get("indices", [])
-        except:
-            indices = [0, 1] # Fallback
-            
-        # 3. EXTRACCIÓN PROFUNDA (FASE DE ENTENDIMIENTO)
-        for idx in indices:
-            if idx < len(region_pool):
-                news = region_pool[idx]
-                print(f"   -> Procesando: {news['title'][:50]}...")
-                content = get_full_content(news['link'])
-                if content:
-                    accumulated_context += f"REGION: {region} | TÍTULO: {news['title']} | LINK: {news['link']} | TEXTO: {content}\n\n"
-                    stats["processed"] += 1
+            if os.path.exists(d):
+                if not os.path.isdir(d):
+                    try: os.remove(d)
+                    except: pass
+                    os.makedirs(d, exist_ok=True)
+            else:
+                os.makedirs(d, exist_ok=True)
+        except Exception as e:
+            print(f"⚠️ Error directorio {d}: {e}")
+            if d == CACHE_DIR: 
+                CACHE_DIR = "/tmp/vector_cache"
+                os.makedirs(CACHE_DIR, exist_ok=True)
 
-    # 4. SÍNTESIS GLOBAL (CAPA 2: MOTOR DE INFERENCIA V2)
-    print(f"\n🧠 PROCESANDO CONTEXTO ({stats['processed']} artículos)... Generando Matriz de Gravedad...")
-    
-    prompt_final = """
-    Eres el motor 'Global Gravity Index'. Tu objetivo es analizar las noticias globales y estructurarlas para el Observatorio V2.
-    
-    TAREA:
-    1. Identifica 5-7 "Eventos/Narrativas" transversales que aparezcan en múltiples regiones.
-    2. Para cada evento, analiza CÓMO lo cubre cada región (Perspectiva).
-    3. Identifica "Puntos Ciegos" (Regiones que NO cubren el tema o lo ignoran activamente).
-    
-    GENERA EL SIGUIENTE JSON EXACTO:
-    [
-        {
-            "id": 1,
-            "title": "Título conciso del Evento Global",
-            "category": "Una de: Economía, Conflicto, Tecnología, Clima, Sociedad, Soberanía",
-            "regions_coverage": ["LISTA DE REGIONES QUE CUBREN EL TEMA (IDs: USA, CHINA, RUSSIA, EUROPE, INDIA, MID_EAST, LATAM)"],
-            "blind_spots": ["LISTA DE REGIONES QUE IGNORAN EL TEMA"],
-            "perspectives": {
-                "USA": { "weight": (1-10 Intensidad), "synthesis": "Resumen de 30 palabras sobre el enfoque de USA...", "keyword": "Palabra Clave" },
-                ... (repetir para cada región QUE CUBRA el tema. Si es blind spot, NO incluir aquí)
-            },
-            "blind_spot_analysis": "Frase analítica sobre por qué las regiones del blind_spot lo estarían ignorando (hipótesis basada en su Razón de Estado)."
+initialize_directories()
+
+# ============================================================================
+# LOGGING
+# ============================================================================
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s | %(levelname)-8s | %(message)s',
+    handlers=[logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'), logging.StreamHandler(sys.stdout)]
+)
+
+# ============================================================================
+# CLASES Y UTILIDADES
+# ============================================================================
+class NewsItem:
+    def __init__(self, item_id, title, link, region, source_url):
+        self.id = item_id
+        self.original_title = self._sanitize(title)
+        self.link = link if self._valid_url(link) else None
+        self.region = region
+        self.source_url = source_url
+        self.translated_title = None
+        self.area = None
+        self.confidence = 0.0
+        self.keywords = []
+        self.vector = None
+        self.proximity = 50.0
+        self.bias_label = "Neutral"
+
+    @staticmethod
+    def _valid_url(url):
+        return bool(re.match(r'^https?://', str(url), re.IGNORECASE)) if url else False
+
+    @staticmethod
+    def _sanitize(text):
+        if not text: return ""
+        text = re.sub(r'<[^>]+>', '', text)
+        return re.sub(r'\s+', ' ', text).strip()[:400]
+
+    def to_dict(self):
+        return {
+            "id": self.id[:12], "titulo": self.translated_title or self.original_title,
+            "link": self.link, "bloque": self.region, "proximidad": round(self.proximity, 1),
+            "sesgo": self.bias_label, "confianza": round(self.confidence, 1),
+            "keywords": self.keywords[:5]
         }
-    ]
-    
-    REGLAS:
-    - No inventes noticias. Usa solo el CONTEXTO PROPORCIONADO.
-    - Si una región no tiene noticias sobre el tema, DEBE ir a 'blind_spots'.
-    - El JSON debe ser válido.
-    
-    CONTEXTO:
-    """ + accumulated_context
 
-    try:
-        res = client.models.generate_content(
-            model="gemini-2.0-flash", 
-            contents=prompt_final,
-            config={'response_mime_type': 'application/json', 'temperature': 0.1}
-        )
+class IroncladCollectorPro:
+    def __init__(self, api_key):
+        self.client = genai.Client(api_key=api_key)
+        self.active_items = []
+        self.stats = {"items_raw": 0, "items_classified": 0, "cache_hits": 0, "cache_misses": 0, "errors": 0}
+        self.start_time = time.time()
+
+    def safe_json_extract(self, text):
+        if not text: return None
+        try: return json.loads(text.strip())
+        except: pass
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        return json.loads(match.group()) if match else None
+
+    # --- NUEVO: VALIDACIÓN DE RESPUESTA ---
+    def validate_gemini_response(self, response_text, expected_count):
+        """Valida que la respuesta de Gemini sea completa"""
+        if not response_text:
+            logging.error("Respuesta vacía de Gemini")
+            return None
         
-        data = json.loads(res.text.strip().replace('```json', '').replace('```', ''))
+        data = self.safe_json_extract(response_text)
         
-        # Guardar resultado
-        with open("latest_news.json", "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+        if not data:
+            logging.error("No se pudo extraer JSON de la respuesta")
+            return None
+        
+        if 'res' not in data:
+            logging.error("JSON no tiene clave 'res'")
+            return None
+        
+        # Verificar que tenemos items
+        if len(data['res']) < expected_count:
+            logging.warning(f"⚠️ Se esperaban {expected_count} items, se recibieron {len(data['res'])}")
+        
+        return data
+
+    # --- NUEVO: FALLBACK CLASSIFICATION ---
+    def fallback_classification(self, batch):
+        """Clasificación simple basada en keywords cuando Gemini falla"""
+        if not batch: return
+        
+        # Keywords en inglés (fuentes originales)
+        keywords_map = {
+            "Seguridad y Conflictos": ["military", "defense", "war", "attack", "terror", "pentagon", "nato", "army", "strike", "conflict"],
+            "Economía y Sanciones": ["economy", "finance", "sanction", "market", "trade", "bank", "inflation", "stock", "gdp", "debt"],
+            "Energía y Recursos": ["energy", "oil", "gas", "mining", "climate", "renewable", "nuclear", "solar", "water", "carbon"],
+            "Soberanía y Alianzas": ["alliance", "treaty", "diplomacy", "summit", "sovereignty", "brics", "un", "relations", "foreign"],
+            "Tecnología y Espacio": ["technology", "space", "digital", "satellite", "ai", "cyber", "chip", "moon", "launch", "rocket"],
+            "Sociedad y Derechos": ["rights", "human", "protest", "health", "education", "justice", "law", "court", "immigration"]
+        }
+        
+        count = 0
+        for item in batch:
+            if item.area: continue # Ya clasificado
             
-        print("\n✅ ÉXITO: 'latest_news.json' generado correctamente.")
-        print(f"   Eventos detectados: {len(data)}")
-        for ev in data:
-            print(f"   - {ev['title']} ({len(ev['regions_coverage'])} Regiones, {len(ev['blind_spots'])} Vacíos)")
+            title_lower = item.original_title.lower()
+            scores = {area: 0 for area in AREAS}
             
-    except Exception as e:
-        print(f"\n❌ Error en generación final: {e}")
+            for area, keywords in keywords_map.items():
+                for keyword in keywords:
+                    if keyword in title_lower:
+                        scores[area] += 1
+            
+            best_area = max(scores.items(), key=lambda x: x[1])
+            if best_area[1] > 0:
+                item.area = best_area[0]
+                item.confidence = min(50 + best_area[1] * 10, 85)
+                item.translated_title = item.original_title # Se queda en inglés como fallback
+                item.keywords = ["fallback_mode"]
+                item.bias_label = "Clasificación Automática"
+                count += 1
+                logging.debug(f"Fallback: '{item.original_title[:20]}...' -> {item.area}")
+        
+        if count > 0:
+            logging.info(f"🛡️ Fallback recuperó {count} noticias.")
+            self.stats["items_classified"] += count
+
+    # --- GESTIÓN DE CACHÉ ---
+    def get_cached_vector(self, text):
+        if not text: return None
+        v_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
+        path = os.path.join(CACHE_DIR, f"{v_hash}.bin")
+        if os.path.exists(path):
+            try:
+                with open(path, 'rb') as f:
+                    data = f.read()
+                    self.stats["cache_hits"] += 1
+                    return list(struct.unpack(f'{len(data)//4}f', data))
+            except: pass
+        return None
+
+    def save_vector(self, text, vector):
+        if not text or not vector: return
+        try:
+            v_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
+            path = os.path.join(CACHE_DIR, f"{v_hash}.bin")
+            with open(path, 'wb') as f:
+                f.write(struct.pack(f'{len(vector)}f', *vector))
+            self.stats["cache_misses"] += 1
+        except: pass
+
+    # --- CLASIFICACIÓN DE ÁREAS ---
+    def classify_area(self, area_name):
+        if not area_name: return None
+        area_lower = area_name.lower().strip()
+        
+        for area in AREAS:
+            if area.lower() == area_lower: return area
+            
+        scores = {area: 0 for area in AREAS}
+        keywords_map = {
+            "Seguridad y Conflictos": ["defensa", "militar", "conflicto", "terrorismo", "ataque", "ejército", "guerra"],
+            "Economía y Sanciones": ["económico", "finanzas", "sanciones", "mercado", "comercio", "inflación", "banco", "pib"],
+            "Energía y Recursos": ["energía", "petróleo", "gas", "minería", "renovable", "clima", "nuclear", "agua"],
+            "Soberanía y Alianzas": ["soberanía", "alianza", "diplomacia", "tratado", "geopolítica", "cumbre", "brics"],
+            "Tecnología y Espacio": ["tecnología", "espacio", "digital", "satélite", "ia", "ciber", "chip", "luna"],
+            "Sociedad y Derechos": ["derechos", "humano", "social", "salud", "educación", "protesta", "ley", "justicia"]
+        }
+        
+        for area, kws in keywords_map.items():
+            for kw in kws:
+                if kw in area_lower: scores[area] += 1
+        
+        best = max(scores.items(), key=lambda x: x[1])
+        return best[0] if best[1] > 0 else None
+
+    # --- FASE 1: RECOLECCIÓN ---
+    def fetch_signals(self):
+        logging.info(f"📡 FASE 1: Recolección (Límite: {FETCH_LIMIT})...")
+        cnt = 0
+        for region, urls in FUENTES.items():
+            for url in urls:
+                try:
+                    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req, timeout=15) as r:
+                        root = ET.fromstring(r.read().decode('utf-8', errors='ignore'))
+                        items = root.findall('.//item') or root.findall('.//entry') or root.findall('.//{*}item')
+                        
+                        for item in items[:FETCH_LIMIT]:
+                            title = getattr(item.find('title') or item.find('{*}title'), 'text', '')
+                            link = getattr(item.find('link') or item.find('{*}link'), 'text', '')
+                            if not link: link = (item.find('link') or item.find('{*}link') or {}).get('href', '')
+                            
+                            if title and link and len(title)>10:
+                                uid = f"{region}_{cnt}_{hashlib.md5(link.encode()).hexdigest()[:8]}"
+                                news = NewsItem(uid, title, link, region, url)
+                                if news.link: 
+                                    self.active_items.append(news)
+                                    cnt += 1
+                except: self.stats["errors"] += 1
+        self.stats["items_raw"] = len(self.active_items)
+
+    # --- FASE 2: TRIAGE (MEJORADO) ---
+    def run_triage(self):
+        if not self.active_items: return
+        logging.info(f"🔎 FASE 2: Clasificación IA ({len(self.active_items)} items)...")
+
+        
+        
+        # PROMPT DE INGENIERÍA MEJORADO
+        prompt = f"""ANALISTA DE INTELIGENCIA GEOPOLÍTICA
+OBJETIVO: Clasificar titulares en: {', '.join(AREAS)}
+
+INSTRUCCIONES:
+1. MANTÉN el MISMO ID numérico (0, 1, 2...).
+2. TRADUCE al español (fiel al original).
+3. ASIGNA SOLO UN ÁREA (la más relevante).
+4. CONFIANZA: 0-100.
+5. KEYWORDS: 3-5 palabras clave.
+
+EJEMPLOS:
+ID:0 | TITULO: "Pentagon announces new AI defense system"
+→ {{"id": 0, "area": "Seguridad y Conflictos", "titulo_es": "Pentágono anuncia nuevo sistema de defensa IA", "confianza": 95, "keywords": ["Pentágono", "IA", "defensa"]}}
+
+ID:1 | TITULO: "EU approves new sanctions against Russia"
+→ {{"id": 1, "area": "Economía y Sanciones", "titulo_es": "UE aprueba nuevas sanciones a Rusia", "confianza": 88, "keywords": ["UE", "sanciones", "Rusia"]}}
+
+FORMATO SALIDA (JSON PURO):
+{{
+  "res": [
+    {{"id": 0, "area": "...", "titulo_es": "...", "confianza": ..., "keywords": [...]}}
+  ]
+}}"""
+        
+        batch_size = 20
+        for i in range(0, len(self.active_items), batch_size):
+            batch = self.active_items[i:i+batch_size]
+            
+            # IDs simples para evitar confusión de la IA
+            batch_text = "\n".join([f"ID:{idx} | TITULO: {item.original_title}" for idx, item in enumerate(batch)])
+            
+            try:
+                resp = self.client.models.generate_content(
+                    model="gemini-2.0-flash", 
+                    contents=f"{prompt}\n\nENTRADA:\n{batch_text}",
+                    config={"temperature": 0.0}
+                )
+                
+                # Validación mejorada
+                data = self.validate_gemini_response(resp.text, len(batch))
+                
+                if data and 'res' in data:
+                    for res in data['res']:
+                        try:
+                            idx = int(res.get('id', -1))
+                            if 0 <= idx < len(batch):
+                                target = batch[idx]
+                                area = self.classify_area(res.get('area',''))
+                                if area:
+                                    target.area = area
+                                    target.translated_title = res.get('titulo_es','')
+                                    target.confidence = res.get('confianza',0)
+                                    target.keywords = res.get('keywords',[])[:5]
+                                    self.stats["items_classified"] += 1
+                        except: continue
+            except Exception as e:
+                logging.error(f"Error Batch IA: {str(e)[:50]}")
+                self.stats["errors"] += 1
+            
+            # EJECUTAR FALLBACK para lo que la IA se saltó
+            unclassified = [item for item in batch if item.area is None]
+            if unclassified:
+                self.fallback_classification(unclassified)
+            
+            time.sleep(1)
+
+    # --- FASE 3: VECTORES (ALINEACIÓN CORRECTA) ---
+    def compute_vectors_and_proximity(self):
+        logging.info("📐 FASE 3: Análisis Vectorial...")
+        
+        need_embedding = []
+        valid_items = [it for it in self.active_items if it.area in AREAS]
+        
+        # Separar cacheados vs nuevos para no romper índices
+        for item in valid_items:
+            # Usar título traducido si existe, sino el original
+            text_key = item.translated_title if item.translated_title else item.original_title
+            
+            cached = self.get_cached_vector(text_key)
+            if cached:
+                item.vector = cached
+            else:
+                need_embedding.append(item)
+        
+        # Procesar nuevos en batches
+        batch_size = 100
+        for i in range(0, len(need_embedding), batch_size):
+            batch = need_embedding[i:i+batch_size]
+            texts = [item.translated_title if item.translated_title else item.original_title for item in batch]
+            
+            try:
+                resp = self.client.models.embed_content(
+                    model="text-embedding-004", contents=texts,
+                    config={'task_type': 'RETRIEVAL_DOCUMENT'}
+                )
+                
+                # Asignación segura por índice
+                for idx, item in enumerate(batch):
+                    if idx < len(resp.embeddings):
+                        item.vector = resp.embeddings[idx].values
+                        text_key = item.translated_title if item.translated_title else item.original_title
+                        self.save_vector(text_key, item.vector)
+            except Exception as e:
+                logging.error(f"Error Embeddings: {e}")
+                # Vector aleatorio fallback
+                for item in batch:
+                    random.seed(hash(item.original_title))
+                    item.vector = [random.uniform(-0.1, 0.1) for _ in range(768)]
+
+        # Proximidad
+        for area in AREAS:
+            area_items = [it for it in valid_items if it.area == area and it.vector]
+            if len(area_items) < 2: continue
+            
+            reg_vecs = defaultdict(list)
+            for it in area_items: reg_vecs[it.region].append(it.vector)
+            centroids = {r: [sum(col)/len(col) for col in zip(*v)] for r,v in reg_vecs.items()}
+            
+            for it in area_items:
+                others = [c for r,c in centroids.items() if r != it.region]
+                if not others:
+                    it.proximity = 50.0; it.bias_label = "Perspectiva Única"
+                    continue
+                
+                global_c = [sum(col)/len(col) for col in zip(*others)]
+                dot = sum(a*b for a,b in zip(it.vector, global_c))
+                mag_a = math.sqrt(sum(a*a for a in it.vector))
+                mag_b = math.sqrt(sum(b*b for b in global_c))
+                
+                if mag_a*mag_b > 0:
+                    sim = dot/(mag_a*mag_b)
+                    it.proximity = max(0.0, min(100.0, (sim+1)*50))
+                    if it.proximity > 85: it.bias_label = "Consenso Global"
+                    elif it.proximity > 70: it.bias_label = "Alineación"
+                    elif it.proximity > 55: it.bias_label = "Tensión Moderada"
+                    elif it.proximity > 40: it.bias_label = "Divergencia"
+                    else: it.bias_label = "Contraste Radical"
+
+    # --- FASE 4: EXPORTACIÓN ---
+    def export(self):
+        logging.info("💾 FASE 4: Exportación...")
+        carousel = []
+        colors = {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}
+
+        for area in AREAS:
+            items = [it for it in self.active_items if it.area == area]
+            if not items: continue
+            
+            particles = [it.to_dict() for it in items]
+            particles.sort(key=lambda x: x['proximidad'], reverse=True)
+            avg = sum(p['proximidad'] for p in particles)/len(particles)
+            
+            trend = "↑" if avg > 60 else "↓" if avg < 40 else "→"
+            consensus = "ALTO" if avg > 80 else "MODERADO" if avg > 60 else "BAJO"
+            emoji = "🟢" if avg > 80 else "🟡" if avg > 60 else "🟠" if avg > 50 else "🔴"
+
+            carousel.append({
+                "area": area, "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
+                "color": colors.get(area, "#666"),
+                "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
+                "particulas": particles[:30]
+            })
+
+        meta = {
+            "updated": datetime.datetime.now().isoformat(),
+            "execution_seconds": round(time.time() - self.start_time, 2),
+            "stats": self.stats,
+            "config": {"mode": args.mode, "limit": FETCH_LIMIT}
+        }
+        
+        final = {"carousel": carousel, "meta": meta}
+        with open("gravity_carousel.json", "w", encoding="utf-8") as f: json.dump(final, f, indent=2, ensure_ascii=False)
+        try:
+            with open(os.path.join(HIST_DIR, f"{datetime.datetime.now():%Y-%m-%d}.json"), "w", encoding="utf-8") as f:
+                json.dump(final, f, indent=2, ensure_ascii=False)
+        except: pass
+
+    def run(self):
+        try:
+            self.fetch_signals()
+            self.run_triage()
+            self.compute_vectors_and_proximity()
+            self.export()
+            return True
+        except Exception as e:
+            logging.error(f"FATAL: {e}", exc_info=True)
+            return False
 
 if __name__ == "__main__":
-    collect()
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        print("❌ ERROR: GEMINI_API_KEY no encontrada"); sys.exit(1)
+    
+    col = IroncladCollectorPro(key)
+    sys.exit(0 if col.run() else 1)

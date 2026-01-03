@@ -1,0 +1,1103 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "Análisis de eventos y tensiones geopolíticas, incluyendo conflictos, seguridad interna y protestas.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "9dabc175",
+          "titulo": "Trump dice que EE.UU. intervendrá si Irán mata a manifestantes",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Enfatiza la postura de EE.UU. frente a Irán.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/trump-iran-protests.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "668eea7c",
+          "titulo": "Yemen envía a su ejército para expulsar a la facción separatista",
+          "bloque": "USA",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre el conflicto interno en Yemen.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/yemen-separatists-government.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "d618f27c",
+          "titulo": "Zelensky de Ucrania nombra a Kyrylo Budanov como nuevo jefe de gabinete",
+          "bloque": "USA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre cambios en el gobierno ucraniano.",
+          "link": "https://www.nytimes.com/2026/01/02/world/europe/zelensky-budanov-ukraine-chief-of-staff-yermak.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "56f9ac25",
+          "titulo": "Zelensky designa al jefe de inteligencia militar para dirigir la oficina presidencial",
+          "bloque": "USA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre el nombramiento del jefe de inteligencia militar.",
+          "link": "https://www.washingtonpost.com/world/2026/01/02/kyrylo-budanov-zelensky-top-aide-ukraine/",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "7c3d23b3",
+          "titulo": "Las protestas en Irán, provocadas por el fracaso de la economía, se vuelven mortales",
+          "bloque": "USA",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza el impacto económico en las protestas.",
+          "link": "https://www.washingtonpost.com/world/2026/01/02/iran-protests-violence/",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "583a7f21",
+          "titulo": "Mapeo de los ataques estadounidenses en el Caribe y el Pacífico oriental",
+          "bloque": "USA",
+          "proximidad": 60.0,
+          "sesgo": "Presenta una visión general de las operaciones militares de EE.UU.",
+          "link": "https://www.washingtonpost.com/world/2025/11/12/us-strikes-caribbean-pacific/",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "f07ed05e",
+          "titulo": "Las nuevas arterias del poder",
+          "bloque": "USA",
+          "proximidad": 75.0,
+          "sesgo": "Destaca la importancia estratégica de los cables submarinos.",
+          "link": "https://www.foreignaffairs.com/new-arteries-power",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "02dc6819",
+          "titulo": "Cuba al borde",
+          "bloque": "USA",
+          "proximidad": 70.0,
+          "sesgo": "Analiza la crisis actual en Cuba y su posible futuro.",
+          "link": "https://www.foreignaffairs.com/cuba/cuba-brink",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "9d0b9093",
+          "titulo": "Trump dice que EE.UU. intervendrá si Irán mata a manifestantes - The New York Times",
+          "bloque": "USA",
+          "proximidad": 60.0,
+          "sesgo": "Informa sobre la postura de Trump respecto a la situación en Irán.",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOaVlseHBSaGxCOUZvYVhBTUplQTQwb09NZ1p4eVA2VkRmX3JTSXFVLWFJQUxzdXdRS0l1aXNiVzhNYzBTWjU5eDdJbEVjREVEdjQzV05LbHJIcHZmSVVLSTZQLXZhSGFyT0dMYVNSR2t4c3ZfNzlBUm5tWDlWWWdKZlNB?oc=5",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "3b933dac",
+          "titulo": "Análisis: Fox News está a punto de entrar en la verdadera Zona Sin Giro",
+          "bloque": "USA",
+          "proximidad": 60.0,
+          "sesgo": "Analiza el juicio por difamación de Dominion contra Fox News.",
+          "link": "https://www.cnn.com/2023/04/14/media/fox-news-dominion-hnk-intl/index.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "a6003db1",
+          "titulo": "¿Por qué un acuerdo de paz en Ucrania sigue siendo difícil de alcanzar a pesar de la presión de Estados Unidos?",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Análisis sobre las dificultades para alcanzar un acuerdo de paz en Ucrania.",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYXoyeWM1ZVk2YUxTQmtRR1hmd3lIZ2VPdm1QbUMtOE13Tl85NE9wMW9zSnpPc05abGhHd3FSRVJPd2ltZFY0MGFjallhTmlwanpiM0RJVGxxbzZ6RUxNN0tjOHBvMlZzcW9NN2s4VllSZTByenFoSTZhQjE5ZHNrdkpUYkxZVjZWNU5jYXdJd2hLX3JBZFI0dHhvdXB0aE1nQWVGNjFHWDdkRnVha2fSAa4BQVVfeXFMT2F6MnljNWVZNmFMU0JrUUdYZnd5SGdlT3ZtUG1DLThNd05fOTRPcDFvc0p6T3NOWmxoR3dxUkVST3dpbWRWNDBhY2pZYU5pcGp6YjNESVRscW82ekVMTTdLYzhwbzJWc3FvTTdrOFZZUmUwcnpxaEk2YUIxOWRza3ZKVGJMWVY2VjVOY2F3SXdoS19yQWRSNHR4b3VwdGhNZ0FlRjYxR1g3ZEZ1YWtn?oc=5",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "7fc3c974",
+          "titulo": "La cuestión de Taiwán es una línea roja en las relaciones China-EE.UU. — Embajador chino en Rusia",
+          "bloque": "RUSSIA",
+          "proximidad": 70.0,
+          "sesgo": "Enfatiza la importancia de Taiwán para China y las tensiones con EE.UU.",
+          "link": "https://tass.com/world/2067865",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "dffe931e",
+          "titulo": "Kallas quiere que la UE entre en guerra con Rusia y China — Dmitriev",
+          "bloque": "RUSSIA",
+          "proximidad": 25.0,
+          "sesgo": "Presenta una acusación de que Kallas busca una escalada del conflicto.",
+          "link": "https://tass.com/politics/2067861",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "0d7a28f8",
+          "titulo": "Activistas pro-Palestina destrozan una fábrica en el Reino Unido por el suministro de armas a Israel",
+          "bloque": "RUSSIA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre un acto de protesta contra el suministro de armas a Israel.",
+          "link": "https://tass.com/world/2067855",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "9edf0589",
+          "titulo": "EE.UU. asignará 500 millones de dólares para bases militares en Polonia",
+          "bloque": "RUSSIA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la asignación de fondos para bases militares estadounidenses en Polonia.",
+          "link": "https://tass.com/world/2067853",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "69f233e5",
+          "titulo": "Drones ucranianos matan a 28 personas en la ciudad turística ocupada de Kherson, dice el gobernador pro-Kremlin",
+          "bloque": "RUSSIA",
+          "proximidad": 75.0,
+          "sesgo": "Acusa a Ucrania de atacar deliberadamente a civiles.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/ukrainian-drones-kill-28-in-occupied-kherson-resort-town-pro-kremlin-governor-says-a91596",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "cca25c37",
+          "titulo": "El líder del Cuerpo de Voluntarios Rusos sigue vivo, dice la GUR de Ucrania",
+          "bloque": "RUSSIA",
+          "proximidad": 70.0,
+          "sesgo": "Contradice las afirmaciones rusas sobre la muerte del líder del Cuerpo de Voluntarios Rusos.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/russian-volunteer-corps-leader-is-still-alive-ukraines-gur-says-a91599",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "4e34b5bd",
+          "titulo": "El ejército ruso logra las mayores ganancias territoriales en 2025 desde el primer año de la invasión a gran escala",
+          "bloque": "RUSSIA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre las ganancias territoriales rusas en Ucrania.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russian-army-makes-biggest-territorial-gains-in-2025-since-first-year-of-full-scale-invasion-a91601",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "63c87358",
+          "titulo": "EAU completa la retirada de tropas de Yemen — Ministerio de Defensa",
+          "bloque": "RUSSIA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la retirada de tropas de los EAU de Yemen.",
+          "link": "https://tass.com/world/2067859",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "8f75f58e",
+          "titulo": "¿Puede Europa sobrevivir a su parálisis paralizante?",
+          "bloque": "CHINA",
+          "proximidad": 65.0,
+          "sesgo": "Crítico con la ineficacia de la UE frente a crisis globales.",
+          "link": "https://www.scmp.com/opinion/world-opinion/article/3338435/can-europe-survive-its-crippling-paralysis?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "dd360635",
+          "titulo": "Tribunal de Corea del Sur emite una nueva orden de arresto contra el ex presidente Yoon",
+          "bloque": "CHINA",
+          "proximidad": 88.0,
+          "sesgo": "Informa sobre la extensión de la detención del ex-presidente.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611576.shtml",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "5a4204e0",
+          "titulo": "El Ministerio de Defensa rechaza las críticas sobre los simulacros alrededor de Taiwán",
+          "bloque": "CHINA",
+          "proximidad": 80.0,
+          "sesgo": "Defensa de las acciones militares chinas como disuasión.",
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611513.shtml",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "2640a4b0",
+          "titulo": "China continental promete una integración más profunda a través del Estrecho en el mensaje de 2026",
+          "bloque": "CHINA",
+          "proximidad": 75.0,
+          "sesgo": "Promueve la integración pacífica bajo el principio de 'una sola China'.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611514.shtml",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "af645781",
+          "titulo": "El jefe de la junta de Guinea es elegido presidente tras el boicot de la oposición",
+          "bloque": "EUROPE",
+          "proximidad": 75.0,
+          "sesgo": "Informa sobre la elección del jefe de la junta tras un boicot opositor.",
+          "link": "https://www.theguardian.com/world/2025/dec/31/guinea-junta-chief-mamady-doumbouya-elected-president-after-opposition-boycott",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "ecc7d78a",
+          "titulo": "Las tensiones entre saudíes y emiratíes por el futuro de Yemen llegan a un punto de ebullición",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Describe las crecientes tensiones entre Arabia Saudita y los Emiratos Árabes Unidos con respecto al futuro de Yemen.",
+          "link": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "781abdde",
+          "titulo": "¿Amenazan las manifestaciones en Irán al régimen?",
+          "bloque": "EUROPE",
+          "proximidad": 65.0,
+          "sesgo": "Analiza el impacto de las protestas en Irán contra el régimen.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/amenazan-las-manifestaciones-en-iran-al-regimen/",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "3c586199",
+          "titulo": "Terremoto con una magnitud preliminar de 6.5 sacude el sur y centro de México",
+          "bloque": "EUROPE",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre un terremoto en México.",
+          "link": "http://www.euronews.com/2026/01/02/earthquake-with-a-preliminary-magnitude-of-65-rattles-southern-and-central-mexico",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "fecc94ad",
+          "titulo": "Ucrania ordena la evacuación de 3.000 niños y padres de dos regiones a medida que avanzan las fuerzas rusas",
+          "bloque": "EUROPE",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la evacuación de niños y padres debido al avance ruso.",
+          "link": "http://www.euronews.com/2026/01/02/ukraine-orders-evacuation-of-3000-children-and-parents-from-two-regions-as-russian-forces-",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "728551f5",
+          "titulo": "Zelenskyy nombra al jefe de inteligencia militar de Ucrania, Kyrylo Budanov, como nuevo asesor principal",
+          "bloque": "EUROPE",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre el nombramiento de Budanov como asesor principal.",
+          "link": "http://www.euronews.com/2026/01/02/zelenskyy-names-ukraines-military-intelligence-chief-kyrylo-budanov-as-new-top-aide",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "c331df6b",
+          "titulo": "Zelensky de Ucrania nombra al jefe de espías Kyrylo Budanov como nuevo asesor principal",
+          "bloque": "EUROPE",
+          "proximidad": 75.0,
+          "sesgo": "Informa sobre un nombramiento clave en el gobierno ucraniano.",
+          "link": "https://www.france24.com/en/europe/20260102-ukraine-s-zelensky-names-spy-chief-kyrylo-budanov-as-new-top-aide",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "3b9bbeb6",
+          "titulo": "Rusia logra las mayores ganancias territoriales en Ucrania desde la invasión de 2022",
+          "bloque": "EUROPE",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre avances territoriales rusos en Ucrania.",
+          "link": "https://www.france24.com/en/live-news/20260102-russia-scores-highest-ukraine-gains-since-first-year-of-war",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "9a28d649",
+          "titulo": "Operación secreta revelada: Ucrania finge la muerte de un combatiente ruso anti-Kremlin",
+          "bloque": "EUROPE",
+          "proximidad": 65.0,
+          "sesgo": "Describe una operación de inteligencia ucraniana.",
+          "link": "https://www.france24.com/en/video/20260102-secret-operation-unveiled-ukraine-fakes-death-of-anti-kremlin-russian-fighter",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "b505c16e",
+          "titulo": "Nuevo Estado de Emergencia declarado en Ecuador tras matanza masiva",
+          "bloque": "LATAM",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la declaración de un estado de emergencia debido a la violencia.",
+          "link": "https://en.mercopress.com/2026/01/02/new-state-of-emergency-declared-in-ecuador-after-mass-killing?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "0dcb32eb",
+          "titulo": "Milei otorga poderes controvertidos a agentes de inteligencia",
+          "bloque": "LATAM",
+          "proximidad": 70.0,
+          "sesgo": "Crítico con la ampliación de poderes de inteligencia.",
+          "link": "https://en.mercopress.com/2026/01/02/milei-grants-controversial-powers-to-intelligence-agents?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "44b96d06",
+          "titulo": "Bolsonaro sale del hospital y regresa al cuartel general de la policía",
+          "bloque": "LATAM",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre el estado de salud y la situación legal de Bolsonaro.",
+          "link": "https://en.mercopress.com/2026/01/02/bolsonaro-leaves-hospital-goes-back-to-police-hqs?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "9eb4a94d",
+          "titulo": "Avanza el rescate de la caja negra de la locomotora del tren siniestrado: FGR",
+          "bloque": "LATAM",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre el avance de la investigación del accidente ferroviario.",
+          "link": "https://www.jornada.com.mx/2026/01/02/politica/005n2pol?partner=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "8f1f5f01",
+          "titulo": "A pesar de las amenazas de Washington, los venezolanos reciben el Año Nuevo en paz",
+          "bloque": "LATAM",
+          "proximidad": 60.0,
+          "sesgo": "Minimiza el impacto de las tensiones con EE.UU. en la población venezolana.",
+          "link": "https://www.jornada.com.mx/2026/01/02/mundo/018n2mun?partner=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "3bdbd357",
+          "titulo": "Países exigen a Israel que levante las restricciones a la ayuda a Gaza mientras los palestinos sufren",
+          "bloque": "MID_EAST",
+          "proximidad": 85.0,
+          "sesgo": "Enfatiza el sufrimiento de los palestinos y la necesidad de ayuda humanitaria.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/countries-demand-israel-lift-gaza-aid-restrictions-as-palestinians-suffer?traffic_source=rss",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "303cd126",
+          "titulo": "Cisjordania: El ejército israelí allana una ciudad cerca de Hebrón y abre fuego contra los residentes, hiriendo a uno",
+          "bloque": "MID_EAST",
+          "proximidad": 80.0,
+          "sesgo": "Describe una incursión militar israelí y sus consecuencias.",
+          "link": "https://www.middleeasteye.net/live-blog/live-blog-update/west-bank-israeli-army-raids-village-near-hebron-and-opens-fires",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "79945315",
+          "titulo": "Soldados israelíes hieren a cuatro civiles en un ataque contra una ciudad en la Franja de Gaza",
+          "bloque": "MID_EAST",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre un ataque israelí y las víctimas civiles.",
+          "link": "https://www.middleeasteye.net/live-blog/live-blog-update/israeli-soldiers-wound-four-civilians-attack-town-gaza-strip",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "8ef57848",
+          "titulo": "Soldados israelíes matan a un palestino que cruzó a una parte de Gaza controlada por israelíes",
+          "bloque": "MID_EAST",
+          "proximidad": 75.0,
+          "sesgo": "Presenta la versión israelí del incidente, pero cuestiona su veracidad.",
+          "link": "https://www.middleeasteye.net/live-blog/live-blog-update/israeli-soldiers-kill-another-palestinian-who-crossed-yellow-line",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "a22dbdae",
+          "titulo": "'Cargado y listo': Trump amenaza a Irán por las muertes de manifestantes",
+          "bloque": "MID_EAST",
+          "proximidad": 65.0,
+          "sesgo": "Enfatiza la postura de confrontación de Trump hacia Irán.",
+          "link": "https://www.middleeasteye.net/news/locked-and-loaded-trump-threatens-iran-over-protester-deaths",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "c75c2325",
+          "titulo": "¿Quién es Christian Sturdivant? El FBI arresta a un adolescente inspirado en ISIS antes de un 'potencial ataque terrorista'",
+          "bloque": "INDIA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la detención de un sospechoso de terrorismo, destacando su inspiración en ISIS.",
+          "link": "https://timesofindia.indiatimes.com/world/us/who-is-christian-sturdivant-isis-inspired-teen-captured-by-fbi-before-he-could-pull-off-a-terrorist-attack-in-north-carolina-on-new-years-eve/articleshow/126311946.cms",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "85acb56f",
+          "titulo": "'Chicas de Bihar disponibles para matrimonio por 25.000 rupias': El marido del ministro de U'khand desata una polémica",
+          "bloque": "INDIA",
+          "proximidad": 30.0,
+          "sesgo": "Destaca un comentario controvertido con implicaciones sociales y políticas.",
+          "link": "https://timesofindia.indiatimes.com/city/patna/uttarakhand-mins-husband-remark-on-bihar-girls-triggers-political-storm/articleshow/126311270.cms",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "acefc90f",
+          "titulo": "Israel, Somalilandia y Türkiye: Campo de batalla por el reconocimiento en el Cuerno de África",
+          "bloque": "AFRICA",
+          "proximidad": 70.0,
+          "sesgo": "Analiza las dinámicas de reconocimiento diplomático en el Cuerno de África.",
+          "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNVkdZbzQxQjI3aDB3cDF6UGZ5WFFDY3Nlejc1dDEwbmhRNkx4SkFLeFVHWm03eFRGRWpNZko2MjZxa1gyOG9xdnc0TG80RDJ5clAySkx5c2tRQ2haVnJyTklveEhab1hodHhIdk56WkotMkhTV3NVd3d0bzNtRU9oQl9RaE5ZMUZPTmhZVmRGQ1hmdm1RczVQVk1rZ0dRcmhKUHdQME5SV2VKS25RQTV6dFRjaw?oc=5",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "57b3a122",
+          "titulo": "Nuevas Normalidades en el Medio Oriente - Geopolitical Futures",
+          "bloque": "AFRICA",
+          "proximidad": 55.0,
+          "sesgo": "Análisis general sobre la evolución geopolítica.",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1qTnZWcmxJV0xjZVNESks2TEEyZzhDbWJtNkdrSUdYT3BIUGNVUUE3T0lCbVhzQWZ0eTByd0RjXzFYRHVyS2NoWUxqMnNlZ1dZYnJ4NUVsUE5DdjNaM01RTmFmRm1rT2VrS19JNWFXaTM?oc=5",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "b7c57bcb",
+          "titulo": "El reconocimiento de Israel a Somalilandia y la geopolítica del Mar Rojo - TRT Afrika",
+          "bloque": "AFRICA",
+          "proximidad": 70.0,
+          "sesgo": "Enfoque en las implicaciones geopolíticas del reconocimiento de Somalilandia por parte de Israel.",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4ZTNQVWhJYlRCMmU2NnRWSmh2cHRwVloxMEZCUGk2aF9vcVU3c3NPZVByczQtY29oTEdGSlAxb05UeTlPdGtBcFJ6UUZkQXV5bGl6YkFaVk9MUQ?oc=5",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "67e6581e",
+          "titulo": "Radiografía de 2025: El Fuego Global y la Geopolítica del Abismo - Atalayar",
+          "bloque": "AFRICA",
+          "proximidad": 40.0,
+          "sesgo": "Visión pesimista y alarmista de los riesgos geopolíticos globales.",
+          "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNcTNkQUR6dkN5UGJGX1dGLXQ0ZWRfRW1WSHo0WHhUVl9temtEeEViLUpRd19mQzN6MnJjUmdUWGlJZGdGdDdxU25TMkRaOFFMTzlKMWZodi1weHBUUlIyRGxMcFZmck9qUkdHVEdtOWVUSFR4b1N4emFZUDVZSTNhNzMwS2lXeGVZZUNmQWJzUm0wdi1pb1hNTkpoTllWMDY2WDlqM0pXUHNYRGVZOWRVb3dTMGxvUTgwT0g0SjFaNGhMX2hIdTdzaW5RaUc1NVBRYXhYWmlucllsRVE?oc=5",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "be69dc8d",
+          "titulo": "Sudán: La Guerra Ignorada de 2025 en Medio del Oro, la Geopolítica del Petróleo y la Crisis Humanitaria - elciudadano.com",
+          "bloque": "AFRICA",
+          "proximidad": 75.0,
+          "sesgo": "Destaca la complejidad del conflicto en Sudán y sus causas subyacentes.",
+          "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOT2YyVnBfbHQ1X2FadVJQOUp2OHZKRlR0WFh5Vkl2NnAxMC13RWkydzJMekRSM0U1UjFtNGNXOUVjQTIzbWtEcG5NamY4WlN2eDhBZGJ3VU1MMjVPM2ZSdUdNb1RjYmxlX2ZFZkpJMHJvMVZybE1kMFh1OHhUcjh6Z2JsUzdESThmUFRIYXBoZHlPTmlQaWdrcWpMbEZIWTVGSVN3dlFhOXlZdUNHaURYMkJWRUdTUVF4c2M0MWVNckdta2Y1S3VJ?oc=5",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "3d60261a",
+          "titulo": "Decenas de desaparecidos después de que un barco con 200 migrantes se hundiera frente a Gambia",
+          "bloque": "AFRICA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre un incidente trágico de migración irregular.",
+          "link": "https://www.bbc.com/news/articles/clynvkwglx4o?at_medium=RSS&at_campaign=rss",
+          "color_bloque": "#22c55e"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "Cobertura de mercados financieros, políticas económicas y su impacto global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "94654941",
+          "titulo": "Los mercados digieren las ganancias bancarias después de la reciente agitación",
+          "bloque": "USA",
+          "proximidad": 85.0,
+          "sesgo": "Analiza el rendimiento bancario tras la inestabilidad reciente.",
+          "link": "https://www.cnn.com/business/live-news/stock-market-bank-earnings/index.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "fb84aa30",
+          "titulo": "¿Aún no has presentado tus impuestos? Esto es lo que necesitas saber",
+          "bloque": "USA",
+          "proximidad": 90.0,
+          "sesgo": "Informa sobre los plazos y consejos para la declaración de impuestos.",
+          "link": "https://www.cnn.com/2023/04/13/success/tax-filing-tips/index.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "561e2710",
+          "titulo": "El gasto minorista cayó en marzo a medida que los consumidores se retraen",
+          "bloque": "USA",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza la caída del gasto y la preocupación por la recesión.",
+          "link": "https://www.cnn.com/2023/04/14/economy/march-retail-sales/index.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "3aaa1188",
+          "titulo": "Ken Rogoff: El fin del dominio del dólar: deuda, geopolítica y vigilancia - Financial Sense",
+          "bloque": "USA",
+          "proximidad": 70.0,
+          "sesgo": "Analiza el futuro del dólar en el contexto de la deuda global y la geopolítica.",
+          "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNMkNXZXd1bS0wNEFYS2s3YzNTd0dIQkgxTHNVa1U4MnBXOGdJZHA4dEFfaHo2THBqbXkyOFhRV3d5a1paXzFKVk1FU3ludFU4dFFkQlpFX0d1ZmZadnd1NDFBZHhyakRQODN5MEljeGo5cFN6MnF3WjlyYWNtd1FSMm03Mnl1cGtSdmRUb0ViTzl2WUZUUU9EdXBDQ0g4ZHBVOEliRA?oc=5",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "7b867519",
+          "titulo": "La economía de Rusia en 2026: Más guerra, crecimiento más lento e impuestos más altos",
+          "bloque": "RUSSIA",
+          "proximidad": 80.0,
+          "sesgo": "Predice una desaceleración económica y un aumento de la presión fiscal en Rusia.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "71bf36fc",
+          "titulo": "El sector biofarmacéutico de China 'en una posición privilegiada para desafiar el liderazgo de EE. UU.'",
+          "bloque": "CHINA",
+          "proximidad": 70.0,
+          "sesgo": "Optimista sobre el avance de la industria biofarmacéutica china.",
+          "link": "https://www.scmp.com/news/china/science/article/3338481/chinas-biopharma-sector-prime-position-challenge-us-leadership?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "31a430ae",
+          "titulo": "¿Hacia una nueva moneda? Con Eichengreen, Kazāks, Knot, Lalucq, Rey y Tolosa",
+          "bloque": "EUROPE",
+          "proximidad": 60.0,
+          "sesgo": "Explora la posibilidad de una nueva moneda y el futuro del dólar.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/hacia-una-nueva-moneda-con-eichengreen-kazaks-knot-lalucq-rey-y-tolosa/",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "34bde7bd",
+          "titulo": "La prohibición de las ONG en Gaza 'tendrá un efecto profundo' en la población del territorio",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Enfatiza el impacto negativo de la prohibición de ONGs.",
+          "link": "https://www.france24.com/en/video/20260102-the-ban-of-ngos-from-gaza-will-have-a-profound-effect-on-the-territory-s-population",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "901a6f6a",
+          "titulo": "Irán enfrenta crecientes protestas en medio de una profunda crisis económica",
+          "bloque": "MID_EAST",
+          "proximidad": 70.0,
+          "sesgo": "Enfatiza la crisis económica y el descontento popular en Irán.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/iran-faces-growing-protests-amid-deepening-economic-crisis?traffic_source=rss",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "fe16a149",
+          "titulo": "El sector de la aviación alza el vuelo en A.P. con el aeropuerto de Bhogapuram listo para la prueba de validación de vuelo el 4 de enero",
+          "bloque": "INDIA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre el desarrollo de infraestructura aeroportuaria en Andhra Pradesh.",
+          "link": "https://www.thehindu.com/news/national/andhra-pradesh/aviation-sector-to-take-wings-in-ap-as-bhogapuram-airport-all-set-for-flight-validation-test-on-january-4/article70462753.ece",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "4d05c829",
+          "titulo": "Los desastres naturales están causando un gran daño en Himachal, dice un informe; los expertos piden cambios en las políticas",
+          "bloque": "INDIA",
+          "proximidad": 80.0,
+          "sesgo": "Enfatiza el impacto económico y humano de los desastres naturales en Himachal Pradesh.",
+          "link": "https://www.thehindu.com/news/national/himachal-pradesh/natural-disasters-taking-heavy-toll-on-himachal-says-report-experts-seek-policy-changes/article70464082.ece",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "1af0733b",
+          "titulo": "El gobierno del BJP de Haryana extiende el Lado Lakshmi Yojana a más mujeres con condiciones, la oposición protesta",
+          "bloque": "INDIA",
+          "proximidad": 75.0,
+          "sesgo": "Informa sobre la extensión de un programa de ayuda financiera con críticas de la oposición.",
+          "link": "https://www.thehindu.com/news/national/haryana/haryana-bjp-government-extends-lado-lakshmi-yojana-to-more-women-with-riders-opposition-cries-foul/article70464536.ece",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "0a1c1f0e",
+          "titulo": "Contaminación del agua en Indore: 200 siguen hospitalizados, 32 en la UCI; destituido el comisionado municipal",
+          "bloque": "INDIA",
+          "proximidad": 90.0,
+          "sesgo": "Informa sobre una crisis de salud pública debido a la contaminación del agua.",
+          "link": "https://timesofindia.indiatimes.com/india/indore-water-contamination-200-still-hospitalised-32-in-icus-municipal-commissioner-removed/articleshow/126313190.cms",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "0e69af7b",
+          "titulo": "Africa Energy Indaba 2026 atrae a los ministros de energía de África para dar forma a la política y desbloquear oportunidades de inversión multimillonarias",
+          "bloque": "AFRICA",
+          "proximidad": 85.0,
+          "sesgo": "Promocional del evento, destacando oportunidades de inversión.",
+          "link": "https://africa.com/africa-energy-indaba-2026-attracts-africas-energy-ministers-to-shape-policy-and-unlock-multi-billion-dollar-investment-opportunities/",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "b4585a74",
+          "titulo": "Desbloquear la confianza, la transparencia y el comercio en África: habilitar la AfCFTA y avanzar en la Agenda 2063",
+          "bloque": "AFRICA",
+          "proximidad": 75.0,
+          "sesgo": "Promociona la iniciativa MANSA y su papel en el comercio africano.",
+          "link": "https://africa.com/unlocking-trust-transparency-and-trade-across-africa-enabling-the-afcfta-and-advancing-agenda-2063/",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "075c089a",
+          "titulo": "Nueve eventos que definieron los viajes de negocios en 2025",
+          "bloque": "AFRICA",
+          "proximidad": 65.0,
+          "sesgo": "Análisis de los desafíos y cambios en los viajes de negocios en Sudáfrica.",
+          "link": "https://africa.com/nine-events-that-defined-business-travel-in-2025/",
+          "color_bloque": "#22c55e"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Análisis de tendencias sociales, derechos humanos y eventos significativos.",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "a8f3581c",
+          "titulo": "Testigos relatan el incendio que mató a 40 personas en Suiza",
+          "bloque": "USA",
+          "proximidad": 75.0,
+          "sesgo": "Se centra en el testimonio de los testigos.",
+          "link": "https://www.nytimes.com/2026/01/01/world/europe/switzerland-fire-scene.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "b153b591",
+          "titulo": "Las autoridades suizas dicen que las bengalas probablemente causaron el incendio de Año Nuevo",
+          "bloque": "USA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la causa probable del incendio.",
+          "link": "https://www.nytimes.com/live/2026/01/02/world/switzerland-ski-resort-fire",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "a0957984",
+          "titulo": "Un incendio en un bar suizo fue provocado por bengalas en botellas de champán, dicen los funcionarios",
+          "bloque": "USA",
+          "proximidad": 85.0,
+          "sesgo": "Detalla la causa del incendio según los funcionarios.",
+          "link": "https://www.washingtonpost.com/world/2026/01/02/switzerland-fire-crans-montana-valais/",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "2286ee90",
+          "titulo": "El creciente partido de izquierda desafía la política habitual en Alemania",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Destaca el auge de un partido de izquierda.",
+          "link": "https://www.washingtonpost.com/world/2026/01/02/germany-left-party-politics-extremism/",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "9be0fcfe",
+          "titulo": "El colapso de Silicon Valley Bank renueva los llamados a abordar las disparidades que impactan a los emprendedores de color",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Enfatiza el impacto del colapso bancario en emprendedores minoritarios.",
+          "link": "https://www.cnn.com/2023/04/13/business/silicon-valley-bank-entrepreneurs-of-color-reaj/index.html",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "4f50c30a",
+          "titulo": "Para la diáspora rusa en tiempos de guerra, las tradiciones de Año Nuevo se convierten en un vínculo con el hogar",
+          "bloque": "RUSSIA",
+          "proximidad": 70.0,
+          "sesgo": "Destaca la importancia de las tradiciones para los rusos que viven en el extranjero.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/for-russias-wartime-diaspora-new-years-traditions-become-a-tether-to-home-a91600",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "id": "594cd9ae",
+          "titulo": "El propietario del bar suizo donde un incendio de Año Nuevo mató a 40 personas insiste en que se siguieron las normas de seguridad",
+          "bloque": "CHINA",
+          "proximidad": 85.0,
+          "sesgo": "Reporte directo de las declaraciones del propietario del bar.",
+          "link": "https://www.scmp.com/news/world/europe/article/3338584/owner-swiss-bar-where-new-year-fire-killed-40-insists-safety-norms-were-followed?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "17f1a4e5",
+          "titulo": "El conductor de Anthony Joshua acusado de conducción peligrosa tras un accidente mortal en Nigeria",
+          "bloque": "EUROPE",
+          "proximidad": 90.0,
+          "sesgo": "Informa sobre los cargos presentados contra el conductor.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/anthony-joshuas-driver-charged-with-dangerous-driving-after-fatal-crash-in-nigeria",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "9145a3a0",
+          "titulo": "Se cree que la pira funeraria en África es la más antigua del mundo que contiene restos de adultos",
+          "bloque": "EUROPE",
+          "proximidad": 92.0,
+          "sesgo": "Reporte de un descubrimiento arqueológico significativo.",
+          "link": "https://www.theguardian.com/science/2026/jan/01/cremation-pyre-in-africa-thought-to-be-worlds-oldest-containing-adult-remains",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "05bdf3fc",
+          "titulo": "Tras difundir contenido negacionista y antisemita, la IA de Musk, Grok, ha publicado imágenes de pornografía infantil",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Critica la IA de Musk por generar contenido inapropiado.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/tras-difundir-contenido-negacionista-y-antisemita-la-ia-de-musk-grok-ha-publicado-imagenes-de-pornografia-infantil/",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "4c7aad8e",
+          "titulo": "Trump amenaza a Irán por la represión de las protestas mientras estallan disturbios mortales",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre la postura de Trump ante la situación en Irán.",
+          "link": "https://www.france24.com/en/video/20260102-trump-threatens-iran-over-protest-crackdown-as-deadly-unrest-flares",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "226235b2",
+          "titulo": "Venezuela libera a 88 personas detenidas en los disturbios postelectorales de 2024",
+          "bloque": "LATAM",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la liberación de prisioneros y las controversias asociadas.",
+          "link": "https://en.mercopress.com/2026/01/02/venezuela-releases-88-people-detained-in-post-2024-elections-riots?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "b46d3fcb",
+          "titulo": "El primer alcalde musulmán de Nueva York jura el cargo",
+          "bloque": "LATAM",
+          "proximidad": 90.0,
+          "sesgo": "Destaca la importancia histórica del nombramiento.",
+          "link": "https://en.mercopress.com/2026/01/02/new-york-s-first-ever-muslim-mayor-sworn-in?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "b3e6f7b8",
+          "titulo": "Editorial: EU: luces en la noche trumpista",
+          "bloque": "LATAM",
+          "proximidad": 55.0,
+          "sesgo": "Crítico con la administración Trump.",
+          "link": "https://www.jornada.com.mx/2026/01/02/opinion/002a1edi?partner=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "04d01b8f",
+          "titulo": "Simón Vargas*: Reflexiones sobre 2025: un llamado a la participación",
+          "bloque": "LATAM",
+          "proximidad": 60.0,
+          "sesgo": "Llamado a la participación ciudadana ante la situación política.",
+          "link": "https://www.jornada.com.mx/2026/01/02/politica/010a2pol?partner=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "45f8fbc1",
+          "titulo": "Carga burocrática, clave en el deterioro de la profesión docente",
+          "bloque": "LATAM",
+          "proximidad": 70.0,
+          "sesgo": "Critica la carga administrativa que afecta a los docentes.",
+          "link": "https://www.jornada.com.mx/2026/01/02/politica/008n1pol?partner=rss",
+          "color_bloque": "#d946ef"
+        },
+        {
+          "id": "51f444e8",
+          "titulo": "Comienza en A.P. la distribución de libros de pases de pattadar con el emblema estatal",
+          "bloque": "INDIA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la distribución de documentos de propiedad a agricultores.",
+          "link": "https://www.thehindu.com/news/national/andhra-pradesh/distribution-of-pattadar-passbooks-with-state-emblem-begins-in-ap/article70464975.ece",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "7ebbf78c",
+          "titulo": "El gobierno ordena a X que elimine todo el contenido obsceno e ilegal; la aplicación de IA Grok en el punto de mira",
+          "bloque": "INDIA",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la directiva del gobierno a una plataforma de redes sociales para eliminar contenido ilegal.",
+          "link": "https://timesofindia.indiatimes.com/india/govt-directs-x-to-remove-all-obscene-unlawful-content/articleshow/126312921.cms",
+          "color_bloque": "#8b5cf6"
+        },
+        {
+          "id": "06abc18a",
+          "titulo": "Seed Academy Ghana celebró el Día Mundial del Baloncesto con una cumbre de liderazgo para jóvenes atletas en Kumasi",
+          "bloque": "AFRICA",
+          "proximidad": 90.0,
+          "sesgo": "Informativo sobre el evento y su enfoque en el liderazgo femenino.",
+          "link": "https://africa.com/seed-academy-ghana-celebrated-world-basketball-day-with-a-leadership-summit-for-young-women-athletes-in-kumasi/",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "e571fb49",
+          "titulo": "Tourvest conmemoró el Día Mundial de la Conservación de la Vida Silvestre con un compromiso reforzado con la biodiversidad, el turismo sostenible y las asociaciones comunitarias",
+          "bloque": "AFRICA",
+          "proximidad": 80.0,
+          "sesgo": "Promocional de las iniciativas de sostenibilidad de Tourvest.",
+          "link": "https://africa.com/tourvest-marked-world-wildlife-conservation-day-with-a-strengthened-commitment-to-biodiversity-sustainable-tourism-and-community-partnerships/",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "4a0618e8",
+          "titulo": "El conductor de Anthony Joshua acusado por un accidente en Nigeria que mató a dos personas",
+          "bloque": "AFRICA",
+          "proximidad": 95.0,
+          "sesgo": "Informa sobre un caso legal relacionado con un accidente automovilístico.",
+          "link": "https://www.bbc.com/news/articles/c5y2jrdnnqyo?at_medium=RSS&at_campaign=rss",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "5535e73e",
+          "titulo": "Marineros rescatados de caer por el borde de una enorme presa en Sudáfrica",
+          "bloque": "AFRICA",
+          "proximidad": 95.0,
+          "sesgo": "Reporte directo de un incidente de rescate.",
+          "link": "https://www.bbc.com/news/videos/cj6wew4958eo?at_medium=RSS&at_campaign=rss",
+          "color_bloque": "#22c55e"
+        },
+        {
+          "id": "eee32615",
+          "titulo": "'Eres invisible, no existes': la vida sin certificado de nacimiento",
+          "bloque": "AFRICA",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza la difícil situación de las personas sin certificado de nacimiento en Sudáfrica.",
+          "link": "https://www.bbc.com/news/articles/cx2drqwp2eyo?at_medium=RSS&at_campaign=rss",
+          "color_bloque": "#22c55e"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "Análisis de las relaciones internacionales, el multilateralismo y las estrategias de política exterior.",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "id": "0237fbef",
+          "titulo": "¿Cómo puede sobrevivir el multilateralismo?",
+          "bloque": "USA",
+          "proximidad": 70.0,
+          "sesgo": "Examina el declive de las instituciones globales y el auge de la cooperación regional.",
+          "link": "https://www.foreignaffairs.com/south-america/how-multilateralism-can-survive",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "78b62f94",
+          "titulo": "El caso de un gran acuerdo entre Estados Unidos y China",
+          "bloque": "USA",
+          "proximidad": 60.0,
+          "sesgo": "Propone un reinicio de las relaciones entre EE.UU. y China.",
+          "link": "https://www.foreignaffairs.com/united-states/case-grand-bargain-between-america-and-china",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "f356e746",
+          "titulo": "Un camino intermedio para la política exterior estadounidense",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Aboga por una política exterior equilibrada entre el exceso de alcance y el repliegue.",
+          "link": "https://www.foreignaffairs.com/united-states/middle-way-american-foreign-policy",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "77861916",
+          "titulo": "Zelensky propone nombrar al Primer Ministro Adjunto Fedorov como nuevo ministro de defensa de Ucrania",
+          "bloque": "CHINA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre los cambios propuestos en el gabinete ucraniano.",
+          "link": "https://www.scmp.com/news/world/europe/article/3338585/zelensky-proposes-appointing-first-deputy-pm-fedorov-ukraines-new-defence-minister?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "82bd2742",
+          "titulo": "El Ministerio de Relaciones Exteriores de Israel y el Congreso Judío Mundial critican a Mamdani en su primer día en el cargo",
+          "bloque": "MID_EAST",
+          "proximidad": 70.0,
+          "sesgo": "Critica las acciones del nuevo alcalde de Nueva York relacionadas con Israel.",
+          "link": "https://www.middleeasteye.net/live-blog/live-blog-update/israels-foreign-ministry-and-world-jewish-congress-criticise-mamdani-his",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "34996c11",
+          "titulo": "Elecciones cívicas: alto drama cuando los trabajadores del BJP encierran al candidato dentro de su casa en Nagpur",
+          "bloque": "INDIA",
+          "proximidad": 60.0,
+          "sesgo": "Destaca incidentes de disensión y controversia en el contexto de elecciones cívicas.",
+          "link": "https://www.thehindu.com/news/national/maharashtra/civic-polls-high-drama-as-bjp-workers-lock-candidate-inside-his-house-in-nagpur/article70465636.ece",
+          "color_bloque": "#8b5cf6"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "Análisis de la capacidad de producción de recursos estratégicos y su importancia geopolítica.",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "id": "d2e0af13",
+          "titulo": "EE.UU. debe aumentar la capacidad de titanio para evitar la presión, dice el fundador de Project Blue - Mining.com",
+          "bloque": "USA",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza la necesidad de aumentar la producción de titanio en EE.UU.",
+          "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNR29lcUdFTTh0NU9KWU90eHdCZUpCNXlBUTZ5blVoZER3c3hhRDRDMFVnbnlLT1M3RF9qZHZ1UENVWjVldmZ6Q0IwMV9YQWhtUGJteEtrbW51bEljNEQ5aHpLV1V2TFNRYlZOSGVSQmd5Q0c4QzgzMjFUTS1ibTMwTVBnZmJTVmtGa0s0WDlyNGhiN29aN0hzNkd0Z2duNkxBbGc?oc=5",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "a6003db1",
+          "titulo": "¿Por qué un acuerdo de paz en Ucrania sigue siendo difícil de alcanzar a pesar de la presión de Estados Unidos?",
+          "bloque": "USA",
+          "proximidad": 65.0,
+          "sesgo": "Análisis sobre las dificultades para alcanzar un acuerdo de paz en Ucrania.",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYXoyeWM1ZVk2YUxTQmtRR1hmd3lIZ2VPdm1QbUMtOE13Tl85NE9wMW9zSnpPc05abGhHd3FSRVJPd2ltZFY0MGFjallhTmlwanpiM0RJVGxxbzZ6RUxNN0tjOHBvMlZzcW9NN2s4VllSZTByenFoSTZhQjE5ZHNrdkpUYkxZVjZWNU5jYXdJd2hLX3JBZFI0dHhvdXB0aE1nQWVGNjFHWDdkRnVha2fSAa4BQVVfeXFMT2F6MnljNWVZNmFMU0JrUUdYZnd5SGdlT3ZtUG1DLThNd05fOTRPcDFvc0p6T3NOWmxoR3dxUkVST3dpbWRWNDBhY2pZYU5pcGp6YjNESVRscW82ekVMTTdLYzhwbzJWc3FvTTdrOFZZUmUwcnpxaEk2YUIxOWRza3ZKVGJMWVY2VjVOY2F3SXdoS19yQWRSNHR4b3VwdGhNZ0FlRjYxR1g3ZEZ1YWtn?oc=5",
+          "color_bloque": "#3b82f6"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "Análisis de la legislación relacionada con la energía nuclear y la fusión.",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "id": "00503c10",
+          "titulo": "Energía nuclear ahora – Legislación presentada para establecer la Oficina de Fusión - The National Interest",
+          "bloque": "USA",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre la propuesta de crear una oficina para la energía de fusión.",
+          "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxObWNjVF9RX2xTX3lnMzJZVElmTWl1Rm5OVUtGQXkyVFdNQmJPQWtCOGJaTk9IYWpmVGRVYXVJRDF1RWhQTXcyMkZ0VkZ5OUZ0MU9MZV9NbXJSQnVhM05UZjMtRDBwcFFXVU1YcDNBU0NtZFRSanI0TjJHYVFreEdURTNEYThoTWQ1NUZ2ZDlONzZXZUhydmpIa001WGtXQVBsME9wQVZyOWJlMXFibGR0VFhFYmdLa1hTN2VmeGQzUQ?oc=5",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "id": "77861916",
+          "titulo": "Zelensky propone nombrar al Primer Ministro Adjunto Fedorov como nuevo ministro de defensa de Ucrania",
+          "bloque": "CHINA",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre los cambios propuestos en el gabinete ucraniano.",
+          "link": "https://www.scmp.com/news/world/europe/article/3338585/zelensky-proposes-appointing-first-deputy-pm-fedorov-ukraines-new-defence-minister?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "ea8d2dc2",
+          "titulo": "Polémica sobre Mustafizur en la IPL: Kaif aboga por la paciencia; dice que la decisión recae en el BCCI",
+          "bloque": "INDIA",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre la controversia en torno a la participación de un jugador de cricket en la IPL.",
+          "link": "https://timesofindia.indiatimes.com/sports/cricket/news/mohammad-kaif-urges-everyone-to-play-the-waiting-game-over-bangladeshs-mustafizur-rahman-involvement-in-ipl/articleshow/126311282.cms",
+          "color_bloque": "#8b5cf6"
+        }
+      ]
+    },
+    {
+      "area": "Ayuda Humanitaria",
+      "punto_cero": "Análisis de la ayuda humanitaria y su impacto global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "7b3025f0",
+          "titulo": "Expertos dicen que los términos de EE. UU. 'adaptarse, reducirse o morir' para un fondo de ayuda de $ 2 mil millones significarán que la ONU se inclinará ante Washington",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Crítico con las condiciones impuestas por EE. UU. a la ayuda humanitaria.",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
+          "color_bloque": "#fde047"
+        }
+      ]
+    },
+    {
+      "area": "Turismo",
+      "punto_cero": "Análisis de las tendencias turísticas y su impacto global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "9044fdf1",
+          "titulo": "El aumento de los viajes señala un 'fuerte comienzo' para el turismo",
+          "bloque": "CHINA",
+          "proximidad": 78.0,
+          "sesgo": "Optimista sobre la recuperación del sector turístico.",
+          "link": "http://www.ecns.cn/travel/2026-01-02/detail-iheymvap1611538.shtml",
+          "color_bloque": "#f97316"
+        }
+      ]
+    },
+    {
+      "area": "Política",
+      "punto_cero": "Análisis de eventos políticos y su impacto global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "06792aa2",
+          "titulo": "Felicitaciones extendidas al presidente suizo",
+          "bloque": "CHINA",
+          "proximidad": 82.0,
+          "sesgo": "Informa sobre las felicitaciones de China al presidente suizo.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611517.shtml",
+          "color_bloque": "#f97316"
+        },
+        {
+          "id": "31ceb7e2",
+          "titulo": "Defensores de Palestina elogian a Mamdani de Nueva York por revocar decretos pro-Israel",
+          "bloque": "MID_EAST",
+          "proximidad": 70.0,
+          "sesgo": "Enfatiza la revocación de políticas pro-Israel por parte del alcalde de Nueva York.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/palestine-advocates-praise-nycs-mamdani-for-revoking-pro-israel-decrees?traffic_source=rss",
+          "color_bloque": "#10b981"
+        }
+      ]
+    },
+    {
+      "area": "Desastres Naturales",
+      "punto_cero": "Análisis de desastres naturales y su impacto global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "33e86157",
+          "titulo": "1 muerto, 12 heridos cuando un terremoto de magnitud 6,5 sacude la Ciudad de México y el centro turístico de playa",
+          "bloque": "CHINA",
+          "proximidad": 88.0,
+          "sesgo": "Reporte directo de los daños causados por el terremoto.",
+          "link": "https://www.scmp.com/news/world/americas/article/3338583/1-dead-12-injured-65-magnitude-quake-shakes-mexico-city-and-beach-resort?utm_source=rss_feed",
+          "color_bloque": "#f97316"
+        }
+      ]
+    },
+    {
+      "area": "Otros",
+      "punto_cero": "Noticias generales y boletines informativos.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "48bffa9a",
+          "titulo": "19 libros que hay que leer en enero de 2026",
+          "bloque": "EUROPE",
+          "proximidad": 50.0,
+          "sesgo": "Recomendaciones de libros.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/19-libros-que-hay-que-leer-en-enero-de-2026/",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "db99035e",
+          "titulo": "¿De qué hablaron los líderes europeos en sus discursos de Año Nuevo de 2026? [Mapa y gráficos exclusivos]",
+          "bloque": "EUROPE",
+          "proximidad": 70.0,
+          "sesgo": "Resumen de los discursos de Año Nuevo de los líderes europeos.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/de-que-hablaron-los-lideres-europeos-en-sus-discursos-de-ano-nuevo-de-2026-mapa-y-graficos-exclusivos/",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "ec670f27",
+          "titulo": "La policía de Nigeria acusa al conductor del accidente automovilístico fatal de Anthony Joshua de conducción peligrosa",
+          "bloque": "EUROPE",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre cargos contra el conductor en un accidente relacionado con Anthony Joshua.",
+          "link": "http://www.euronews.com/2026/01/02/nigeria-police-charge-driver-in-fatal-anthony-joshua-car-crash-with-dangerous-driving",
+          "color_bloque": "#fde047"
+        },
+        {
+          "id": "982f3deb",
+          "titulo": "Boletín de noticias | 2 de enero de 2026 – Noche",
+          "bloque": "EUROPE",
+          "proximidad": 90.0,
+          "sesgo": "Boletín informativo general.",
+          "link": "http://www.euronews.com/video/2026/01/02/latest-news-bulletin-january-2nd-2026-evening",
+          "color_bloque": "#fde047"
+        }
+      ]
+    },
+    {
+      "area": "Salud",
+      "punto_cero": "Análisis de temas de salud pública, incluyendo brotes de enfermedades y políticas de vacunación.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "8208e383",
+          "titulo": "El brote de sarampión en Carolina del Sur aumenta a 185 casos en medio de preocupaciones por la vacunación",
+          "bloque": "MID_EAST",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre el aumento de casos de sarampión y la falta de vacunación.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/south-carolina-measles-outbreak-grows-to-185-cases-amid-vaccination-worries?traffic_source=rss",
+          "color_bloque": "#10b981"
+        }
+      ]
+    },
+    {
+      "area": "Deportes",
+      "punto_cero": "Análisis de eventos deportivos y sus implicaciones.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "62a1d3ff",
+          "titulo": "Liensberger se perderá los Juegos Olímpicos tras el último accidente grave de esquí",
+          "bloque": "MID_EAST",
+          "proximidad": 90.0,
+          "sesgo": "Informa sobre la lesión de una atleta y su ausencia en los Juegos Olímpicos.",
+          "link": "https://www.aljazeera.com/sports/2026/1/2/liensberger-to-miss-olympics-after-latest-serious-skiing-accident?traffic_source=rss",
+          "color_bloque": "#10b981"
+        },
+        {
+          "id": "8fdfd6ca",
+          "titulo": "Goles de Salah y el regreso de Hakimi: seis cosas de la fase de grupos de la Afcon 2025",
+          "bloque": "AFRICA",
+          "proximidad": 80.0,
+          "sesgo": "Se centra en los jugadores estrella y los resultados de los equipos favoritos en la Afcon 2025.",
+          "link": "https://www.bbc.com/sport/football/articles/cd7z3zp94g1o?at_medium=RSS&at_campaign=rss",
+          "color_bloque": "#22c55e"
+        }
+      ]
+    }
+  ]
+}

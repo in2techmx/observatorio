@@ -1,0 +1,332 @@
+{
+  "analisis": {
+    "tension_global": "La tensión global parece haber aumentado ligeramente en comparación con el día anterior. Se observan conflictos activos en Ucrania y Yemen, junto con la persistente inestabilidad en Irán y la intervención de EE.UU. como un factor influyente. Además, hay indicios de tensiones económicas y geopolíticas crecientes, como la competencia entre EE.UU. y China y las preocupaciones sobre el dominio del dólar.",
+    "proximidad_factual": "La proximidad factual muestra una mezcla de hechos concretos (como los detalles de los conflictos, los datos económicos y los eventos específicos) y elementos emocionales (como las preocupaciones sobre la seguridad, las críticas a las políticas y las reacciones a los eventos). La presencia de ambos tipos de contenido sugiere una cobertura equilibrada, aunque la interpretación de los eventos puede estar influenciada por la perspectiva de cada fuente."
+  },
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/trump-iran-protests.html",
+          "title": "Trump dice que EE.UU. intervendrá si Irán mata manifestantes.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/yemen-separatists-government.html",
+          "title": "Yemen envía a su ejército para expulsar a la facción separatista.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.nytimes.com/2026/01/02/world/europe/zelensky-budanov-ukraine-chief-of-staff-yermak.html",
+          "title": "Zelensky de Ucrania nombra a Kyrylo Budanov como nuevo jefe de gabinete.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.nytimes.com/2026/01/01/world/europe/ukraine-russia-new-years-day-donetsk.html",
+          "title": "Otro Año Nuevo en Guerra: Las tropas de Ucrania dudan que sea el último.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://tass.com/politics/1968317",
+          "title": "Rusia tomará todas las medidas para resolver los crímenes relacionados con los ataques a aeródromos — Kremlin.",
+          "block": "RUSSIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611552.shtml",
+          "title": "El EPL concluye los ejercicios militares alrededor de Taiwán.",
+          "block": "CHINA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNMkNXZXd1bS0wNEFYS2s3YzNTd0dIQkgxTHNVa1U4MnBXOGdJZHA4dEFfaHo2THBqbXkyOFhRV3d5a1paXzFKVk1FU3ludFU4dFFkQlpFX0d1ZmZadnd1NDFBZHhyakRQODN5MEljeGo5cFN6MnF3WjlyYWNtd1FSMm03Mnl1cGtSdmRUb0ViTzl2WUZUUU9EdXBDQ0g4ZHBVOEliRA?oc=5",
+          "title": "Ken Rogoff: El fin del dominio del dólar: deuda, geopolítica y vigilancia - Financial Sense.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOVHJjMEFxdEl1bFNrWnhDRy1RNE5kQjRPTnZjRi12N3JaVDNqRzFkdHpJYWpVdkZITHhzb0laY25YakRQdXc5RGVHazZoWGNTNWl3cS0xZmE1WlpKRVhyYUtIU0owVmpiRWd0em9UT1YtMWtORVZfSTJKTGpnSXRtbVBnN2phRlNydVdrWlQ1V05qNFAtR2V5WURYVHJuR3dBdzFON3FmWHRyV1ZE?oc=5",
+          "title": "Futuros del petróleo: El crudo baja ligeramente en medio de las sanciones contra el enfrentamiento por el excedente - Quantum Commodity Intelligence.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPNUpSYTFxOHFXSkthb3Itc0UtbHZ2VEVOS0t3RXdfRkRtSjQxM2FnY016LTU4QWNkaVdLdGxTeUJjWHY3ZTZ4YWluTEZsNXpYMEJEY3RIU29CWEpZaE9NUGVXSEN0R0xxUTI4eHdaUE1aZHdDd2VGSTVZWWdpMGFoeWVMZEdGTzc1d1R1TDJYTjRpMmx0dGc3ZE5rc21GYkRLeHJETDZfeWpBUV94WlJiSmNUdw?oc=5",
+          "title": "Perspectivas de inversión global: Navegando por un panorama complejo - Pensions Expert.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://tass.com/economy/1968311",
+          "title": "Francia y Bélgica se oponen a la prohibición de las importaciones de gas de Rusia a la UE — Politico.",
+          "block": "RUSSIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://legrandcontinent.eu/es/2025/12/31/trump-y-el-problema-del-ano-ii-el-texto-integro-del-plan-de-curtis-yarvin/",
+          "title": "Trump y el problema del año II: el texto íntegro del plan de Curtis Yarvin.",
+          "block": "EUROPE",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.jornada.com.mx/2026/01/02/economia/015n3eco?partner=rss",
+          "title": "BYD vendió 2.26 millones de autos eléctricos.",
+          "block": "LATAM",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "link": "https://www.nytimes.com/2026/01/02/world/europe/ukraine-peace-plan-zaporizhzhia-nuclear-plant.html",
+          "title": "¿Por qué una planta nuclear es un gran punto de fricción en el plan de paz de Ucrania?",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYXoyeWM1ZVk2YUxTQmtRR1hmd3lIZ2VPdm1QbUMtOE13Tl85NE9wMW9zSnpPc05abGhHd3FSRVJPd2ltZFY0MGFjallhTmlwanpiM0RJVGxxbzZ6RUxNN0tjOHBvMlZzcW9NN2s4VllSZTByenFoSTZhQjE5ZHNrdkpUYkxZVjZWNU5jYXdJd2hLX3JBZFI0dHhvdXB0aE1nQWVGNjFHWDdkRnVha2fSAa4BQVVfeXFMT2F6MnljNWVZNmFMU0JrUUdYZnd5SGdlT3ZtUG1DLThNd05fOTRPcDFvc0p6T3NOWmxoR3dxUkVST3dpbWRWNDBhY2pZYU5pcGp6YjNESVRscW82ekVMTTdLYzhwbzJWc3FvTTdrOFZZUmUwcnpxaEk2YUIxOWRza3ZKVGJMWVY2VjVOY2F3SXdoS19yQWRSNHR4b3VwdGhNZ0FlRjYxR1g3ZEZ1YWtn?oc=5",
+          "title": "¿Por qué un acuerdo de paz en Ucrania sigue siendo esquivo a pesar de la presión de EE. UU.? - Precios del petróleo crudo hoy | OilPrice.com.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://tass.com/economy/1968299",
+          "title": "La reposición de las reservas de gas de Europa es más lenta de lo habitual, la situación se vuelve tensa.",
+          "block": "RUSSIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "http://www.ecns.cn/news/sci-tech/2026-01-02/detail-iheymvap1611509.shtml",
+          "title": "El experimento del 'sol artificial' de China encuentra la manera de romper el límite de densidad del plasma de fusión.",
+          "block": "CHINA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.thehindu.com/news/national/himachal-pradesh/natural-disasters-taking-heavy-toll-on-himachal-says-report-experts-seek-policy-changes/article70464082.ece",
+          "title": "Los desastres naturales están afectando gravemente a Himachal, dice un informe; los expertos buscan cambios en las políticas.",
+          "block": "INDIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.aljazeera.com/news/2026/1/2/countries-demand-israel-lift-gaza-aid-restrictions-as-palestinians-suffer?traffic_source=rss",
+          "title": "Los países exigen que Israel levante las restricciones a la ayuda a Gaza mientras los palestinos sufren.",
+          "block": "MID_EAST",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "link": "https://www.foreignaffairs.com/south-america/how-multilateralism-can-survive",
+          "title": "Cómo puede sobrevivir el multilateralismo.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.foreignaffairs.com/united-states/case-grand-bargain-between-america-and-china",
+          "title": "El caso de un gran acuerdo entre Estados Unidos y China.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.foreignaffairs.com/united-states/middle-way-american-foreign-policy",
+          "title": "Un camino intermedio para la política exterior estadounidense.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://tass.com/world/1968325",
+          "title": "El ministerio de defensa de Bielorrusia espera fortalecer significativamente la cooperación con Pakistán.",
+          "block": "RUSSIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://tass.com/world/1968319",
+          "title": "El primer ministro paquistaní pide a Putin que ayude a resolver el conflicto con India — ayudante.",
+          "block": "RUSSIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611514.shtml",
+          "title": "El continente promete una integración más profunda a través del Estrecho en el mensaje de 2026.",
+          "block": "CHINA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "link": "https://www.nytimes.com/2026/01/02/world/asia/china-ai-cancer-pancreatic.html",
+          "title": "En China, la IA encuentra cáncer de páncreas que los médicos podrían pasar por alto.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.foreignaffairs.com/united-states/how-deepfakes-could-lead-doomsday",
+          "title": "Cómo los deepfakes podrían conducir al fin del mundo.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.foreignaffairs.com/united-states/how-secure-sky",
+          "title": "Cómo asegurar el cielo.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "http://www.ecns.cn/news/sci-tech/2026-01-02/detail-iheymvap1611509.shtml",
+          "title": "El experimento del 'sol artificial' de China encuentra la manera de romper el límite de densidad del plasma de fusión.",
+          "block": "CHINA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://legrandcontinent.eu/es/2026/01/02/tras-difundir-contenido-negacionista-y-antisemita-la-ia-de-musk-grok-ha-publicado-imagenes-de-pornografia-infantil/",
+          "title": "Tras difundir contenido negacionista y antisemita, la IA de Musk, Grok, ha publicado imágenes de pornografía infantil.",
+          "block": "EUROPE",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.thehindu.com/news/national/telangana/indias-deep-dive-into-the-frozen-frontier/article70461345.ece",
+          "title": "La inmersión profunda de la India en la frontera helada.",
+          "block": "INDIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "link": "https://www.nytimes.com/2026/01/01/world/americas/venezuela-prisoner-release.html",
+          "title": "Venezuela libera a docenas de presos políticos.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.nytimes.com/2026/01/01/world/africa/guinea-election-mamady-doumbouya.html",
+          "title": "El líder del golpe de Guinea gana las elecciones después de prohibir a los principales oponentes.",
+          "block": "USA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "http://www.ecns.cn/news/society/2026-01-02/detail-iheymvap1611589.shtml",
+          "title": "El número de supervivientes registrados de la Masacre de Nanjing se reduce a 23.",
+          "block": "CHINA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://legrandcontinent.eu/es/2026/01/02/amenazan-las-manifestaciones-en-iran-al-regimen/",
+          "title": "¿Amenazan las manifestaciones en Irán al régimen?",
+          "block": "EUROPE",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.aljazeera.com/news/2026/1/2/south-carolina-measles-outbreak-grows-to-185-cases-amid-vaccination-worries?traffic_source=rss",
+          "title": "El brote de sarampión en Carolina del Sur aumenta a 185 casos en medio de preocupaciones sobre la vacunación.",
+          "block": "MID_EAST",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        },
+        {
+          "link": "https://www.thehindu.com/news/national/haryana/haryana-bjp-government-extends-lado-lakshmi-yojana-to-more-women-with-riders-opposition-cries-foul/article70464536.ece",
+          "title": "El gobierno de Haryana BJP extiende Lado Lakshmi Yojana a más mujeres con condiciones, la oposición se queja.",
+          "block": "INDIA",
+          "bloque": "",
+          "color_bloque": "#fff",
+          "proximidad": 0.0
+        }
+      ]
+    }
+  ]
+}

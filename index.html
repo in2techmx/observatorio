@@ -1,22 +1,332 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Global Gravity Observatory</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700;900&display=swap"
-        rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROXIMITY | Neural Tactical Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #050507; --cyan: #00fffb; --red: #ff004c; --green: #00ff9d;
+            --yellow: #ffcc00; --panel: #0a0a0f; --border: #1a1a2e;
+            --text: #e0e0e0; --card-bg: rgba(15, 15, 26, 0.9);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; 
+            overflow-x: hidden; min-height: 100vh;
+        }
+
+        /* --- HEADER & STATUS --- */
+        header {
+            background: linear-gradient(180deg, rgba(5,5,7,0.98) 0%, rgba(10,10,15,0.9) 100%);
+            border-bottom: 1px solid var(--border); padding: 15px 20px;
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
+        }
+
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; flex-wrap: wrap; gap: 15px; }
+        
+        .logo-section { display: flex; align-items: center; gap: 15px; }
+        .glitch-title { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900; color: var(--cyan); letter-spacing: 1px; }
+
+        .network-status-panel {
+            display: flex; gap: 12px; background: rgba(0, 255, 251, 0.03);
+            padding: 6px 12px; border-radius: 4px; border: 1px solid rgba(0, 255, 251, 0.15);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .status-node { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+        .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+
+        /* --- TACTICAL CONTROLS --- */
+        .tactical-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .control-btn {
+            background: var(--panel); border: 1px solid var(--border); color: var(--text);
+            padding: 8px 12px; font-family: 'Share Tech Mono', monospace; cursor: pointer;
+            border-radius: 4px; font-size: 0.75rem; transition: var(--transition);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .control-btn:hover, .control-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 255, 251, 0.05); }
+
+        /* --- CARDS & GRID --- */
+        .area-section { margin: 40px 0; padding: 0 20px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        
+        .cards-slider { 
+            display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 320px);
+            gap: 20px; overflow-x: auto; padding-bottom: 15px;
+        }
+        
+        .news-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 8px; transition: var(--transition); cursor: pointer; 
+            position: relative; overflow: hidden; height: 100%;
+        }
+        .news-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
+        
+        .card-tag { position: absolute; top: 10px; right: 10px; font-family: 'Share Tech Mono'; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; background: rgba(0,0,0,0.7); }
+        .card-content { padding: 20px; }
+        .card-title { font-weight: 600; line-height: 1.4; font-size: 0.9rem; margin-bottom: 15px; height: 50px; overflow: hidden; }
+        .keyword-pill { font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(0,255,251,0.2); margin-right: 4px; color: var(--cyan); }
+        
+        .card-footer { padding: 12px 20px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; }
+        .prox-bar { width: 60px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .prox-fill { height: 100%; transition: width 1s ease; }
+
+        /* --- NOTIFICATIONS STACK --- */
+        #notification-container { position: fixed; top: 80px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+        .notif { background: var(--cyan); color: #000; padding: 12px 20px; border-radius: 4px; font-family: 'Share Tech Mono'; font-weight: bold; animation: slideIn 0.3s ease forwards; }
+
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--panel); border: 1px solid var(--cyan); width: 100%; max-width: 600px; padding: 35px; border-radius: 12px; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 15px; color: var(--cyan); font-size: 2rem; cursor: pointer; border: none; background: none; }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+        @media (max-width: 600px) {
+            .cards-slider { grid-auto-columns: 85%; }
+            .header-content { justify-content: center; }
+        }
+    </style>
 </head>
-
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-</body>
 
+<header>
+    <div class="header-content" role="banner">
+        <div class="logo-section">
+            <h1 class="glitch-title">PROXIMITY HUB</h1>
+            <div class="network-status-panel" aria-live="polite">
+                <div class="status-node"><div class="pulse-dot" id="dot-status"></div> <span id="update-time">SYNC...</span></div>
+                <div class="status-node"><i class="fas fa-brain" aria-hidden="true"></i> <span id="cache-efficiency">--%</span></div>
+            </div>
+        </div>
+
+        <nav class="tactical-controls">
+            <button class="control-btn active" id="btn-netflix" onclick="app.switchView('netflix')" aria-label="Vista de Cuadrícula">GRID</button>
+            <button class="control-btn" id="btn-report" onclick="app.switchView('report')" aria-label="Vista de Análisis">ANALYTICS</button>
+            <button class="control-btn" onclick="app.toggleSort()" title="Cambiar Criterio de Orden">
+                <i class="fas fa-sort" aria-hidden="true"></i> <span id="sort-label">DESC</span>
+            </button>
+            <select class="control-btn" id="data-source" onchange="app.loadData()" aria-label="Seleccionar fuente de datos">
+                <option value="gravity_carousel.json">LIVE FEED</option>
+                <option value="executive_summary.json">SUMMARY</option>
+            </select>
+        </nav>
+    </div>
+</header>
+
+<div id="notification-container"></div>
+
+<main id="main-container" aria-live="polite">
+    </main>
+
+<script>
+    // 
+
+    const app = {
+        data: null,
+        view: 'netflix',
+        sort: 'proximity-desc',
+        particleMap: new Map(), // Para prevenir XSS
+        areaColors: {
+            "Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6",
+            "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b",
+            "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899",
+            "default": "#666666"
+        },
+
+        // --- CARGA DE DATOS ---
+        async loadData() {
+            const source = document.getElementById('data-source').value;
+            this.showSkeleton();
+            
+            try {
+                const [dataRes, summaryRes] = await Promise.allSettled([
+                    fetch(`${source}?t=${Date.now()}`),
+                    fetch(`executive_summary.json?t=${Date.now()}`)
+                ]);
+
+                if (dataRes.status === 'fulfilled' && dataRes.value.ok) {
+                    this.data = await dataRes.value.json();
+                    if (!this.data.carousel) throw new Error("Formato inválido");
+                    
+                    localStorage.setItem('prox_backup', JSON.stringify(this.data));
+                    document.getElementById('dot-status').style.backgroundColor = "var(--green)";
+                } else {
+                    throw new Error("Conexión perdida con el satélite");
+                }
+
+                if (summaryRes.status === 'fulfilled' && summaryRes.value.ok) {
+                    const s = await summaryRes.value.json();
+                    document.getElementById('cache-efficiency').textContent = `${Math.round(s.avg_cache_efficiency || 0)}%`;
+                }
+
+                this.render();
+                this.updateTime();
+            } catch (e) {
+                this.notify("ERROR: Enlace Neural Fallido", "red");
+                const backup = localStorage.getItem('prox_backup');
+                if (backup) {
+                    this.data = JSON.parse(backup);
+                    this.render();
+                } else {
+                    this.showError(e.message);
+                }
+            }
+        },
+
+        // --- RENDERERS ---
+        render() {
+            const container = document.getElementById('main-container');
+            this.particleMap.clear(); // Limpiar mapa para evitar fugas de memoria
+
+            if (this.view === 'netflix') {
+                container.innerHTML = this.data.carousel.map(area => {
+                    const color = this.areaColors[area.area] || this.areaColors.default;
+                    const particles = Array.isArray(area.particulas) ? area.particulas : [];
+                    
+                    // Ordenar
+                    const sorted = [...particles].sort((a, b) => {
+                        if (this.sort === 'proximity-desc') return b.proximidad - a.proximidad;
+                        if (this.sort === 'proximity-asc') return a.proximidad - b.proximidad;
+                        return (a.bloque || "").localeCompare(b.bloque || "");
+                    });
+
+                    return `
+                        <section class="area-section">
+                            <div class="section-header">
+                                <h2 class="section-title">
+                                    <i class="fas fa-caret-right" style="color:${color}"></i> ${area.area}
+                                </h2>
+                            </div>
+                            <div class="cards-slider">
+                                ${sorted.map((p, i) => this.createCard(p, i, color)).join('')}
+                            </div>
+                        </section>
+                    `;
+                }).join('');
+                this.attachListeners();
+            } else {
+                this.renderReport();
+            }
+        },
+
+        createCard(p, index, areaColor) {
+            const id = `p-${Math.random().toString(36).substr(2, 9)}`;
+            this.particleMap.set(id, p); // Guardar objeto original
+            
+            const pColor = p.proximidad > 75 ? "var(--green)" : p.proximidad > 50 ? "var(--yellow)" : "var(--red)";
+            
+            return `
+                <article class="news-card" data-id="${id}" role="button" tabindex="0">
+                    <div class="card-tag" style="color:${pColor}">${p.bloque}</div>
+                    <div class="card-content">
+                        <h3 class="card-title">${this.escapeHTML(p.titulo)}</h3>
+                        <div class="keywords">
+                            ${(Array.isArray(p.keywords) ? p.keywords : []).slice(0,3).map(k => `<span class="keyword-pill">#${this.escapeHTML(k)}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span style="font-family:'Share Tech Mono'; font-weight:bold; color:${pColor}">${p.proximidad}%</span>
+                        <div class="prox-bar"><div class="prox-fill" style="width:${p.proximidad}%; background:${pColor}"></div></div>
+                    </div>
+                </article>
+            `;
+        },
+
+        // --- GESTIÓN DE EVENTOS (PREVENCIÓN XSS) ---
+        attachListeners() {
+            document.querySelectorAll('.news-card').forEach(card => {
+                const handler = () => {
+                    const p = this.particleMap.get(card.dataset.id);
+                    if (p) this.openModal(p);
+                };
+                card.onclick = handler;
+                card.onkeydown = (e) => { if(e.key === 'Enter') handler(); };
+            });
+        },
+
+        openModal(p) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.setAttribute('role', 'dialog');
+            
+            overlay.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn" aria-label="Cerrar modal">&times;</button>
+                    <h2 style="color:var(--cyan); font-family:'Orbitron'; margin-bottom:15px">ANALYSIS_LOG</h2>
+                    <p style="font-size:1.1rem; line-height:1.5; margin-bottom:25px">${this.escapeHTML(p.titulo)}</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; font-family:'Share Tech Mono'; margin-bottom:30px">
+                        <div style="background:rgba(255,255,255,0.05); padding:10px">ORIGIN: ${this.escapeHTML(p.bloque)}</div>
+                        <div style="background:rgba(255,255,255,0.05); padding:10px">CONFIDENCE: ${p.confianza || 0}%</div>
+                    </div>
+                    <button onclick="window.open('${p.link}', '_blank')" class="control-btn" style="width:100%; justify-content:center; padding:15px; background:var(--cyan); color:#000; font-weight:bold">VER FUENTE</button>
+                </div>`;
+            
+            overlay.querySelector('.close-btn').onclick = () => overlay.remove();
+            overlay.onclick = (e) => { if(e.target === overlay) overlay.remove(); };
+            document.body.appendChild(overlay);
+        },
+
+        // --- UTILIDADES ---
+        escapeHTML(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        },
+
+        notify(msg, color) {
+            const container = document.getElementById('notification-container');
+            const n = document.createElement('div');
+            n.className = 'notif';
+            if(color === 'red') n.style.background = "var(--red)";
+            n.textContent = msg;
+            container.appendChild(n);
+            setTimeout(() => n.remove(), 4000);
+        },
+
+        toggleSort() {
+            const orders = ['proximity-desc', 'proximity-asc', 'region'];
+            this.sort = orders[(orders.indexOf(this.sort) + 1) % orders.length];
+            document.getElementById('sort-label').textContent = this.sort.split('-')[0].toUpperCase();
+            this.render();
+        },
+
+        switchView(v) {
+            this.view = v;
+            document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${v}`).classList.add('active');
+            this.render();
+        },
+
+        updateTime() {
+            if (!this.data || !this.data.meta) return;
+            const diff = Math.floor((new Date() - new Date(this.data.meta.updated)) / 60000);
+            document.getElementById('update-time').textContent = diff < 2 ? "ONLINE" : `T-${diff}M`;
+        },
+
+        showSkeleton() {
+            document.getElementById('main-container').innerHTML = `<div style="padding:40px"><div class="skeleton" style="height:40px; width:300px; margin-bottom:20px"></div></div>`;
+        },
+
+        showError(msg) {
+            document.getElementById('main-container').innerHTML = `<div style="text-align:center; padding:100px; color:var(--red)"><h2>SYSTEM_ERROR</h2><p>${msg}</p></div>`;
+        }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => app.loadData());
+    setInterval(() => app.loadData(), 300000);
+</script>
+
+</body>
 </html>

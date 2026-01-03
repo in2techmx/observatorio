@@ -1,0 +1,526 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "Escalada de tensiones y conflictos globales con implicaciones para la seguridad internacional.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "titulo": "Trump dice que EE. UU. intervendrá si Irán mata a manifestantes",
+          "sesgo": "Posible intervención de EE. UU. en Irán.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/trump-iran-protests.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Por qué un acuerdo de paz en Ucrania sigue siendo difícil a pesar de la presión de EE. UU.",
+          "sesgo": "Dificultades para lograr la paz en Ucrania.",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYXoyeWM1ZVk2YUxTQmtRR1hmd3lIZ2VPdm1QbUMtOE13Tl85NE9wMW9zSnpPc05abGhHd3FSRVJPd2ltZFY0MGFjallhTmlwanpiM0RJVGxxbzZ6RUxNN0tjOHBvMlZzcW9NN2s4VllSZTByenFoSTZhQjE5ZHNrdkpUYkxZVjZWNU5jYXdJd2hLX3JBZFI0dHhvdXB0aE1nQWVGNjFHWDdkRnVha2fSAa4BQVVfeXFMT2F6MnljNWVZNmFMU0JrUUdYZnd5SGdlT3ZtUG1DLThNd05fOTRPcDFvc0p6T3NOWmxoR3dxUkVST3dpbWRWNDBhY2pZYU5pcGp6YjNESVRscW82ekVMTTdLYzhwbzJWc3FvTTdrOFZZUmUwcnpxaEk2YUIxOWRza3ZKVGJMWVY2VjVOY2F3SXdoS19yQWRSNHR4b3VwdGhNZ0FlRjYxR1g3ZEZ1YWtn?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Riesgo geopolítico elevado por la afirmación de Rusia sobre drones",
+          "sesgo": "Aumento de las tensiones geopolíticas debido a las acusaciones de Rusia.",
+          "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNN2t5T2tnUVhZQlBOaWt0SW45NjVrM0VLRzBnTkcxSGowZjkwUWdiaUNIWmJibHNDbFd0bEJCNHFrb1IzYXN4NFdFZGhFNFp4WGpZX0JOcjk5bV9uR1VwaWx4Y3V5ei1qSm51bDF1aWx0cnl0dWVNMzg2SDBnaTEtQlN1c3NrTDNTbkFEZU9lQzdGOXU0QVZV?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Yemen envía a su ejército para expulsar a la facción separatista",
+          "sesgo": "Conflicto interno en Yemen.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/yemen-separatists-government.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Zelensky de Ucrania nombra a Kyrylo Budanov como nuevo jefe de gabinete",
+          "sesgo": "Cambios en el liderazgo ucraniano en medio del conflicto.",
+          "link": "https://www.nytimes.com/2026/01/02/world/europe/zelensky-budanov-ukraine-chief-of-staff-yermak.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Otro Año Nuevo en Guerra: Las Tropas de Ucrania Dudan que Sea el Último",
+          "sesgo": "Perspectivas sombrías sobre el conflicto en Ucrania.",
+          "link": "https://www.nytimes.com/2026/01/01/world/europe/ukraine-russia-new-years-day-donetsk.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Cómo Dos Poderosos Aliados de EE. UU. Llegaron a las Manos en Yemen",
+          "sesgo": "Tensiones entre aliados de EE. UU. en Yemen.",
+          "link": "https://www.nytimes.com/2026/01/01/world/middleeast/uae-saudi-arabia-yemen.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Cómo Asegurar el Cielo",
+          "sesgo": "Necesidad de mejorar la seguridad aérea.",
+          "link": "https://www.foreignaffairs.com/united-states/how-secure-sky",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El asesor del líder supremo emite una dura advertencia a cualquiera que amenace la seguridad de Irán",
+          "sesgo": "Advertencia de Irán contra amenazas a su seguridad.",
+          "link": "https://tass.com/world/2067843",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Arabia Saudita lleva a cabo ataques contra el aeropuerto en la ciudad yemení de Seiyun",
+          "sesgo": "Escalada del conflicto en Yemen.",
+          "link": "https://tass.com/world/2067837",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El número de muertos por el ataque con drones de Ucrania en la aldea de Khorly en la región de Kherson aumenta a 28",
+          "sesgo": "Aumento de víctimas en el conflicto ucraniano.",
+          "link": "https://tass.com/emergencies/2067823",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El organismo de la ONU pide una pronta investigación sobre el ataque contra civiles en la región de Kherson",
+          "sesgo": "Preocupación de la ONU por ataques a civiles en Ucrania.",
+          "link": "https://tass.com/world/2067805",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Las tropas rusas liberan nueve comunidades en la operación de Ucrania durante la semana",
+          "sesgo": "Avances rusos en Ucrania.",
+          "link": "https://tass.com/defense/2067797",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Trump se reunirá con el enviado de EE. UU. a China después de la llamada con el primer ministro japonés Takaichi mientras concluyen los ejercicios de Taiwán",
+          "sesgo": "Diplomacia y tensiones militares en la región de Taiwán.",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338582/trump-meet-us-envoy-perdue-after-call-japans-takaichi-taiwan-drills-conclude?utm_source=rss_feed",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El ministerio de defensa rechaza las críticas sobre los simulacros alrededor de Taiwán",
+          "sesgo": "China defiende sus ejercicios militares cerca de Taiwán.",
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611513.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "¿Amenazan las manifestaciones en Irán al régimen?",
+          "sesgo": "Inestabilidad política en Irán.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/amenazan-las-manifestaciones-en-iran-al-regimen/",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Trump amenaza a Irán por la represión de las protestas mientras se intensifican los disturbios mortales",
+          "sesgo": "Tensiones entre EE. UU. e Irán por las protestas.",
+          "link": "https://www.france24.com/en/video/20260102-trump-threatens-iran-over-protest-crackdown-as-deadly-unrest-flares",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Operación secreta revelada: Ucrania finge la muerte de un luchador ruso anti-Kremlin",
+          "sesgo": "Tácticas de desinformación en el conflicto ucraniano.",
+          "link": "https://www.france24.com/en/video/20260102-secret-operation-unveiled-ukraine-fakes-death-of-anti-kremlin-russian-fighter",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Los manifestantes iraníes se enfrentan a una 'brutal represión' a medida que se amplifican las protestas",
+          "sesgo": "Represión de protestas en Irán.",
+          "link": "https://www.france24.com/en/video/20260102-iranian-protesters-facing-brutal-crackdown-as-protests-amplify",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Tensión aumenta entre Irán y Estados Unidos mientras Trump amenaza con la intervención",
+          "sesgo": "Escalada de tensiones entre Irán y EE. UU.",
+          "link": "https://www.france24.com/en/video/20260102-tension-escalates-between-iran-and-the-united-states-as-trump-threatens-intervention",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Fuerzas respaldadas por Arabia Saudita lanzan una ofensiva contra el STC de Yemen",
+          "sesgo": "Escalada del conflicto en Yemen.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/saudi-backed-forces-launch-offensive-against-yemens-stc?traffic_source=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "'Sepa dónde apuntar': Irán advierte a Trump sobre la amenaza; violentas protestas sacuden Teherán",
+          "sesgo": "Advertencia de Irán a EE. UU. en medio de protestas.",
+          "link": "https://timesofindia.indiatimes.com/world/middle-east/know-where-to-aim-iran-warns-trump-over-threat-violent-protests-rock-tehran/articleshow/126310526.cms",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El jefe de inteligencia ucraniano nombrado jefe de la oficina de Zelensky",
+          "sesgo": "Cambios en el liderazgo ucraniano.",
+          "link": "https://tass.com/world/2067851",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Zelenskyy de Ucrania nombra al jefe del GUR, Kyrylo Budanov, como principal asesor",
+          "sesgo": "Cambios en el liderazgo ucraniano.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/ukraines-zelenskyy-names-gur-chief-kyrylo-budanov-as-top-aide?traffic_source=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Ucrania ordena la evacuación de 3.000 niños y padres de dos regiones a medida que avanzan las fuerzas rusas",
+          "sesgo": "Impacto del conflicto en la población civil ucraniana.",
+          "link": "http://www.euronews.com/2026/01/02/ukraine-orders-evacuation-of-3000-children-and-parents-from-two-regions-as-russian-forces-",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Rusia lanza uno de sus mayores ataques con drones contra Zaporizhzhia, Ucrania",
+          "sesgo": "Escalada del conflicto en Ucrania.",
+          "link": "http://www.euronews.com/2026/01/02/russia-launches-one-of-its-largest-drone-attacks-on-ukraines-zaporizhzhia",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Las fuerzas rusas atacan Zaporizhzhia con ataques aéreos, sin que se reporten víctimas",
+          "sesgo": "Ataques rusos en Ucrania.",
+          "link": "http://www.euronews.com/video/2026/01/02/russian-forces-target-zaporizhzhia-with-air-strikes-no-casualties-reported",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "Impacto de las políticas económicas y sanciones en la geopolítica global.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "titulo": "Navegando por las barandillas: Controles de exportación y la nueva geopolítica del silicio en 2026",
+          "sesgo": "Impacto de los controles de exportación en la industria tecnológica.",
+          "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOeDNtcW0tMUo4NktiXzZTVDFEdGJuc2dRVG1tRUVkYjVBV3NlQ09aZ0JVUVVkcDhqYTFGUXVOTkxIekdWZmxzWWMzeDNPLUJWYjU0MFo3UThwMk9xZE16eDVmbld3Y0JBSDNDWjVlQ3VHaWp4cWZWNnhqLU9qYjBBT05IendQWTdJN1Z6Y1lIdTI2X0RxSTJNYXA4QURydFRKUWd3YlhLdXpQMHJZanhJQ2pGSnI5aGZvT3dNSWkzd3VxZWVqNnkwRWc3dnVvNFpVNEZaeWJkZXVCQ1JIaEw3YktLTW96Y0NsQmhF?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Perspectivas de inversión global: Navegando por un panorama complejo",
+          "sesgo": "Desafíos en el panorama de inversión global.",
+          "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPNUpSYTFxOHFXSkthb3Itc0UtbHZ2VEVOS0t3RXdfRkRtSjQxM2FnY016LTU4QWNkaVdLdGxTeUJjWHY3ZTZ4YWluTEZsNXpYMEJEY3RIU29CWEpZaE9NUGVXSEN0R0xxUTI4eHdaUE1aZHdDd2VGSTVZWWdpMGFoeWVMZEdGTzc1d1R1TDJYTjRpMmx0dGc3ZE5rc21GYkRLeHJETDZfeWpBUV94WlJiSmNUdw?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Los PMI manufactureros están en el punto de mira al comenzar 2026",
+          "sesgo": "Importancia de los indicadores manufactureros.",
+          "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQTHZDLVVhSDV3dFV5T0VQV1ZwQllMX0dRMHRYR25TVlBobXZiczZIMk5yU0VUX29XNWNjRWJncmNnanlJZnVtdVFqTFBiVEVNeXNUcWpyREo0V1ZfU0hCcjBNcG0zLV8zc3c4TjJmM0NMclp1Ung5TW4xUDVBM0xuOGVlWHphUlhPRllLOXJJOUJTb1BNVkZlNGIyWEozakJsZVdWcGM2ZzlaY1dCb3V1ZXRrSjVpUUFHSGJNbU4zdFkxUQ?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Taimur Baig sobre la IA, la Fed, la inflación y el próximo movimiento del dólar",
+          "sesgo": "Análisis de factores económicos clave.",
+          "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQV3Ftcjk0OEhLaGJObk9Nb0dUaVFmMW80NWl6M2tjQ1VNRUk3SllyaHkxSGEyZnB1WkhaV1J6U3Nkd0RmMFlLOEk5bHJxUzhTSHBpRmFVNHlVZUhmX1hJbWNQTDJ5WV9RWWU1NFFNckozak1mVjg3TkpGOGZkSjByUGNkeEw4Vk1MUzczUlAtcEx0YjdfTVBzbUxqQUVReXpPempneUhVUDVRSUIwRFlRRG5IbmxfZXJRNjN0WFBhUzAxUE5fTGdRVnJjNzcxLW00eUhuMNIB2gFBVV95cUxQNmFGSmpFQUdraEcybHpwR2RZMksycS1OM0dLSUZ1T1BwYkNYcHNFWlNNSjNJNGJwUE43YjFIWnRtcUVxZVpzbHcweXRLZC0zODBCRTFIZVU5RlIyakhla1dxajJpbWZOMk8zU2xkdVA4eGlrRWNqbEREUHRBdjdHMlZqUGxkbmJUeDI3T0U3VWx3SEdnWHpkMkZlU2xOc2tOSDJqUnNMcEVhUGJraFVYaUpUekFORThua2RQQWczLWdiaVNVLXdSV2l2SDhlQS13UjM2dW92YlNkUQ?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Euforia de la IA a la geopolítica: Por qué los mercados parecen extrañamente desprevenidos para 2026",
+          "sesgo": "Riesgos económicos y geopolíticos relacionados con la IA.",
+          "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNUjlzenAxc1BYSWtuMnRIVHNnWmcxVDlDNzJMckxmMjk2X3AtMzhrNFVuNjVmTjNZWmMyYlJwRTZzZ3Z6dEZwdExlZW5IMExMY2lUTXdMMHk0QVBYTXZ0Q3U2ZklCOXNMeGMwWWQtSURHSUZGQ2h1Q3UydDBpNEJMOHIzRC10b0dQRmdkcUpYdDV5WEptcWxuRDU5Y1dVU0doejhMTFp1N2ZReU1XQV9xaXhMS3R0WW5oblAwbm13M3pBRUpaUTctNHNBNDRSWV81WGVZT2RwNGwtWFpCeXhpbdIB4AFBVV95cUxNUjlzenAxc1BYSWtuMnRIVHNnWmcxVDlDNzJMckxmMjk2X3AtMzhrNFVuNjVmTjNZWmMyYlJwRTZzZ3Z6dEZwdExlZW5IMExMY2lUTXdMMHk0QVBYTXZ0Q3U2ZklCOXNMeGMwWWQtSURHSUZGQ2h1Q3UydDBpNEJMOHIzRC10b0dQRmdkcUpYdDV5WEptcWxuRDU5Y1dVU0doejhMTFp1N2ZReU1XQV9xaXhMS3R0WW5oblAwbm13M3pBRUpaUTctNHNBNDRSWV81WGVZT2RwNGwtWFpCeXhpbQ?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Estados Unidos necesita guerreros económicos",
+          "sesgo": "Necesidad de fortalecer la economía estadounidense.",
+          "link": "https://www.foreignaffairs.com/united-states/america-needs-economic-warriors",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "La riqueza de los rusos más ricos aumenta en casi $24 mil millones en 2025",
+          "sesgo": "Impacto de la economía en la riqueza individual en Rusia.",
+          "link": "https://tass.com/economy/2067845",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "BYD de China destrona a Tesla como el principal fabricante mundial de vehículos eléctricos en medio de la política de Musk y los problemas de créditos fiscales",
+          "sesgo": "Competencia en el mercado de vehículos eléctricos.",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338573/tesla-dethroned-chinas-byd-worlds-top-ev-maker-amid-musks-politics-tax-credit-woes?utm_source=rss_feed",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El público chino se siente atraído por EE. UU. mientras respalda firmemente la postura comercial de Beijing: encuesta",
+          "sesgo": "Actitudes hacia el comercio entre China y EE. UU.",
+          "link": "https://www.scmp.com/news/china/diplomacy/article/3338550/chinese-public-warms-us-while-strongly-backing-beijings-trade-stance-survey?utm_source=rss_feed",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "La fabricación se recupera en diciembre",
+          "sesgo": "Mejora en el sector manufacturero.",
+          "link": "http://www.ecns.cn/news/economy/2026-01-02/detail-iheymvap1611554.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "¿Trump hará bajar el precio del champán?",
+          "sesgo": "Impacto de las políticas de Trump en la economía.",
+          "link": "https://legrandcontinent.eu/es/2025/12/31/trump-hara-bajar-el-precio-del-champan/",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Los búlgaros se adaptan al euro, los bancos y las tiendas informan una transición sin problemas",
+          "sesgo": "Adopción del euro en Bulgaria.",
+          "link": "http://www.euronews.com/video/2026/01/02/bulgarians-adapt-to-euro-banks-and-shops-report-smooth-transition",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Irán enfrenta crecientes protestas en medio de una profunda crisis económica",
+          "sesgo": "Impacto de la crisis económica en la estabilidad de Irán.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/iran-faces-growing-protests-amid-deepening-economic-crisis?traffic_source=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "EOW de la policía de Odisha arresta a un estafador financiero acusado de estafar ₹120 crore",
+          "sesgo": "Lucha contra el fraude financiero en India.",
+          "link": "https://www.thehindu.com/news/national/odisha/eow-of-odisha-police-arrest-financial-fraudster-accused-of-swindling-120-crore/article70464480.ece",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "T.N. domina el tercer tramo de ECMS en empleos, inversiones",
+          "sesgo": "Crecimiento económico en Tamil Nadu, India.",
+          "link": "https://www.thehindu.com/news/national/tamil-nadu/tn-dominates-third-tranche-of-ecms-in-jobs-investments/article70464925.ece",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "Disponibilidad y control de recursos energéticos como factor geopolítico.",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "titulo": "Por qué una planta nuclear es un gran punto de fricción en el plan de paz de Ucrania",
+          "sesgo": "Importancia de la energía nuclear en el conflicto ucraniano.",
+          "link": "https://www.nytimes.com/2026/01/02/world/europe/ukraine-peace-plan-zaporizhzhia-nuclear-plant.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "India se sumerge profundamente en la frontera congelada",
+          "sesgo": "Interés de India en recursos en regiones frías.",
+          "link": "https://www.thehindu.com/news/national/telangana/indias-deep-dive-into-the-frozen-frontier/article70461345.ece",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El experimento del 'sol artificial' de China encuentra la manera de romper el límite de densidad del plasma de fusión",
+          "sesgo": "Avances en la investigación de energía de fusión en China.",
+          "link": "http://www.ecns.cn/news/sci-tech/2026-01-02/detail-iheymvap1611509.shtml",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "Dinámicas de poder entre naciones y la formación de alianzas estratégicas.",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "titulo": "Canadá se une a EE. UU., Australia y China para advertir a los viajeros sobre Sudáfrica",
+          "sesgo": "Cooperación internacional en advertencias de viaje.",
+          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPM3JqTi1HMG5IdGk5T0pZNEw5c2JFRFVweWdZR09LVW4wU1BWX3NsQUhjVWtLLXRDV1l5ZGt4RHM2WWkyOGRhTTVtQkpRcE5MSlg5MXB1X3dpcTNlc2N0QzhJR1pFQS1hWTlaZFplX3ZHMHhXWGlCTzFOV2V6TmVyb1pPNzR1ZkdPaGRfX2RuMERjYXJQVjdMUnZrak1HUEkwWlV3ZnNHMDFHUTF4OHg4cVZPQlgtNFJFWGlJSDNVVmdKYXZWaTJKS3NhamtsNlM4WUxYX2trMExpS01ic3NFVUJmYjZhcVBO?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Cómo el multilateralismo puede sobrevivir",
+          "sesgo": "Importancia del multilateralismo en la política internacional.",
+          "link": "https://www.foreignaffairs.com/south-america/how-multilateralism-can-survive",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El caso de un gran acuerdo entre Estados Unidos y China",
+          "sesgo": "Posibilidad de un acuerdo entre EE. UU. y China.",
+          "link": "https://www.foreignaffairs.com/united-states/case-grand-bargain-between-america-and-china",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Un camino intermedio para la política exterior estadounidense",
+          "sesgo": "Necesidad de una política exterior equilibrada para EE. UU.",
+          "link": "https://www.foreignaffairs.com/united-states/middle-way-american-foreign-policy",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Las nuevas arterias del poder",
+          "sesgo": "Cambios en las dinámicas de poder global.",
+          "link": "https://www.foreignaffairs.com/new-arteries-power",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Erdogan, Ilusiones Imperiales",
+          "sesgo": "Ambiciones de poder de Erdogan.",
+          "link": "https://www.foreignaffairs.com/turkey/erdogans-imperial-illusions",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Con Gran Poder Viene Gran Inseguridad",
+          "sesgo": "Desafíos del poder global.",
+          "link": "https://www.foreignaffairs.com/united-states/great-power-comes-great-insecurity",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Felicitaciones extendidas al presidente suizo",
+          "sesgo": "Relaciones diplomáticas.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611517.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El continente promete una integración más profunda a través del Estrecho en el mensaje de 2026",
+          "sesgo": "Relaciones entre China y Taiwán.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611514.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Conversación telefónica con el Presidente de Bielorrusia Alexander Lukashenko",
+          "sesgo": "Relaciones diplomáticas de Rusia.",
+          "link": "http://en.kremlin.ru/events/president/news/78985",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Conversación telefónica con el Presidente de Tayikistán Emomali Rahmon",
+          "sesgo": "Relaciones diplomáticas de Rusia.",
+          "link": "http://en.kremlin.ru/events/president/news/78984",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Conversación telefónica con el Presidente de la República Islámica de Irán Masoud Pezeshkian",
+          "sesgo": "Relaciones diplomáticas de Rusia.",
+          "link": "http://en.kremlin.ru/events/president/news/78948",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Conversación telefónica con el Presidente de Kazajstán Kassym-Jomart Tokayev",
+          "sesgo": "Relaciones diplomáticas de Rusia.",
+          "link": "http://en.kremlin.ru/events/president/news/78947",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Conversación telefónica con el Presidente de Uzbekistán Shavkat Mirziyoyev",
+          "sesgo": "Relaciones diplomáticas de Rusia.",
+          "link": "http://en.kremlin.ru/events/president/news/78945",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Comentario del Ayudante del Presidente Yury Ushakov tras una conversación telefónica entre Vladimir Putin y el Presidente de los Estados Unidos Donald Trump",
+          "sesgo": "Relaciones diplomáticas entre Rusia y EE. UU.",
+          "link": "http://en.kremlin.ru/events/president/news/78899",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "Avances tecnológicos y su impacto en la geopolítica, incluyendo la carrera espacial.",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "titulo": "Cómo los Deepfakes Podrían Llevar al Día del Juicio Final",
+          "sesgo": "Riesgos asociados con la tecnología deepfake.",
+          "link": "https://www.foreignaffairs.com/united-states/how-deepfakes-could-lead-doomsday",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Zheng Yongnian sigue siendo cautelosamente optimista con respecto a los desafíos geopolíticos de China en 2026",
+          "sesgo": "Perspectivas sobre los desafíos geopolíticos de China.",
+          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1hcEk4eFRnVVBLVkhuX0FueEpnUzNmdUpfaHRrQjVNR3hwY1hlODVPcVpDX1FHaUJIT0RyOEtRR29YYUpVV0EwdG50UUk0aThIVDktaDB5S25BZ2hvcGFYZnVZWjQxZw?oc=5",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "En China, la IA encuentra cáncer de páncreas que los médicos pueden pasar por alto",
+          "sesgo": "Avances en la aplicación de la IA en la medicina.",
+          "link": "https://www.nytimes.com/2026/01/02/world/asia/china-ai-cancer-pancreatic.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "(W.E. Talk) ¿Por qué el mundo necesita a China más que nunca en 2026?",
+          "sesgo": "Importancia creciente de China en el mundo.",
+          "link": "http://www.ecns.cn/cns-wire/2026-01-02/detail-iheymvap1610669.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El gobierno ordena a X que elimine todo el contenido obsceno e ilegal; la aplicación de IA Grok en el punto de mira",
+          "sesgo": "Regulación del contenido en línea y enfoque en la IA.",
+          "link": "https://timesofindia.indiatimes.com/india/govt-directs-x-to-remove-all-obscene-unlawful-content/articleshow/126312921.cms",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "'El fin de mí': Eric Schmidt de Google sobre la IA; dice que 55 años de codificación fueron borrados",
+          "sesgo": "Impacto de la IA en el futuro del trabajo.",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Cuestiones sociales y de derechos humanos con relevancia geopolítica.",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "titulo": "Venezuela Libera a Docenas de Prisioneros Políticos",
+          "sesgo": "Situación de los derechos humanos en Venezuela.",
+          "link": "https://www.nytimes.com/2026/01/01/world/americas/venezuela-prisoner-release.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El Líder del Golpe de Estado de Guinea Gana las Elecciones Después de Prohibir a los Principales Opositores",
+          "sesgo": "Preocupaciones sobre la democracia en Guinea.",
+          "link": "https://www.nytimes.com/2026/01/01/world/africa/guinea-election-mamady-doumbouya.html",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Cuba al Borde",
+          "sesgo": "Desafíos sociales y políticos en Cuba.",
+          "link": "https://www.foreignaffairs.com/cuba/cuba-brink",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Número de supervivientes registrados de la Masacre de Nanjing cae a 23",
+          "sesgo": "Memoria histórica y justicia.",
+          "link": "http://www.ecns.cn/news/society/2026-01-02/detail-iheymvap1611589.shtml",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Tras difundir contenido negacionista y antisemita, la IA de Musk, Grok, ha publicado imágenes de pornografía infantil",
+          "sesgo": "Riesgos asociados con la IA y la moderación de contenido.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/tras-difundir-contenido-negacionista-y-antisemita-la-ia-de-musk-grok-ha-publicado-imagenes-de-pornografia-infantil/",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "El veto de las ONG en Gaza 'tendrá un profundo efecto' en la población del territorio",
+          "sesgo": "Impacto humanitario del veto a las ONG en Gaza.",
+          "link": "https://www.france24.com/en/video/20260102-the-ban-of-ngos-from-gaza-will-have-a-profound-effect-on-the-territory-s-population",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Víctimas chadianas del escándalo de adopción falsa francesa de 2007 siguen buscando compensación",
+          "sesgo": "Justicia y derechos de las víctimas.",
+          "link": "https://www.france24.com/en/tv-shows/revisited/20260102-chadian-victims-of-french-false-adoption-scandal-still-seeking-justice-18-years-on-zoes-ark",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Comprendiendo los cánticos de protesta de Irán: ¿Cuáles son las demandas de los manifestantes?",
+          "sesgo": "Demandas de los manifestantes en Irán.",
+          "link": "https://www.france24.com/en/asia-pacific/20260102-understanding-iran-protest-chants-what-are-demonstrators-demands",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Angelina Jolie visita el cruce de Rafah en Egipto que está entregando ayuda a Gaza",
+          "sesgo": "Ayuda humanitaria en Gaza.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/angelina-jolie-visits-egypts-rafah-crossing-thats-delivering-aid-to-gaza?traffic_source=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Carga burocrática, clave en el deterioro de la profesión docente",
+          "sesgo": "Desafíos en la educación.",
+          "link": "https://www.jornada.com.mx/2026/01/02/politica/008n1pol?partner=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "CDH de Puebla emite recomendaciones sólo en 0.2% de 8 mil 563 quejas al año",
+          "sesgo": "Eficiencia de la Comisión de Derechos Humanos.",
+          "link": "https://www.jornada.com.mx/2026/01/02/estados/021n2est?partner=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Pakistán condena a periodistas a cadena perpetua por las protestas pro-Khan de 2023",
+          "sesgo": "Libertad de prensa en Pakistán.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/pakistan-court-sentences-journalists-to-life-over-2023-pro-khan-protests?traffic_source=rss",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Tamil cultura parte crucial de la identidad cultural más amplia de la India: Vicepresidente",
+          "sesgo": "Importancia de la cultura Tamil en India.",
+          "link": "https://www.thehindu.com/news/national/tamil-nadu/tamil-culture-crucial-part-of-indias-broader-cultural-identity-vice-president/article70465176.ece",
+          "color_bloque": "#94a3b8"
+        },
+        {
+          "titulo": "Abhishek Banerjee presenta a 3 votantes 'muertos' en el mitin de TMC; se enfrenta a EC, BJP",
+          "sesgo": "Integridad electoral en India.",
+          "link": "https://timesofindia.indiatimes.com/india/abhishek-banerjee-presents-3-dead-voters-at-tmc-rally-takes-on-ec-bjp/articleshow/126312901.cms",
+          "color_bloque": "#94a3b8"
+        }
+      ]
+    }
+  ]
+}

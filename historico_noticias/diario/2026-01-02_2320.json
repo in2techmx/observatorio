@@ -1,0 +1,263 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "El ecosistema de noticias aborda múltiples conflictos y tensiones geopolíticas a nivel global. Incluyen la situación en Irán, Yemen, Ucrania, Cuba, y Taiwán, así como incidentes relacionados con Israel y el activismo pro-Palestina.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "9dabc175",
+          "titulo": "Trump Says U.S. Will Intervene if Iran Kills Protesters",
+          "proximidad": 70.0,
+          "sesgo": "Enfatiza la postura de Trump y la posible intervención de EE.UU.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/trump-iran-protests.html",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "668eea7c",
+          "titulo": "Yemen Sends Its Military to Push Out Separatist Faction",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la acción militar en Yemen contra facciones separatistas.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/yemen-separatists-government.html",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "02dc6819",
+          "titulo": "Cuba on the Brink",
+          "proximidad": 50.0,
+          "sesgo": "Presenta una visión de crisis en Cuba con posible inestabilidad, desde una perspectiva estadounidense.",
+          "link": "https://www.foreignaffairs.com/cuba/cuba-brink",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "9d0b9093",
+          "titulo": "Trump Says U.S. Will Intervene if Iran Kills Protesters - The New York Times",
+          "proximidad": 85.0,
+          "sesgo": "Reporte directo de la declaración de Trump, minimizando el sesgo.",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOaVlseHBSaGxCOUZvYVhBTUplQTQwb09NZ1p4eVA2VkRmX3JTSXFVLWFJQUxzdXdRS0l1aXNiVzhNYzBTWjU5eDdJbEVjREVEdjQzV05LbHJIcHZmSVVLSTZQLXZhSGFyT0dMYVNSR2t4c3ZfNzlBUm5tWDlWWWdKZlNB?oc=5",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "a6003db1",
+          "titulo": "Why a Ukraine Peace Deal Remains Elusive Despite U.S. Pressure",
+          "proximidad": 65.0,
+          "sesgo": "Atribuye la falta de un acuerdo de paz en Ucrania a factores complejos, incluyendo la presión de EE.UU.",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPYXoyeWM1ZVk2YUxTQmtRR1hmd3lIZ2VPdm1QbUMtOE13Tl85NE9wMW9zSnpPc05abGhHd3FSRVJPd2ltZFY0MGFjallhTmlwanpiM0RJVGxxbzZ6RUxNN0tjOHBvMlZzcW9NN2s4VllSZTByenFoSTZhQjE5ZHNrdkpUYkxZVjZWNU5jYXdJd2hLX3JBZFI0dHhvdXB0aE1nQWVGNjFHWDdkRnVha2fSAa4BQVVfeXFMT2F6MnljNWVZNmFMU0JrUUdYZnd5SGdlT3ZtUG1DLThNd05fOTRPcDFvc0p6T3NOWmxoR3dxUkVST3dpbWRWNDBhY2pZYU5pcGp6YjNESVRscW82ekVMTTdLYzhwbzJWc3FvTTdrOFZZUmUwcnpxaEk2YUIxOWRza3ZKVGJMWVY2VjVOY2F3SXdoS19yQWRSNHR4b3VwdGhNZ0FlRjYxR1g3ZEZ1YWtn?oc=5",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "63c87358",
+          "titulo": "UAE completes withdrawal of troops from Yemen — Defense Ministry",
+          "proximidad": 90.0,
+          "sesgo": "Reporte oficial del retiro de tropas de EAU, sin sesgo aparente.",
+          "link": "https://tass.com/world/2067859",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "0d7a28f8",
+          "titulo": "Pro-Palestine activists smash up factory in UK over weapons supplies to Israel",
+          "proximidad": 75.0,
+          "sesgo": "Informa sobre un acto de protesta con un encuadre que puede ser visto como favorable a la causa palestina.",
+          "link": "https://tass.com/world/2067855",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "4e34b5bd",
+          "titulo": "Russian Army Makes Biggest Territorial Gains in 2025 Since First Year of Full-Scale Invasion",
+          "proximidad": 80.0,
+          "sesgo": "Enfatiza los avances territoriales rusos, basado en datos de ISW.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russian-army-makes-biggest-territorial-gains-in-2025-since-first-year-of-full-scale-invasion-a91601",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "69f233e5",
+          "titulo": "Ukrainian Drones Kill 28 in Occupied Kherson Resort Town, Pro-Kremlin Governor Says",
+          "proximidad": 60.0,
+          "sesgo": "Presenta la versión de las autoridades pro-Kremlin sobre un ataque ucraniano, señalando la potencial intencionalidad de atacar civiles.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/ukrainian-drones-kill-28-in-occupied-kherson-resort-town-pro-kremlin-governor-says-a91596",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "cca25c37",
+          "titulo": "Russian Volunteer Corps Leader Is Still Alive, Ukraine’s GUR Says",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre la desinformación rusa y la confirmación ucraniana de la supervivencia del líder del RVC.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/russian-volunteer-corps-leader-is-still-alive-ukraines-gur-says-a91599",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "5a4204e0",
+          "titulo": "Defense ministry rebuffs criticism over drills around Taiwan",
+          "proximidad": 70.0,
+          "sesgo": "Presenta la perspectiva del Ministerio de Defensa chino sobre los ejercicios militares alrededor de Taiwán.",
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611513.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "781abdde",
+          "titulo": "¿Amenazan las manifestaciones en Irán al régimen?",
+          "proximidad": 65.0,
+          "sesgo": "Pregunta sobre la estabilidad del régimen iraní a raíz de las protestas, sin tomar una postura definitiva.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/amenazan-las-manifestaciones-en-iran-al-regimen/",
+          "bloque": "GLOBAL"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "El panorama económico global presenta una mezcla de resultados corporativos fuertes en el sector bancario estadounidense, preocupaciones sobre una posible desaceleración económica, tensiones geopolíticas crecientes (especialmente en torno a China y Rusia) y esfuerzos en África para impulsar el comercio mediante la transparencia y la digitalización.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "94654941",
+          "titulo": "Actualizaciones del mercado de valores y ganancias bancarias: Dow y S&P 500",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza el rendimiento de los bancos estadounidenses y la posible desaceleración económica.",
+          "link": "https://www.cnn.com/business/live-news/stock-market-bank-earnings/index.html",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "3aaa1188",
+          "titulo": "Ken Rogoff: El fin del dominio del dólar: deuda, geopolítica y vigilancia - Financial Sense",
+          "proximidad": 60.0,
+          "sesgo": "Anticipa un debilitamiento del dominio del dólar debido a factores geopolíticos y la deuda.",
+          "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNMkNXZXd1bS0wNEFYS2s3YzNTd0dIQkgxTHNVa1U4MnBXOGdJZHA4dEFfaHo2THBqbXkyOFhRV3d5a1paXzFKVk1FU3ludFU4dFFkQlpFX0d1ZmZadnd1NDFBZHhyakRQODN5MEljeGo5cFN6MnF3WjlyYWNtd1FSMm03Mnl1cGtSdmRUb0ViTzl2WUZUUU9EdXBDQ0g4ZHBVOEliRA?oc=5",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "d2e0af13",
+          "titulo": "EE.UU. debe aumentar la capacidad de titanio para evitar la escasez, dice el fundador de Project Blue - Mining.com",
+          "proximidad": 50.0,
+          "sesgo": "Se centra en la necesidad de aumentar la producción de titanio en EE.UU. por razones estratégicas.",
+          "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNR29lcUdFTTh0NU9KWU90eHdCZUpCNXlBUTZ5blVoZER3c3hhRDRDMFVnbnlLT1M3RF9qZHZ1UENVWjVldmZ6Q0IwMV9YQWhtUGJteEtrbW51bEljNEQ5aHpLV1V2TFNRYlZOSGVSQmd5Q0c4QzgzMjFUTS1ibTMwTVBnZmJTVmtGa0s0WDlyNGhiN29aN0hzNkd0Z2duNkxBbGc?oc=5",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "7b867519",
+          "titulo": "La economía de Rusia en 2026: más guerra, crecimiento más lento e impuestos más altos - The Moscow Times",
+          "proximidad": 80.0,
+          "sesgo": "Describe un futuro económico sombrío para Rusia debido a la guerra en Ucrania y las sanciones occidentales.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "05586621",
+          "titulo": "Última hora | Trump ordena a la empresa china HieFo que se deshaga de los activos de chips estadounidenses, citando la seguridad nacional | South China Morning Post",
+          "proximidad": 85.0,
+          "sesgo": "Enfatiza las tensiones comerciales y de seguridad entre EE.UU. y China.",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "31a430ae",
+          "titulo": "¿Hacia una nueva moneda? Con Eichengreen, Kazāks, Knot, Lalucq, Rey y Tolosa - El Grand Continent",
+          "proximidad": 65.0,
+          "sesgo": "Explora la posibilidad de un declive en el dominio del dólar y el auge de monedas alternativas.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/hacia-una-nueva-moneda-con-eichengreen-kazaks-knot-lalucq-rey-y-tolosa/",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "be69dc8d",
+          "titulo": "Sudán: La guerra olvidada de 2025 en medio del oro, la geopolítica del petróleo y la crisis humanitaria - elciudadano.com",
+          "proximidad": 40.0,
+          "sesgo": "Se enfoca en la crisis en Sudán como un punto de conflicto geopolítico y humanitario.",
+          "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOT2YyVnBfbHQ1X2FadVJQOUp2OHZKRlR0WFh5Vkl2NnAxMC13RWkydzJMekRSM0U1UjFtNGNXOUVjQTIzbWtEcG5NamY4WlN2eDhBZGJ3VU1MMjVPM2ZSdUdNb1RjYmxlX2ZFZkpJMHJvMVZybE1kMFh1OHhUcjh6Z2JsUzdESThmUFRIYXBoZHlPTmlQaWdrcWpMbEZIWTVGSVN3dlFhOXlZdUNHaURYMkJWRUdTUVF4c2M0MWVNckdta2Y1S3VJ?oc=5",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "b4585a74",
+          "titulo": "Desbloquear la confianza, la transparencia y el comercio en África: habilitar la AfCFTA y avanzar en la Agenda 2063 | africa.com",
+          "proximidad": 70.0,
+          "sesgo": "Promueve la iniciativa AfCFTA como un medio para impulsar el comercio y el desarrollo en África.",
+          "link": "https://africa.com/unlocking-trust-transparency-and-trade-across-africa-enabling-the-afcfta-and-advancing-agenda-2063/",
+          "bloque": "AFRICA"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "El clúster aborda temas de sociedad y derechos en diversas regiones. Incluye desde el impacto de la guerra en la diáspora rusa y las tradiciones de Año Nuevo, hasta la situación de los presos políticos en Venezuela y la problemática de la apatridia en Sudáfrica y el rol de las ONGs en gaza",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "4f50c30a",
+          "titulo": "For Russia’s Wartime Diaspora, New Year’s Traditions Become a Tether to Home - The Moscow Times",
+          "proximidad": 75.0,
+          "sesgo": "Enfatiza la nostalgia y la conexión cultural de los emigrados rusos a través de las tradiciones, omitiendo un análisis profundo de las razones políticas de su exilio.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/for-russias-wartime-diaspora-new-years-traditions-become-a-tether-to-home-a91600",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "34bde7bd",
+          "titulo": "The ban of NGOs from Gaza 'will have a profound effect' on the territory's population",
+          "proximidad": 80.0,
+          "sesgo": "Enfatiza el impacto negativo de la prohibición de ONGs en Gaza, omitiendo posibles justificaciones gubernamentales de la medida.",
+          "link": "https://www.france24.com/en/video/20260102-the-ban-of-ngos-from-gaza-will-have-a-profound-effect-on-the-territory-s-population",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "226235b2",
+          "titulo": "Venezuela releases 88 people detained in post-2024 elections riots — MercoPress",
+          "proximidad": 65.0,
+          "sesgo": "Enfatiza la liberación de presos políticos en Venezuela como un gesto humanitario, pero reconoce la controversia sobre el número real de liberados y las limitaciones a su libertad.",
+          "link": "https://en.mercopress.com/2026/01/02/venezuela-releases-88-people-detained-in-post-2024-elections-riots?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "eee32615",
+          "titulo": "Stateless in South Africa: 'You're invisible, you don't exist' - life without a birth certificate",
+          "proximidad": 85.0,
+          "sesgo": "Enfatiza las dificultades y la exclusión social que enfrentan las personas apátridas en Sudáfrica, resaltando la falta de documentación como barrera principal.",
+          "link": "https://www.bbc.com/news/articles/cx2drqwp2eyo?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "El desarrollo de la IA generativa presenta riesgos relacionados con la creación y difusión de contenido inapropiado u obsceno. Los gobiernos están tomando medidas para regular el contenido generado por IA en plataformas como X (antes Twitter).",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "id": "71bf36fc",
+          "titulo": "El sector biofarmacéutico chino está en una posición privilegiada para desafiar el liderazgo estadounidense",
+          "proximidad": 20.0,
+          "sesgo": "Enfatiza el auge de China en el sector biofarmacéutico y su potencial para superar a Estados Unidos, minimizando los riesgos y desafíos regulatorios.",
+          "link": "https://www.scmp.com/news/china/science/article/3338481/chinas-biopharma-sector-prime-position-challenge-us-leadership?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "05bdf3fc",
+          "titulo": "Grok, la IA de Musk, ha publicado imágenes de pornografía infantil ¿Cómo prepararse?",
+          "proximidad": 95.0,
+          "sesgo": "Informa sobre la generación de contenido inapropiado por parte de la IA Grok y las posibles consecuencias legales.",
+          "link": "https://legrandcontinent.eu/es/2026/01/02/tras-difundir-contenido-negacionista-y-antisemita-la-ia-de-musk-grok-ha-publicado-imagenes-de-pornografia-infantil/",
+          "bloque": "GLOBAL"
+        },
+        {
+          "id": "7ebbf78c",
+          "titulo": "El gobierno ordena a X que elimine todo el contenido obsceno e ilegal",
+          "proximidad": 90.0,
+          "sesgo": "Se centra en la acción gubernamental para regular el contenido generado por IA en la plataforma X, destacando las posibles consecuencias legales del incumplimiento.",
+          "link": "https://timesofindia.indiatimes.com/india/govt-directs-x-to-remove-all-obscene-unlawful-content/articleshow/126312921.cms",
+          "bloque": "INDIA"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "The Africa Energy Indaba 2026 is scheduled to take place in Cape Town from March 3-5, 2026. It aims to attract energy ministers and stakeholders to discuss policy, investment, and partnerships in Africa's energy sector.",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "id": "0e69af7b",
+          "titulo": "Africa Energy Indaba 2026 Attracts Africa’s Energy Ministers To Shape Policy And Unlock Multi-Billion Dollar Investment Opportunities",
+          "proximidad": 95.0,
+          "sesgo": "Focuses on the event's potential to attract investment and shape policy, highlighting participating ministers and the event's role in Africa's energy growth.",
+          "link": "https://africa.com/africa-energy-indaba-2026-attracts-africas-energy-ministers-to-shape-policy-and-unlock-multi-billion-dollar-investment-opportunities/",
+          "bloque": "AFRICA"
+        }
+      ]
+    }
+  ]
+}

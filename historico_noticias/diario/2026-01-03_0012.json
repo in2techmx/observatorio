@@ -1,0 +1,486 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "El conflicto entre Rusia y Ucrania y sus implicaciones internacionales, incluyendo el apoyo de otros países y las tensiones geopolíticas resultantes, así como las preocupaciones sobre seguridad y estabilidad regional.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "0d7a28f8",
+          "titulo": "Texto ilegible",
+          "proximidad": 10.0,
+          "sesgo": "Este texto parece corrupto o en un formato no reconocido, lo que impide analizar su contenido y determinar su relación con otros temas. Por lo tanto, se considera altamente aislado.",
+          "link": "https://tass.com/world/2067855",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "982f3deb",
+          "titulo": "Noticias de última hora de Euronews",
+          "proximidad": 60.0,
+          "sesgo": "Este es un resumen de noticias general, lo que le da una proximidad media.  Aunque no profundiza en temas específicos, menciona algunos temas comunes en la cobertura de seguridad y conflictos (noticias del mundo, política).",
+          "link": "http://www.euronews.com/video/2026/01/02/latest-news-bulletin-january-2nd-2026-evening",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "c331df6b",
+          "titulo": "Zelensky nombra jefe de espías como nuevo asesor",
+          "proximidad": 75.0,
+          "sesgo": "Esta noticia está moderadamente intersectada porque se centra en un nombramiento clave dentro del gobierno ucraniano en medio del conflicto con Rusia, un tema recurrente en la cobertura de seguridad y conflictos.",
+          "link": "https://www.france24.com/en/europe/20260102-ukraine-s-zelensky-names-spy-chief-kyrylo-budanov-as-new-top-aide",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "d1561902",
+          "titulo": "NIA traslada a acusado de atentado en Delhi a Cachemira",
+          "proximidad": 30.0,
+          "sesgo": "Este artículo se centra en un incidente específico en Cachemira, relacionado con terrorismo y seguridad interna en India. Está relativamente aislado porque no se relaciona directamente con los otros temas centrados en Europa, Rusia o el Medio Oriente.",
+          "link": "https://www.thehindu.com/news/national/nia-shifts-a-delhi-blast-accused-to-kashmir-scans-forest-area-in-shopian/article70465016.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "728551f5",
+          "titulo": "Texto ilegible",
+          "proximidad": 10.0,
+          "sesgo": "Este texto parece corrupto o en un formato no reconocido, lo que impide analizar su contenido y determinar su relación con otros temas. Por lo tanto, se considera altamente aislado.",
+          "link": "http://www.euronews.com/2026/01/02/zelenskyy-names-ukraines-military-intelligence-chief-kyrylo-budanov-as-new-top-aide",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "9a28d649",
+          "titulo": "Operación secreta revelada: Ucrania finge la muerte de un luchador ruso anti-Kremlin",
+          "proximidad": 85.0,
+          "sesgo": "Esta noticia tiene una alta intersección porque aborda directamente las tácticas de Ucrania en el conflicto con Rusia y la desinformación, un tema recurrente en la cobertura de esta guerra. La implicación de un 'luchador anti-Kremlin' añade una dimensión de guerra de información.",
+          "link": "https://www.france24.com/en/video/20260102-secret-operation-unveiled-ukraine-fakes-death-of-anti-kremlin-russian-fighter",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "741fb9c7",
+          "titulo": "Juez de EE.UU. ordena que sospechoso de bomba casera permanezca bajo custodia",
+          "proximidad": 40.0,
+          "sesgo": "Si bien se trata de un tema de seguridad interna en los EE.UU., la conexión con el intento de alterar las elecciones y la posible motivación política le dan una proximidad media, ya que toca temas de estabilidad política y extremismo.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/us-judge-orders-dc-pipe-bomber-to-remain-in-custody-ahead-of-trial?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "4c7aad8e",
+          "titulo": "Trump amenaza a Irán por la represión de las protestas",
+          "proximidad": 65.0,
+          "sesgo": "Esta noticia tiene una proximidad moderada porque se relaciona con las tensiones entre EE.UU. e Irán y la posible intervención en asuntos internos iraníes, temas recurrentes en la geopolítica y los conflictos internacionales.",
+          "link": "https://www.france24.com/en/video/20260102-trump-threatens-iran-over-protest-crackdown-as-deadly-unrest-flares",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "4e34b5bd",
+          "titulo": "El ejército ruso logra las mayores ganancias territoriales en 2025",
+          "proximidad": 95.0,
+          "sesgo": "Esta noticia tiene una intersección muy alta porque se centra directamente en el avance territorial de Rusia en Ucrania, lo que es un tema central en la cobertura de seguridad y conflictos en la región.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russian-army-makes-biggest-territorial-gains-in-2025-since-first-year-of-full-scale-invasion-a91601",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "b505c16e",
+          "titulo": "Nuevo estado de emergencia declarado en Ecuador tras matanza",
+          "proximidad": 20.0,
+          "sesgo": "Este evento está aislado geográficamente (Ecuador) y temáticamente (crimen interno) de los otros eventos, que se centran principalmente en conflictos geopolíticos y seguridad internacional.",
+          "link": "https://en.mercopress.com/2026/01/02/new-state-of-emergency-declared-in-ecuador-after-mass-killing?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "9dabc175",
+          "titulo": "Trump dice que EE.UU. intervendrá si Irán mata a manifestantes",
+          "proximidad": 70.0,
+          "sesgo": "Esta noticia tiene una proximidad moderada-alta debido a la amenaza de intervención de EE.UU. en Irán, lo que se alinea con temas de política exterior y posibles conflictos internacionales.",
+          "link": "https://www.nytimes.com/2026/01/02/world/middleeast/trump-iran-protests.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "5a4204e0",
+          "titulo": "Ministerio de Defensa rechaza las críticas sobre los ejercicios militares alrededor de Taiwán",
+          "proximidad": 55.0,
+          "sesgo": "Esta noticia tiene una proximidad media porque aborda las tensiones en el Estrecho de Taiwán y la postura de China frente a Taiwán y las críticas internacionales, un tema recurrente en la seguridad regional y las relaciones internacionales.",
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611513.shtml",
+          "bloque": "CHINA"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "La creciente tensión y realineamiento de alianzas en diversos conflictos globales, especialmente en Yemen y Ucrania, y el debate sobre el multilateralismo y el papel de las potencias en el orden mundial.",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "id": "7b3025f0",
+          "titulo": "EE.UU. condiciona ayuda a la ONU: 'Adaptarse, reducirse o morir'",
+          "proximidad": 65.0,
+          "sesgo": "Mientras que Europa podría ver esto como una imposición de prioridades políticas de EE.UU., Rusia y China podrían interpretarlo como una señal de la decadencia del multilateralismo y el intento de EE.UU. de dominar el sistema internacional.",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "f356e746",
+          "titulo": "Un camino intermedio para la política exterior estadounidense",
+          "proximidad": 50.0,
+          "sesgo": "Este artículo probablemente representa la visión de EE.UU. sobre su rol global, que otros bloques (China, Rusia) podrían ver como una justificación de su hegemonía o una señal de repliegue estratégico.",
+          "link": "https://www.foreignaffairs.com/united-states/middle-way-american-foreign-policy",
+          "bloque": "USA"
+        },
+        {
+          "id": "ecc7d78a",
+          "titulo": "Tensiones entre saudíes y emiratíes por el futuro de Yemen llegan al punto de ebullición",
+          "proximidad": 80.0,
+          "sesgo": "Este conflicto interno en Medio Oriente es de interés para todos los bloques, ya que impacta la estabilidad regional, el precio del petróleo y las alianzas estratégicas. La cobertura enfatizará diferentes aspectos según el bloque (p.ej., Rusia podría destacar la inestabilidad generada por actores externos).",
+          "link": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "8f75f58e",
+          "titulo": "¿Puede Europa sobrevivir a su parálisis?",
+          "proximidad": 70.0,
+          "sesgo": "Este artículo crítico sobre la UE resonará en Rusia y China, que ven la fragmentación europea como una oportunidad. EE.UU. podría tener una visión ambivalente, dependiendo de si una UE fuerte es vista como un aliado o un competidor.",
+          "link": "https://www.scmp.com/opinion/world-opinion/article/3338435/can-europe-survive-its-crippling-paralysis?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "dc08ff9c",
+          "titulo": "La política de La Haya de apoyar a Kiev conduce a su profunda participación en el conflicto",
+          "proximidad": 90.0,
+          "sesgo": "Este es un punto de vista ruso directo.  Otros bloques lo verán como propaganda, pero el tema de la participación de terceros en el conflicto es universalmente relevante.",
+          "link": "https://tass.com/politics/2067871",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "63c87358",
+          "titulo": "EAU completa la retirada de tropas de Yemen",
+          "proximidad": 75.0,
+          "sesgo": "Esta noticia será interpretada de manera diferente según el bloque. Rusia podría verlo como una señal de cambio en la dinámica regional, mientras que Occidente podría analizarlo en términos de la estrategia general de EAU.",
+          "link": "https://tass.com/world/2067859",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "dffe931e",
+          "titulo": "Kallas quiere que la UE entre en guerra con Rusia y China — Dmitriev",
+          "proximidad": 95.0,
+          "sesgo": "Esta es una acusación directa de Rusia hacia la UE.  La 'intersección' es que todos los bloques están pendientes de la escalada de tensiones.",
+          "link": "https://tass.com/politics/2067861",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "0237fbef",
+          "titulo": "Cómo puede sobrevivir el multilateralismo",
+          "proximidad": 60.0,
+          "sesgo": "EE.UU. y Europa podrían verlo como una oportunidad para reformar las instituciones globales, mientras que China y Rusia podrían preferir un sistema más multipolar o regionalizado.",
+          "link": "https://www.foreignaffairs.com/south-america/how-multilateralism-can-survive",
+          "bloque": "USA"
+        },
+        {
+          "id": "5a733312",
+          "titulo": "Maduro insta a Trump a abandonar la 'guerra ilegal' y comenzar 'conversaciones serias'",
+          "proximidad": 85.0,
+          "sesgo": "La 'intersección' surge de la importancia geopolítica de Venezuela, el impacto en el suministro de petróleo, y si existe voluntad de dialogo. Rusia apoyaría a Maduro, USA buscaría dialogo en sus terminos.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/venezuela-maduro-open-to-talks-drug-trafficking-maduro",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "06792aa2",
+          "titulo": "Felicitaciones extendidas al presidente suizo",
+          "proximidad": 40.0,
+          "sesgo": "China destaca su relación con Suiza, pero es menos relevante para los otros bloques, a menos que se interprete como parte de una estrategia de influencia global.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611517.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "af645781",
+          "titulo": "Jefe de la junta de Guinea elegido presidente tras boicot de la oposición",
+          "proximidad": 30.0,
+          "sesgo": "Este evento es principalmente relevante para África Occidental, pero los diferentes bloques podrían tener distintos intereses en la estabilidad o inestabilidad de la región.",
+          "link": "https://www.theguardian.com/world/2025/dec/31/guinea-junta-chief-mamady-doumbouya-elected-president-after-opposition-boycott",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "2640a4b0",
+          "titulo": "China continental promete una integración más profunda a través del Estrecho en el mensaje de 2026",
+          "proximidad": 80.0,
+          "sesgo": "Este es un tema central para China.  Es un punto de conflicto con USA. Europa tiene una visión mas matizada, pero es clave en la geopolitica.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611514.shtml",
+          "bloque": "CHINA"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Eventos políticos y sociales significativos, incluyendo protestas, cambios de liderazgo y controversias religiosas, son los temas con mayor intersección en este grupo, reflejando la atención global a estos asuntos.",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "5e857708",
+          "titulo": "Líder de la oposición Suvendu Adhikari llama a Bengala Occidental una 'patria hindú bengalí'",
+          "proximidad": 35.0,
+          "sesgo": "Aislamiento: Este artículo presenta una visión específica de la política regional en India, enfocándose en las tensiones religiosas y las acusaciones contra el gobierno local. Su enfoque es particular a la situación política en Bengala Occidental y no resuena ampliamente en otros contextos globales.",
+          "link": "https://www.thehindu.com/news/national/west-bengal/lop-suvendu-adhikari-calls-west-bengal-a-bengali-hindu-homeland/article70464773.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "8eb405b0",
+          "titulo": "Manifestantes iraníes se enfrentan a una 'brutal represión' a medida que se amplifican las protestas",
+          "proximidad": 60.0,
+          "sesgo": "Moderada Intersección: Las protestas y la represión en Irán son temas de interés internacional, pero la falta de detalles específicos y la cobertura general hacen que este artículo tenga una intersección moderada. Podría intersectar con otras noticias sobre derechos humanos y protestas, pero sin especificidad, su resonancia es limitada.",
+          "link": "https://www.france24.com/en/video/20260102-iranian-protesters-facing-brutal-crackdown-as-protests-amplify",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "17f1a4e5",
+          "titulo": "El conductor de Anthony Joshua acusado de conducción peligrosa tras un accidente mortal en Nigeria",
+          "proximidad": 20.0,
+          "sesgo": "Aislamiento: Este artículo se centra en un evento específico relacionado con una figura pública. Si bien el accidente y las consecuencias legales son el foco, su naturaleza específica y falta de conexión directa con temas sociales o políticos más amplios contribuyen a su aislamiento.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/anthony-joshuas-driver-charged-with-dangerous-driving-after-fatal-crash-in-nigeria",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "3b933dac",
+          "titulo": "Fox News está a punto de entrar en la verdadera Zona Sin Giro",
+          "proximidad": 40.0,
+          "sesgo": "Aislamiento: Este artículo trata sobre un juicio por difamación específico en los EE. UU. y su impacto en Fox News. Aunque relevante para los medios y la política estadounidense, su enfoque particular limita su intersección con temas más amplios de derechos o sociedad a nivel global.",
+          "link": "https://www.cnn.com/2023/04/14/media/fox-news-dominion-hnk-intl/index.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "9145a3a0",
+          "titulo": "Pira crematoria en África considerada la más antigua del mundo que contiene restos de adultos",
+          "proximidad": 10.0,
+          "sesgo": "Aislamiento: Este artículo describe un descubrimiento arqueológico específico. Si bien es significativo en el campo de la antropología, su naturaleza altamente especializada y falta de conexión directa con los problemas sociales y de derechos contemporáneos lo aíslan de otros temas.",
+          "link": "https://www.theguardian.com/science/2026/jan/01/cremation-pyre-in-africa-thought-to-be-worlds-oldest-containing-adult-remains",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "31ceb7e2",
+          "titulo": "Defensores de Palestina elogian a Mamdani de Nueva York por revocar decretos pro-Israelíes",
+          "proximidad": 80.0,
+          "sesgo": "Alta Intersección: La revocación de decretos pro-Israelíes por el alcalde de Nueva York es un tema altamente interseccional. Involucra la política de Medio Oriente, las relaciones internacionales y los debates sobre antisemitismo y libertad de expresión, lo que lo hace relevante para múltiples bloques y perspectivas.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/palestine-advocates-praise-nycs-mamdani-for-revoking-pro-israel-decrees?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "3d60261a",
+          "titulo": "Siete muertos, docenas desaparecidos después de que un barco con destino a las Islas Canarias zozobra en Gambia",
+          "proximidad": 65.0,
+          "sesgo": "Moderada Intersección: La noticia sobre el naufragio de un barco de migrantes en Gambia tiene una moderada intersección. Si bien aborda la crisis migratoria, un tema global, su enfoque específico en un incidente particular limita su resonancia en comparación con narrativas más amplias sobre migración y derechos humanos.",
+          "link": "https://www.bbc.com/news/articles/clynvkwglx4o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "0a1c1f0e",
+          "titulo": "Contaminación del agua en Indore: 200 aún hospitalizados, 32 en UCIs; comisionado municipal removido",
+          "proximidad": 25.0,
+          "sesgo": "Aislamiento: Este artículo detalla una crisis de salud pública local en Indore, India. Aunque la contaminación del agua es un problema global, el enfoque específico en un incidente local limita su intersección con temas más amplios de derechos o sociedad.",
+          "link": "https://timesofindia.indiatimes.com/india/indore-water-contamination-200-still-hospitalised-32-in-icus-municipal-commissioner-removed/articleshow/126313190.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "a8f3581c",
+          "titulo": "Testigos relatan el incendio que mató a 40 en Suiza",
+          "proximidad": 30.0,
+          "sesgo": "Aislamiento: Un trágico evento local en Suiza. Si bien los desastres naturales pueden tener un impacto social, el enfoque en el incidente específico aísla esta noticia de temas de derechos o sociedad más amplios.",
+          "link": "https://www.nytimes.com/2026/01/01/world/europe/switzerland-fire-scene.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "4f50c30a",
+          "titulo": "Para la diáspora rusa en tiempos de guerra, las tradiciones de Año Nuevo se convierten en un vínculo con el hogar",
+          "proximidad": 55.0,
+          "sesgo": "Moderada Intersección: Este artículo aborda el impacto de la guerra en Ucrania en la diáspora rusa y cómo mantienen sus tradiciones. Si bien es relevante para entender las consecuencias sociales de la guerra, su enfoque en un grupo específico limita su intersección con temas más amplios.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/for-russias-wartime-diaspora-new-years-traditions-become-a-tether-to-home-a91600",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "27fdd5b5",
+          "titulo": "Video. Marruecos da la bienvenida a 2026 mientras la AFCON entra en los octavos de final",
+          "proximidad": 15.0,
+          "sesgo": "Aislamiento: Este artículo se centra en eventos culturales y deportivos en Marruecos y la Copa Africana de Naciones. Aunque el deporte y la cultura pueden tener relevancia social, su enfoque principal en estos eventos específicos limita su intersección con temas de derechos o sociedad más amplios.",
+          "link": "http://www.euronews.com/video/2026/01/02/new-year-festivities-set-the-stage-for-afcon-round-of-16",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "b46d3fcb",
+          "titulo": "El primer alcalde musulmán de Nueva York jura el cargo",
+          "proximidad": 90.0,
+          "sesgo": "Alta Intersección: La inauguración del primer alcalde musulmán de Nueva York es un evento significativo que intersecta con temas de diversidad, inclusión, política y representación religiosa. Este evento resuena ampliamente debido a su importancia simbólica y política.",
+          "link": "https://en.mercopress.com/2026/01/02/new-york-s-first-ever-muslim-mayor-sworn-in?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "La incertidumbre económica global, incluyendo el impacto de las políticas comerciales y las fluctuaciones del mercado, es un tema central que intersecta las narrativas de diferentes bloques.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "94654941",
+          "titulo": "Actualizaciones del mercado de valores y ganancias bancarias: Dow y S&P 500",
+          "proximidad": 75.0,
+          "sesgo": "Intersección moderada porque refleja preocupaciones generales sobre la salud del sector bancario y el impacto en los mercados, un tema recurrente a nivel global.",
+          "link": "https://www.cnn.com/business/live-news/stock-market-bank-earnings/index.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "fe16a149",
+          "titulo": "El sector de la aviación en A.P. listo para despegar con la prueba de validación de vuelo del aeropuerto de Bhogapuram el 4 de enero",
+          "proximidad": 20.0,
+          "sesgo": "Alto aislamiento porque se enfoca en un proyecto de infraestructura local específico en India, sin conexión directa con las preocupaciones económicas globales más amplias.",
+          "link": "https://www.thehindu.com/news/national/andhra-pradesh/aviation-sector-to-take-wings-in-ap-as-bhogapuram-airport-all-set-for-flight-validation-test-on-january-4/article70462753.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "561e2710",
+          "titulo": "El gasto minorista cayó en marzo cuando los consumidores se retraen",
+          "proximidad": 80.0,
+          "sesgo": "Alta intersección porque la caída en el gasto minorista es un indicador clave de la desaceleración económica, un tema de interés global que afecta a múltiples bloques.",
+          "link": "https://www.cnn.com/2023/04/14/economy/march-retail-sales/index.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "35a3b53d",
+          "titulo": "¿Justo o sucio? Malasia lucha por digerir su pacto comercial con Estados Unidos",
+          "proximidad": 65.0,
+          "sesgo": "Intersección moderada porque aborda las tensiones comerciales bilaterales y el impacto de los acuerdos comerciales en las economías locales, un tema relevante para varios bloques.",
+          "link": "https://www.scmp.com/week-asia/economics/article/3338562/fair-or-foul-malaysia-struggles-stomach-its-us-trade-pact?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "8552e004",
+          "titulo": "China anuncia cuotas de importación de carne de res",
+          "proximidad": 70.0,
+          "sesgo": "Intersección moderada porque las políticas comerciales de China y sus cuotas de importación tienen un impacto significativo en los exportadores de carne de res en América Latina y otros lugares.",
+          "link": "https://en.mercopress.com/2026/01/02/china-announces-beef-import-quotas?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "fb84aa30",
+          "titulo": "Consejos de última hora para la declaración de impuestos",
+          "proximidad": 40.0,
+          "sesgo": "Aislamiento moderado porque se centra en aspectos específicos de la presentación de impuestos en Estados Unidos, aunque el impacto de las políticas fiscales puede tener ramificaciones económicas más amplias.",
+          "link": "https://www.cnn.com/2023/04/13/success/tax-filing-tips/index.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "03ec83ca",
+          "titulo": "Estados Unidos necesita guerreros económicos",
+          "proximidad": 85.0,
+          "sesgo": "Alta intersección porque la competencia económica entre Estados Unidos y China es un tema global clave que afecta las estrategias y políticas de muchos países.",
+          "link": "https://www.foreignaffairs.com/united-states/america-needs-economic-warriors",
+          "bloque": "USA"
+        },
+        {
+          "id": "9be0fcfe",
+          "titulo": "El colapso de Silicon Valley Bank renueva los llamados para abordar las disparidades que impactan a los empresarios de color",
+          "proximidad": 60.0,
+          "sesgo": "Intersección moderada porque, aunque se centra en un evento específico en Estados Unidos, el tema de la equidad y el acceso al financiamiento para grupos subrepresentados es relevante a nivel global.",
+          "link": "https://www.cnn.com/2023/04/13/business/silicon-valley-bank-entrepreneurs-of-color-reaj/index.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "599788ee",
+          "titulo": "Tesla pierde el puesto como principal vendedor mundial de vehículos eléctricos frente a la china BYD",
+          "proximidad": 75.0,
+          "sesgo": "Intersección moderada porque la competencia en el mercado de vehículos eléctricos y el liderazgo de China en este sector son temas relevantes para la economía global y la transición energética.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/chktesla-loses-place-as-worlds-top-electric-vehicle-seller-to-chinas-byd?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "9044fdf1",
+          "titulo": "El aumento de los viajes señala un 'fuerte comienzo' para el turismo",
+          "proximidad": 50.0,
+          "sesgo": "Intersección moderada porque, si bien se centra en el turismo en China, la recuperación del sector turístico es un indicador económico importante a nivel global.",
+          "link": "http://www.ecns.cn/travel/2026-01-02/detail-iheymvap1611538.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "e4ae4811",
+          "titulo": "El gobierno aprueba 22 proyectos de piezas electrónicas con una inversión de 42.000 millones de rupias",
+          "proximidad": 30.0,
+          "sesgo": "Aislamiento moderado porque se enfoca en inversiones específicas en la fabricación de componentes electrónicos en India, aunque la autosuficiencia en la producción de componentes tiene implicaciones económicas más amplias.",
+          "link": "https://timesofindia.indiatimes.com/business/india-business/govt-clears-22-electronics-parts-projects-at-rs-42000-crore-investment/articleshow/126315424.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "075c089a",
+          "titulo": "Nueve eventos que definieron los viajes de negocios en 2025",
+          "proximidad": 55.0,
+          "sesgo": "Intersección moderada porque las disrupciones en los viajes de negocios, como las tarifas de Trump y el caos de las visas, tienen un impacto en el comercio y la economía global.",
+          "link": "https://africa.com/nine-events-that-defined-business-travel-in-2025/",
+          "bloque": "AFRICA"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "El avance y regulación de la inteligencia artificial (IA), incluyendo su impacto en el desarrollo de fármacos y el mercado laboral, así como la gestión de contenidos en plataformas de redes sociales.",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "id": "9ec5f2fe",
+          "titulo": "In China, A.I. Finds Pancreatic Cancer That Doctors May Miss",
+          "proximidad": 60.0,
+          "sesgo": "Ligeramente aislado. Aunque la IA en la medicina es un tema global, el enfoque específico en China y el cáncer de páncreas le da un sesgo geográfico y de aplicación particular.",
+          "link": "https://www.nytimes.com/2026/01/02/world/asia/china-ai-cancer-pancreatic.html",
+          "bloque": "USA"
+        },
+        {
+          "id": "04d8913d",
+          "titulo": "Google ex-CEO Eric Schmidt: What I did my whole early life has been wiped off by…",
+          "proximidad": 85.0,
+          "sesgo": "Intersectado. El impacto de la IA en el mercado laboral y el potencial de la AGI (Artificial General Intelligence) son temas centrales en el debate global sobre IA.",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "71bf36fc",
+          "titulo": "China’s biopharma sector ‘in prime position to challenge US leadership’",
+          "proximidad": 70.0,
+          "sesgo": "Parcialmente intersectado. El desarrollo de la biotecnología y la innovación farmacéutica son temas globales, pero la competencia entre China y EE.UU. añade un sesgo geopolítico.",
+          "link": "https://www.scmp.com/news/china/science/article/3338481/chinas-biopharma-sector-prime-position-challenge-us-leadership?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "eb69d308",
+          "titulo": "Govt directs X to remove all obscene, unlawful content",
+          "proximidad": 75.0,
+          "sesgo": "Intersectado. La regulación de contenidos en redes sociales, especialmente los generados por IA como Grok, es un tema de debate global sobre libertad de expresión y seguridad online.",
+          "link": "https://timesofindia.indiatimes.com/india/govt-directs-x-to-remove-all-obscene-unlawful-content/articleshow/126312921.cms",
+          "bloque": "INDIA"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "La necesidad de abordar los desafíos climáticos y avanzar en la digitalización en el sector energético y minero africano, con un enfoque en la colaboración y la inversión.",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "id": "eaef94ee",
+          "titulo": "El imperativo minero de África: Abordar el riesgo climático y la digitalización en 2026",
+          "proximidad": 75.0,
+          "sesgo": "Se intersecta con la narrativa general al destacar la importancia de abordar el riesgo climático y la digitalización en el sector minero africano. Sin embargo, se aísla al enfocarse específicamente en el papel de la consultora dss+ y su participación en el evento Investing in African Mining Indaba 2026.",
+          "link": "https://africa.com/africas-mining-imperative-tackling-climate-risk-and-digitalisation-in-2026/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "0e69af7b",
+          "titulo": "Africa Energy Indaba 2026 atrae a los Ministros de Energía de África para dar forma a la política y desbloquear oportunidades de inversión multimillonarias",
+          "proximidad": 80.0,
+          "sesgo": "Está altamente intersectado al destacar la importancia de la inversión y la política energética en África, con la participación de ministros clave. Se diferencia ligeramente al enfocarse en el evento Africa Energy Indaba 2026 como catalizador específico para estas iniciativas.",
+          "link": "https://africa.com/africa-energy-indaba-2026-attracts-africas-energy-ministers-to-shape-policy-and-unlock-multi-billion-dollar-investment-opportunities/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "38bace52",
+          "titulo": "La capacidad total del lago Powell se está reduciendo, según un informe",
+          "proximidad": 20.0,
+          "sesgo": "Está aislado porque se centra en la disminución de la capacidad de almacenamiento del lago Powell debido a la sequía y la sedimentación, un problema específico de los recursos hídricos en los Estados Unidos, que no está directamente relacionado con el enfoque en la energía y los recursos en África.",
+          "link": "https://www.cnn.com/2022/03/21/us/lake-powell-capacity-shrinking-drought-climate/index.html",
+          "bloque": "USA"
+        }
+      ]
+    }
+  ]
+}

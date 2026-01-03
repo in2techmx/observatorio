@@ -1,0 +1,806 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "El conflicto en Ucrania continúa siendo un punto álgido, con ataques y contraataques entre Rusia y Ucrania, afectando a civiles e infraestructura. Además, tensiones regionales incrementan en diversas zonas del mundo, incluyendo disputas territoriales y preocupaciones sobre la estabilidad regional.",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "2cd08ab1",
+          "titulo": "Impedido de entrar a Jama Masjid, sermón online de Mirwaiz llama al 'diálogo sobre Cachemira'",
+          "proximidad": 60.0,
+          "sesgo": "La noticia se centra en la perspectiva de un líder religioso de Cachemira, reflejando un punto de vista regional específico sobre el conflicto en la región, buscando diálogo en una situación de tensión.",
+          "link": "https://www.thehindu.com/news/national/jammu-and-kashmir/barred-from-jama-masjid-mirwaizs-online-sermon-calls-for-dialogue-on-kashmir/article70464929.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "d1561902",
+          "titulo": "NIA traslada a un acusado de explosión en Delhi a Cachemira, escanea zona forestal en Shopian",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre acciones de la Agencia Nacional de Investigación (NIA) en relación con un caso de explosión, mostrando la actividad antiterrorista en la región de Cachemira.",
+          "link": "https://www.thehindu.com/news/national/nia-shifts-a-delhi-blast-accused-to-kashmir-scans-forest-area-in-shopian/article70465016.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "15a12c4b",
+          "titulo": "Fuerzas respaldadas por Arabia Saudita lanzan ofensiva contra el STC de Yemen",
+          "proximidad": 75.0,
+          "sesgo": "Reporta sobre la ofensiva de fuerzas respaldadas por Arabia Saudita contra el Consejo de Transición del Sur (STC) en Yemen, mostrando un aspecto del conflicto regional y la intervención saudí.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/saudi-backed-forces-launch-offensive-against-yemens-stc?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "d6b03c76",
+          "titulo": "Putin autoriza el llamado de reservistas militares para proteger la infraestructura crítica",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre una medida de Rusia para fortalecer la seguridad de su infraestructura, un hecho concreto pero que puede interpretarse dentro de un contexto de crecientes tensiones geopolíticas.",
+          "link": "https://www.themoscowtimes.com/2025/12/30/putin-authorizes-call-up-of-military-reservists-to-guard-critical-infrastructure-a91590",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "067ef963",
+          "titulo": "La policía de Punjab sospecha de la mano del ISI en la explosión de Himachal Pradesh; BKI, PSA lo reconocen",
+          "proximidad": 65.0,
+          "sesgo": "La noticia presenta sospechas sobre la implicación de agencias de inteligencia en un incidente, lo que refleja una perspectiva específica de la policía de Punjab.",
+          "link": "https://timesofindia.indiatimes.com/india/punjab-police-suspect-isi-hand-in-himachal-pradesh-blast-bki-psa-own-up-to-it/articleshow/126313007.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "5a4204e0",
+          "titulo": "El Ministerio de Defensa rechaza las críticas sobre los simulacros alrededor de Taiwán",
+          "proximidad": 70.0,
+          "sesgo": "La noticia presenta la postura del Ministerio de Defensa chino sobre los ejercicios militares alrededor de Taiwán, rechazando las críticas y justificando las acciones como disuasión contra la independencia taiwanesa.",
+          "link": "http://www.ecns.cn/news/military/2026-01-02/detail-iheymvap1611513.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "deec6de5",
+          "titulo": "Finlandia incauta un buque de carga sospechoso de dañar un cable submarino",
+          "proximidad": 85.0,
+          "sesgo": "Reporta un incidente específico que involucra a Finlandia y un buque sospechoso, lo que contribuye a la narrativa general de tensiones y seguridad en la región del Mar Báltico.",
+          "link": "https://www.themoscowtimes.com/2026/01/01/finland-seizes-cargo-ship-suspected-of-damaging-undersea-cable-a91598",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "c75c2325",
+          "titulo": "¿Quién es Christian Sturdivant? Adolescente inspirado por ISIS capturado por el FBI antes de que pudiera llevar a cabo un 'ataque terrorista' en Carolina del Norte en la víspera de Año Nuevo",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre la detención de un individuo acusado de planear un ataque terrorista, lo que refleja la amenaza continua del terrorismo interno.",
+          "link": "https://timesofindia.indiatimes.com/world/us/who-is-christian-sturdivant-isis-inspired-teen-captured-by-fbi-before-he-could-pull-off-a-terrorist-attack-in-north-carolina-on-new-years-eve/articleshow/126311946.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "dd7734c4",
+          "titulo": "Estos son los grupos en conflicto que controlan territorio en Yemen",
+          "proximidad": 75.0,
+          "sesgo": "Presenta un resumen de los diferentes grupos que compiten por el territorio en Yemen, ofreciendo una visión general del conflicto en curso.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/these-are-the-competing-groups-controlling-territory-in-yemen?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "7f41abd6",
+          "titulo": "El alto el fuego hizo lo que debía hacer: hacer invisible a Gaza",
+          "proximidad": 55.0,
+          "sesgo": "La noticia expresa una opinión sobre el alto el fuego en Gaza, sugiriendo que simplemente oculta la situación real en lugar de resolverla.",
+          "link": "https://www.aljazeera.com/opinions/2026/1/2/the-ceasefire-did-what-it-was-meant-to-do-make-gaza-invisible?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "7b05b52e",
+          "titulo": "Ros Atkins sobre... los vínculos entre los EAU y Sudán",
+          "proximidad": 65.0,
+          "sesgo": "Sugiere una conexión específica entre los EAU y el conflicto en Sudán, lo que puede reflejar una perspectiva regional particular.",
+          "link": "https://www.bbc.com/news/videos/cly5p1vkm39o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "2fe881ec",
+          "titulo": "Los ataques terroristas de Ucrania contra Rusia podrían verse como un 'suicidio' para Kiev — Ritter",
+          "proximidad": 40.0,
+          "sesgo": "La noticia refleja la opinión de una fuente que describe los ataques de Ucrania como contraproducentes, lo que representa una perspectiva pro-rusa.",
+          "link": "https://tass.com/world/2067873",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "044539b6",
+          "titulo": "Dos personas confirmadas muertas mientras las protestas en Irán se convierten en 'campo de batalla'",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre protestas y enfrentamientos en Irán, reflejando disturbios internos y tensiones políticas.",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/two-people-dead-iran-economic-crisis-protests-battlefield",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "9797961e",
+          "titulo": "Rusia no tiene intención de atacar a la OTAN, dice el jefe de espías estonio",
+          "proximidad": 80.0,
+          "sesgo": "La noticia cita a un funcionario de inteligencia estonio que evalúa las intenciones de Rusia, proporcionando una perspectiva específica sobre la seguridad regional.",
+          "link": "https://www.themoscowtimes.com/2025/12/29/russia-has-no-intention-of-attacking-nato-estonian-spy-chief-says-a91571",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "dc08ff9c",
+          "titulo": "La política de La Haya de apoyar a Kiev conduce a su profunda participación en el conflicto — diplomático",
+          "proximidad": 45.0,
+          "sesgo": "La noticia presenta la opinión de un diplomático que critica el apoyo de los Países Bajos a Ucrania, reflejando una perspectiva pro-rusa.",
+          "link": "https://tass.com/politics/2067871",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "18841d8b",
+          "titulo": "Acceso turístico a Margan Top, Chauhar Nag, Sinthan Top de Cachemira prohibido por seguridad",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre restricciones al acceso turístico en Cachemira debido a preocupaciones de seguridad, lo que indica una situación de tensión en la región.",
+          "link": "https://www.thehindu.com/news/national/jammu-and-kashmir/tourist-access-to-kashmirsmargan-top-chauhar-nag-sinthan-top-banned-over-security/article70464816.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "77ec06d9",
+          "titulo": "Países Bajos se preparan para la militarización en 2025 — Embajador ruso",
+          "proximidad": 40.0,
+          "sesgo": "La noticia presenta la perspectiva del embajador ruso sobre la militarización de los Países Bajos, lo que refleja una visión crítica y sesgada.",
+          "link": "https://tass.com/politics/2067717",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "4e2c518a",
+          "titulo": "'Sepa dónde apuntar': Irán advierte a Trump sobre amenaza; violentas protestas sacuden Teherán",
+          "proximidad": 60.0,
+          "sesgo": "La noticia informa sobre tensiones entre Irán y Estados Unidos, así como sobre protestas internas en Irán, lo que refleja una situación de inestabilidad.",
+          "link": "https://timesofindia.indiatimes.com/world/middle-east/know-where-to-aim-iran-warns-trump-over-threat-violent-protests-rock-tehran/articleshow/126310526.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "04a79706",
+          "titulo": "Los accidentes de aviones de la Marina de EE. UU. ofrecen lecciones para las operaciones de portaaviones del EPL, dicen los analistas",
+          "proximidad": 75.0,
+          "sesgo": "Analiza las lecciones que el ejército chino puede aprender de los accidentes de la Marina de EE. UU., lo que puede reflejar una perspectiva centrada en la competencia militar.",
+          "link": "https://www.scmp.com/news/china/military/article/3338480/us-navy-aircraft-crashes-offer-lessons-pla-carrier-operations-analysts-say?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "b505c16e",
+          "titulo": "Nuevo estado de emergencia declarado en Ecuador tras una matanza masiva",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre una medida gubernamental en respuesta a la violencia, lo que indica problemas de seguridad interna.",
+          "link": "https://en.mercopress.com/2026/01/02/new-state-of-emergency-declared-in-ecuador-after-mass-killing?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "f3adbea3",
+          "titulo": "Afcon 2025: Los futbolistas de Sudán se abren sobre la guerra civil del país",
+          "proximidad": 60.0,
+          "sesgo": "La noticia presenta una perspectiva personal sobre la guerra civil en Sudán a través de las experiencias de los futbolistas, reflejando el impacto del conflicto en la sociedad.",
+          "link": "https://www.bbc.com/sport/football/articles/cm2vjy3gvl1o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "457b34c4",
+          "titulo": "Las autoridades estadounidenses arrestan a un joven de 18 años acusado de planear un ataque inspirado en ISIL",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre un caso de terrorismo interno en Estados Unidos, lo que refleja la amenaza continua del extremismo.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/us-authorities-arrest-18-year-old-accused-of-plotting-isil-inspired-attack?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "318933b1",
+          "titulo": "La actividad de la OTAN en las fronteras de Rusia y Bielorrusia está cargada de un choque militar directo — enviado",
+          "proximidad": 40.0,
+          "sesgo": "La noticia presenta la opinión de un enviado ruso sobre la actividad de la OTAN, lo que refleja una perspectiva crítica y sesgada.",
+          "link": "https://tass.com/politics/2067743",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "59c9ff19",
+          "titulo": "La refinería de petróleo Syzran de Rusia atacada en un ataque nocturno con drones ucranianos – Informes",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre un ataque específico en territorio ruso, lo que contribuye a la narrativa general del conflicto en curso.",
+          "link": "https://www.themoscowtimes.com/2025/12/28/russias-syzran-oil-refinery-targeted-in-overnight-ukrainian-drone-strike-reports-a91566",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "efe42e20",
+          "titulo": "La policía portará rifles de largo alcance en la prueba final de Ashes en Sydney en medio de una mayor seguridad después del ataque de Bondi",
+          "proximidad": 80.0,
+          "sesgo": "Informa sobre medidas de seguridad reforzadas en respuesta a un ataque, lo que indica preocupaciones sobre la seguridad pública.",
+          "link": "https://www.theguardian.com/australia-news/2026/jan/03/police-to-carry-long-arm-rifles-final-ashes-test-sydney-heightened-security-after-bondi-attack-ntwnfb",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "733df3cb",
+          "titulo": "Drones ucranianos atacan sitios de energía y hogares en toda Rusia, dicen funcionarios",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre ataques específicos en territorio ruso, lo que contribuye a la narrativa general del conflicto en curso.",
+          "link": "https://www.themoscowtimes.com/2025/12/31/ukrainian-drones-strike-energy-sites-and-homes-across-russia-officials-say-a91592",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "bff3a1c1",
+          "titulo": "El jefe de la ONU preocupado por el creciente número de víctimas civiles en el conflicto de Ucrania — portavoz",
+          "proximidad": 90.0,
+          "sesgo": "Expresa la preocupación de la ONU sobre el impacto del conflicto en los civiles, lo que refleja una posición neutral y humanitaria.",
+          "link": "https://tass.com/world/2067815",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "4e34b5bd",
+          "titulo": "El ejército ruso obtiene las mayores ganancias territoriales en 2025 desde el primer año de la invasión a gran escala",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre las ganancias territoriales rusas en Ucrania, lo que contribuye a la narrativa general del conflicto en curso.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russian-army-makes-biggest-territorial-gains-in-2025-since-first-year-of-full-scale-invasion-a91601",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "17beffb5",
+          "titulo": "¿Se acercó un caza furtivo del EPL a una base aérea clave de Taiwán? Un nuevo video genera debate",
+          "proximidad": 65.0,
+          "sesgo": "Informa sobre un incidente militar cerca de Taiwán, lo que puede reflejar una perspectiva centrada en la competencia militar.",
+          "link": "https://www.scmp.com/news/china/military/article/3338548/did-pla-stealth-fighter-approach-key-taiwan-airbase-new-video-sparks-debate?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "0808ced2",
+          "titulo": "Guerra Rusia-Ucrania: Lista de eventos clave, día 1.409",
+          "proximidad": 90.0,
+          "sesgo": "Proporciona un resumen de los eventos clave en la guerra de Ucrania, lo que refleja una posición informativa y neutral.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/russia-ukraine-war-list-of-key-events-day-1409?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "0dcb32eb",
+          "titulo": "Milei otorga poderes controvertidos a los agentes de inteligencia",
+          "proximidad": 70.0,
+          "sesgo": "Informa sobre una medida gubernamental en Argentina que genera controversia, lo que indica posibles tensiones políticas internas.",
+          "link": "https://en.mercopress.com/2026/01/02/milei-grants-controversial-powers-to-intelligence-agents?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "b50dd492",
+          "titulo": "El número de muertos por el ataque con drones de Ucrania en la aldea de Khorly en la región de Kherson asciende a 28",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre un ataque específico en territorio ucraniano, lo que contribuye a la narrativa general del conflicto en curso.",
+          "link": "https://tass.com/emergencies/2067823",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "05586621",
+          "titulo": "Trump ordena a la empresa HieFo, vinculada a China, que se deshaga de los activos de chips de EE. UU., citando la seguridad nacional",
+          "proximidad": 75.0,
+          "sesgo": "Informa sobre una medida gubernamental relacionada con la seguridad nacional y las relaciones comerciales entre Estados Unidos y China.",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "0a707cae",
+          "titulo": "Intento de golpe de Estado en Benín: La gente sintió 'miedo total' cuando los soldados intentaron derrocar al presidente",
+          "proximidad": 85.0,
+          "sesgo": "Informa sobre un evento específico que amenaza la estabilidad política en Benín.",
+          "link": "https://www.bbc.com/news/videos/c9qenv20lq5o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "dffe931e",
+          "titulo": "Kallas quiere que la UE entre en guerra con Rusia y China — Dmitriev",
+          "proximidad": 30.0,
+          "sesgo": "La noticia presenta la opinión de una fuente que atribuye intenciones beligerantes a un líder europeo, lo que refleja una perspectiva sesgada y polarizada.",
+          "link": "https://tass.com/politics/2067861",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "f1acad31",
+          "titulo": "EE. UU. socava la paz y la estabilidad al vender armas a Taiwán — Embajador de China en Rusia",
+          "proximidad": 40.0,
+          "sesgo": "La noticia presenta la opinión del embajador chino sobre la venta de armas a Taiwán, lo que refleja una perspectiva crítica y sesgada.",
+          "link": "https://tass.com/world/2067875",
+          "bloque": "RUSSIA"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "China busca la reunificación pacífica con Taiwán, mientras realiza ejercicios militares. Estados Unidos y Japón refuerzan su alianza ante la tensión en la región, aunque Corea del Sur busca el diálogo con China.",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "id": "a3d5d302",
+          "titulo": "El público chino se muestra más favorable a EE. UU. aunque sigue apoyando la postura comercial de Pekín, según una encuesta.",
+          "proximidad": 65.0,
+          "sesgo": "Si bien indica un aumento en la favorabilidad hacia EE.UU., la noticia matiza que el apoyo a la postura comercial de China se mantiene fuerte, lo que sugiere una visión compleja y no un alineamiento total con EE.UU.",
+          "link": "https://www.scmp.com/news/china/diplomacy/article/3338550/chinese-public-warms-us-while-strongly-backing-beijings-trade-stance-survey?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "ecc7d78a",
+          "titulo": "Las tensiones entre Arabia Saudita y los Emiratos Árabes Unidos por el futuro de Yemen llegan a un punto de ebullición.",
+          "proximidad": 70.0,
+          "sesgo": "Informa de una disputa regional importante, sin tomar partido por ninguna de las facciones. La noticia se centra en los hechos, evitando la propaganda.",
+          "link": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "c508632e",
+          "titulo": "Resultados de las elecciones en Guinea: El general Mamady Doumbouya gana la presidencia por aplastante mayoría.",
+          "proximidad": 90.0,
+          "sesgo": "Es un reporte directo de resultados electorales, un hecho fácilmente verificable y por tanto cercano al consenso general. No implica apoyo o crítica al resultado.",
+          "link": "https://www.bbc.com/news/articles/cx2520nyp8yo?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "3bdbd357",
+          "titulo": "Varios países exigen a Israel que levante las restricciones a la ayuda a Gaza mientras los palestinos sufren.",
+          "proximidad": 75.0,
+          "sesgo": "La noticia presenta una demanda internacional, un hecho objetivo. Sin embargo, al centrarse en el sufrimiento palestino, puede reflejar una perspectiva más crítica hacia Israel, aunque no abiertamente parcial.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/countries-demand-israel-lift-gaza-aid-restrictions-as-palestinians-suffer?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "7fc3c974",
+          "titulo": "Noticia de fuente rusa, contenido ilegible.",
+          "proximidad": 0.0,
+          "sesgo": "El contenido es ilegible, lo que impide determinar su proximidad al consenso o su posible sesgo.",
+          "link": "https://tass.com/world/2067865",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "f8f461bc",
+          "titulo": "Funcionarios iraníes advierten a Trump sobre una línea roja tras su amenaza de 'rescatar' a los manifestantes.",
+          "proximidad": 60.0,
+          "sesgo": "Reporta una confrontación retórica entre Irán y EE.UU. El tono de advertencia de Irán sugiere una postura defensiva y potencialmente sesgada contra la intervención estadounidense.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/iranian-officials-warn-trump-not-cross-red-line-threats-intervene-protests",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "5e857708",
+          "titulo": "El líder de la oposición, Suvendu Adhikari, califica a Bengala Occidental como una 'patria hindú bengalí'.",
+          "proximidad": 40.0,
+          "sesgo": "La declaración del líder opositor es divisiva y refleja una ideología específica. La referencia a 'patria hindú' puede ser vista como excluyente y polarizadora.",
+          "link": "https://www.thehindu.com/news/national/west-bengal/lop-suvendu-adhikari-calls-west-bengal-a-bengali-hindu-homeland/article70464773.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "ae057e11",
+          "titulo": "Malí y Burkina Faso anuncian la prohibición de viajar a ciudadanos estadounidenses en una medida de reciprocidad.",
+          "proximidad": 80.0,
+          "sesgo": "Informa de una acción diplomática de represalia. La medida en sí es un hecho, aunque la motivación subyacente podría estar relacionada con tensiones políticas.",
+          "link": "https://www.bbc.com/news/articles/cgrdjx1d1vjo?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "7b3025f0",
+          "titulo": "Expertos dicen que los términos de EE. UU. 'adaptarse, reducirse o morir' para un fondo de ayuda de $2 mil millones significarán que la ONU se doblegará ante Washington.",
+          "proximidad": 55.0,
+          "sesgo": "La noticia presenta una crítica a la política de ayuda estadounidense y su impacto en la ONU. La frase 'adaptarse, reducirse o morir' sugiere una imposición de condiciones y una posible pérdida de independencia de la ONU.",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "2640a4b0",
+          "titulo": "China continental promete una integración más profunda a través del Estrecho en un mensaje de 2026.",
+          "proximidad": 60.0,
+          "sesgo": "Refleja la postura oficial de China sobre Taiwán. La promesa de 'integración' sugiere una visión favorable a la reunificación, lo que puede ser controvertido desde la perspectiva de Taiwán.",
+          "link": "http://www.ecns.cn/news/politics/2026-01-02/detail-iheymvap1611514.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "ddcd490f",
+          "titulo": "La visita de Lee, de Corea del Sur, a China 'impulsará la desnuclearización y el fin de la prohibición cultural'.",
+          "proximidad": 70.0,
+          "sesgo": "Informa de objetivos diplomáticos específicos. La noticia sugiere una intención de mejorar las relaciones y resolver problemas pendientes, aunque el éxito de estas gestiones está por verse.",
+          "link": "https://www.scmp.com/news/china/diplomacy/article/3338558/china-state-visit-south-koreas-lee-will-push-denuclearisation-end-culture-ban?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "734f875a",
+          "titulo": "Vladimir Putin utiliza el discurso de Año Nuevo para unir a los rusos en torno a la guerra.",
+          "proximidad": 30.0,
+          "sesgo": "El discurso de Putin busca proyectar unidad y apoyo a la guerra en Ucrania, lo que representa una visión parcial y propagandística del conflicto. Ignora las voces disidentes y las críticas internas.",
+          "link": "https://www.themoscowtimes.com/2025/12/31/vladimir-putin-uses-new-years-address-to-rally-russians-around-war-a91594",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "28e343a0",
+          "titulo": "División diplomática de China: alfombra roja para Corea del Sur, trato frío para las empresas japonesas.",
+          "proximidad": 70.0,
+          "sesgo": "La noticia describe una diferencia en el trato diplomático, un hecho observable. Sin embargo, implica que las tensiones geopolíticas influyen en las relaciones comerciales.",
+          "link": "https://www.scmp.com/economy/global-economy/article/3338540/chinas-diplomatic-divide-red-carpet-south-korea-cold-shoulder-japanese-firms?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "f2f6ba32",
+          "titulo": "Pekín se compromete con 'la mayor sinceridad' a seguir impulsando la reunificación pacífica con Taiwán.",
+          "proximidad": 50.0,
+          "sesgo": "La promesa de 'reunificación pacífica' es una declaración de intenciones, pero la sinceridad de este compromiso es cuestionable dada la actividad militar china en la región. La noticia refleja la narrativa oficial de China.",
+          "link": "https://www.scmp.com/news/china/politics/article/3338545/beijing-pledges-utmost-sincerity-continue-push-reunite-peacefully-taiwan?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "f735fd8f",
+          "titulo": "Ahora, Pakistán respalda la afirmación de China de que medió durante la Operación Sindoor.",
+          "proximidad": 40.0,
+          "sesgo": "La noticia presenta una afirmación disputada, ya que la mediación de China en la 'Operación Sindoor' (asumiendo que se refiere a un conflicto específico) no es un hecho universalmente reconocido. El respaldo de Pakistán refuerza esta perspectiva, pero no la convierte en un consenso.",
+          "link": "https://timesofindia.indiatimes.com/india/now-pakistan-backs-chinas-claim-that-it-mediated-during-op-sindoor/articleshow/126315343.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "3cf57ff8",
+          "titulo": "Xi Jinping se compromete a reunificar China y Taiwán en el discurso de Nochevieja.",
+          "proximidad": 50.0,
+          "sesgo": "Similar a otras noticias sobre Taiwán, refleja la postura oficial china. El compromiso de 'reunificación' es una declaración política controvertida y no un hecho objetivo.",
+          "link": "https://www.theguardian.com/world/2025/dec/31/xi-jinping-vows-reunification-china-taiwan-new-years-eve-speech",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "46e5e35b",
+          "titulo": "La Asamblea de Telangana aprueba una resolución para la restauración de la Ley MGNREG.",
+          "proximidad": 85.0,
+          "sesgo": "Informa de una acción legislativa a nivel regional. La resolución y sus motivaciones son hechos verificables, aunque su impacto real depende de la respuesta del gobierno central.",
+          "link": "https://www.thehindu.com/news/national/telangana/telangana-assembly-adopts-resolution-for-restoration-of-mgnreg-act/article70464985.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "10fb18a8",
+          "titulo": "¿Influyó Tony Blair en el juicio de soldados del Reino Unido acusados de matar a un iraquí?",
+          "proximidad": 65.0,
+          "sesgo": "Plantea una pregunta sobre posible influencia política en un proceso judicial. La naturaleza acusatoria de la pregunta sugiere una postura crítica hacia Blair y su gobierno.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/did-tony-blair-influence-trial-of-uk-soldiers-accused-of-killing-iraqi-man?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "c24bdc2e",
+          "titulo": "Las embajadas de EE. UU. tienen la tarea de monitorear las políticas migratorias de América Latina.",
+          "proximidad": 75.0,
+          "sesgo": "Informa de una directiva del Departamento de Estado de EE. UU. que implica una mayor vigilancia de las políticas migratorias en la región. Esto puede ser interpretado como una postura más dura de EE. UU. hacia la inmigración.",
+          "link": "https://en.mercopress.com/2025/12/31/us-embassies-tasked-with-monitoring-latin-america-s-migration-policies?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "656c02cf",
+          "titulo": "Trump se reunirá con el enviado de EE. UU. a China después de la llamada con el primer ministro de Japón, Takaichi, al concluir los ejercicios de Taiwán.",
+          "proximidad": 70.0,
+          "sesgo": "Informa de actividades diplomáticas en un contexto de tensión regional. La coordinación con Japón y la reunión con el enviado a China sugieren un intento de equilibrar la política de EE. UU. en la región.",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338582/trump-meet-us-envoy-perdue-after-call-japans-takaichi-taiwan-drills-conclude?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "4109e50b",
+          "titulo": "Los separatistas yemeníes planean celebrar una votación de independencia dentro de dos años.",
+          "proximidad": 60.0,
+          "sesgo": "Informa de una iniciativa separatista. La noticia no juzga la legitimidad de la aspiración a la independencia, pero su mera mención puede ser vista como un apoyo implícito.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/saudi-warplanes-kill-uae-backed-yemeni-separatists",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "51de03b4",
+          "titulo": "El año de África en la política: golpes de estado, elecciones y protestas.",
+          "proximidad": 80.0,
+          "sesgo": "Ofrece una visión general de la situación política en África, señalando eventos importantes. El tono general es informativo, sin tomar partido por ninguna facción en particular.",
+          "link": "https://www.bbc.com/news/articles/c1lr70jg2zgo?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "a6b64b2a",
+          "titulo": "Somalilandia: ¿Por qué Israel ha reconocido al estado africano separatista como independiente?",
+          "proximidad": 65.0,
+          "sesgo": "Plantea una pregunta sobre el reconocimiento de Somalilandia por parte de Israel. El reconocimiento en sí es un hecho, pero las motivaciones detrás de él son objeto de especulación.",
+          "link": "https://www.bbc.com/news/articles/c14v4kmg275o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "En 2026, la economía global se enfrenta a una reconfiguración con China emergiendo como un actor central. Se observa una creciente competencia en el sector de vehículos eléctricos y tensiones económicas internas en algunas regiones.",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "cf3892ea",
+          "titulo": "(W.E. Talk) ¿Por qué el mundo necesita a China más que nunca en 2026?",
+          "proximidad": 80.0,
+          "sesgo": "Resalta la importancia de China como estabilizador del orden internacional, reflejando la perspectiva china sobre su rol global.",
+          "link": "http://www.ecns.cn/cns-wire/2026-01-02/detail-iheymvap1610669.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "7e61593b",
+          "titulo": "ED arresta a un oficial de IAS de Gujarat en un caso de lavado de dinero vinculado a sobornos",
+          "proximidad": 20.0,
+          "sesgo": "Noticia local sobre corrupción en India. No tiene relación directa con las tendencias económicas globales dominantes.",
+          "link": "https://www.thehindu.com/news/national/gujarat/ed-arrests-ias-officer-from-gujarat-in-bribery-linked-money-laundering-case/article70464923.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "3b0562ad",
+          "titulo": "BYD de China supera a Tesla como el mayor vendedor mundial de coches eléctricos",
+          "proximidad": 90.0,
+          "sesgo": "Informa sobre el cambio en el liderazgo del mercado de vehículos eléctricos, un hecho concreto con implicaciones globales, aunque minimiza el efecto Trump.",
+          "link": "https://www.theguardian.com/business/2026/jan/02/china-byd-tesla-worlds-biggest-electric-car-seller-elon-musk-donald-trump-ev",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "e565481b",
+          "titulo": "Presidente paraguayo destaca el crecimiento económico y la inflación del 3.1%",
+          "proximidad": 40.0,
+          "sesgo": "Se centra en datos macroeconómicos específicos de Paraguay, sin conexión evidente con las grandes tendencias globales más allá de la estabilidad regional.",
+          "link": "https://en.mercopress.com/2025/12/31/paraguayan-president-highlights-economic-growth-and-3.1-inflation?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "41c1fa4b",
+          "titulo": "(W.E. Talk) Expertos en 2026: El 15º Plan Quinquenal de China es significativo para el mundo",
+          "proximidad": 75.0,
+          "sesgo": "Subraya la influencia del plan quinquenal chino en la economía global, reflejando una perspectiva china sobre su impacto.",
+          "link": "http://www.ecns.cn/video/2026-01-02/detail-iheymvap1610658.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "b4585a74",
+          "titulo": "Desbloqueando la confianza, la transparencia y el comercio en África: Habilitando la AfCFTA y avanzando en la Agenda 2063",
+          "proximidad": 50.0,
+          "sesgo": "Se centra en el desarrollo del comercio intraafricano, un tema regional con relevancia global limitada en el contexto de las noticias más amplias.",
+          "link": "https://africa.com/unlocking-trust-transparency-and-trade-across-africa-enabling-the-afcfta-and-advancing-agenda-2063/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "b26def2e",
+          "titulo": "Líderes empresariales rusos piden a Putin que alivie la ola de nacionalizaciones",
+          "proximidad": 60.0,
+          "sesgo": "Informa sobre tensiones internas en Rusia debido a la política económica, un factor que influye en su rol en la economía global.",
+          "link": "https://www.themoscowtimes.com/2025/12/28/russian-business-leaders-ask-putin-to-ease-wave-of-nationalizations-kommersant-a91562",
+          "bloque": "RUSSIA"
+        },
+        {
+          "id": "0e34fff6",
+          "titulo": "Se prevé que China venda uno de cada 10 coches nuevos en el Reino Unido en 2025",
+          "proximidad": 85.0,
+          "sesgo": "Destaca la creciente presencia de marcas chinas en el mercado automotriz europeo, un indicador de la expansión económica china.",
+          "link": "https://www.theguardian.com/business/2025/dec/31/china-forecast-to-have-sold-one-in-every-10-new-cars-in-uk-in-2025",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "3930d7dd",
+          "titulo": "China debería intervenir más decisivamente para apuntalar el mercado inmobiliario: principal revista del partido",
+          "proximidad": 70.0,
+          "sesgo": "Refleja la preocupación interna en China sobre la estabilidad del mercado inmobiliario y las posibles medidas de intervención.",
+          "link": "https://www.scmp.com/economy/china-economy/article/3338537/china-should-intervene-more-decisively-shore-property-market-top-party-journal?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "8552e004",
+          "titulo": "China anuncia cuotas de importación de carne de res",
+          "proximidad": 65.0,
+          "sesgo": "Informa sobre la política comercial china en el sector cárnico y su impacto en diferentes países exportadores, con implicaciones para el comercio global.",
+          "link": "https://en.mercopress.com/2026/01/02/china-announces-beef-import-quotas?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "e4ae4811",
+          "titulo": "Gobierno aprueba 22 proyectos de partes electrónicas con una inversión de 42.000 millones de rupias",
+          "proximidad": 30.0,
+          "sesgo": "Noticia específica sobre inversión en el sector electrónico en India. No tiene un impacto directo en las tendencias económicas globales más amplias.",
+          "link": "https://timesofindia.indiatimes.com/business/india-business/govt-clears-22-electronics-parts-projects-at-rs-42000-crore-investment/articleshow/126315424.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "9fe05d55",
+          "titulo": "BYD de China destrona a Tesla como el principal fabricante de vehículos eléctricos en medio de la política de Musk y los problemas de créditos fiscales",
+          "proximidad": 95.0,
+          "sesgo": "Enfatiza la competencia entre BYD y Tesla, atribuyendo el cambio de liderazgo a factores políticos y económicos, lo que refleja una visión más completa.",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338573/tesla-dethroned-chinas-byd-worlds-top-ev-maker-amid-musks-politics-tax-credit-woes?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "a34b4a2b",
+          "titulo": "Bolivia levanta todas las restricciones a la importación de combustible",
+          "proximidad": 35.0,
+          "sesgo": "Se centra en la liberalización del mercado de combustibles en Bolivia, un tema regional con escasa relevancia global en el contexto de las noticias más amplias.",
+          "link": "https://en.mercopress.com/2025/12/31/bolivia-lifts-all-fuel-import-restrictions?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "7b867519",
+          "titulo": "La economía de Rusia en 2026: Más guerra, crecimiento más lento e impuestos más altos",
+          "proximidad": 70.0,
+          "sesgo": "Describe la situación económica en Rusia, afectada por la guerra y las sanciones, con implicaciones para la economía global.",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "bloque": "RUSSIA"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "China está impulsando la autosuficiencia tecnológica a través de adquisiciones en la industria de semiconductores y avances en la investigación de fusión nuclear. India, por su parte, se enfoca en regular el contenido en plataformas como X y en integrar la IA en la educación.",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "id": "04d8913d",
+          "titulo": "Ex-CEO de Google, Eric Schmidt: Lo que hice en mi juventud ha sido borrado por...",
+          "proximidad": 20.0,
+          "sesgo": "La noticia refleja la perspectiva individual de Eric Schmidt, sin un consenso claro sobre el impacto de la IA en su trabajo previo. Se considera un punto de vista aislado y no un hecho ampliamente aceptado.",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "d6998f1d",
+          "titulo": "El Gobierno ayudará a los profesores a usar la IA; facilitará el marco de escolarización abierta",
+          "proximidad": 75.0,
+          "sesgo": "La noticia se alinea con el enfoque de India en la integración de la IA en la educación, lo que la acerca al consenso regional. Sin embargo, la falta de confirmación internacional sobre esta política la aleja del consenso global.",
+          "link": "https://www.thehindu.com/news/national/government-to-help-teachers-use-ai-will-ease-open-schooling-framework/article70464141.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "4f4240af",
+          "titulo": "SpaceX moverá más de 4.400 satélites a una órbita inferior después de que China citara un riesgo para la seguridad",
+          "proximidad": 80.0,
+          "sesgo": "La noticia presenta una acción de SpaceX en respuesta a preocupaciones de seguridad planteadas por China, lo que indica una interacción y posible acuerdo en el espacio. La reconfiguración de la constelación Starlink es un hecho verificable, pero la motivación exacta puede tener interpretaciones diversas.",
+          "link": "https://www.scmp.com/news/china/science/article/3338547/spacex-will-move-more-4400-satellites-lower-orbit-after-china-cited-safety-risk?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "4deadfd1",
+          "titulo": "El Ministerio de TI envía un aviso a X de Elon Musk sobre el uso indebido del chatbot Grok AI: Lo llama 'grave fallo de las salvaguardias a nivel de plataforma' y 'violación de la dignidad de mujeres y niños'",
+          "proximidad": 70.0,
+          "sesgo": "La noticia destaca la preocupación de India por el contenido generado por IA y la regulación de las plataformas, lo que se alinea con su enfoque regional en la seguridad digital. Sin embargo, la reacción específica a Grok AI puede ser más localizada.",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/it-ministry-sends-letter-to-elon-musks-x-says-send-action-taken-report-on-indecent-content-on-the-platform/articleshow/126308260.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "4f1654f1",
+          "titulo": "Los principales fabricantes de chips de contrato de China buscan adquisiciones en medio del impulso de autosuficiencia de Pekín",
+          "proximidad": 85.0,
+          "sesgo": "La noticia se centra en la estrategia de China para lograr la autosuficiencia en la industria de semiconductores, un tema de consenso regional. Las adquisiciones son hechos concretos que respaldan esta tendencia.",
+          "link": "https://www.scmp.com/tech/tech-trends/article/3338551/chinas-top-contract-chipmakers-pursue-acquisitions-amid-beijings-self-sufficiency-drive?utm_source=rss_feed",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "eb69d308",
+          "titulo": "El gobierno ordena a X que elimine todo el contenido obsceno e ilegal",
+          "proximidad": 65.0,
+          "sesgo": "Esta noticia refleja la postura del gobierno indio sobre la regulación del contenido en redes sociales. Si bien la eliminación de contenido ilegal es un objetivo compartido globalmente, la especificidad de la directiva a X y la interpretación de 'obsceno' pueden variar.",
+          "link": "https://timesofindia.indiatimes.com/india/govt-directs-x-to-remove-all-obscene-unlawful-content/articleshow/126312921.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "52606049",
+          "titulo": "El experimento del 'sol artificial' de China encuentra la manera de romper el límite de densidad del plasma de fusión",
+          "proximidad": 90.0,
+          "sesgo": "La noticia informa sobre un avance científico en el campo de la fusión nuclear en China, lo que contribuye al objetivo global de energía limpia. El experimento EAST es un proyecto real y los resultados publicados en 'Science Advances' le dan credibilidad.",
+          "link": "http://www.ecns.cn/news/sci-tech/2026-01-02/detail-iheymvap1611509.shtml",
+          "bloque": "CHINA"
+        },
+        {
+          "id": "781a1912",
+          "titulo": "DeepSeek propone un cambio en el desarrollo de modelos de IA con la arquitectura 'mHC' para actualizar ResNet",
+          "proximidad": 75.0,
+          "sesgo": "La noticia describe un avance técnico específico en la arquitectura de modelos de IA por parte de una empresa china. Si bien representa un progreso en el campo, su impacto y adopción generalizada aún no se han determinado.",
+          "link": "https://www.scmp.com/tech/tech-trends/article/3338535/deepseek-proposes-shift-ai-model-development-mhc-architecture-upgrade-resnet?utm_source=rss_feed",
+          "bloque": "CHINA"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Las noticias convergen en dos puntos principales. Primero, Irán enfrenta protestas debido a una crisis económica. Segundo, Angelina Jolie visitó el cruce de Rafah para apoyar la entrega de ayuda a Gaza.",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "901a6f6a",
+          "titulo": "Irán enfrenta crecientes protestas en medio de una profunda crisis económica",
+          "proximidad": 95.0,
+          "sesgo": "La noticia informa sobre las protestas en Irán debido a la crisis económica, un hecho ampliamente reportado.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/iran-faces-growing-protests-amid-deepening-economic-crisis?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "5e424d13",
+          "titulo": "'Los mulás deben irse': ¿Por qué protesta Irán? ¿Es el fin del régimen de Khamenei?",
+          "proximidad": 70.0,
+          "sesgo": "Si bien reconoce las protestas, el titular sugiere un posible derrocamiento del régimen, lo cual es una interpretación más audaz y menos consensuada.",
+          "link": "https://timesofindia.indiatimes.com/world/middle-east/mullahs-must-leave-why-iran-is-protesting-is-it-the-end-for-khamenei-regime/articleshow/126305283.cms",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "4d0c24c3",
+          "titulo": "Angelina Jolie visita el cruce de Rafah en Egipto que entrega ayuda a Gaza",
+          "proximidad": 100.0,
+          "sesgo": "La noticia reporta un hecho concreto y verificable sin interpretaciones controvertidas.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/2/angelina-jolie-visits-egypts-rafah-crossing-thats-delivering-aid-to-gaza?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "c2469024",
+          "titulo": "Una adolescente educada en Gran Bretaña entre los desaparecidos tras el incendio de Crans-Montana",
+          "proximidad": 20.0,
+          "sesgo": "Este artículo trata sobre un evento aislado (un incendio) y no está relacionado con los temas centrales de derechos y sociedad en Medio Oriente.  Su cercanía al consenso es muy baja.",
+          "link": "https://www.theguardian.com/world/2026/jan/02/teenage-girl-charlotte-niddam-educated-in-britain-among-the-missing-after-crans-montana-fire",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "3d60261a",
+          "titulo": "Siete muertos, docenas de desaparecidos después de que un barco con destino a las Islas Canarias zozobra en Gambia",
+          "proximidad": 20.0,
+          "sesgo": "Este artículo trata sobre un evento aislado (un naufragio) y no está relacionado con los temas centrales de derechos y sociedad en Medio Oriente. Su cercanía al consenso es muy baja.",
+          "link": "https://www.bbc.com/news/articles/clynvkwglx4o?at_medium=RSS&at_campaign=rss",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "6b3a7af7",
+          "titulo": "Grupos judíos advierten que la prohibición de que los aficionados del Maccabi Tel Aviv asistan al partido podría considerarse 'antisemita'",
+          "proximidad": 40.0,
+          "sesgo": "La noticia presenta un punto de vista específico (preocupación por antisemitismo) relacionado con una prohibición de asistencia a un evento deportivo. Si bien relevante para la discusión de derechos, no está en el centro del consenso general sobre la situación en Irán o Gaza.",
+          "link": "https://www.theguardian.com/news/2026/jan/02/jewish-groups-warned-ban-on-maccabi-tel-aviv-fans-attending-match-could-be-seen-as-antisemitic",
+          "bloque": "EUROPE"
+        },
+        {
+          "id": "23b3c251",
+          "titulo": "Tribunal de Pakistán condena a periodistas a cadena perpetua por las protestas pro-Khan de 2023",
+          "proximidad": 30.0,
+          "sesgo": "La noticia se centra en un evento específico en Pakistán (condena de periodistas).  Aunque toca temas de libertad de prensa, está distante de los temas centrales de Irán y Gaza.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/pakistan-court-sentences-journalists-to-life-over-2023-pro-khan-protests?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "4aee198f",
+          "titulo": "Cinco cosas que necesitas saber sobre las protestas en Irán",
+          "proximidad": 90.0,
+          "sesgo": "Proporciona un resumen de las protestas en Irán, lo que la alinea estrechamente con el consenso sobre la situación en ese país.",
+          "link": "https://www.aljazeera.com/news/2026/1/2/five-things-you-need-to-know-about-protests-in-iran-2?traffic_source=rss",
+          "bloque": "MID_EAST"
+        },
+        {
+          "id": "226235b2",
+          "titulo": "Venezuela libera a 88 personas detenidas en los disturbios posteriores a las elecciones de 2024",
+          "proximidad": 20.0,
+          "sesgo": "Se refiere a un evento específico en Venezuela, no relacionado con los temas centrales de Irán y Gaza.",
+          "link": "https://en.mercopress.com/2026/01/02/venezuela-releases-88-people-detained-in-post-2024-elections-riots?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM"
+        },
+        {
+          "id": "22d63ae6",
+          "titulo": "Por qué estoy en huelga de hambre en solidaridad con los detenidos de Pal Action",
+          "proximidad": 60.0,
+          "sesgo": "Es una opinión personal (huelga de hambre) en solidaridad con un grupo específico (Pal Action). Si bien relevante para la discusión de derechos humanos, es una perspectiva particular y no un hecho ampliamente aceptado.",
+          "link": "https://www.aljazeera.com/opinions/2026/1/2/why-i-am-on-hunger-strike-in-solidarity-with-pal-action-detainees?traffic_source=rss",
+          "bloque": "MID_EAST"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "El sector de la energía y los recursos en África se prepara para un futuro donde la digitalización y la adaptación al cambio climático son cruciales. Múltiples ministros de energía africanos se reunirán para discutir políticas e inversiones en el sector energético.",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "id": "6bdfef91",
+          "titulo": "India se sumerge en la frontera helada: Investigación oceánica profunda",
+          "proximidad": 30.0,
+          "sesgo": "Esta noticia se centra en la investigación polar de la India, un tema tangencialmente relacionado con la energía y los recursos en África, pero no directamente conectado. Se aleja del consenso principal.",
+          "link": "https://www.thehindu.com/news/national/telangana/indias-deep-dive-into-the-frozen-frontier/article70461345.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "f28cce83",
+          "titulo": "Nuevo espacio pulmonar de 153 acres propuesto para Bengaluru en nombre de Basavanna",
+          "proximidad": 10.0,
+          "sesgo": "Este artículo sobre un parque en la India no está relacionado con la energía y los recursos en África, estando muy alejado del tema central.",
+          "link": "https://www.thehindu.com/news/national/karnataka/new-153-acre-lung-space-proposed-for-bengaluru-in-the-name-of-basavanna/article70465312.ece",
+          "bloque": "INDIA"
+        },
+        {
+          "id": "eaef94ee",
+          "titulo": "El Imperativo Minero de África: Abordar el Riesgo Climático y la Digitalización en 2026",
+          "proximidad": 85.0,
+          "sesgo": "Este artículo se alinea fuertemente con el consenso, abordando directamente los desafíos del cambio climático y la digitalización en el sector minero africano.",
+          "link": "https://africa.com/africas-mining-imperative-tackling-climate-risk-and-digitalisation-in-2026/",
+          "bloque": "AFRICA"
+        },
+        {
+          "id": "0e69af7b",
+          "titulo": "Africa Energy Indaba 2026 atrae a los ministros de energía de África para dar forma a la política y desbloquear oportunidades de inversión multimillonarias",
+          "proximidad": 90.0,
+          "sesgo": "Esta noticia está muy cerca del consenso, ya que se centra en las políticas energéticas y las inversiones en África, aspectos centrales de la conferencia y del tema general.",
+          "link": "https://africa.com/africa-energy-indaba-2026-attracts-africas-energy-ministers-to-shape-policy-and-unlock-multi-billion-dollar-investment-opportunities/",
+          "bloque": "AFRICA"
+        }
+      ]
+    }
+  ]
+}

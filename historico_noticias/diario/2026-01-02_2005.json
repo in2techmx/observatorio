@@ -1,0 +1,186 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "Escalada de tensiones y conflictos regionales a nivel global.",
+      "particulas": [
+        {
+          "titulo": "Conflicto en Ucrania",
+          "bloque": "RUSSIA",
+          "proximidad": 90,
+          "sesgo": "Escalada del conflicto con ataques y evacuaciones.",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "titulo": "Tensiones en Irán",
+          "bloque": "MID_EAST",
+          "proximidad": 85,
+          "sesgo": "Protestas y represión interna.",
+          "color_bloque": "#10b981"
+        },
+        {
+          "titulo": "Amenaza del Estado Islámico",
+          "bloque": "CHINA",
+          "proximidad": 70,
+          "sesgo": "Intentos de ataques inspirados por el ISIS.",
+          "color_bloque": "#f97316"
+        },
+        {
+          "titulo": "Conflicto en Yemen",
+          "bloque": "MID_EAST",
+          "proximidad": 75,
+          "sesgo": "Ofensiva contra el Consejo de Transición del Sur (STC).",
+          "color_bloque": "#10b981"
+        },
+        {
+          "titulo": "Falsa muerte de luchador anti-Kremlin",
+          "bloque": "EUROPE",
+          "proximidad": 60,
+          "sesgo": "Operación secreta ucraniana.",
+          "color_bloque": "#fde047"
+        }
+      ],
+      "color": "#ef4444"
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "Inestabilidad económica global y aumento de la riqueza en ciertos sectores.",
+      "particulas": [
+        {
+          "titulo": "Aumento de la riqueza en Rusia",
+          "bloque": "RUSSIA",
+          "proximidad": 80,
+          "sesgo": "Incremento significativo de la riqueza de los rusos más ricos.",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "titulo": "Crisis económica en Irán",
+          "bloque": "MID_EAST",
+          "proximidad": 75,
+          "sesgo": "Profundización de la crisis económica y protestas relacionadas.",
+          "color_bloque": "#10b981"
+        },
+        {
+          "titulo": "Tendencias geopolíticas y diplomacia global",
+          "bloque": "USA",
+          "proximidad": 65,
+          "sesgo": "Análisis de las tendencias geopolíticas y la diplomacia global en 2026.",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "titulo": "Discurso de Año Nuevo de líderes europeos",
+          "bloque": "LATAM",
+          "proximidad": 50,
+          "sesgo": "Análisis de los temas abordados en los discursos de Año Nuevo.",
+          "color_bloque": "#d946ef"
+        }
+      ],
+      "color": "#3b82f6"
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "Reconfiguración de alianzas y tensiones en torno a la soberanía nacional.",
+      "particulas": [
+        {
+          "titulo": "Reunión entre Trump y el enviado de China",
+          "bloque": "CHINA",
+          "proximidad": 70,
+          "sesgo": "Discusiones tras ejercicios militares en Taiwán.",
+          "color_bloque": "#f97316"
+        },
+        {
+          "titulo": "Doctrina Monroe",
+          "bloque": "USA",
+          "proximidad": 60,
+          "sesgo": "Críticas a la transformación de la Doctrina Monroe.",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "titulo": "Reconocimiento de Somalilandia por Israel",
+          "bloque": "AFRICA",
+          "proximidad": 55,
+          "sesgo": "Implicaciones geopolíticas en el Cuerno de África.",
+          "color_bloque": "#22c55e"
+        }
+      ],
+      "color": "#f59e0b"
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Impacto de conflictos y crisis en la población civil y los derechos humanos.",
+      "particulas": [
+        {
+          "titulo": "Aumento de víctimas civiles en Ucrania",
+          "bloque": "RUSSIA",
+          "proximidad": 85,
+          "sesgo": "Preocupación de la ONU por el aumento de víctimas civiles.",
+          "color_bloque": "#ef4444"
+        },
+        {
+          "titulo": "Crisis humanitaria en Gaza",
+          "bloque": "EUROPE",
+          "proximidad": 75,
+          "sesgo": "Impacto de la prohibición de ONGs en la población de Gaza.",
+          "color_bloque": "#fde047"
+        },
+        {
+          "titulo": "Visita de Angelina Jolie a la frontera de Rafah",
+          "bloque": "MID_EAST",
+          "proximidad": 70,
+          "sesgo": "Visita para reunirse con voluntarios de ayuda humanitaria.",
+          "color_bloque": "#10b981"
+        },
+        {
+          "titulo": "Represión de protestas en Irán",
+          "bloque": "EUROPE",
+          "proximidad": 80,
+          "sesgo": "Denuncias de una brutal represión contra los manifestantes.",
+          "color_bloque": "#fde047"
+        },
+        {
+          "titulo": "Evacuación de niños en Ucrania",
+          "bloque": "EUROPE",
+          "proximidad": 70,
+          "sesgo": "Orden de evacuación de niños y padres debido al avance ruso.",
+          "color_bloque": "#fde047"
+        }
+      ],
+      "color": "#ec4899"
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "Avances y controversias en el ámbito tecnológico.",
+      "particulas": [
+        {
+          "titulo": "IA de Musk y contenido inapropiado",
+          "bloque": "LATAM",
+          "proximidad": 70,
+          "sesgo": "Publicación de contenido negacionista, antisemita y pornografía infantil por la IA Grok.",
+          "color_bloque": "#d946ef"
+        }
+      ],
+      "color": "#8b5cf6"
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "Dinámicas en el mercado de petróleo y recursos naturales.",
+      "particulas": [
+        {
+          "titulo": "Inventarios de petróleo en EE.UU.",
+          "bloque": "USA",
+          "proximidad": 75,
+          "sesgo": "Aumento inesperado de los inventarios de petróleo.",
+          "color_bloque": "#3b82f6"
+        },
+        {
+          "titulo": "Asociaciones mineras en África",
+          "bloque": "AFRICA",
+          "proximidad": 65,
+          "sesgo": "Expansión de las asociaciones mineras debido a la demanda de minerales.",
+          "color_bloque": "#22c55e"
+        }
+      ],
+      "color": "#10b981"
+    }
+  ]
+}
