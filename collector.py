@@ -43,7 +43,7 @@ NORMALIZER = {
     "AFRICA": "AFRICA", "SOUTH AFRICA": "AFRICA", "NIGERIA": "AFRICA"
 }
 
-# --- FUENTES (Mundiales) ---
+# --- FUENTES ---
 FUENTES = {
     "USA": [
         "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
@@ -94,7 +94,7 @@ class ClusterEngine:
         self.clusters = defaultdict(list)
         self.hoy = datetime.datetime.now()
 
-    # --- HELPER: SANITIZADOR ---
+    # --- HELPER ---
     def clean_json(self, text):
         try:
             match = re.search(r'\{.*\}', text, re.DOTALL)
@@ -103,7 +103,7 @@ class ClusterEngine:
             return json.loads(clean_text, strict=False)
         except: return None
 
-    # --- FASE 1: INGESTA MASIVA ---
+    # --- FASE 1: INGESTA ---
     def fetch_rss_by_region(self):
         print(f"🌍 FASE 1: Ingesta Masiva de Fuentes...")
         regional_buffer = defaultdict(list)
@@ -118,7 +118,6 @@ class ClusterEngine:
                     except: continue
 
                     items = root.findall('.//item') or root.findall('.//{*}entry')
-                    # Capturamos 50 por fuente para asegurar densidad
                     for n in items[:50]: 
                         t = (n.find('title') or n.find('{*}title')).text.strip()
                         l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
@@ -132,7 +131,7 @@ class ClusterEngine:
     def smart_scrape(self, url):
         try:
             req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=8) as response:
+            with urllib.request.urlopen(req, timeout=10) as response: # Timeout subido a 10s para sitios pesados de USA
                 soup = BeautifulSoup(response.read(), 'html.parser')
                 for s in soup(["script", "style", "nav", "footer", "svg", "header", "aside", "form"]): 
                     s.extract()
@@ -145,20 +144,23 @@ class ClusterEngine:
     def normalize_block(self, region):
         return NORMALIZER.get(region, "GLOBAL")
 
-    # --- FASE 2: TRIAJE DE ALTA DENSIDAD (FILTRO) ---
+    # --- FASE 2: TRIAJE CORREGIDO (USA FIX) ---
     def high_density_triage(self, region, titles_list):
         text_block = "\n".join(titles_list)
         
+        # PROMPT REFINADO: Permite política interna si es estratégica
         prompt = f"""
         Actúa como Analista de Inteligencia para: {region}.
         
         INPUT: Titulares en INGLÉS o idioma local.
-        TAREA: Seleccionar noticias relevantes y traducirlas mentalmente.
+        TAREA: Seleccionar entre 12 y 18 noticias.
         
         CRITERIOS DE SELECCIÓN:
-        1. VOLUMEN: Selecciona entre 10 y 15 noticias si son relevantes.
-        2. IMPORTANCIA: Prioriza temas geopolíticos, económicos y sociales.
-        3. CLASIFICACIÓN: Usa estas categorías:
+        1. IMPORTANCIA: Prioriza temas geopolíticos, económicos y sociales.
+        2. POLÍTICA INTERNA: Si es una potencia mundial (como USA, China, Rusia), INCLUYE decisiones internas si afectan la economía o política global (ej: elecciones, tasas de interés, crisis fronterizas).
+        3. EXCLUYE: Solo crímenes menores locales, deportes o farándula.
+        
+        CLASIFICACIÓN:
         {AREAS_DEFINICIONES}
         
         OUTPUT JSON:
@@ -176,7 +178,7 @@ class ClusterEngine:
             print(f"   ⚠️ Error Triaje {region}: {e}")
             return None
 
-    # --- FASE 4: RADAR COMPARATIVO (LA LÓGICA DE PROXIMIDAD) ---
+    # --- FASE 4: RADAR COMPARATIVO ---
     def analyze_global_proximity(self, area_name, items):
         print(f"   ⚡ Radar: Triangulando {area_name} con {len(items)} noticias...")
         
@@ -185,7 +187,6 @@ class ClusterEngine:
             context_data.append(f"ID:{item['id']} | FUENTE:{item['region']} | TEXTO:{item['full_text'][:1000]}")
         context_string = "\n---\n".join(context_data)
 
-        # AQUÍ ESTÁ LA DEFINICIÓN EXACTA DE PROXIMIDAD
         prompt = f"""
         Eres PROXIMITY. Analizas el área: {area_name}.
         
@@ -194,23 +195,23 @@ class ClusterEngine:
         
         TAREA DE CÁLCULO DE PROXIMIDAD (COMPARATIVA):
         1. Lee TODAS las noticias del conjunto.
-        2. Determina el "CENTRO DE GRAVEDAD" (Los hechos fácticos aceptados por la mayoría de las fuentes).
+        2. Determina el "CENTRO DE GRAVEDAD" (Los hechos fácticos aceptados por la mayoría).
         3. Para CADA noticia, mide su distancia a ese Centro:
         
         DEFINICIÓN DE ESCALA (0-100%):
-        - 100% (Consenso/Centro): La noticia narra hechos aceptados por todos los bloques presentes. Es el punto de encuentro.
-        - 50% (Sesgo Regional): La noticia tiene una interpretación válida pero claramente alineada a los intereses de su región.
-        - 0% (Aislamiento/Borde): La noticia presenta hechos alternativos, propaganda única de su bloque, o niega hechos aceptados por los demás.
+        - 100% (Consenso/Centro): La noticia narra hechos aceptados por todos los bloques presentes.
+        - 50% (Sesgo Regional): La noticia tiene una interpretación válida pero alineada a su región.
+        - 0% (Aislamiento/Borde): La noticia presenta hechos alternativos, propaganda única o niega hechos aceptados.
         
         OUTPUT JSON:
         {{
-            "punto_cero": "Resumen de 2 líneas del tema de mayor consenso en este grupo.",
+            "punto_cero": "Resumen de 2 líneas del tema de mayor consenso.",
             "particulas": [
                 {{
                     "id": "ID_EXACTO",
                     "titulo": "TÍTULO TRADUCIDO AL ESPAÑOL NEUTRO",
                     "proximidad": 85.5,
-                    "sesgo": "Explica por qué está cerca o lejos del consenso de ESTE grupo."
+                    "sesgo": "Explica por qué está cerca o lejos del consenso."
                 }}
             ]
         }}
