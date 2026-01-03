@@ -37,18 +37,19 @@ NORMALIZER = {
     "RUSSIA": "RUSSIA", "RUSIA": "RUSSIA", "RUSSIAN FEDERATION": "RUSSIA",
     "CHINA": "CHINA", "ASIA": "CHINA", "BEIJING": "CHINA",
     "EUROPE": "EUROPE", "EUROPA": "EUROPE", "UE": "EUROPE", "UK": "EUROPE", "GERMANY": "EUROPE", "FRANCE": "EUROPE",
-    "LATAM": "LATAM", "AMERICA LATINA": "LATAM", "BRAZIL": "LATAM", "MEXICO": "LATAM",
-    "MID_EAST": "MID_EAST", "MEDIO ORIENTE": "MID_EAST", "ISRAEL": "MID_EAST", "IRAN": "MID_EAST",
+    "LATAM": "LATAM", "AMERICA LATINA": "LATAM", "BRAZIL": "LATAM", "MEXICO": "LATAM", "ARGENTINA": "LATAM",
+    "MID_EAST": "MID_EAST", "MEDIO ORIENTE": "MID_EAST", "ISRAEL": "MID_EAST", "IRAN": "MID_EAST", "TURKEY": "MID_EAST",
     "INDIA": "INDIA", "NEW DELHI": "INDIA",
     "AFRICA": "AFRICA", "SOUTH AFRICA": "AFRICA", "NIGERIA": "AFRICA"
 }
 
-# --- FUENTES ---
+# --- FUENTES AMPLIADAS (V18.0) ---
 FUENTES = {
     "USA": [
-        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-        "https://feeds.washingtonpost.com/rss/world",
-        "http://rss.cnn.com/rss/edition_world.rss",
+        "https://rss.nytimes.com/services/xml/rss/nyt/US.xml",
+        "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+        "http://rss.cnn.com/rss/edition_us.rss",
+        "https://feeds.washingtonpost.com/rss/politics",
         "https://www.foreignaffairs.com/rss.xml"
     ],
     "RUSSIA": [
@@ -59,31 +60,41 @@ FUENTES = {
     "CHINA": [
         "https://www.scmp.com/rss/91/feed",
         "http://www.xinhuanet.com/english/rss/world.xml",
-        "http://www.ecns.cn/rss/rss.xml"
+        "http://www.ecns.cn/rss/rss.xml",
+        "https://www.chinadaily.com.cn/rss/world_rss.xml"
     ],
     "EUROPE": [
         "https://www.theguardian.com/world/rss",
         "https://www.euronews.com/rss?level=vertical&name=news",
-        "https://www.france24.com/en/rss"
+        "https://www.france24.com/en/rss",
+        "https://www.dw.com/xml/rss/rss-en-all"
     ],
     "LATAM": [
         "https://www.infobae.com/america/arc/outboundfeeds/rss/",
         "https://elpais.com/america/rss/",
-        "https://en.mercopress.com/rss"
+        "https://en.mercopress.com/rss",
+        "https://www.bbc.com/mundo/ultimas_noticias/index.xml", # BBC Mundo
+        "https://cnnespanol.cnn.com/feed"                       # CNN Español
     ],
     "MID_EAST": [
         "https://www.aljazeera.com/xml/rss/all.xml",
         "https://www.middleeasteye.net/rss",
-        "https://www.arabnews.com/cat/2/rss.xml"
+        "https://www.arabnews.com/cat/2/rss.xml",
+        "https://www.jpost.com/rss/rssfeedsheadlines.aspx",     # Jerusalem Post
+        "https://english.alarabiya.net/.mrss/en/news.xml",      # Al Arabiya
+        "https://www.trtworld.com/rss"                          # TRT World
     ],
     "INDIA": [
         "https://www.thehindu.com/news/national/feeder/default.rss",
-        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms"
+        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+        "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
     ],
     "AFRICA": [
         "https://africa.com/feed",
         "https://newafricanmagazine.com/feed",
-        "http://feeds.bbci.co.uk/news/world/africa/rss.xml"
+        "http://feeds.bbci.co.uk/news/world/africa/rss.xml",
+        "https://www.news24.com/news24/partners24/rss",       # News24 (Sudáfrica)
+        "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf" # AllAfrica
     ]
 }
 
@@ -94,7 +105,6 @@ class ClusterEngine:
         self.clusters = defaultdict(list)
         self.hoy = datetime.datetime.now()
 
-    # --- HELPER ---
     def clean_json(self, text):
         try:
             match = re.search(r'\{.*\}', text, re.DOTALL)
@@ -103,9 +113,9 @@ class ClusterEngine:
             return json.loads(clean_text, strict=False)
         except: return None
 
-    # --- FASE 1: INGESTA ---
+    # --- FASE 1: INGESTA ROBUSTA ---
     def fetch_rss_by_region(self):
-        print(f"🌍 FASE 1: Ingesta Masiva de Fuentes...")
+        print(f"🌍 FASE 1: Ingesta Masiva (Red Expandida)...")
         regional_buffer = defaultdict(list)
         
         for region, urls in FUENTES.items():
@@ -113,12 +123,14 @@ class ClusterEngine:
             for url in urls:
                 try:
                     req = urllib.request.Request(url, headers=HEADERS)
-                    content = urllib.request.urlopen(req, timeout=5).read()
+                    # TIMEOUT AUMENTADO A 8s para conexiones lentas en Global South
+                    content = urllib.request.urlopen(req, timeout=8).read()
                     try: root = ET.fromstring(content)
                     except: continue
 
                     items = root.findall('.//item') or root.findall('.//{*}entry')
-                    for n in items[:50]: 
+                    # CAPTURAMOS HASTA 60 PARA TENER DE DONDE ELEGIR
+                    for n in items[:60]: 
                         t = (n.find('title') or n.find('{*}title')).text.strip()
                         l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
                         if t and l:
@@ -131,7 +143,7 @@ class ClusterEngine:
     def smart_scrape(self, url):
         try:
             req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=10) as response: # Timeout subido a 10s para sitios pesados de USA
+            with urllib.request.urlopen(req, timeout=10) as response:
                 soup = BeautifulSoup(response.read(), 'html.parser')
                 for s in soup(["script", "style", "nav", "footer", "svg", "header", "aside", "form"]): 
                     s.extract()
@@ -144,21 +156,25 @@ class ClusterEngine:
     def normalize_block(self, region):
         return NORMALIZER.get(region, "GLOBAL")
 
-    # --- FASE 2: TRIAJE CORREGIDO (USA FIX) ---
+    # --- FASE 2: TRIAJE DE ALTO VOLUMEN ---
     def high_density_triage(self, region, titles_list):
         text_block = "\n".join(titles_list)
         
-        # PROMPT REFINADO: Permite política interna si es estratégica
+        extra_instruction = ""
+        if region == "USA":
+            extra_instruction = "IMPORTANTE: Para USA, INCLUYE política interna estratégica (Elecciones, Economía, Leyes) con impacto global."
+
         prompt = f"""
         Actúa como Analista de Inteligencia para: {region}.
-        
         INPUT: Titulares en INGLÉS o idioma local.
-        TAREA: Seleccionar entre 12 y 18 noticias.
+        TAREA: Seleccionar entre 20 y 30 noticias. (QUEREMOS VOLUMEN ALTO).
         
-        CRITERIOS DE SELECCIÓN:
-        1. IMPORTANCIA: Prioriza temas geopolíticos, económicos y sociales.
-        2. POLÍTICA INTERNA: Si es una potencia mundial (como USA, China, Rusia), INCLUYE decisiones internas si afectan la economía o política global (ej: elecciones, tasas de interés, crisis fronterizas).
-        3. EXCLUYE: Solo crímenes menores locales, deportes o farándula.
+        {extra_instruction}
+
+        CRITERIOS:
+        1. VOLUMEN: No seas muy estricto. Si suena mínimamente importante, SELECCIÓNALA.
+        2. IMPORTANCIA: Temas geopolíticos, económicos, sociales, energéticos.
+        3. IDIOMA: Lee en cualquier idioma, procesa la relevancia.
         
         CLASIFICACIÓN:
         {AREAS_DEFINICIONES}
@@ -189,29 +205,27 @@ class ClusterEngine:
 
         prompt = f"""
         Eres PROXIMITY. Analizas el área: {area_name}.
-        
-        INPUT: Noticias de MÚLTIPLES REGIONES (USA, Rusia, China, etc.).
+        INPUT: Noticias de MÚLTIPLES REGIONES.
         OUTPUT: JSON en ESPAÑOL.
         
-        TAREA DE CÁLCULO DE PROXIMIDAD (COMPARATIVA):
-        1. Lee TODAS las noticias del conjunto.
-        2. Determina el "CENTRO DE GRAVEDAD" (Los hechos fácticos aceptados por la mayoría).
-        3. Para CADA noticia, mide su distancia a ese Centro:
+        TAREA:
+        1. Determina el "CENTRO DE GRAVEDAD" (Hechos aceptados por la mayoría).
+        2. Mide la distancia de CADA noticia a ese Centro.
         
-        DEFINICIÓN DE ESCALA (0-100%):
-        - 100% (Consenso/Centro): La noticia narra hechos aceptados por todos los bloques presentes.
-        - 50% (Sesgo Regional): La noticia tiene una interpretación válida pero alineada a su región.
-        - 0% (Aislamiento/Borde): La noticia presenta hechos alternativos, propaganda única o niega hechos aceptados.
+        ESCALA (0-100%):
+        - 100% (Consenso): Coincide con la versión aceptada por la mayoría.
+        - 50% (Sesgo): Interpretación válida pero parcial.
+        - 0% (Aislamiento): Realidad alternativa, propaganda.
         
         OUTPUT JSON:
         {{
-            "punto_cero": "Resumen de 2 líneas del tema de mayor consenso.",
+            "punto_cero": "Resumen de 2 líneas del tema de consenso.",
             "particulas": [
                 {{
                     "id": "ID_EXACTO",
                     "titulo": "TÍTULO TRADUCIDO AL ESPAÑOL NEUTRO",
                     "proximidad": 85.5,
-                    "sesgo": "Explica por qué está cerca o lejos del consenso."
+                    "sesgo": "Explica la postura en 1 frase."
                 }}
             ]
         }}
@@ -263,7 +277,8 @@ class ClusterEngine:
             
             random.shuffle(items)
             
-            analysis = self.analyze_global_proximity(area, items[:45]) 
+            # SUBIMOS CAPACIDAD DEL RADAR A 50
+            analysis = self.analyze_global_proximity(area, items[:50]) 
             
             if analysis and 'particulas' in analysis:
                 clean_particles = []
@@ -290,7 +305,7 @@ class ClusterEngine:
         fecha = self.hoy.strftime('%Y-%m-%d_%H%M')
         with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
             json.dump(output, f, indent=2, ensure_ascii=False) 
-        print("\n✅ CICLO COMPLETADO: Radar Calibrado.")
+        print("\n✅ CICLO COMPLETADO: Radar Calibrado y Lleno.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
