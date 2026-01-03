@@ -2,8 +2,8 @@ name: Proximity Engine Intelligence Pipeline
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Cada 6 horas
-    - cron: '30 3 * * *'    # Diario a las 3:30 AM
+    - cron: '0 */6 * * *'
+    - cron: '0 0 * * 0'
   workflow_dispatch:
     inputs:
       task:
@@ -13,180 +13,123 @@ on:
         type: choice
         options:
           - tactical
-          - strategic
-          - full
+          - weekly
+          - both
   push:
     branches:
       - main
-    paths:
-      - 'collector.py'
-      - 'requirements.txt'
 
 jobs:
   intelligence-pipeline:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write  # Para OIDC si usas cloud
     
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     
-    env:
-      PYTHONPATH: ${{ github.workspace }}
-      TZ: UTC
-    
     steps:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Trae todo el historial
-      
-      - name: Configurar Python y Cache
+
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip'
       
-      - name: Preparar entorno
+      - name: Preparar directorios
         run: |
-          mkdir -p {vector_cache,backups,logs,historico_noticias/{diario,semanal}}
-          echo "Workspace listo: $(pwd)"
+          mkdir -p vector_cache
+          mkdir -p historico_noticias/diario
+          mkdir -p historico_noticias/semanal
+          echo "📁 Estructura de directorios lista"
       
       - name: Instalar dependencias
         run: |
-          pip install --upgrade pip
-          if [ -f "requirements.txt" ]; then
-            pip install -r requirements.txt
-          else
-            pip install google-genai==0.3.0 requests==2.31.0 \
-                       beautifulsoup4==4.12.0 lxml==4.9.1 numpy==1.24.3 \
-                       python-dotenv==1.0.0
-          fi
-          pip list
+          python -m pip install --upgrade pip
+          pip install google-genai==0.3.0 requests==2.31.0 beautifulsoup4==4.12.0 lxml==4.9.0 numpy==1.24.0
+          echo "📦 Dependencias instaladas"
       
-      - name: Backup datos actuales
-        id: backup
-        run: |
-          timestamp=$(date -u +'%Y%m%d_%H%M%S')
-          if [ -f "gravity_carousel.json" ]; then
-            cp gravity_carousel.json "backups/gravity_${timestamp}.json"
-            echo "backup_created=true" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Ejecutar Collector con timeout
-        id: collector
-        timeout-minutes: 30
+      - name: Ejecutar Proximity Collector
+        id: run-collector
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          MAX_ARTICLES: ${{ github.event.inputs.task == 'full' && '100' || '50' }}
         run: |
-          set -o pipefail
-          echo "Iniciando collector con task: ${{ github.event.inputs.task || 'tactical' }}"
+          set -e  # Fail on error
+          echo "🚀 Iniciando collector..."
+          python collector.py
           
-          start_time=$(date +%s)
-          python collector.py --mode ${{ github.event.inputs.task || 'tactical' }} 2>&1 | tee logs/collector_${{ github.run_id }}.log
-          collector_exit=$?
-          end_time=$(date +%s)
-          
-          echo "collector_duration=$((end_time - start_time))" >> $GITHUB_OUTPUT
-          
-          if [ $collector_exit -eq 0 ] && [ -f "gravity_carousel.json" ]; then
-            # Validar estructura del JSON
-            python -c "
-            import json, sys
-            with open('gravity_carousel.json') as f:
-                data = json.load(f)
-            required = ['carousel', 'meta']
-            for req in required:
-                if req not in data:
-                    print(f'ERROR: Falta campo {req}')
-                    sys.exit(1)
-            print(f'✓ JSON válido: {len(data[\"carousel\"])} áreas')
-            "
-            
+          if [ -f "gravity_carousel.json" ]; then
             echo "collector_success=true" >> $GITHUB_OUTPUT
-            echo "areas_count=$(python -c "import json; d=json.load(open('gravity_carousel.json')); print(len(d['carousel']))")" >> $GITHUB_OUTPUT
+            echo "✅ Collector completado exitosamente"
           else
-            echo "ERROR: Collector falló o no generó output"
-            if [ -f "logs/collector_${{ github.run_id }}.log" ]; then
-              tail -50 "logs/collector_${{ github.run_id }}.log"
-            fi
+            echo "❌ ERROR: Archivo de salida no generado"
             exit 1
           fi
       
-      - name: Notificar inicio de cambios
-        if: steps.collector.outputs.collector_success == 'true'
+      - name: Validar JSON generado
+        if: steps.run-collector.outputs.collector_success == 'true'
         run: |
-          echo "📊 Pipeline completado exitosamente"
-          echo "Áreas procesadas: ${{ steps.collector.outputs.areas_count }}"
-          echo "Duración: ${{ steps.collector.outputs.collector_duration }}s"
+          echo "🔍 Validando estructura JSON..."
+          python3 -c "
+import json, sys
+
+try:
+    with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Validaciones básicas
+    if 'carousel' not in data:
+        print('❌ ERROR: Falta campo \"carousel\"')
+        sys.exit(1)
+    
+    if not isinstance(data['carousel'], list):
+        print('❌ ERROR: \"carousel\" no es una lista')
+        sys.exit(1)
+    
+    areas_count = len(data['carousel'])
+    print(f'✅ JSON válido con {areas_count} áreas')
+    
+    # Contar partículas
+    total_particles = 0
+    for area in data['carousel']:
+        particles = area.get('particulas', [])
+        total_particles += len(particles)
+    
+    print(f'✅ Total de partículas: {total_particles}')
+    
+    # Verificar timestamp
+    if 'meta' in data and 'updated' in data['meta']:
+        print(f'⏰ Última actualización: {data[\"meta\"][\"updated\"]}')
+    
+    sys.exit(0)
+    
+except json.JSONDecodeError as e:
+    print(f'❌ ERROR: JSON inválido - {e}')
+    sys.exit(1)
+except Exception as e:
+    print(f'❌ ERROR inesperado: {e}')
+    sys.exit(1)
+          "
       
-      - name: Subir resultados
-        if: steps.collector.outputs.collector_success == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: pipeline-results-${{ github.run_id }}
-          path: |
-            gravity_carousel.json
-            logs/
-            backups/
-          retention-days: 14
-      
-      - name: Commit y Push inteligente
-        if: steps.collector.outputs.collector_success == 'true'
+      - name: Commit y Push de Resultados
+        if: steps.run-collector.outputs.collector_success == 'true'
         run: |
-          # Solo commit si hay cambios reales
-          if git diff --quiet --exit-code && [ -z "$(git status --porcelain)" ]; then
-            echo "No hay cambios para commit"
+          git config --global user.name 'Proximity Engine Bot'
+          git config --global user.email 'bot@proximity.ai'
+          
+          # Verificar si hay cambios reales
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "📭 No hay cambios para commit"
             exit 0
           fi
           
-          git config --global user.name 'Proximity Engine 🤖'
-          git config --global user.email 'github-actions@github.com'
-          git config --global pull.rebase true
-          
           git add .
-          
-          commit_msg="🤖 $(date -u +'%Y-%m-%d %H:%M') | ${{ steps.collector.outputs.areas_count }} áreas"
-          if [ -n "${{ github.event.inputs.task }}" ]; then
-            commit_msg="${commit_msg} | Task: ${{ github.event.inputs.task }}"
-          fi
-          
-          git commit -m "$commit_msg" || echo "No hay cambios para commit"
+          git commit -m "🤖 Actualización automática: $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "⚠️ No se pudo hacer commit"
           
           # Pull con estrategia segura
-          max_retries=3
-          for i in $(seq 1 $max_retries); do
-            if git pull origin main --autostash; then
-              break
-            fi
-            if [ $i -eq $max_retries ]; then
-              echo "ERROR: No se pudo resolver conflictos después de $max_retries intentos"
-              exit 1
-            fi
-            sleep 5
-          done
+          git pull origin main --rebase || git pull origin main --no-ff
           
           git push origin main
-      
-      - name: Limpiar en caso de fallo
-        if: failure() && steps.backup.outputs.backup_created == 'true'
-        run: |
-          echo "⚠️ Restaurando backup por fallo..."
-          latest_backup=$(ls -t backups/gravity_*.json | head -1)
-          if [ -f "$latest_backup" ]; then
-            cp "$latest_backup" gravity_carousel.json
-            echo "Backup restaurado: $latest_backup"
-          fi
-      
-      - name: Notificación de estado
-        if: always()
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Pipeline completado exitosamente"
-          else
-            echo "❌ Pipeline falló"
-            echo "Ver logs para más detalles"
-          fi
+          echo "✅ Cambios subidos exitosamente"
