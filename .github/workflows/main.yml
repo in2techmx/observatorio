@@ -1,4 +1,4 @@
-name: Proximity Engine Intelligence Pipeline
+¡name: Proximity Engine Intelligence Pipeline
 
 on:
   schedule:
@@ -29,7 +29,6 @@ jobs:
     permissions:
       contents: write
     
-    # Evita que dos ejecuciones choquen y corrompan datos
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -52,7 +51,7 @@ jobs:
           mkdir -p historico_noticias/semanal
           echo "✅ Directorios verificados"
 
-      # 3. Instalación Determinista (Versiones fijas para estabilidad)
+      # 3. Instalación Determinista
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
@@ -63,14 +62,12 @@ jobs:
         id: run-collector
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Captura el input manual, o usa 'tactical' por defecto si es automático
           MODE: ${{ github.event.inputs.task || 'tactical' }}
         run: |
           set -e
           echo "🚀 Iniciando collector en modo: $MODE"
           
-          # Pasamos el modo como variable de entorno o argumento
-          # Asegúrate que tu python pueda leer sys.argv o os.environ['MODE']
+          # NOTA: Asegúrate de añadir el bloque argparse en tu collector.py
           python collector.py --mode "$MODE"
           
           if [ -f "gravity_carousel.json" ]; then
@@ -81,32 +78,44 @@ jobs:
             exit 1
           fi
 
-      # 5. CONTROL DE CALIDAD (Script Python Inline)
+      # 5. CONTROL DE CALIDAD (Método Seguro EOF)
       - name: Validar integridad del JSON
         if: steps.run-collector.outputs.collector_success == 'true'
         run: |
           echo "🔍 Auditando JSON generado..."
-          python3 -c "
-import json, sys, os
-try:
-    if not os.path.exists('gravity_carousel.json'): sys.exit(1)
-    with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    
-    # Validaciones críticas
-    if 'carousel' not in data or not isinstance(data['carousel'], list):
-        print('❌ Error: Falta array carousel'); sys.exit(1)
-    
-    total = sum(len(a.get('particulas', [])) for a in data['carousel'])
-    print(f'✅ JSON Válido. Áreas: {len(data['carousel'])}, Partículas: {total}')
-    
-    if total == 0:
-        print('⚠️ Advertencia: JSON válido pero vacío'); 
-        # Opcional: sys.exit(1) si no quieres subir archivos vacíos
+          
+          # Escribimos el script a un archivo temporal para evitar conflictos de comillas
+          cat << 'EOF' > validate_integrity.py
+          import json, sys, os
+          
+          try:
+              if not os.path.exists('gravity_carousel.json'):
+                  sys.exit(1)
+                  
+              with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+              
+              # Validaciones críticas
+              if 'carousel' not in data or not isinstance(data['carousel'], list):
+                  print('❌ Error: Falta array carousel')
+                  sys.exit(1)
+              
+              total = sum(len(a.get('particulas', [])) for a in data['carousel'])
+              
+              # CORRECCIÓN APLICADA: Uso de comillas dobles dentro del f-string
+              print(f'✅ JSON Válido. Áreas: {len(data["carousel"])}, Partículas: {total}')
+              
+              if total == 0:
+                  print('⚠️ Advertencia: JSON válido pero vacío')
+                  # Opcional: sys.exit(1) si quieres fallar en vacío
 
-except Exception as e:
-    print(f'❌ JSON Corrupto: {e}'); sys.exit(1)
-          "
+          except Exception as e:
+              print(f'❌ JSON Corrupto: {e}')
+              sys.exit(1)
+          EOF
+          
+          # Ejecutamos el validador
+          python3 validate_integrity.py
 
       # 6. DESPLIEGUE SEGURO (Git Rebase Strategy)
       - name: Guardar y Publicar
@@ -123,7 +132,7 @@ except Exception as e:
             exit 0
           fi
           
-          # Commit
+          # Commit con fecha y modo
           git commit -m "🤖 INTEL UPDATE: $(date -u +'%Y-%m-%d %H:%M UTC') [${{ github.event.inputs.task || 'auto' }}]"
           
           # Bucle de reintento para evitar colisiones
