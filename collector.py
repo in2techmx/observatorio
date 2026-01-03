@@ -4,7 +4,7 @@ from collections import defaultdict
 from google import genai
 from bs4 import BeautifulSoup 
 
-# --- CONFIGURACIÓN BASE ---
+# --- CONFIGURACIÓN DE ENTORNO ---
 if sys.stdout.encoding != 'utf-8':
     try: sys.stdout.reconfigure(encoding='utf-8')
     except: pass
@@ -33,6 +33,7 @@ NORMALIZER = {
     "AFRICA": "AFRICA", "SOUTH AFRICA": "AFRICA", "NIGERIA": "AFRICA"
 }
 
+# --- FUENTES (Monitoreo Amplio) ---
 FUENTES = {
     "USA": [
         "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
@@ -79,42 +80,39 @@ FUENTES = {
 class ClusterEngine:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
-        self.raw_storage = {}       # Almacenamiento temporal de metadatos
-        self.enriched_storage = {}  # Almacenamiento definitivo con Full Text
+        self.raw_storage = {}       # Guarda TODOS los metadatos crudos por ID
         self.clusters = defaultdict(list)
         self.hoy = datetime.datetime.now()
 
-    # --- FASE 1: INGESTA ---
+    # --- FASE 1: INGESTA POR VOLUMEN ---
     def fetch_rss_by_region(self):
-        print(f"🌍 FASE 1: Ingesta Sectorizada...")
+        print(f"🌍 FASE 1: Escaneando Medios por Región...")
         regional_buffer = defaultdict(list)
         
         for region, urls in FUENTES.items():
-            print(f"   -> Escaneando fuentes de: {region}...")
+            print(f"   -> {region}: Leyendo fuentes...")
             for url in urls:
                 try:
                     req = urllib.request.Request(url, headers=HEADERS)
-                    content = urllib.request.urlopen(req, timeout=4).read()
+                    content = urllib.request.urlopen(req, timeout=5).read()
                     try: root = ET.fromstring(content)
                     except: continue
 
                     items = root.findall('.//item') or root.findall('.//{*}entry')
-                    # Tomamos bastantes (20) para tener de donde elegir
-                    for n in items[:20]:
+                    # Leemos MUCHAS (40) para poder detectar repeticiones/frecuencia
+                    for n in items[:40]:
                         t = (n.find('title') or n.find('{*}title')).text.strip()
                         l = (n.find('link').text or n.find('{*}link').attrib.get('href', '')).strip()
                         if t and l:
+                            # EL ID ÚNICO (ANCLAJE)
                             aid = hashlib.md5(t.encode('utf-8')).hexdigest()[:8]
-                            # Guardamos metadatos básicos
                             self.raw_storage[aid] = {"id": aid, "title": t, "link": l, "region": region}
-                            # Agrupamos por región para el análisis
                             regional_buffer[region].append(f"ID:{aid} | TITULO:{t}")
                 except: continue
         return regional_buffer
 
     # --- UTILIDADES ---
     def smart_scrape(self, url):
-        """Descarga el texto completo de la noticia."""
         try:
             req = urllib.request.Request(url, headers=HEADERS)
             with urllib.request.urlopen(req, timeout=8) as response:
@@ -122,7 +120,7 @@ class ClusterEngine:
                 for s in soup(["script", "style", "nav", "footer", "svg", "header", "aside", "form", "iframe", "ads"]): 
                     s.extract()
                 text = re.sub(r'\s+', ' ', soup.get_text()).strip()
-                return text[:3000] # Capturamos hasta 3000 caracteres para buen contexto
+                return text[:3000] # Texto suficiente para análisis profundo
         except: return ""
 
     def normalize_block(self, region):
@@ -131,31 +129,35 @@ class ClusterEngine:
     def get_area_color(self, area):
         return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(area, "#94a3b8")
 
-    # --- FASE 2: TRIAJE INTELIGENTE (EL EDITOR) ---
-    def smart_regional_triage(self, region, titles_list):
+    # --- FASE 2: FILTRO POR FRECUENCIA (CONSENSO REGIONAL) ---
+    def frequency_based_triage(self, region, titles_list):
         """
-        Analiza TODOS los titulares de una región en bloque.
-        Busca patrones repetidos y relevancia estratégica.
+        Aquí ocurre la magia de la relevancia.
+        La IA lee 100+ titulares y solo devuelve los temas que se REPITEN
+        en varios medios, descartando noticias únicas o irrelevantes.
         """
         text_block = "\n".join(titles_list)
         
         prompt = f"""
-        Actúa como el Editor Jefe de Inteligencia para la región: {region}.
+        Actúa como Jefe de Redacción para la región: {region}.
+        Tienes una lista de titulares de múltiples medios (NYT, TASS, China Daily, etc).
         
-        TUS OBJETIVOS:
-        1. Identificar las noticias más importantes basándote en la REPETICIÓN (temas que aparecen en varias fuentes) y la RELEVANCIA ESTRATÉGICA.
-        2. Filtrar el ruido: Ignora deportes, crimen local menor, farándula o clima.
-        3. Clasificar las seleccionadas en una de estas ÁREAS: {AREAS_ESTRATEGICAS}.
+        TU MISIÓN: DETECTAR LOS "HOT TOPICS" POR FRECUENCIA.
+        1. Lee todos los titulares.
+        2. Identifica temas que se mencionan en MÚLTIPLES titulares (repetición = relevancia).
+        3. Ignora noticias que solo aparecen una vez (ruido).
+        4. Selecciona EL MEJOR titular representativo para cada tema "Hot".
+        5. Clasifica ese titular en una de estas ÁREAS: {AREAS_ESTRATEGICAS}.
         
-        INPUT (Titulares Crudos):
-        {text_block}
-        
-        OUTPUT JSON (Selecciona las 4-6 mejores):
+        OUTPUT JSON:
         {{
             "seleccionadas": [
-                {{ "id": "ID_DEL_INPUT", "area": "AREA_EXACTA_DE_LA_LISTA" }}
+                {{ "id": "ID_DEL_TITULAR_ELEGIDO", "area": "AREA_ESTRATEGICA" }}
             ]
         }}
+        
+        TITULARES:
+        {text_block}
         """
         try:
             res = self.client.models.generate_content(
@@ -163,47 +165,52 @@ class ClusterEngine:
             )
             return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
         except Exception as e:
-            print(f"   ⚠️ Error en Triaje {region}: {e}")
+            print(f"   ⚠️ Error Frecuencia {region}: {e}")
             return None
 
-    # --- FASE 4: ANÁLISIS DE PROXIMIDAD (EL RADAR) ---
-    def analyze_proximity_context(self, area_name, items):
+    # --- FASE 4: COMPARACIÓN GLOBAL (PROXIMIDAD) ---
+    def analyze_global_proximity(self, area_name, items):
         """
-        Analiza la distancia narrativa usando el TEXTO COMPLETO ya enriquecido.
+        Toma las noticias "Ganadoras" de cada región y las enfrenta.
+        Calcula qué tan cerca (consenso) o lejos (conflicto) están.
         """
-        print(f"   ⚡ Radar: Calculando vectores para {area_name} ({len(items)} items)...")
+        print(f"   ⚡ Radar: Triangulando posiciones para {area_name} ({len(items)} noticias)...")
         
         context_data = []
         for item in items:
-            # Usamos el texto completo que ya descargamos en la Fase 3
-            context_data.append(f"ID:{item['id']} | FUENTE:{item['region']} | TEXTO_INTEGRO:{item['full_text'][:1000]}...")
+            # Aquí usamos el TEXTO ÍNTEGRO descargado para comparar narrativas reales
+            context_data.append(f"ID:{item['id']} | BLOQUE:{item['region']} | CONTENIDO:{item['full_text'][:1200]}")
 
         context_string = "\n---\n".join(context_data)
 
         prompt = f"""
-        Eres PROXIMITY. Analiza este conjunto de noticias completas sobre: {area_name}.
+        Eres el motor PROXIMITY. Estás analizando el Área Estratégica: {area_name}.
+        Tienes noticias de bloques rivales (USA, Rusia, China, etc.).
         
-        TAREA:
-        Detecta las tensiones narrativas entre las diferentes regiones (USA, China, Rusia, etc.).
+        OBJETIVO: CALCULAR LA "PROXIMIDAD NARRATIVA" (0-100%).
         
-        MÉTRICA DE PROXIMIDAD (0-100%):
-        - 100% (CENTRO): Hechos duros aceptados por todos los bloques (Intersección).
-        - 0% (BORDE): Narrativas ideológicas aisladas, propaganda o versiones en disputa (Aislamiento).
+        INSTRUCCIONES:
+        1. Lee todas las noticias. Identifica el "Consenso Técnico" (hechos en los que todos coinciden).
+        2. Para cada noticia, compárala con las demás.
+        3. Asigna un valor de PROXIMIDAD:
+           - 90-100%: La noticia narra hechos aceptados por todos los bloques (Centro del Radar).
+           - 50%: La noticia tiene un sesgo regional moderado.
+           - 0-10%: La noticia presenta una realidad alternativa o propaganda agresiva rechazada por los otros bloques (Borde del Radar).
         
         OUTPUT JSON:
         {{
-            "punto_cero": "Resumen técnico de 2 líneas sobre el tema central que une a estas noticias.",
+            "punto_cero": "Resumen de 2 líneas del tema central que une (o divide) a estas noticias.",
             "particulas": [
                 {{
                     "id": "ID_EXACTO",
-                    "titulo": "Un título sintetizado en Español neutro",
+                    "titulo": "Título Traducido al Español",
                     "proximidad": 85.5,
-                    "sesgo": "Análisis de 1 frase: ¿Por qué esta noticia está cerca o lejos del consenso?"
+                    "sesgo": "Explicación breve de su posición (ej: 'Coincide con reporte de China', 'Aislado, niega los hechos')"
                 }}
             ]
         }}
 
-        CORPUS DE ANÁLISIS:
+        DATA GLOBAL:
         {context_string}
         """
         try:
@@ -212,60 +219,64 @@ class ClusterEngine:
             )
             return json.loads(res.text.replace('```json','').replace('```',''), strict=False)
         except Exception as e:
-            print(f"   ⚠️ Error en IA Proximidad: {e}")
+            print(f"   ⚠️ Error Radar IA: {e}")
             return None
 
-    # --- MOTOR PRINCIPAL ---
+    # --- FLUJO DE TRABAJO ---
     def run(self):
-        # 1. INGESTA
+        # 1. INGESTA MASIVA
         regional_data = self.fetch_rss_by_region()
         if not regional_data: return
 
-        # 2. TRIAJE Y ENRIQUECIMIENTO (Loop por Región)
-        print(f"\n🕵️‍♂️ FASE 2 & 3: Triaje Regional y Enriquecimiento de Texto...")
+        # 2. FILTRADO POR FRECUENCIA REGIONAL
+        print(f"\n🕵️‍♂️ FASE 2 & 3: Detección de Temas (Frecuencia) y Descarga...")
         
         for region, titles in regional_data.items():
             if not titles: continue
             
-            # A. Triaje (Selección de relevantes)
-            print(f"   -> Analizando relevancia en {region} ({len(titles)} titulares)...")
-            selection = self.smart_regional_triage(region, titles)
+            # Buscamos los temas "Hot" en esta región
+            print(f"   -> {region}: Buscando patrones en {len(titles)} titulares...")
+            selection = self.frequency_based_triage(region, titles)
             
             if selection and "seleccionadas" in selection:
-                # B. Enriquecimiento (Scraping de los ganadores)
+                count = 0
                 for item in selection["seleccionadas"]:
                     aid = item.get("id")
                     area = item.get("area")
                     
                     if aid in self.raw_storage and area in AREAS_ESTRATEGICAS:
+                        # Recuperamos la metadata original usando el ID ANCLADO
                         meta = self.raw_storage[aid]
-                        # Descarga de texto REAL ahora mismo
+                        
+                        # Descargamos el texto real para el análisis posterior
                         full_text = self.smart_scrape(meta['link'])
                         
-                        if len(full_text) > 200: # Solo si pudimos bajar contenido útil
+                        if len(full_text) > 200: 
                             enriched_item = meta.copy()
                             enriched_item['full_text'] = full_text
                             enriched_item['area'] = area
-                            
-                            # Guardamos en la estructura final para el radar
                             self.clusters[area].append(enriched_item)
-            
-            time.sleep(1) # Respeto a la API
+                            count += 1
+                print(f"      + Seleccionadas {count} noticias clave.")
+            time.sleep(1)
 
-        # 3. ANÁLISIS DE PROXIMIDAD (Loop por Área Estratégica)
-        print(f"\n🧠 FASE 4: Generación de Inteligencia (Global Proximity)...")
+        # 3. ANÁLISIS DE PROXIMIDAD (GLOBAL)
+        print(f"\n🧠 FASE 4: Generación de Mapa de Proximidad...")
         final_carousel = []
 
         for area, items in self.clusters.items():
-            if len(items) < 2: continue # Necesitamos al menos 2 para comparar
+            if len(items) < 3: continue # Necesitamos mínimo 3 puntos para triangular
             
-            # Analizamos todo el cluster enriquecido
-            analysis = self.analyze_proximity_context(area, items)
+            # Mezclamos para asegurar que el análisis no tenga sesgo de orden
+            random.shuffle(items)
+            
+            # Enviamos al Radar las noticias más relevantes de cada región
+            analysis = self.analyze_global_proximity(area, items[:40])
             
             if analysis and 'particulas' in analysis:
                 clean_particles = []
                 for p in analysis['particulas']:
-                    # Buscamos el item original para recuperar metadatos (link, region)
+                    # Re-conectamos con la metadata original usando el ID
                     original = next((x for x in items if x['id'] == p['id']), None)
                     if original:
                         p['link'] = original['link']
@@ -283,7 +294,7 @@ class ClusterEngine:
                     })
             time.sleep(2)
 
-        # 4. EXPORTACIÓN
+        # 4. GUARDADO
         output = {"carousel": final_carousel}
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
@@ -292,7 +303,7 @@ class ClusterEngine:
         with open(os.path.join(PATHS["diario"], f"{fecha}.json"), "w", encoding="utf-8") as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
             
-        print("\n✅ CICLO COMPLETADO: Inteligencia Generada con Texto Íntegro.")
+        print("\n✅ CICLO COMPLETADO: Radar de Proximidad Generado.")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
