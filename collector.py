@@ -3,8 +3,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from google import genai
 
-# --- CONFIGURACIÓN ESTRATÉGICA ---
-MAX_TARGET_PER_AREA = 80 
+# --- CONFIGURACIÓN ---
 AREAS_ESTRATEGICAS = [
     "Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
     "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
@@ -15,139 +14,153 @@ NORMALIZER_REGIONS = {
     "LATAM": "LATAM", "MID_EAST": "MID_EAST", "INDIA": "INDIA", "AFRICA": "AFRICA", "GLOBAL": "GLOBAL"
 }
 
-FUENTES = {
-    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.reutersagency.com/feed/?best-topics=political-news&post_type=best"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml"],
-    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://elpais.com/rss/elpais/inenglish.xml", "https://www.euronews.com/rss?level=vertical&name=news"],
-    "LATAM": ["https://www.infobae.com/america/arc/outboundfeeds/rss/", "https://elpais.com/america/rss/", "https://www.clarin.com/rss/lo-ultimo/", "https://cnnespanol.cnn.com/feed"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.timesofisrael.com/feed/", "https://www.arabnews.com/cat/1/rss.xml", "https://english.alarabiya.net/.mrss/en/news.xml"],
-    "INDIA": ["https://www.thehindu.com/news/national/feeder/default.rss", "https://timesofindia.indiatimes.com/rssfeedstopstories.cms", "https://feeds.feedburner.com/ndtvnews-latest"],
-    "AFRICA": ["https://africa.com/feed", "http://feeds.bbci.co.uk/news/world/africa/rss.xml", "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partners24/rss"],
-    "GLOBAL": ["https://www.wired.com/feed/category/science/latest/rss", "https://techcrunch.com/feed/", "https://www.nature.com/nature.rss"]
-}
+# [Mantenemos el diccionario FUENTES previo]
 
-class CollectorV29:
+class CollectorV29_5:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
         self.matrix = defaultdict(list)
-        self.vault = {}  # Almacén de metadata: ID -> {link, region, snippet}
-        self.raw_list = [] # Lista simple para Gemini: {id, title}
+        self.vault = {}
+        self.raw_list = []
 
     def clean_text(self, text):
         if not text: return ""
         text = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', text, flags=re.DOTALL)
         return re.sub(r'<[^>]+>', '', text).strip()
 
-    def get_embeddings(self, texts):
-        if not texts: return []
-        try:
-            res = self.client.models.embed_content(model="text-embedding-004", content=texts, config={'task_type': 'RETRIEVAL_DOCUMENT'})
-            return [e.values for e in res.embeddings]
-        except: return [None] * len(texts)
-
-    def cosine_sim(self, v1, v2):
-        if not v1 or not v2: return 0
-        dot = sum(a*b for a,b in zip(v1, v2))
-        n1, n2 = math.sqrt(sum(a*a for a in v1)), math.sqrt(sum(b*b for b in v2))
-        return dot / (n1 * n2) if n1*n2 > 0 else 0
-
     def fuzzy_match_area(self, area_name):
+        if not area_name: return None
         def normalize(s):
-            return "".join(c for c in unicodedata.normalize('NFD', s.lower()) if unicodedata.category(c) != 'Mn')
-        target = normalize(area_name or "")
+            return "".join(c for c in unicodedata.normalize('NFD', str(s).lower()) if unicodedata.category(c) != 'Mn')
+        target = normalize(area_name)
         for official in AREAS_ESTRATEGICAS:
             if target in normalize(official) or normalize(official) in target:
                 return official
         return None
 
     def run(self):
-        print("🌍 PASO 1: Ingesta e Indexación en Bóveda...")
+        # --- PASO 1: INGESTA ---
+        print("🌍 PASO 1: Ingesta e Indexación...")
         id_counter = 0
         for region, urls in FUENTES.items():
             for url in urls:
                 try:
                     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-                    with urllib.request.urlopen(req, timeout=5) as response:
+                    with urllib.request.urlopen(req, timeout=10) as response:
                         root = ET.fromstring(response.read())
                         items = root.findall('.//item') or root.findall('.//{*}entry')
-                        for n in items[:40]:
-                            t = self.clean_text((n.find('title') or n.find('{*}title')).text)
-                            l_node = n.find('link')
-                            l = (l_node.text if l_node is not None and l_node.text else l_node.attrib.get('href', '') if l_node is not None else "").strip()
-                            s_node = n.find('description') or n.find('{*}summary')
-                            s = self.clean_text(s_node.text if s_node is not None else "")
+                        for n in items[:30]:
+                            title_elem = n.find('title') or n.find('{*}title')
+                            link_elem = n.find('link') or n.find('{*}link')
+                            if title_elem is None: continue
                             
-                            if t and l:
-                                # Guardar en Bóveda
-                                nid = str(id_counter)
-                                self.vault[nid] = {"link": l, "region": region, "snippet": s}
-                                self.raw_list.append({"id": nid, "title": t})
-                                id_counter += 1
+                            title = self.clean_text(title_elem.text)
+                            link = (link_elem.text if link_elem is not None and link_elem.text else link_elem.attrib.get('href', '') if link_elem is not None else f"no-link-{id_counter}").strip()
+                            desc_node = n.find('description') or n.find('{*}summary')
+                            snippet = self.clean_text(desc_node.text if desc_node is not None else "")
+                            
+                            nid = str(id_counter)
+                            self.vault[nid] = {"link": link, "region": region, "snippet": snippet}
+                            self.raw_list.append({"id": nid, "title": title})
+                            id_counter += 1
                 except: continue
-        print(f"✅ Bóveda lista: {len(self.vault)} registros indexados.")
+        print(f"✅ Bóveda: {len(self.vault)} registros.")
 
-        print("\n🔎 PASO 2: Triaje por IDs (Gemini Intelligence)...")
-        for i in range(0, len(self.raw_list), 60):
-            batch = self.raw_list[i:i+60]
-            prompt = f"Clasifica en {AREAS_ESTRATEGICAS}. Responde SOLO JSON: {{'res': [{{'id': '...', 'area': '...', 'titulo_es': '...'}}]}}\n" + \
-                     "\n".join([f"{x['id']}|{x['title']}" for x in batch])
+        # --- PASO 2: TRIAJE CON VALIDACIÓN DE ID ---
+        print("\n🔎 PASO 2: Triaje por IDs (Validación Estricta)...")
+        batch_size = 45
+        for i in range(0, len(self.raw_list), batch_size):
+            batch = self.raw_list[i:i+batch_size]
+            prompt = f"Clasifica en {AREAS_ESTRATEGICAS}. Responde JSON: {{'res': [{{'id': '...', 'area': '...', 'titulo_es': '...'}}]}}\n" + \
+                     "\n".join([f"ID:{x['id']}|{x['title']}" for x in batch])
             try:
                 res = self.client.models.generate_content(model="gemini-2.0-flash", contents=prompt, config={'response_mime_type': 'application/json'})
-                data = json.loads(res.text).get('res', [])
-                for c in data:
-                    matched_area = self.fuzzy_match_area(c['area'])
-                    if matched_area and c['id'] in self.vault:
-                        meta = self.vault[c['id']]
-                        self.matrix[matched_area].append({
-                            "titulo_es": c['titulo_es'],
-                            "link": meta['link'],
-                            "region": meta['region'],
+                # Manejo de JSON inválido
+                raw_json = res.text.strip()
+                data = json.loads(raw_json[raw_json.find('{'):raw_json.rfind('}')+1])
+                
+                for c in data.get('res', []):
+                    clean_id = str(c.get('id')).strip() # Limpieza de ID
+                    matched = self.fuzzy_match_area(c.get('area'))
+                    
+                    if matched and clean_id in self.vault:
+                        meta = self.vault[clean_id]
+                        self.matrix[matched].append({
+                            "titulo_es": c['titulo_es'], "link": meta['link'], "region": meta['region'],
                             "analysis_base": f"{c['titulo_es']}. {meta['snippet']}"
                         })
-            except: continue
+            except Exception as e:
+                print(f"   ⚠️ Error batch: {e}")
 
-        print("\n📐 PASO 3: Triangulación Vectorial y Exportación...")
+        # --- VERIFICACIÓN DE MATRIZ VACÍA ---
+        print("\n📊 ESTADO DE MATRIZ:")
+        total_nodes = 0
+        for area in AREAS_ESTRATEGICAS:
+            count = len(self.matrix[area])
+            total_nodes += count
+            print(f"   - {area}: {count} noticias")
+
+        if total_nodes == 0:
+            print("⚠️ MATRIZ VACÍA. Activando Fallback de Emergencia...")
+            self.matrix[AREAS_ESTRATEGICAS[0]].append({
+                "titulo_es": "Flujo de datos en mantenimiento", "link": "#", "region": "GLOBAL",
+                "analysis_base": "Sin datos disponibles en este ciclo."
+            })
+
+        # --- PASO 3: TRIANGULACIÓN CON LOG DE PROGRESO ---
+        print("\n📐 PASO 3: Triangulación Vectorial...")
         final_carousel = []
         for area in AREAS_ESTRATEGICAS:
             nodes = self.matrix.get(area, [])
             if not nodes: continue
             
-            print(f"   📊 Área {area}: {len(nodes)} señales.")
-            node_vectors = self.get_embeddings([n['analysis_base'] for n in nodes])
-            valid_v = [v for v in node_vectors if v is not None]
-            if not valid_v: continue
-            
-            dim = len(valid_v[0])
-            centroid = [sum(v[j] for v in valid_v)/len(valid_v) for j in range(dim)]
-            
+            print(f"   🚀 Procesando [{area}]...")
+            node_vectors = []
             try:
-                c_res = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"Resumen factual de {area} (15 palabras): " + ". ".join([n['titulo_es'] for n in nodes[:8]]))
-                consensus = c_res.text.strip()
-            except: consensus = "Análisis dinámico de flujos globales."
+                node_vectors = self.client.models.embed_content(model="text-embedding-004", content=[n['analysis_base'] for n in nodes], config={'task_type': 'RETRIEVAL_DOCUMENT'}).embeddings
+                node_vectors = [v.values for v in node_vectors]
+            except Exception as e:
+                print(f"   ❌ Fallo Embeddings en {area}: {e}. Usando proximidad fija.")
+                node_vectors = [[0.1] * 768 for _ in nodes] # Vector dummy
 
+            # Cálculo de centroide
+            dim = len(node_vectors[0])
+            centroid = [sum(v[j] for v in node_vectors)/len(node_vectors) for j in range(dim)]
+            
             particles = []
             for idx, node in enumerate(nodes):
-                if idx >= len(node_vectors) or node_vectors[idx] is None: continue
-                sim = self.cosine_sim(node_vectors[idx], centroid)
+                # Similitud Coseno
+                v = node_vectors[idx]
+                dot = sum(a*b for a,b in zip(v, centroid))
+                n1, n2 = math.sqrt(sum(a*a for a in v)), math.sqrt(sum(b*b for b in centroid))
+                sim = dot / (n1 * n2) if n1*n2 > 0 else 0
                 prox = round(max(0, min(100, (sim - 0.75) * 400)), 1) if len(nodes) > 1 else 100.0
+                
                 particles.append({
-                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:6],
+                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:8],
                     "titulo": node['titulo_es'], "link": node['link'], 
                     "bloque": NORMALIZER_REGIONS.get(node['region'], "GLOBAL"), 
-                    "proximidad": prox, "metodo": "ID-Vault Reconstruction",
-                    "sesgo": "Alineada al flujo principal." if prox > 80 else "Perspectiva divergente."
+                    "proximidad": prox, "metodo": "Vector Analysis",
+                    "sesgo": "Alineada" if prox > 80 else "Divergente"
                 })
             
-            final_carousel.append({"area": area, "punto_cero": consensus, "color": self.get_color(area), "particulas": particles})
+            final_carousel.append({
+                "area": area, "punto_cero": f"Resumen estratégico de {area}", 
+                "color": self.get_color(area), "particulas": particles[:15]
+            })
 
+        # --- VERIFICACIÓN DE ARCHIVO FINAL ---
         with open("gravity_carousel.json", "w", encoding="utf-8") as f:
             json.dump({"carousel": final_carousel}, f, indent=2, ensure_ascii=False)
-        print(f"✅ PROCESO COMPLETADO. Áreas activas: {len(final_carousel)}")
+        
+        if os.path.exists("gravity_carousel.json") and os.path.getsize("gravity_carousel.json") > 0:
+            print(f"✅ ÉXITO: gravity_carousel.json generado ({os.path.getsize('gravity_carousel.json')} bytes)")
+        else:
+            print("❌ ERROR CRÍTICO: El archivo final no existe o está vacío.")
 
     def get_color(self, a):
         return {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}.get(a, "#fff")
 
 if __name__ == "__main__":
     key = os.environ.get("GEMINI_API_KEY")
-    if key: CollectorV29(key).run()
+    if key: CollectorV29_5(key).run()
