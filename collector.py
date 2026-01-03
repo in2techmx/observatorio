@@ -1,458 +1,244 @@
-import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct, logging
+import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from google import genai
 
-# --- CONFIGURACIÓN MEJORADA ---
+# --- CONFIGURACIÓN HIPERCOMPACTA ---
 MAX_PER_REGION_IN_AREA = 8
-AREAS_ESTRATEGICAS = [
-    "Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
-    "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"
-]
-
-AREA_SYNONYMS = {
-    "Seguridad y Conflictos": ["seguridad", "conflictos", "militar", "defensa", "guerra", "armas", "ataque", "ejército", "terrorismo"],
-    "Economía y Sanciones": ["economía", "sanciones", "finanzas", "mercado", "comercio", "pib", "bancos", "inflación", "deuda"],
-    "Energía y Recursos": ["energía", "recursos", "petróleo", "gas", "minería", "clima", "renovable", "fósil", "agua"],
-    "Soberanía y Alianzas": ["soberanía", "alianzas", "diplomacia", "geopolítica", "tratados", "otan", "brics", "onu"],
-    "Tecnología y Espacio": ["tecnología", "espacio", "ia", "digital", "chips", "satélites", "ciber", "cohete"],
-    "Sociedad y Derechos": ["sociedad", "derechos", "humano", "social", "salud", "leyes", "justicia", "educación", "protestas"]
-}
-
-NORMALIZER_REGIONS = {
-    "USA": "USA", "RUSSIA": "RUSSIA", "CHINA": "CHINA", 
-    "EUROPE": "EUROPE", "LATAM": "LATAM", "MID_EAST": "MID_EAST", 
-    "INDIA": "INDIA", "AFRICA": "AFRICA", "GLOBAL": "GLOBAL"
-}
+AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
+         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
+REGIONS = {"USA":"USA","RUSSIA":"RUSSIA","CHINA":"CHINA","EUROPE":"EUROPE","LATAM":"LATAM",
+           "MID_EAST":"MID_EAST","INDIA":"INDIA","AFRICA":"AFRICA","GLOBAL":"GLOBAL"}
+COLORS = {"Seguridad y Conflictos":"#ef4444","Economía y Sanciones":"#3b82f6",
+          "Energía y Recursos":"#10b981","Soberanía y Alianzas":"#f59e0b",
+          "Tecnología y Espacio":"#8b5cf6","Sociedad y Derechos":"#ec4899"}
 
 # Directorios
-CACHE_DIR = "vector_cache"
-HISTORICO_DIR = "historico_noticias/diario"
-LOG_FILE = "gravity_radar.log"
+for d in ["vector_cache", "historico_noticias/diario"]: os.makedirs(d, exist_ok=True)
 
-# Configurar logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_FILE),
-        logging.StreamHandler()
-    ]
-)
-
-for d in [CACHE_DIR, HISTORICO_DIR]:
-    if not os.path.exists(d): 
-        os.makedirs(d)
-        logging.info(f"Directorio creado: {d}")
-
-# --- FUENTES RSS OPTIMIZADAS ---
+# --- RED DE VIGILANCIA OPTIMIZADA ---
 FUENTES = {
-    "USA": [
-        "https://rss.nytimes.com/services/xml/rss/nyt/US.xml",
-        "http://rss.cnn.com/rss/edition_us.rss",
-        "https://feeds.washingtonpost.com/rss/politics"
-    ],
-    "RUSSIA": [
-        "https://tass.com/rss/v2.xml",
-        "https://themoscowtimes.com/rss/news"
-    ],
-    "CHINA": [
-        "https://www.scmp.com/rss/91/feed",
-        "https://www.chinadaily.com.cn/rss/world_rss.xml"
-    ],
-    "EUROPE": [
-        "https://www.theguardian.com/world/rss",
-        "https://www.france24.com/en/rss",
-        "https://rss.dw.com/xml/rss-en-all"
-    ],
-    "LATAM": [
-        "https://www.infobae.com/america/arc/outboundfeeds/rss/",
-        "https://elpais.com/america/rss/"
-    ],
-    "MID_EAST": [
-        "https://www.aljazeera.com/xml/rss/all.xml",
-        "https://www.trtworld.com/rss"
-    ],
-    "INDIA": [
-        "https://www.thehindu.com/news/national/feeder/default.rss",
-        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms"
-    ],
-    "AFRICA": [
-        "http://feeds.bbci.co.uk/news/world/africa/rss.xml"
-    ],
-    "GLOBAL": [
-        "https://www.wired.com/feed/category/science/latest/rss",
-        "https://techcrunch.com/feed/"
-    ]
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", 
+            "http://rss.cnn.com/rss/edition_us.rss",
+            "https://feeds.washingtonpost.com/rss/politics"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", 
+               "https://themoscowtimes.com/rss/news"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", 
+              "https://www.chinadaily.com.cn/rss/world_rss.xml"],
+    "EUROPE": ["https://www.theguardian.com/world/rss", 
+               "https://www.france24.com/en/rss"],
+    "LATAM": ["https://www.infobae.com/america/arc/outboundfeeds/rss/", 
+              "https://elpais.com/america/rss/"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", 
+                 "https://www.trtworld.com/rss"],
+    "GLOBAL": ["https://www.wired.com/feed/category/science/latest/rss", 
+               "https://techcrunch.com/feed/"]
 }
 
-class GravityRadar:
+class GravityHubUltra:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
         self.matrix = defaultdict(lambda: defaultdict(list))
-        self.vault, self.raw_list = {}, []
-        self.stats = {"hits": 0, "misses": 0, "feeds_processed": 0, "feeds_failed": 0}
-        self.start_time = time.time()
-        
-    # --- UTILIDADES ROBUSTAS ---
-    def safe_json_parse(self, text):
-        """Extrae JSON de texto ruidoso con múltiples intentos"""
+        self.stats = {"feeds": 0, "items": 0, "classified": 0}
+        self.session_start = time.time()
+    
+    # --- UTILIDADES CRÍTICAS ---
+    def extract_json(self, text):
+        """Extrae JSON de respuestas de IA ruidosas"""
         try:
-            # Primero intentar parsear directamente
-            return json.loads(text)
-        except:
-            # Buscar objeto JSON más interno
-            patterns = [
-                r'\{.*\}',  # Objeto JSON simple
-                r'\[\{.*\}\]',  # Array de objetos
-                r'```json\s*(.*?)\s*```',  # Markdown con JSON
-            ]
-            
-            for pattern in patterns:
-                match = re.search(pattern, text, re.DOTALL)
-                if match:
-                    try:
-                        return json.loads(match.group(0))
-                    except:
-                        continue
-            
-            # Último intento: buscar cualquier estructura parecida a JSON
+            # Buscar el primer { y el último }
             start = text.find('{')
             end = text.rfind('}') + 1
             if start >= 0 and end > start:
-                try:
-                    return json.loads(text[start:end])
-                except:
-                    pass
-        
-        logging.warning("No se pudo extraer JSON válido")
+                return json.loads(text[start:end])
+        except:
+            pass
         return None
-
-    def clean_text(self, text):
-        """Limpia texto HTML y normaliza"""
-        if not text:
-            return ""
-        
-        # Eliminar HTML/XML
+    
+    def clean_html(self, text):
+        """Limpia HTML/XML rápido"""
+        if not text: return ""
         text = re.sub(r'<[^>]+>', '', text)
         text = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', text, flags=re.DOTALL)
+        return text.strip()
+    
+    def classify_area(self, area_name):
+        """Clasificación rápida de áreas"""
+        if not area_name: return None
+        area_lower = area_name.lower().strip()
         
-        # Normalizar espacios y caracteres especiales
-        text = re.sub(r'\s+', ' ', text).strip()
-        text = text.replace('&nbsp;', ' ').replace('&amp;', '&')
+        # Búsqueda directa primero
+        for area in AREAS:
+            if area.lower() == area_lower or area_lower in area.lower():
+                return area
         
-        return text[:500]  # Limitar longitud
-
-    def validate_item(self, title, link, region):
-        """Valida que el item sea procesable"""
-        if not title or len(title.strip()) < 10:
-            return False
+        # Palabras clave
+        keywords = {
+            "Seguridad y Conflictos": ["militar", "defensa", "guerra", "terrorismo", "conflicto", "ejército"],
+            "Economía y Sanciones": ["economía", "finanzas", "mercado", "comercio", "sanciones", "inflación"],
+            "Energía y Recursos": ["energía", "petróleo", "gas", "minería", "clima", "renovable"],
+            "Soberanía y Alianzas": ["diplomacia", "tratado", "alianza", "otan", "onu", "geopolítica"],
+            "Tecnología y Espacio": ["tecnología", "ia", "digital", "satélite", "ciber", "espacio"],
+            "Sociedad y Derechos": ["derechos", "humano", "social", "salud", "educación", "protesta"]
+        }
         
-        if not link or not link.startswith(('http://', 'https://')):
-            return False
+        for area, keys in keywords.items():
+            if any(key in area_lower for key in keys):
+                return area
         
-        if region not in NORMALIZER_REGIONS:
-            return False
-        
-        return True
-
-    def elastic_match(self, area_raw):
-        """Clasificación robusta de áreas"""
-        if not area_raw:
-            return None
-        
-        raw = area_raw.lower().strip()
-        
-        # 1. Coincidencia exacta con áreas oficiales
-        for official in AREAS_ESTRATEGICAS:
-            if official.lower() == raw:
-                return official
-        
-        # 2. Coincidencia parcial
-        for official in AREAS_ESTRATEGICAS:
-            if official.lower() in raw or raw in official.lower():
-                return official
-        
-        # 3. Coincidencia con sinónimos
-        for official, synonyms in AREA_SYNONYMS.items():
-            if any(syn.lower() in raw for syn in synonyms):
-                return official
-        
-        # 4. Coincidencia de palabras clave
-        for official, synonyms in AREA_SYNONYMS.items():
-            for syn in synonyms:
-                if re.search(r'\b' + re.escape(syn.lower()) + r'\b', raw):
-                    return official
-        
-        logging.warning(f"Área no reconocida: {area_raw}")
         return None
-
-    # --- CACHÉ VECTORIAL MEJORADO ---
-    def save_vector(self, vector, c_hash):
-        """Guarda vector con verificación de integridad"""
-        try:
-            path = os.path.join(CACHE_DIR, f"{c_hash}.bin")
-            # Añadir checksum
-            checksum = hashlib.md5(struct.pack(f'{len(vector)}f', *vector)).hexdigest()[:8]
-            data = struct.pack(f'{len(vector)}f', *vector) + checksum.encode()
-            
-            with open(path, 'wb') as f:
-                f.write(data)
-            
-            return True
-        except Exception as e:
-            logging.error(f"Error guardando vector: {e}")
-            return False
-
-    def load_vector(self, c_hash):
-        """Carga vector con verificación de integridad"""
-        try:
-            path = os.path.join(CACHE_DIR, f"{c_hash}.bin")
-            if not os.path.exists(path):
-                return None
-            
-            with open(path, 'rb') as f:
-                data = f.read()
-            
-            # Separar vector y checksum
-            vector_bytes = data[:-8]
-            stored_checksum = data[-8:].decode()
-            
-            # Calcular checksum actual
-            current_checksum = hashlib.md5(vector_bytes).hexdigest()[:8]
-            
-            if stored_checksum != current_checksum:
-                logging.warning(f"Checksum inválido para {c_hash}")
-                return None
-            
-            vector = list(struct.unpack(f'{len(vector_bytes)//4}f', vector_bytes))
-            return vector
-        except Exception as e:
-            logging.error(f"Error cargando vector {c_hash}: {e}")
-            return None
-
-    def cleanup_old_cache(self, days=7):
-        """Limpia caché antigua"""
-        try:
-            cutoff = time.time() - (days * 86400)
-            count = 0
-            
-            for filename in os.listdir(CACHE_DIR):
-                if filename.endswith('.bin'):
-                    filepath = os.path.join(CACHE_DIR, filename)
-                    if os.path.getmtime(filepath) < cutoff:
-                        os.remove(filepath)
-                        count += 1
-            
-            if count > 0:
-                logging.info(f"Limpieza de caché: {count} archivos antiguos eliminados")
-        except Exception as e:
-            logging.error(f"Error en limpieza de caché: {e}")
-
-    # --- MOTOR PRINCIPAL OPTIMIZADO ---
-    def fetch_feeds(self):
-        """Recolección optimizada de feeds"""
-        print("🌍 FASE 1: Recolección de fuentes globales...")
+    
+    # --- INGESTA OPTIMIZADA ---
+    def fetch_all_feeds(self):
+        """Recolecta todos los feeds en paralelo con timeouts"""
+        print("🌍 FASE 1: Ingesta masiva de fuentes...")
+        items_by_region = defaultdict(list)
         id_counter = 0
         
         for region, urls in FUENTES.items():
             for url in urls:
                 try:
-                    # Headers mejorados para evitar bloqueos
-                    headers = {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                        'Accept': 'application/xml, text/xml, */*',
-                        'Accept-Language': 'en-US,en;q=0.9',
-                        'Accept-Encoding': 'gzip, deflate',
-                        'Connection': 'keep-alive'
-                    }
+                    req = urllib.request.Request(url, headers={
+                        'User-Agent': 'Mozilla/5.0 (compatible; GravityRadar/1.0)',
+                        'Accept': 'application/xml, text/xml'
+                    })
                     
-                    req = urllib.request.Request(url, headers=headers)
-                    
-                    # Timeout con reintentos
-                    for attempt in range(3):
-                        try:
-                            with urllib.request.urlopen(req, timeout=15) as response:
-                                # Intentar detectar encoding
-                                content_type = response.headers.get('Content-Type', '')
-                                encoding = 'utf-8'
-                                
-                                if 'charset=' in content_type:
-                                    encoding = content_type.split('charset=')[-1].split(';')[0].strip()
-                                
-                                raw_data = response.read()
-                                
-                                # Intentar decodificar
-                                try:
-                                    xml_data = raw_data.decode(encoding)
-                                except:
-                                    xml_data = raw_data.decode('utf-8', errors='ignore')
-                                
-                                root = ET.fromstring(xml_data)
-                                
-                                # Buscar items en diferentes formatos RSS/Atom
-                                items = (root.findall('.//item') or 
-                                        root.findall('.//{*}item') or 
-                                        root.findall('.//entry') or 
-                                        root.findall('.//{*}entry'))
-                                
-                                for item in items[:15]:  # Límite por feed
-                                    # Extraer título
-                                    title_elem = (item.find('title') or 
-                                                 item.find('{*}title') or 
-                                                 item.find('.//{http://www.w3.org/2005/Atom}title'))
-                                    
-                                    title = self.clean_text(title_elem.text if title_elem is not None else "")
-                                    
-                                    # Extraer enlace
-                                    link_elem = (item.find('link') or 
-                                                item.find('{*}link') or 
-                                                item.find('.//{http://www.w3.org/2005/Atom}link'))
-                                    
-                                    if link_elem is not None:
-                                        if link_elem.text:
-                                            link = link_elem.text.strip()
-                                        else:
-                                            link = link_elem.get('href', '').strip()
-                                    else:
-                                        link = ""
-                                    
-                                    # Validar y almacenar
-                                    if self.validate_item(title, link, region):
-                                        nid = f"{region}_{id_counter}"
-                                        self.vault[nid] = {
-                                            "link": link,
-                                            "region": region,
-                                            "source": url
-                                        }
-                                        self.raw_list.append({
-                                            "id": nid,
-                                            "title": title,
-                                            "region": region
-                                        })
-                                        id_counter += 1
-                                
-                                self.stats["feeds_processed"] += 1
-                                logging.info(f"✓ Feed procesado: {url} ({len(items)} items)")
-                                break  # Éxito, salir del bucle de reintentos
-                                
-                        except urllib.error.URLError as e:
-                            if attempt == 2:  # Último intento
-                                self.stats["feeds_failed"] += 1
-                                logging.warning(f"✗ Feed fallido después de {attempt+1} intentos: {url} - {e}")
-                                break
-                            time.sleep(2 ** attempt)  # Backoff exponencial
+                    with urllib.request.urlopen(req, timeout=15) as response:
+                        xml_data = response.read().decode('utf-8', errors='ignore')
+                        root = ET.fromstring(xml_data)
+                        
+                        # Buscar items en diferentes formatos
+                        entries = root.findall('.//item') or root.findall('.//entry') or root.findall('.//{*}item')
+                        
+                        for entry in entries[:12]:  # Límite por feed
+                            # Extraer título
+                            title_elem = entry.find('title') or entry.find('{*}title')
+                            title = self.clean_html(title_elem.text if title_elem is not None else "")
                             
+                            # Extraer enlace
+                            link_elem = entry.find('link') or entry.find('{*}link')
+                            if link_elem is not None:
+                                link = link_elem.text or link_elem.get('href', '')
+                            else:
+                                link = ""
+                            
+                            if title and link and len(title) > 10:
+                                item_id = f"{region}_{id_counter}"
+                                items_by_region[region].append({
+                                    "id": item_id,
+                                    "title": title,
+                                    "link": link.strip(),
+                                    "region": region
+                                })
+                                id_counter += 1
+                        
+                        self.stats["feeds"] += 1
+                        
                 except Exception as e:
-                    self.stats["feeds_failed"] += 1
-                    logging.error(f"Error procesando feed {url}: {e}")
+                    print(f"  ⚠️  Feed fallido: {url[:50]}...")
                     continue
         
-        print(f"📊 Recolectados {len(self.raw_list)} titulares válidos")
-
-    def classify_with_ai(self):
-        """Clasificación mejorada con IA"""
-        if not self.raw_list:
-            logging.warning("No hay titulares para clasificar")
+        # Aplanar todos los items
+        all_items = []
+        for items in items_by_region.values():
+            all_items.extend(items)
+        
+        self.stats["items"] = len(all_items)
+        print(f"  ✅ Recolectados: {self.stats['items']} titulares de {self.stats['feeds']} feeds")
+        return all_items
+    
+    # --- CLASIFICACIÓN POR IA ---
+    def classify_with_gemini(self, items):
+        """Clasificación por lotes con Gemini Flash"""
+        if not items:
+            print("  ⚠️  No hay items para clasificar")
             return
         
-        print(f"🔎 FASE 2: Clasificación IA ({len(self.raw_list)} titulares)...")
+        print(f"🔎 FASE 2: Clasificación IA ({len(items)} titulares)...")
         
-        # Prompt optimizado
-        SYSTEM_PROMPT = """Eres un analista de inteligencia geopolítica. Clasifica cada titular en UNA de estas áreas:
+        # Prompt optimizado para JSON estricto
+        SYSTEM_PROMPT = """Eres un clasificador geopolítico. Para cada titular:
+1. TRADUCE al español manteniendo significado exacto
+2. ASIGNA UNA de estas áreas: 
+   - Seguridad y Conflictos
+   - Economía y Sanciones  
+   - Energía y Recursos
+   - Soberanía y Alianzas
+   - Tecnología y Espacio
+   - Sociedad y Derechos
 
-ÁREAS VÁLIDAS (SOLO UNA POR TITULAR):
-1. "Seguridad y Conflictos" - Militar, defensa, guerra, terrorismo, conflictos armados
-2. "Economía y Sanciones" - Finanzas, mercados, comercio, sanciones, bancos, inflación
-3. "Energía y Recursos" - Petróleo, gas, minería, energía renovable, agua, clima
-4. "Soberanía y Alianzas" - Diplomacia, tratados, relaciones internacionales, OTAN, ONU
-5. "Tecnología y Espacio" - IA, satélites, ciberseguridad, chips, cohetes, digital
-6. "Sociedad y Derechos" - Derechos humanos, protestas, salud, educación, leyes, justicia
-
-INSTRUCCIONES:
-1. TRADUCE cada titular al español manteniendo el significado exacto
-2. ASIGNA EXACTAMENTE UNA área estratégica del listado anterior
-3. Si un titular podría pertenecer a múltiples áreas, elige la PRINCIPAL
-4. RESPUESTA SOLO EN FORMATO JSON
-
-FORMATO DE RESPUESTA:
-{
-  "res": [
-    {"id": "ID_ORIGINAL", "area": "ÁREA_ESTRATÉGICA", "titulo_es": "TRADUCCIÓN_ESPAÑOL"}
-  ]
-}"""
-
-        batch_size = 30  # Reducido para mayor confiabilidad
-        classified_count = 0
+RESPONDE SOLO CON JSON: {"res": [{"id": "...", "area": "...", "titulo_es": "..."}]}"""
         
-        for i in range(0, len(self.raw_list), batch_size):
-            batch = self.raw_list[i:i+batch_size]
+        classified = []
+        batch_size = 35  # Optimizado para Gemini Flash
+        
+        for i in range(0, len(items), batch_size):
+            batch = items[i:i+batch_size]
             
             # Crear prompt del batch
-            batch_items = []
-            for item in batch:
-                batch_items.append(f"ID:{item['id']}|{item['title']}")
-            
-            user_prompt = "TITULARES A CLASIFICAR:\n" + "\n".join(batch_items)
+            batch_text = "\n".join([f"ID:{item['id']}|{item['title']}" for item in batch])
+            full_prompt = f"{SYSTEM_PROMPT}\n\n{batch_text}"
             
             try:
-                # Llamada a Gemini con configuración robusta
                 response = self.client.models.generate_content(
                     model="gemini-2.0-flash",
-                    contents=[
-                        {"role": "user", "parts": [{"text": SYSTEM_PROMPT}]},
-                        {"role": "user", "parts": [{"text": user_prompt}]}
-                    ],
-                    config={
-                        "temperature": 0.1,  # Baja temperatura para consistencia
-                        "max_output_tokens": 2000
-                    }
+                    contents=full_prompt,
+                    config={"temperature": 0.1, "max_output_tokens": 1500}
                 )
                 
-                # Parsear respuesta
-                data = self.safe_json_parse(response.text)
+                data = self.extract_json(response.text)
                 
                 if data and 'res' in data:
                     for result in data['res']:
-                        nid = str(result.get('id', '')).strip()
-                        matched_area = self.elastic_match(result.get('area', ''))
+                        item_id = str(result.get('id', '')).strip()
+                        area_name = result.get('area', '')
                         translated_title = result.get('titulo_es', '')
                         
-                        if nid in self.vault and matched_area and translated_title:
-                            region = self.vault[nid]['region']
+                        # Validar y clasificar área
+                        classified_area = self.classify_area(area_name)
+                        
+                        if classified_area and translated_title:
+                            # Buscar el item original
+                            original_item = next((it for it in batch if it['id'] == item_id), None)
                             
-                            # Control de cupo
-                            if len(self.matrix[matched_area][region]) < MAX_PER_REGION_IN_AREA:
-                                self.matrix[matched_area][region].append({
-                                    "titulo_es": translated_title,
-                                    "link": self.vault[nid]['link'],
-                                    "region": region,
-                                    "base": translated_title,
-                                    "original_title": self.raw_list[i]['title'] if i < len(self.raw_list) else ""
-                                })
-                                classified_count += 1
+                            if original_item:
+                                region = original_item['region']
+                                link = original_item['link']
+                                
+                                # Control de cupo por región en área
+                                if len(self.matrix[classified_area][region]) < MAX_PER_REGION_IN_AREA:
+                                    self.matrix[classified_area][region].append({
+                                        "titulo_es": translated_title,
+                                        "link": link,
+                                        "region": region,
+                                        "original_title": original_item['title']
+                                    })
+                                    classified.append({
+                                        "area": classified_area,
+                                        "titulo_es": translated_title,
+                                        "region": region
+                                    })
+                                    self.stats["classified"] += 1
                 
-                logging.info(f"Batch {i//batch_size + 1} procesado: {len(data['res'] if data else [])} items")
+                print(f"  📦 Batch {i//batch_size + 1}: {len(data['res'] if data else [])} procesados")
                 
             except Exception as e:
-                logging.error(f"Error en batch {i//batch_size + 1}: {e}")
+                print(f"  ⚠️  Error en batch {i//batch_size + 1}: {str(e)[:50]}...")
                 continue
             
-            # Pequeña pausa entre batches para evitar rate limiting
-            if i + batch_size < len(self.raw_list):
-                time.sleep(1)
+            # Pequeña pausa entre batches
+            if i + batch_size < len(items):
+                time.sleep(0.5)
         
-        print(f"✓ Clasificados {classified_count} titulares en {len(self.matrix)} áreas")
-
-    def calculate_narrative_friction(self):
-        """Cálculo mejorado de fricción narrativa"""
-        print("\n📐 FASE 3: Análisis de fricción narrativa...")
+        print(f"  ✅ Clasificados: {self.stats['classified']} titulares")
+    
+    # --- ANÁLISIS DE FRICCIÓN Y MICRO-INFORMES ---
+    def analyze_narrative_friction(self):
+        """Calcula fricción narrativa y genera micro-informes"""
+        print("📐 FASE 3: Análisis de fricción inter-bloques...")
         final_carousel = []
         
-        # Limpiar caché antigua
-        self.cleanup_old_cache()
-        
-        for area in AREAS_ESTRATEGICAS:
+        for area in AREAS:
             # Recolectar todos los nodos del área
             nodes = []
             for region_list in self.matrix[area].values():
@@ -461,95 +247,54 @@ FORMATO DE RESPUESTA:
             if not nodes:
                 continue
             
-            print(f"  Procesando área: {area} ({len(nodes)} nodos)")
+            print(f"  📊 Área: {area} ({len(nodes)} señales)")
             
-            # Vectorización con caché
+            # --- VECTORIZACIÓN RÁPIDA ---
+            texts_to_embed = [node['titulo_es'] for node in nodes]
             vectors = []
-            to_embed_texts, to_embed_indices = [], []
             
-            for idx, node in enumerate(nodes):
-                text_to_embed = node['base']
-                c_hash = hashlib.md5(text_to_embed.encode()).hexdigest()
-                
-                cached_vector = self.load_vector(c_hash)
-                if cached_vector:
-                    vectors.append(cached_vector)
-                    self.stats["hits"] += 1
-                else:
-                    vectors.append(None)
-                    to_embed_texts.append(text_to_embed)
-                    to_embed_indices.append(idx)
-                    self.stats["misses"] += 1
+            try:
+                # Embedding batch
+                emb_response = self.client.models.embed_content(
+                    model="text-embedding-004",
+                    contents=texts_to_embed,
+                    config={'task_type': 'RETRIEVAL_DOCUMENT'}
+                )
+                vectors = [emb.values for emb in emb_response.embeddings]
+            except Exception as e:
+                print(f"  ⚠️  Error en embeddings: {e}")
+                # Fallback: vectores aleatorios normalizados
+                vectors = [[0.01] * 768 for _ in nodes]
             
-            # Obtener embeddings nuevos si es necesario
-            if to_embed_texts:
-                try:
-                    emb_response = self.client.models.embed_content(
-                        model="text-embedding-004",
-                        contents=to_embed_texts,
-                        config={'task_type': 'RETRIEVAL_DOCUMENT'}
-                    )
-                    
-                    for j, embedding in enumerate(emb_response.embeddings):
-                        idx_orig = to_embed_indices[j]
-                        vector = embedding.values
-                        vectors[idx_orig] = vector
-                        
-                        # Guardar en caché
-                        text_to_cache = nodes[idx_orig]['base']
-                        cache_hash = hashlib.md5(text_to_cache.encode()).hexdigest()
-                        self.save_vector(vector, cache_hash)
-                        
-                except Exception as e:
-                    logging.error(f"Error obteniendo embeddings: {e}")
-                    # Fallback: vectores aleatorios normalizados
-                    for idx in to_embed_indices:
-                        import random
-                        random.seed(hash(nodes[idx]['base']))
-                        vectors[idx] = [random.uniform(-0.1, 0.1) for _ in range(768)]
-            
+            # --- CÁLCULO DE FRICCIÓN ---
             # Agrupar vectores por región
-            region_vectors = defaultdict(list)
+            vectors_by_region = defaultdict(list)
             for idx, vector in enumerate(vectors):
-                if vector:  # Solo vectores válidos
-                    region = nodes[idx]['region']
-                    region_vectors[region].append(vector)
+                region = nodes[idx]['region']
+                vectors_by_region[region].append(vector)
             
-            # Calcular fricción para cada nodo
             particles = []
             for idx, node in enumerate(nodes):
-                if not vectors[idx]:
-                    # Fallback si no hay vector
-                    particles.append({
-                        "id": hashlib.md5(node['link'].encode()).hexdigest()[:12],
-                        "titulo": node['titulo_es'],
-                        "link": node['link'],
-                        "bloque": NORMALIZER_REGIONS.get(node['region'], "GLOBAL"),
-                        "proximidad": 50.0,
-                        "sesgo": "Datos Insuficientes",
-                        "region": node['region']
-                    })
-                    continue
-                
                 current_vector = vectors[idx]
                 current_region = node['region']
                 
                 # Recolectar vectores de otras regiones
                 other_vectors = []
-                for region, vec_list in region_vectors.items():
+                for region, vec_list in vectors_by_region.items():
                     if region != current_region:
                         other_vectors.extend(vec_list)
                 
                 if not other_vectors:
                     # Solo una región habla de esto
                     proximity = 50.0
-                    bias = "Perspectiva Regional Única"
+                    bias_label = "Perspectiva Única"
                 else:
-                    # Calcular centroide de otras regiones
+                    # Calcular centroide de "el resto del mundo"
+                    # Promedio por dimensión
                     other_centroid = []
                     for dim_idx in range(len(current_vector)):
-                        dim_sum = sum(vec[dim_idx] for vec in other_vectors)
-                        other_centroid.append(dim_sum / len(other_vectors))
+                        dim_values = [vec[dim_idx] for vec in other_vectors]
+                        other_centroid.append(sum(dim_values) / len(dim_values))
                     
                     # Similitud coseno
                     dot_product = sum(a*b for a, b in zip(current_vector, other_centroid))
@@ -558,78 +303,106 @@ FORMATO DE RESPUESTA:
                     
                     if norm_current * norm_other > 0:
                         similarity = dot_product / (norm_current * norm_other)
-                        # Normalizar a 0-100
+                        # Escalar a 0-100
                         proximity = max(0.0, min(100.0, (similarity * 50) + 50))
                     else:
                         proximity = 50.0
                 
-                # Determinar sesgo basado en proximidad
-                if proximity > 80:
-                    bias = "Consenso Global"
-                    color_intensity = "high"
-                elif proximity > 65:
-                    bias = "Alineación Moderada"
-                    color_intensity = "medium"
-                elif proximity > 45:
-                    bias = "Tensión Narrativa"
-                    color_intensity = "low"
-                elif proximity > 30:
-                    bias = "Divergencia Significativa"
-                    color_intensity = "medium"
+                # Etiqueta de sesgo
+                if proximity > 85:
+                    bias_label = "Consenso Global"
+                elif proximity > 70:
+                    bias_label = "Alineación"
+                elif proximity > 55:
+                    bias_label = "Tensión Moderada"
+                elif proximity > 40:
+                    bias_label = "Divergencia"
                 else:
-                    bias = "Contraste Radical"
-                    color_intensity = "high"
+                    bias_label = "Contraste Radical"
                 
                 particles.append({
-                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:12],
+                    "id": hashlib.md5(node['link'].encode()).hexdigest()[:10],
                     "titulo": node['titulo_es'],
                     "link": node['link'],
-                    "bloque": NORMALIZER_REGIONS.get(current_region, "GLOBAL"),
+                    "bloque": REGIONS.get(current_region, "GLOBAL"),
                     "proximidad": round(proximity, 1),
-                    "sesgo": bias,
-                    "region": current_region,
-                    "color_intensity": color_intensity
+                    "sesgo": bias_label,
+                    "region": current_region
                 })
+            
+            # --- MICRO-INFORME PARA NETFLIX ---
+            micro_informe = self.generate_micro_report(area, particles)
             
             # Ordenar por proximidad (más consensuados primero)
             particles.sort(key=lambda x: x['proximidad'], reverse=True)
             
-            # Agregar al carrusel final
-            if particles:
-                final_carousel.append({
-                    "area": area,
-                    "punto_cero": f"Núcleo Conceptual: {area}",
-                    "color": self.get_color(area),
-                    "total_particulas": len(particles),
-                    "particulas": particles[:30]  # Top 30 por área
-                })
+            final_carousel.append({
+                "area": area,
+                "punto_cero": micro_informe,  # <-- Para el modal Netflix
+                "color": COLORS.get(area, "#00fffb"),
+                "total_particulas": len(particles),
+                "particulas": particles[:30]  # Top 30 por área
+            })
         
         return final_carousel
-
-    def get_color(self, area):
-        """Obtener color para el área"""
-        color_map = {
-            "Seguridad y Conflictos": "#ef4444",
-            "Economía y Sanciones": "#3b82f6", 
-            "Energía y Recursos": "#10b981",
-            "Soberanía y Alianzas": "#f59e0b",
-            "Tecnología y Espacio": "#8b5cf6",
-            "Sociedad y Derechos": "#ec4899"
-        }
-        return color_map.get(area, "#666666")
-
-    def save_results(self, carousel_data):
-        """Guarda resultados en múltiples formatos"""
-        print("\n💾 FASE 4: Persistencia de resultados...")
+    
+    def generate_micro_report(self, area, particles):
+        """Genera micro-informe de 25 palabras para el área"""
+        if not particles:
+            return f"Actividad limitada detectada en {area}."
         
-        # Metadatos enriquecidos
+        # Seleccionar los titulares más representativos
+        top_titles = [p['titulo'] for p in particles[:4]]
+        
+        # Prompt para micro-análisis
+        prompt = f"""Analiza estos titulares sobre {area} y genera un micro-informe de 1-2 frases (máximo 25 palabras) que describa la tendencia principal.
+        
+        Titulares:
+        {chr(10).join(f'- {title}' for title in top_titles)}
+        
+        Responde solo con el micro-informe, sin explicaciones adicionales."""
+        
+        try:
+            response = self.client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt,
+                config={"temperature": 0.3, "max_output_tokens": 100}
+            )
+            
+            informe = response.text.strip()
+            # Limitar a 25 palabras aproximadamente
+            words = informe.split()
+            if len(words) > 30:
+                informe = ' '.join(words[:30]) + "..."
+            
+            return informe
+            
+        except Exception as e:
+            print(f"  ⚠️  Error generando micro-informe: {e}")
+            
+            # Fallback inteligente basado en proximidad promedio
+            avg_proximity = sum(p['proximidad'] for p in particles[:10]) / min(10, len(particles))
+            
+            if avg_proximity > 75:
+                return f"Consenso global emergente en {area} con señales alineadas."
+            elif avg_proximity > 60:
+                return f"Tensión moderada detectada en {area} entre diferentes perspectivas."
+            else:
+                return f"Fricción narrativa significativa en {area} entre bloques geopolíticos."
+    
+    # --- GUARDADO DE RESULTADOS ---
+    def save_results(self, carousel_data):
+        """Guarda los resultados en múltiples formatos"""
+        print("💾 FASE 4: Persistencia de inteligencia...")
+        
+        # Metadatos
         meta = {
             "updated": datetime.datetime.now().isoformat(),
+            "execution_seconds": round(time.time() - self.session_start, 2),
             "stats": self.stats,
-            "execution_time": round(time.time() - self.start_time, 2),
-            "version": "GravityRadar 1.0",
-            "total_areas": len(carousel_data),
-            "total_particles": sum(len(area["particulas"]) for area in carousel_data)
+            "version": "GravityHubUltra v1.0",
+            "total_areas": len([a for a in carousel_data if a['particulas']]),
+            "total_particles": sum(len(a['particulas']) for a in carousel_data)
         }
         
         result = {
@@ -637,189 +410,117 @@ FORMATO DE RESPUESTA:
             "meta": meta
         }
         
-        # 1. Archivo principal para el frontend
+        # 1. Archivo principal
         try:
             with open("gravity_carousel.json", "w", encoding="utf-8") as f:
-                json.dump(result, f, indent=2, ensure_ascii=False, default=str)
-            print("✓ Archivo principal creado: gravity_carousel.json")
+                json.dump(result, f, indent=2, ensure_ascii=False)
+            print("  ✅ gravity_carousel.json actualizado")
         except Exception as e:
-            logging.error(f"Error guardando archivo principal: {e}")
+            print(f"  ❌ Error guardando principal: {e}")
         
-        # 2. Archivo histórico diario
+        # 2. Histórico diario
         try:
             date_str = datetime.datetime.now().strftime("%Y-%m-%d")
-            hist_path = os.path.join(HISTORICO_DIR, f"{date_str}.json")
-            
-            # Añadir timestamp al nombre para versiones múltiples en el día
-            counter = 1
-            while os.path.exists(hist_path):
-                hist_path = os.path.join(HISTORICO_DIR, f"{date_str}_{counter}.json")
-                counter += 1
+            hist_path = f"historico_noticias/diario/{date_str}.json"
             
             with open(hist_path, "w", encoding="utf-8") as f:
-                json.dump(result, f, indent=2, ensure_ascii=False, default=str)
+                json.dump(result, f, indent=2, ensure_ascii=False)
             
-            print(f"✓ Histórico guardado: {hist_path}")
-            
+            print(f"  ✅ Histórico guardado: {hist_path}")
         except Exception as e:
-            logging.error(f"Error guardando histórico: {e}")
+            print(f"  ⚠️  Error guardando histórico: {e}")
         
-        # 3. Archivo de resumen (más pequeño)
+        # 3. Archivo de resumen rápido
         try:
             summary = {
                 "timestamp": meta["updated"],
-                "areas_summary": [
+                "areas": [
                     {
-                        "area": area["area"],
-                        "count": len(area["particulas"]),
-                        "avg_proximity": round(
-                            sum(p["proximidad"] for p in area["particulas"]) / len(area["particulas"]), 
-                            2
-                        ) if area["particulas"] else 0
+                        "area": a["area"],
+                        "count": len(a["particulas"]),
+                        "micro_informe": a["punto_cero"][:100]  # Primeros 100 chars
                     }
-                    for area in carousel_data
-                ],
-                "cache_stats": {
-                    "hits": self.stats["hits"],
-                    "misses": self.stats["misses"],
-                    "efficiency": round(
-                        self.stats["hits"] / (self.stats["hits"] + self.stats["misses"]) * 100, 
-                        2
-                    ) if (self.stats["hits"] + self.stats["misses"]) > 0 else 0
-                }
+                    for a in carousel_data if a["particulas"]
+                ]
             }
             
             with open("summary.json", "w", encoding="utf-8") as f:
                 json.dump(summary, f, indent=2, ensure_ascii=False)
             
-            print("✓ Resumen creado: summary.json")
-            
+            print("  ✅ summary.json generado")
         except Exception as e:
-            logging.error(f"Error guardando resumen: {e}")
+            print(f"  ⚠️  Error guardando resumen: {e}")
         
         return result
-
+    
+    # --- EJECUCIÓN PRINCIPAL ---
     def run(self):
-        """Ejecuta el pipeline completo"""
+        """Pipeline completo optimizado"""
         print("=" * 60)
-        print("🚀 GRAVITY RADAR - Sistema de Vigilancia Geopolítica")
+        print("🚀 GRAVITY HUB ULTRA - Radar Geopolítico")
         print("=" * 60)
         
         try:
-            # Pipeline principal
-            self.fetch_feeds()
-            self.classify_with_ai()
-            carousel = self.calculate_narrative_friction()
+            # Pipeline
+            items = self.fetch_all_feeds()
+            self.classify_with_gemini(items)
+            carousel = self.analyze_narrative_friction()
             result = self.save_results(carousel)
             
             # Reporte final
+            total_time = time.time() - self.session_start
+            total_particles = sum(len(a['particulas']) for a in carousel)
+            
             print("\n" + "=" * 60)
             print("✅ ANÁLISIS COMPLETADO")
             print("=" * 60)
-            
-            total_time = time.time() - self.start_time
-            total_particles = sum(len(area["particulas"]) for area in carousel)
-            
             print(f"📊 RESULTADOS:")
-            print(f"   • Tiempo total: {total_time:.1f} segundos")
-            print(f"   • Feeds procesados: {self.stats['feeds_processed']}")
-            print(f"   • Feeds fallados: {self.stats['feeds_failed']}")
-            print(f"   • Áreas activas: {len(carousel)}")
+            print(f"   • Tiempo total: {total_time:.1f}s")
+            print(f"   • Feeds procesados: {self.stats['feeds']}")
+            print(f"   • Titulares recolectados: {self.stats['items']}")
+            print(f"   • Titulares clasificados: {self.stats['classified']}")
+            print(f"   • Áreas activas: {len([a for a in carousel if a['particulas']])}")
             print(f"   • Partículas totales: {total_particles}")
-            print(f"   • Eficiencia de caché: {self.stats['hits']}/{self.stats['hits'] + self.stats['misses']}")
-            
-            print(f"\n📈 DISTRIBUCIÓN POR ÁREA:")
+            print(f"\n🎯 MICRO-INFORMES GENERADOS:")
             for area in carousel:
-                count = len(area["particulas"])
-                if count > 0:
-                    avg_prox = sum(p["proximidad"] for p in area["particulas"]) / count
-                    print(f"   • {area['area']}: {count} nodos (avg prox: {avg_prox:.1f})")
-            
-            print(f"\n💡 ARCHIVOS GENERADOS:")
-            print(f"   1. gravity_carousel.json (principal)")
-            print(f"   2. summary.json (resumen)")
-            print(f"   3. {HISTORICO_DIR}/YYYY-MM-DD.json (histórico)")
-            print(f"   4. {LOG_FILE} (registros)")
-            
-            print("\n⚠️  NOTA: Revisa gravity_carousel.json para visualizar el radar")
+                if area['particulas']:
+                    print(f"   • {area['area']}: {area['punto_cero'][:60]}...")
+            print("\n⚠️  Archivo principal: gravity_carousel.json")
             print("=" * 60)
             
+            return result
+            
         except KeyboardInterrupt:
-            print("\n\n⚠️  Ejecución interrumpida por el usuario")
-            logging.info("Ejecución interrumpida por el usuario")
+            print("\n\n⚠️  Interrumpido por usuario")
+            return None
         except Exception as e:
-            logging.error(f"Error crítico en el pipeline: {e}", exc_info=True)
             print(f"\n❌ ERROR CRÍTICO: {e}")
-            print("Revisa el archivo de log para más detalles")
+            import traceback
+            traceback.print_exc()
             return None
 
+# --- EJECUCIÓN ---
 def main():
-    """Función principal con manejo de argumentos"""
-    import argparse
-    
-    parser = argparse.ArgumentParser(
-        description='Gravity Radar - Sistema de Vigilancia Geopolítica',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Ejemplos:
-  python gravity_radar.py                   # Ejecución normal
-  python gravity_radar.py --test           # Modo prueba (límite de feeds)
-  python gravity_radar.py --no-cache       # Deshabilitar caché
-  python gravity_radar.py --regions USA EUROPE  # Solo regiones específicas
-        """
-    )
-    
-    parser.add_argument('--test', action='store_true',
-                       help='Modo de prueba (procesa solo 2 feeds por región)')
-    parser.add_argument('--no-cache', action='store_true',
-                       help='Deshabilitar sistema de caché')
-    parser.add_argument('--regions', nargs='+',
-                       help='Regiones específicas a procesar')
-    parser.add_argument('--verbose', action='store_true',
-                       help='Modo detallado (más logging)')
-    
-    args = parser.parse_args()
-    
-    # Configurar nivel de logging
-    if args.verbose:
-        logging.getLogger().setLevel(logging.DEBUG)
-        print("🔍 Modo verbose activado")
-    
-    # Obtener API key
+    """Función principal con manejo de API key"""
     api_key = os.environ.get("GEMINI_API_KEY")
+    
     if not api_key:
-        print("❌ ERROR: Variable de entorno GEMINI_API_KEY no encontrada")
+        print("❌ ERROR: Variable GEMINI_API_KEY no encontrada")
         print("\nConfigura tu API key:")
-        print("  export GEMINI_API_KEY='tu-api-key-aqui'  # Linux/Mac")
-        print("  set GEMINI_API_KEY=tu-api-key-aqui       # Windows")
+        print("  Linux/Mac: export GEMINI_API_KEY='tu-clave-aqui'")
+        print("  Windows: set GEMINI_API_KEY=tu-clave-aqui")
         sys.exit(1)
     
-    # Modificar configuración según argumentos
-    if args.test:
-        global FUENTES
-        FUENTES = {k: v[:2] for k, v in FUENTES.items()}  # Solo 2 feeds por región
-        print("🧪 Ejecutando en modo prueba")
-    
-    if args.regions:
-        FUENTES = {k: v for k, v in FUENTES.items() if k in args.regions}
-        print(f"🌎 Procesando regiones: {', '.join(args.regions)}")
-    
     # Ejecutar radar
-    radar = GravityRadar(api_key)
-    if args.no_cache:
-        # Deshabilitar caché eliminando métodos relacionados
-        radar.load_vector = lambda x: None
-        radar.save_vector = lambda x, y: None
-        print("🚫 Caché deshabilitado")
-    
+    radar = GravityHubUltra(api_key)
     result = radar.run()
     
     if result:
-        print("\n🎯 Análisis completado exitosamente!")
+        print("\n🎯 Inteligencia geopolítica actualizada exitosamente!")
+        sys.exit(0)
     else:
-        print("\n⚠️  El análisis encontró problemas. Revisa los logs.")
-    
-    sys.exit(0 if result else 1)
+        print("\n⚠️  El análisis encontró problemas")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
