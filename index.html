@@ -5,96 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROXIMITY | Neural Tactical Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
     <style>
-        :root { --bg: #050507; --cyan: #00fffb; --panel: #0a0a0f; --border: #1a1a2e; }
-        body { background: var(--bg); color: #e0e0e0; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
-        header { width: 100%; padding: 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .glitch-title { font-family: 'Share Tech Mono'; font-size: 2.5rem; letter-spacing: 5px; color: #fff; text-shadow: 2px 0 #ff004c, -2px 0 var(--cyan); }
-        
-        .controls { margin: 20px; display: flex; gap: 15px; }
-        select, button { background: var(--panel); border: 1px solid var(--border); color: #fff; padding: 8px 15px; cursor: pointer; font-family: 'Share Tech Mono'; }
-        
-        #main-viewport { width: 95%; max-width: 1000px; height: 600px; position: relative; border: 1px solid var(--border); background: radial-gradient(circle, #0f0f1a 0%, #050507 80%); }
+        :root {
+            --bg: #050507;
+            --cyan: #00fffb;
+            --red: #ff004c;
+            --panel: #0a0a0f;
+            --border: #1a1a2e;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .glitch-title {
+            font-family: 'Share Tech Mono';
+            font-size: 2rem;
+            letter-spacing: 4px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            text-shadow: 2px 0 var(--red), -2px 0 var(--cyan);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        select, button {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono';
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        button:hover, select:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 251, 0.2);
+        }
+
+        /* Viewport principal */
+        #main-container {
+            width: 95vw;
+            height: calc(100vh - 120px);
+            margin: 10px auto;
+            position: relative;
+            border: 1px solid var(--border);
+            background: radial-gradient(circle at center, #0f0f1a 0%, #050507 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         svg { width: 100%; height: 100%; }
-        .node { cursor: pointer; transition: 0.3s; }
-        .node:hover { r: 8 !important; filter: drop-shadow(0 0 10px var(--cyan)); }
+
+        /* Estilos de Informe (Modo Texto) */
+        #intel-report {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        #intel-report h2 { color: var(--cyan); border-bottom: 1px solid var(--cyan); padding-bottom: 10px; }
+        #intel-report strong { color: var(--cyan); }
+        #intel-report ul { border-left: 2px solid var(--border); padding-left: 20px; }
+
+        /* Elementos de Radar */
+        .node { cursor: pointer; transition: r 0.3s, filter 0.3s; }
+        .node:hover { filter: drop-shadow(0 0 8px var(--cyan)); }
         
-        #intel-panel { display: none; padding: 40px; overflow-y: auto; height: 100%; line-height: 1.6; }
-        #intel-panel h2 { color: var(--cyan); font-family: 'Share Tech Mono'; }
-        
-        .tooltip { position: absolute; padding: 10px; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan); display: none; pointer-events: none; z-index: 100; font-size: 0.8rem; }
+        .radar-line { stroke: rgba(0, 255, 251, 0.05); stroke-width: 1; pointer-events: none; }
+
+        .tooltip {
+            position: fixed;
+            padding: 12px;
+            background: rgba(5, 5, 7, 0.95);
+            border: 1px solid var(--cyan);
+            color: #fff;
+            pointer-events: none;
+            z-index: 2000;
+            font-size: 0.85rem;
+            max-width: 250px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 class="glitch-title">PROXIMITY HUB</h1>
+    <h1 class="glitch-title">Tactical Hub v36</h1>
     <div class="controls">
-        <button onclick="loadData('gravity_carousel.json', 'live')">DIARIO LIVE</button>
-        <select id="week-select" onchange="loadData(this.value, 'semanal')">
-            <option value="">SEMANAL...</option>
-            <option value="mes_s01.json">Semana 1</option>
-            <option value="mes_s02.json">Semana 2</option>
+        <button onclick="loadData('gravity_carousel.json', 'live')">📡 LIVE FEED</button>
+        <select id="week-selector" onchange="if(this.value) loadData(this.value, 'semanal')">
+            <option value="">ANÁLISIS HISTÓRICO...</option>
+            <option value="mes_s01.json">Semana 1 (Ene)</option>
+            <option value="mes_s02.json">Semana 2 (Ene)</option>
         </select>
     </div>
 </header>
 
-<div id="main-viewport">
+<div id="main-container">
     <div id="tooltip" class="tooltip"></div>
-    <div id="intel-panel"></div>
+    
+    <div id="intel-report"></div>
+
     <svg id="radarSVG" viewBox="0 0 1000 600">
-        <circle cx="500" cy="300" r="100" stroke="rgba(255,255,255,0.05)" fill="none" />
-        <circle cx="500" cy="300" r="200" stroke="rgba(255,255,255,0.05)" fill="none" />
-        <g id="node-layer"></g>
+        <circle cx="500" cy="300" r="100" class="radar-line" fill="none"/>
+        <circle cx="500" cy="300" r="200" class="radar-line" fill="none"/>
+        <circle cx="500" cy="300" r="280" class="radar-line" fill="none"/>
+        <line x1="500" y1="20" x2="500" y2="580" class="radar-line"/>
+        <line x1="200" y1="300" x2="800" y2="300" class="radar-line"/>
+        
+        <g id="particle-layer"></g>
     </svg>
 </div>
 
 <script>
-    async function loadData(file, type) {
-        const path = type === 'live' ? file : `historico_noticias/semanal/${file}`;
+    async function loadData(filename, type) {
+        const path = type === 'live' ? filename : `historico_noticias/semanal/${filename}`;
+        
         try {
-            const res = await fetch(path);
-            const data = await res.json();
-            render(data);
-        } catch (e) { alert("Archivo no disponible aún."); }
-    }
-
-    function render(data) {
-        const radar = document.getElementById('radarSVG');
-        const intel = document.getElementById('intel-panel');
-        const layer = document.getElementById('node-layer');
-        layer.innerHTML = '';
-
-        if (data.sintesis_estrategica) {
-            radar.style.display = 'none';
-            intel.style.display = 'block';
-            intel.innerHTML = `<h2>INFORME ESTRATÉGICO</h2><div>${data.sintesis_estrategica.replace(/\n/g, '<br>')}</div>`;
-        } else {
-            radar.style.display = 'block';
-            intel.style.display = 'none';
-            data.carousel.forEach(area => {
-                area.particulas.forEach(p => {
-                    const r = 300 - (p.proximidad * 2.5);
-                    const ang = Math.random() * Math.PI * 2;
-                    const x = 500 + r * Math.cos(ang);
-                    const y = 300 + r * Math.sin(ang);
-                    
-                    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 4);
-                    c.setAttribute("fill", "#00fffb"); c.setAttribute("class", "node");
-                    
-                    c.onmouseover = (e) => {
-                        const tt = document.getElementById('tooltip');
-                        tt.style.display = 'block'; tt.style.left = e.pageX + 'px'; tt.style.top = e.pageY + 'px';
-                        tt.innerHTML = `<strong>${p.bloque}</strong><br>${p.titulo}<br>Proximidad: ${p.proximidad}%`;
-                    };
-                    c.onmouseout = () => document.getElementById('tooltip').style.display = 'none';
-                    c.onclick = () => window.open(p.link, '_blank');
-                    layer.appendChild(c);
-                });
-            });
+            const response = await fetch(path + "?t=" + Date.now());
+            if (!response.ok) throw new Error("Archivo no encontrado");
+            const data = await response.json();
+            renderHub(data);
+        } catch (err) {
+            console.error(err);
+            alert("⚠️ Error de sistema: No se pudo cargar el módulo de datos.");
         }
     }
+
+    function renderHub(data) {
+        const svg = document.getElementById('radarSVG');
+        const report = document.getElementById('intel-report');
+        const layer = document.getElementById('particle-layer');
+        layer.innerHTML = '';
+
+        // MODO INFORME (Si hay síntesis de texto de Gemini)
+        if (data.sintesis_estrategica) {
+            svg.style.display = 'none';
+            report.style.display = 'block';
+            // Usamos Marked para renderizar el Markdown profesionalmente
+            report.innerHTML = marked.parse(data.sintesis_estrategica);
+            return;
+        }
+
+        // MODO RADAR (Diario)
+        svg.style.display = 'block';
+        report.style.display = 'none';
+
+        data.carousel.forEach(area => {
+            area.particulas.forEach(p => {
+                // Cálculo de coordenadas (Centro 500, 300)
+                // Proximidad alta (100) -> r pequeño (cerca del centro)
+                const r = 290 - (p.proximidad * 2.6);
+                const angle = Math.random() * Math.PI * 2;
+                const x = 500 + r * Math.cos(angle);
+                const y = 300 + r * Math.sin(angle);
+
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", x);
+                circle.setAttribute("cy", y);
+                circle.setAttribute("r", 4);
+                circle.setAttribute("fill", area.color || "#00fffb");
+                circle.setAttribute("class", "node");
+                
+                // Interacción
+                circle.onmouseover = (e) => showTooltip(e, p);
+                circle.onmouseout = hideTooltip;
+                circle.onclick = () => window.open(p.link, '_blank');
+                
+                layer.appendChild(circle);
+            });
+        });
+    }
+
+    function showTooltip(e, p) {
+        const tt = document.getElementById('tooltip');
+        tt.style.display = 'block';
+        tt.style.left = (e.clientX + 15) + 'px';
+        tt.style.top = (e.clientY + 15) + 'px';
+        tt.innerHTML = `
+            <div style="color:var(--cyan); font-weight:bold; margin-bottom:5px;">${p.bloque}</div>
+            <div style="font-size:0.8rem; margin-bottom:5px;">${p.titulo}</div>
+            <div style="font-family:'Share Tech Mono'; color:rgba(255,255,255,0.5)">CONSENSO: ${p.proximidad}%</div>
+        `;
+    }
+
+    function hideTooltip() {
+        document.getElementById('tooltip').style.display = 'none';
+    }
+
+    // Carga inicial
     window.onload = () => loadData('gravity_carousel.json', 'live');
 </script>
 </body>
