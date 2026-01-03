@@ -26,7 +26,10 @@
             background-size: 100% 100%, 30px 30px, 30px 30px;
             color: #e2e8f0;
             font-family: 'JetBrains Mono', monospace;
-            overflow-x: hidden;
+            overflow: hidden; /* Evita scroll innecesario en el body */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .cyber-header { font-family: 'Orbitron', sans-serif; }
@@ -38,36 +41,56 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
-        /* Swiper Customization */
+        /* Swiper Fix para pantallas pequeñas */
+        .swiper { width: 100%; padding: 20px 0; flex-shrink: 0; }
         .swiper-slide {
-            width: 320px; height: 380px;
-            border-radius: 2px;
-            padding: 24px;
+            width: 280px; height: 320px; /* Tamaño ligeramente reducido para visibilidad */
+            padding: 20px;
             background: rgba(15, 23, 42, 0.6);
             border-left: 4px solid var(--glow);
             clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
             transition: 0.5s;
             opacity: 0.4;
+            cursor: pointer;
         }
-
         .swiper-slide-active {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.05);
             background: rgba(15, 23, 42, 0.9);
             box-shadow: 0 0 30px var(--glow-alpha);
         }
 
-        /* Radar Container */
+        /* Radar y Línea de Barrido */
         #radar-container {
             position: relative;
             background: radial-gradient(circle at center, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
             border-radius: 50%;
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Animación de Barrido Radar */
+        #radar-container::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(14, 165, 233, 0.2) 0deg, transparent 90deg);
+            animation: sweep 4s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes sweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .modal {
             opacity: 0; visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
         }
         .modal.open { opacity: 1; visibility: visible; }
 
@@ -76,62 +99,69 @@
             background: rgba(14, 165, 233, 0.1);
             position: absolute;
             animation: scan 4s linear infinite;
+            z-index: 5;
         }
         @keyframes scan { from { top: 0; } to { top: 100%; } }
+
+        /* Ajuste de scroll interno */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--cyber-blue); border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-4 md:p-6">
 
-    <header class="flex flex-col md:flex-row justify-between items-center mb-12 border-b border-sky-500/20 pb-6">
-        <div class="text-center md:text-left mb-6 md:mb-0">
-            <h1 class="cyber-header text-5xl md:text-7xl font-black tracking-tighter italic text-white drop-shadow-[0_0_15px_rgba(14,165,233,0.5)]">
+    <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-sky-500/20 pb-4 flex-shrink-0">
+        <div class="text-center md:text-left">
+            <h1 class="cyber-header text-4xl md:text-5xl font-black tracking-tighter italic text-white drop-shadow-[0_0_15px_rgba(14,165,233,0.5)]">
                 PROXIMITY
             </h1>
-            <div class="flex items-center gap-3 mt-2">
-                <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-                <p class="text-sky-400 font-bold text-xs tracking-[0.3em] uppercase">NEURAL LINK ACTIVE // v27.6</p>
+            <div class="flex items-center gap-3 mt-1">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <p class="text-sky-400 font-bold text-[10px] tracking-[0.3em] uppercase">NEURAL LINK ACTIVE // v28.2</p>
             </div>
         </div>
-        <button onclick="openGuide()" class="glass-panel px-8 py-3 rounded-none skew-x-[-15deg] hover:bg-sky-500/20 transition-all border-sky-400/50">
-            <span class="skew-x-[15deg] block text-sky-400 font-black text-xs uppercase tracking-widest">Metodología // Protocol</span>
+        <button onclick="openGuide()" class="glass-panel px-6 py-2 mt-4 md:mt-0 text-[10px] skew-x-[-15deg] hover:bg-sky-500/20 transition-all border-sky-400/50">
+            <span class="skew-x-[15deg] block text-sky-400 font-black uppercase tracking-widest">Metodología</span>
         </button>
     </header>
 
-    <div class="swiper mySwiper mb-16">
+    <div class="swiper mySwiper">
         <div class="swiper-wrapper" id="swiper-wrapper"></div>
     </div>
 
-    <div id="area-modal" class="modal fixed inset-0 z-50 flex justify-center items-center p-4">
-        <div class="modal-content glass-panel w-full max-w-7xl h-[90vh] rounded-none relative overflow-hidden flex flex-col p-6 md:p-10">
+    <div id="area-modal" class="modal fixed inset-0 z-50 flex justify-center items-center p-2 md:p-6">
+        <div class="modal-content glass-panel w-full max-w-6xl h-[95vh] md:h-[85vh] rounded-none relative overflow-hidden flex flex-col p-4 md:p-8">
             <div class="scanline"></div>
             
-            <div class="flex justify-between items-start mb-8 z-10">
-                <div>
-                    <h2 id="modal-area-title" class="cyber-header text-4xl md:text-6xl font-black italic uppercase"></h2>
-                    <p id="modal-consensus" class="text-sky-300/60 text-sm mt-3 border-l-2 border-sky-500 pl-4 max-w-2xl italic"></p>
+            <div class="flex justify-between items-start mb-4 z-10 flex-shrink-0">
+                <div class="max-w-[80%]">
+                    <h2 id="modal-area-title" class="cyber-header text-2xl md:text-4xl font-black italic uppercase leading-none"></h2>
+                    <p id="modal-consensus" class="text-sky-300/60 text-[10px] md:text-xs mt-2 border-l-2 border-sky-500 pl-4 italic line-clamp-2"></p>
                 </div>
-                <button onclick="closeAreaModal()" class="text-sky-500 hover:text-white text-5xl transition-colors">&times;</button>
+                <button onclick="closeAreaModal()" class="text-sky-500 hover:text-white text-4xl transition-colors">&times;</button>
             </div>
 
-            <div class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-10 overflow-hidden z-10">
-                <div class="lg:col-span-7 flex items-center justify-center bg-sky-950/20 rounded-lg border border-sky-500/10 p-4" id="radar-container">
-                    <canvas id="areaScatterChart"></canvas>
+            <div class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden z-10">
+                <div class="lg:col-span-7 flex items-center justify-center bg-sky-950/20 rounded-lg border border-sky-500/10 p-2 relative overflow-hidden">
+                    <div id="radar-container">
+                        <canvas id="areaScatterChart"></canvas>
+                    </div>
                 </div>
 
-                <div class="lg:col-span-5 overflow-y-auto pr-4 space-y-4 custom-scroll" id="particles-list"></div>
+                <div class="lg:col-span-5 overflow-y-auto pr-2 space-y-3 custom-scroll" id="particles-list"></div>
             </div>
         </div>
     </div>
 
     <div id="guide-modal" class="modal fixed inset-0 z-[100] flex justify-center items-center p-4">
-        <div class="glass-panel p-10 max-w-2xl border-sky-500/50 relative">
-            <h2 class="cyber-header text-3xl text-white mb-6 uppercase tracking-tighter">System Intelligence Protocol</h2>
-            <div class="space-y-6 text-sm leading-relaxed text-sky-100/70">
-                <p><strong class="text-sky-400">[CENTROIDE]</strong> El núcleo del radar representa el consenso matemático del área. Cuanto más cerca esté un punto, más alineada está la noticia con la narrativa global dominante.</p>
-                <p><strong class="text-rose-500">[DIVERGENCIA]</strong> Los nodos periféricos indican anomalías narrativas, datos que otras regiones omiten o perspectivas analizadas por el motor de IA como disruptivas.</p>
-                <p><strong class="text-sky-400">[MODO HÍBRIDO]</strong> Si el sistema encuentra muros de pago, activa el análisis de metadatos (Título+Sinopsis) para no perder la señal fáctica.</p>
+        <div class="glass-panel p-8 max-w-xl border-sky-500/50 relative">
+            <h2 class="cyber-header text-2xl text-white mb-4 uppercase">System Intelligence Protocol</h2>
+            <div class="space-y-4 text-[11px] leading-relaxed text-sky-100/70">
+                <p><strong class="text-sky-400">[CENTROIDE]</strong> Núcleo del consenso narrativo global.</p>
+                <p><strong class="text-rose-500">[DIVERGENCIA]</strong> Nodos periféricos con anomalías fácticas.</p>
+                <p><strong class="text-sky-400">[MODO HÍBRIDO]</strong> Análisis resiliente vía metadatos enriquecidos.</p>
             </div>
-            <button onclick="closeGuide()" class="mt-8 w-full py-4 bg-sky-600/20 border border-sky-500/50 text-sky-400 font-black uppercase hover:bg-sky-600/40 transition-all">Cerrar Protocolo</button>
+            <button onclick="closeGuide()" class="mt-6 w-full py-3 bg-sky-600/20 border border-sky-500/50 text-sky-400 font-black uppercase text-[10px] hover:bg-sky-600/40">Cerrar</button>
         </div>
     </div>
 
@@ -140,20 +170,22 @@
         let fullData = null, scatterChart = null;
 
         async function init() {
-            const res = await fetch('./gravity_carousel.json');
-            fullData = await res.json();
-            renderSwiper();
+            try {
+                const res = await fetch('./gravity_carousel.json');
+                fullData = await res.json();
+                renderSwiper();
+            } catch (e) { console.error("Error cargando datos", e); }
         }
 
         function renderSwiper() {
             document.getElementById('swiper-wrapper').innerHTML = fullData.carousel.map((area, idx) => `
                 <div class="swiper-slide" onclick="openAreaModal(${idx})" style="--glow: ${area.color}; --glow-alpha: ${area.color}20">
-                    <div class="flex justify-between items-center mb-6">
-                        <span class="text-[10px] font-bold tracking-widest text-sky-400 bg-sky-400/10 px-2 py-1">${area.particulas.length} NODES</span>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-[9px] font-bold tracking-widest text-sky-400 bg-sky-400/10 px-2 py-1">${area.particulas.length} NODES</span>
                         <div class="w-2 h-2 rounded-full" style="background:${area.color}; box-shadow: 0 0 10px ${area.color}"></div>
                     </div>
-                    <h3 class="cyber-header text-2xl font-black uppercase italic mb-4" style="color:white">${area.area}</h3>
-                    <p class="text-slate-400 text-[11px] leading-relaxed border-t border-white/5 pt-4">${area.punto_cero}</p>
+                    <h3 class="cyber-header text-xl font-black uppercase italic mb-2" style="color:white">${area.area}</h3>
+                    <p class="text-slate-400 text-[10px] leading-relaxed border-t border-white/5 pt-2 line-clamp-4">${area.punto_cero}</p>
                 </div>
             `).join('');
             
@@ -162,7 +194,7 @@
                 grabCursor: true,
                 centeredSlides: true,
                 slidesPerView: "auto",
-                coverflowEffect: { rotate: 15, stretch: 0, depth: 100, modifier: 1, slideShadows: false }
+                coverflowEffect: { rotate: 10, stretch: 0, depth: 100, modifier: 1, slideShadows: false }
             });
         }
 
@@ -178,13 +210,13 @@
 
         function renderParticles(parts) {
             document.getElementById('particles-list').innerHTML = parts.map(p => `
-                <div class="glass-panel p-4 mb-3 border-l-4 transition-all hover:translate-x-2" style="border-color:${COLORS[p.bloque] || '#fff'}">
-                    <div class="flex justify-between text-[10px] font-bold mb-2">
-                        <span style="color:${COLORS[p.bloque]}">${p.bloque} // ${p.metodo}</span>
-                        <span class="text-sky-500">PROXIMITY: ${p.proximidad}%</span>
+                <div class="glass-panel p-3 mb-2 border-l-4 transition-all hover:translate-x-1" style="border-color:${COLORS[p.bloque] || '#fff'}">
+                    <div class="flex justify-between text-[8px] font-bold mb-1 uppercase tracking-tighter">
+                        <span style="color:${COLORS[p.bloque]}">${p.bloque} // ${p.metodo || 'Hybrid'}</span>
+                        <span class="text-sky-500">PROX: ${p.proximidad}%</span>
                     </div>
-                    <a href="${p.link}" target="_blank" class="text-sm font-bold text-white hover:text-sky-400 block mb-3 leading-tight">${p.titulo}</a>
-                    <p class="text-[10px] text-slate-400 italic bg-black/40 p-3 border border-white/5">${p.sesgo}</p>
+                    <a href="${p.link}" target="_blank" class="text-xs font-bold text-white hover:text-sky-400 block mb-2 leading-tight">${p.titulo}</a>
+                    <p class="text-[9px] text-slate-400 italic bg-black/40 p-2 border border-white/5 line-clamp-2">${p.sesgo}</p>
                 </div>
             `).join('');
         }
@@ -206,9 +238,9 @@
                         }),
                         pointBackgroundColor: c => COLORS[c.raw.b] + 'aa',
                         pointBorderColor: c => COLORS[c.raw.b],
-                        pointBorderWidth: 2,
-                        pointRadius: 7,
-                        pointHoverRadius: 10
+                        pointBorderWidth: 1,
+                        pointRadius: 6,
+                        pointHoverRadius: 9
                     }]
                 },
                 options: {
