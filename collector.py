@@ -16,7 +16,7 @@ import argparse
 from google import genai
 
 # ============================================================================
-# GESTIÓN SEGURA DE RUTAS Y CONFIGURACIÓN
+# CONFIGURACIÓN GLOBAL Y ARGUMENTOS
 # ============================================================================
 CACHE_DIR = "vector_cache"
 HIST_DIR = "historico_noticias/diario"
@@ -29,13 +29,7 @@ if os.path.exists(".proximity_env"):
             if "CACHE_DIR=" in line:
                 CACHE_DIR = line.split("=")[1].strip()
 
-# Áreas Estratégicas
-AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos",
-         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
-
-# ============================================================================
-# GESTIÓN DE ARGUMENTOS
-# ============================================================================
+# Gestión de Argumentos
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategic, full')
 args, _ = parser.parse_known_args()
@@ -51,8 +45,11 @@ else:
     print("⚡ MODO TÁCTICO: Límite 12 items/feed")
 
 # ============================================================================
-# FUENTES RSS
+# CONFIGURACIÓN DE ÁREAS Y FUENTES
 # ============================================================================
+AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos",
+         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
+
 FUENTES = {
     "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics"],
     "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
@@ -67,11 +64,14 @@ FUENTES = {
 # ============================================================================
 def initialize_directories():
     global CACHE_DIR
-    for d in [CACHE_DIR, HIST_DIR]:
+    targets = [CACHE_DIR, HIST_DIR]
+    
+    for d in targets:
         try:
             if os.path.exists(d):
                 if not os.path.isdir(d):
-                    os.remove(d)
+                    try: os.remove(d)
+                    except: pass
                     os.makedirs(d, exist_ok=True)
             else:
                 os.makedirs(d, exist_ok=True)
@@ -142,6 +142,70 @@ class IroncladCollectorPro:
         match = re.search(r'\{.*\}', text, re.DOTALL)
         return json.loads(match.group()) if match else None
 
+    # --- NUEVO: VALIDACIÓN DE RESPUESTA ---
+    def validate_gemini_response(self, response_text, expected_count):
+        """Valida que la respuesta de Gemini sea completa"""
+        if not response_text:
+            logging.error("Respuesta vacía de Gemini")
+            return None
+        
+        data = self.safe_json_extract(response_text)
+        
+        if not data:
+            logging.error("No se pudo extraer JSON de la respuesta")
+            return None
+        
+        if 'res' not in data:
+            logging.error("JSON no tiene clave 'res'")
+            return None
+        
+        # Verificar que tenemos items
+        if len(data['res']) < expected_count:
+            logging.warning(f"⚠️ Se esperaban {expected_count} items, se recibieron {len(data['res'])}")
+        
+        return data
+
+    # --- NUEVO: FALLBACK CLASSIFICATION ---
+    def fallback_classification(self, batch):
+        """Clasificación simple basada en keywords cuando Gemini falla"""
+        if not batch: return
+        
+        # Keywords en inglés (fuentes originales)
+        keywords_map = {
+            "Seguridad y Conflictos": ["military", "defense", "war", "attack", "terror", "pentagon", "nato", "army", "strike", "conflict"],
+            "Economía y Sanciones": ["economy", "finance", "sanction", "market", "trade", "bank", "inflation", "stock", "gdp", "debt"],
+            "Energía y Recursos": ["energy", "oil", "gas", "mining", "climate", "renewable", "nuclear", "solar", "water", "carbon"],
+            "Soberanía y Alianzas": ["alliance", "treaty", "diplomacy", "summit", "sovereignty", "brics", "un", "relations", "foreign"],
+            "Tecnología y Espacio": ["technology", "space", "digital", "satellite", "ai", "cyber", "chip", "moon", "launch", "rocket"],
+            "Sociedad y Derechos": ["rights", "human", "protest", "health", "education", "justice", "law", "court", "immigration"]
+        }
+        
+        count = 0
+        for item in batch:
+            if item.area: continue # Ya clasificado
+            
+            title_lower = item.original_title.lower()
+            scores = {area: 0 for area in AREAS}
+            
+            for area, keywords in keywords_map.items():
+                for keyword in keywords:
+                    if keyword in title_lower:
+                        scores[area] += 1
+            
+            best_area = max(scores.items(), key=lambda x: x[1])
+            if best_area[1] > 0:
+                item.area = best_area[0]
+                item.confidence = min(50 + best_area[1] * 10, 85)
+                item.translated_title = item.original_title # Se queda en inglés como fallback
+                item.keywords = ["fallback_mode"]
+                item.bias_label = "Clasificación Automática"
+                count += 1
+                logging.debug(f"Fallback: '{item.original_title[:20]}...' -> {item.area}")
+        
+        if count > 0:
+            logging.info(f"🛡️ Fallback recuperó {count} noticias.")
+            self.stats["items_classified"] += count
+
     # --- GESTIÓN DE CACHÉ ---
     def get_cached_vector(self, text):
         if not text: return None
@@ -166,16 +230,14 @@ class IroncladCollectorPro:
             self.stats["cache_misses"] += 1
         except: pass
 
-    # --- CLASIFICACIÓN DE ÁREAS (CORREGIDA: PUNTUACIÓN POR PESO) ---
+    # --- CLASIFICACIÓN DE ÁREAS ---
     def classify_area(self, area_name):
         if not area_name: return None
         area_lower = area_name.lower().strip()
         
-        # 1. Búsqueda exacta
         for area in AREAS:
             if area.lower() == area_lower: return area
             
-        # 2. Sistema de Puntuación Semántica
         scores = {area: 0 for area in AREAS}
         keywords_map = {
             "Seguridad y Conflictos": ["defensa", "militar", "conflicto", "terrorismo", "ataque", "ejército", "guerra"],
@@ -219,53 +281,103 @@ class IroncladCollectorPro:
                 except: self.stats["errors"] += 1
         self.stats["items_raw"] = len(self.active_items)
 
-    # --- FASE 2: TRIAGE ---
+    # --- FASE 2: TRIAGE (MEJORADO) ---
     def run_triage(self):
         if not self.active_items: return
-        logging.info(f"🔎 FASE 2: Triage IA ({len(self.active_items)} items)...")
-        prompt = f"Clasificador Geopolítico.\nÁREAS: {', '.join(AREAS)}\nJSON: {{'res': [{{'id': '...', 'area': '...', 'titulo_es': '...', 'confianza': 90, 'keywords': []}}]}}"
+        logging.info(f"🔎 FASE 2: Clasificación IA ({len(self.active_items)} items)...")
+
         
-        batch_size = 25
+        
+        # PROMPT DE INGENIERÍA MEJORADO
+        prompt = f"""ANALISTA DE INTELIGENCIA GEOPOLÍTICA
+OBJETIVO: Clasificar titulares en: {', '.join(AREAS)}
+
+INSTRUCCIONES:
+1. MANTÉN el MISMO ID numérico (0, 1, 2...).
+2. TRADUCE al español (fiel al original).
+3. ASIGNA SOLO UN ÁREA (la más relevante).
+4. CONFIANZA: 0-100.
+5. KEYWORDS: 3-5 palabras clave.
+
+EJEMPLOS:
+ID:0 | TITULO: "Pentagon announces new AI defense system"
+→ {{"id": 0, "area": "Seguridad y Conflictos", "titulo_es": "Pentágono anuncia nuevo sistema de defensa IA", "confianza": 95, "keywords": ["Pentágono", "IA", "defensa"]}}
+
+ID:1 | TITULO: "EU approves new sanctions against Russia"
+→ {{"id": 1, "area": "Economía y Sanciones", "titulo_es": "UE aprueba nuevas sanciones a Rusia", "confianza": 88, "keywords": ["UE", "sanciones", "Rusia"]}}
+
+FORMATO SALIDA (JSON PURO):
+{{
+  "res": [
+    {{"id": 0, "area": "...", "titulo_es": "...", "confianza": ..., "keywords": [...]}}
+  ]
+}}"""
+        
+        batch_size = 20
         for i in range(0, len(self.active_items), batch_size):
             batch = self.active_items[i:i+batch_size]
-            txt = "\n".join([f"ID:{x.id}|{x.original_title}" for x in batch])
+            
+            # IDs simples para evitar confusión de la IA
+            batch_text = "\n".join([f"ID:{idx} | TITULO: {item.original_title}" for idx, item in enumerate(batch)])
+            
             try:
-                resp = self.client.models.generate_content(model="gemini-2.0-flash", contents=f"{prompt}\n\n{txt}")
-                data = self.safe_json_extract(resp.text)
+                resp = self.client.models.generate_content(
+                    model="gemini-2.0-flash", 
+                    contents=f"{prompt}\n\nENTRADA:\n{batch_text}",
+                    config={"temperature": 0.0}
+                )
+                
+                # Validación mejorada
+                data = self.validate_gemini_response(resp.text, len(batch))
+                
                 if data and 'res' in data:
                     for res in data['res']:
-                        target = next((x for x in batch if x.id == str(res.get('id',''))), None)
-                        if target:
-                            area = self.classify_area(res.get('area',''))
-                            if area:
-                                target.area = area
-                                target.translated_title = res.get('titulo_es','')
-                                target.confidence = res.get('confianza',0)
-                                target.keywords = res.get('keywords',[])[:5]
-                                self.stats["items_classified"] += 1
-            except: self.stats["errors"] += 1
+                        try:
+                            idx = int(res.get('id', -1))
+                            if 0 <= idx < len(batch):
+                                target = batch[idx]
+                                area = self.classify_area(res.get('area',''))
+                                if area:
+                                    target.area = area
+                                    target.translated_title = res.get('titulo_es','')
+                                    target.confidence = res.get('confianza',0)
+                                    target.keywords = res.get('keywords',[])[:5]
+                                    self.stats["items_classified"] += 1
+                        except: continue
+            except Exception as e:
+                logging.error(f"Error Batch IA: {str(e)[:50]}")
+                self.stats["errors"] += 1
+            
+            # EJECUTAR FALLBACK para lo que la IA se saltó
+            unclassified = [item for item in batch if item.area is None]
+            if unclassified:
+                self.fallback_classification(unclassified)
+            
             time.sleep(1)
 
-    # --- FASE 3: VECTORES (CORREGIDA: ALINEACIÓN PERFECTA) ---
+    # --- FASE 3: VECTORES (ALINEACIÓN CORRECTA) ---
     def compute_vectors_and_proximity(self):
         logging.info("📐 FASE 3: Análisis Vectorial...")
         
-        # 1. Separar items cacheados de los nuevos
         need_embedding = []
-        valid_items = [it for it in self.active_items if it.area in AREAS and it.translated_title]
+        valid_items = [it for it in self.active_items if it.area in AREAS]
         
+        # Separar cacheados vs nuevos para no romper índices
         for item in valid_items:
-            cached = self.get_cached_vector(item.translated_title)
+            # Usar título traducido si existe, sino el original
+            text_key = item.translated_title if item.translated_title else item.original_title
+            
+            cached = self.get_cached_vector(text_key)
             if cached:
                 item.vector = cached
             else:
                 need_embedding.append(item)
         
-        # 2. Procesar embeddings en batches alineados
+        # Procesar nuevos en batches
         batch_size = 100
         for i in range(0, len(need_embedding), batch_size):
             batch = need_embedding[i:i+batch_size]
-            texts = [item.translated_title for item in batch]
+            texts = [item.translated_title if item.translated_title else item.original_title for item in batch]
             
             try:
                 resp = self.client.models.embed_content(
@@ -273,24 +385,24 @@ class IroncladCollectorPro:
                     config={'task_type': 'RETRIEVAL_DOCUMENT'}
                 )
                 
-                # Mapeo por índice estricto
+                # Asignación segura por índice
                 for idx, item in enumerate(batch):
                     if idx < len(resp.embeddings):
                         item.vector = resp.embeddings[idx].values
-                        self.save_vector(item.translated_title, item.vector)
+                        text_key = item.translated_title if item.translated_title else item.original_title
+                        self.save_vector(text_key, item.vector)
             except Exception as e:
-                logging.error(f"Error embeddings: {e}")
-                # Fallback
+                logging.error(f"Error Embeddings: {e}")
+                # Vector aleatorio fallback
                 for item in batch:
-                    random.seed(hash(item.translated_title))
+                    random.seed(hash(item.original_title))
                     item.vector = [random.uniform(-0.1, 0.1) for _ in range(768)]
 
-        # 3. Calcular Proximidad
+        # Proximidad
         for area in AREAS:
             area_items = [it for it in valid_items if it.area == area and it.vector]
             if len(area_items) < 2: continue
             
-            # Centroides
             reg_vecs = defaultdict(list)
             for it in area_items: reg_vecs[it.region].append(it.vector)
             centroids = {r: [sum(col)/len(col) for col in zip(*v)] for r,v in reg_vecs.items()}
