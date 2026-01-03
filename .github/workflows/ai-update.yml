@@ -1,34 +1,41 @@
 name: Actualización Automática AI
 
-# Esto define cuándo se activa. 
-# Puede ser por un 'webhook' externo (repository_dispatch) o programado.
 on:
   repository_dispatch:
     types: [ai-update-trigger]
-  workflow_dispatch: # Permite activarlo manualmente desde la web
+  workflow_dispatch: # Permite ejecución manual si lo necesitas
 
 jobs:
   update-code:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Da permiso a la IA para escribir en el repo
+
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GOOGLE_AI_TOKEN }} # Usa el token secreto
+          token: ${{ secrets.GOOGLE_AI_TOKEN }}
 
-      - name: Configurar Git
+      # --- AQUÍ ES DONDE SUCEDE LA MAGIA ---
+      # En este espacio intermedio es donde tu herramienta "Antigravity"
+      # o el script de Google ejecutará sus cambios.
+      # Si Antigravity funciona via API externa, no necesitas poner nada aquí.
+      # -------------------------------------
+
+      - name: Configurar Git y Guardar Cambios (Si existen)
         run: |
           git config --global user.name 'Antigravity AI'
           git config --global user.email 'ai-bot@google.com'
-
-      - name: Procesar cambios de la IA
-        run: |
-          # Aquí iría el script que conecta con la IA o
-          # si la IA ya envió el código, este paso valida los archivos.
-          echo "Integrando cambios recibidos..."
-
-      - name: Commit y Push de cambios
-        run: |
+          
+          # Añadir todo lo que haya cambiado
           git add .
-          git commit -m "Auto-update: Actualización por Antigravity AI"
-          git push
+          
+          # Lógica condicional: Solo hace commit si hay cambios reales
+          if [[ -n $(git status -s) ]]; then
+            echo "✅ Cambios detectados. Guardando en el repositorio..."
+            git commit -m "Auto-update: Actualización por Antigravity AI"
+            git push
+          else
+            echo "zzz No se detectaron cambios nuevos. Todo está al día."
+          fi
