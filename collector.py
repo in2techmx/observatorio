@@ -271,6 +271,7 @@ class ClusterEngine:
             random.shuffle(items)
             
             # Enviamos al Radar las noticias más relevantes de cada región
+            # --- AQUÍ ESTÁ EL AUMENTO DE CAPACIDAD (40 NOTICIAS) ---
             analysis = self.analyze_global_proximity(area, items[:40])
             
             if analysis and 'particulas' in analysis:
