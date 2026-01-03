@@ -1,3 +1,1048 @@
 {
-  "carousel": []
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "Resumen estratégico de Seguridad y Conflictos",
+      "color": "#ef4444",
+      "particulas": [
+        {
+          "id": "72f69398",
+          "titulo": "El FBI dice que una operación encubierta frustró un ataque terrorista inspirado en ISIS",
+          "link": "https://www.washingtonpost.com/national-security/2026/01/02/terror-plot-north-carolina-fbi/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "0e62d817",
+          "titulo": "Israel continuará atacando Beirut hasta que Líbano desarme a Hezbollah - Ministro de Defensa",
+          "link": "https://tass.com/world/1969663",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "7c653259",
+          "titulo": "La OMS informa sobre más de 8.500 ataques globales contra instalaciones de salud desde 2018 - Director General",
+          "link": "https://tass.com/society/1969643",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "e0ce83e1",
+          "titulo": "Los ataques previos a la reunión entre los jefes del OIEA y Rosatom son una 'herramienta de presión', cree la ZNPP",
+          "link": "https://tass.com/world/1969633",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "25e38cb5",
+          "titulo": "El régimen de Zelensky tiene todas las características de una organización terrorista - Senador ruso",
+          "link": "https://tass.com/politics/1969627",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "a7eab955",
+          "titulo": "Ucrania ataca un hotel en la ciudad satélite de Energodar de ZNPP con un dron",
+          "link": "https://tass.com/emergencies/1969621",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "5912a7ec",
+          "titulo": "El ejército ucraniano se retira de la comunidad de Komar en el oeste de la región de Donetsk",
+          "link": "https://tass.com/politics/1969619",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "63683beb",
+          "titulo": "El número de muertos en el ataque ucraniano contra Rylsk, en la región de Kursk, asciende a dos",
+          "link": "https://tass.com/emergencies/1969611",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "a41896e5",
+          "titulo": "La bomba FAB de Rusia arrasa con un pelotón del ejército ucraniano en el suroeste de la región de Donetsk",
+          "link": "https://tass.com/politics/1969609",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "49ce0c2f",
+          "titulo": "La nueva legisladora de Hong Kong, Julia Lau, promete fortalecer la supervisión de riesgos después del incendio de Tai Po",
+          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338578/new-hong-kong-lawmaker-julia-lau-vows-strengthen-risk-oversight-after-tai-po-fire?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "7f30747f",
+          "titulo": "Trump ordena a la firma HieFo, vinculada a China, que se deshaga de los activos de chips estadounidenses, citando la seguridad nacional",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338586/trump-orders-chinese-linked-firm-divest-us-semiconductor-assets?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "112b6483",
+          "titulo": "Zelensky propone el nombramiento del Primer Viceministro Fedorov como nuevo ministro de Defensa de Ucrania",
+          "link": "https://www.scmp.com/news/world/europe/article/3338585/zelensky-proposes-appointing-first-deputy-pm-fedorov-ukraines-new-defence-minister?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "09dc0273",
+          "titulo": "El dueño del bar suizo donde un incendio de Año Nuevo mató a 40 personas insiste en que se siguieron las normas de seguridad",
+          "link": "https://www.scmp.com/news/world/europe/article/3338584/owner-swiss-bar-where-new-year-fire-killed-40-insists-safety-norms-were-followed?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "7f6850b0",
+          "titulo": "2 muertos cuando un terremoto de magnitud 6.5 sacude la Ciudad de México y el centro turístico de playa",
+          "link": "https://www.scmp.com/news/world/americas/article/3338583/1-dead-12-injured-65-magnitude-quake-shakes-mexico-city-and-beach-resort?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "e546e9be",
+          "titulo": "El FBI dice que interrumpió un posible ataque de Nochevieja inspirado en el Estado Islámico",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338580/fbi-says-it-disrupted-potential-new-years-eve-attack-inspired-islamic-state?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "73280322",
+          "titulo": "Presunto terrorista suicida detona una explosión en Nueva York",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2ec18ca3108bc8c6721902.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1a919ffc",
+          "titulo": "Cuatro heridos en una explosión relacionada con el terrorismo en Manhattan",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2eb0e8a3108bc8c67218fb.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "5cd668a9",
+          "titulo": "Las protestas iraníes sacan a la superficie 'ansiedades' más profundas sobre el liderazgo",
+          "link": "https://www.france24.com/en/video/20260102-iranian-protests-are-bringing-deeper-anxieties-about-leadership-to-the-surface",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "b4f006f1",
+          "titulo": "Al menos 40 muertos y 119 heridos en el incendio de Crans-Montana causado por 'bengalas', dicen funcionarios suizos",
+          "link": "https://www.france24.com/en/europe/20260102-watch-live-swiss-officials-brief-media-after-deadly-nye-fire-in-cras-montana-bar",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "f0e9b4b7",
+          "titulo": "Volodymyr Zelensky nombra al jefe de inteligencia militar de Ucrania, Kyrylo Budanov, nuevo jefe de personal",
+          "link": "https://www.france24.com/en/europe/20260102-live-ukraine-hits-military-sites-after-russia-accuses-kyiv-deadly-civilian-strike",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "Resumen estratégico de Economía y Sanciones",
+      "color": "#3b82f6",
+      "particulas": [
+        {
+          "id": "88203d83",
+          "titulo": "Estudio del agua podría retrasar la construcción comercial",
+          "link": "https://poststar.com/news/local/lake-george-water-study-could-delay-commercial-construction/article_dc5e67ce-718d-11ed-82c2-ef3febaf7e24.html",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "ee2e7b0b",
+          "titulo": "Las exportaciones alemanas a Rusia disminuyeron un 5,3% en abril mes a mes",
+          "link": "https://tass.com/economy/1969687",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "e549aba1",
+          "titulo": "El choque Trump-Musk cuesta a ambos grandes sumas en un día - medios",
+          "link": "https://tass.com/economy/1969669",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "bdae5d3e",
+          "titulo": "El Banco de Rusia vende yuanes por valor de $ 83 millones con liquidaciones el 5 de junio",
+          "link": "https://tass.com/economy/1969635",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "69d45b58",
+          "titulo": "Las acciones rusas bajan cuando se abre la sesión principal de negociación",
+          "link": "https://tass.com/economy/1969629",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "23f946c6",
+          "titulo": "La economía de Rusia en 2026: más guerra, crecimiento más lento e impuestos más altos",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d0ad3c49",
+          "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta después de la incautación estatal",
+          "link": "https://www.themoscowtimes.com/2025/12/30/moscows-domodedovo-airport-to-go-up-for-auction-after-state-seizure-a91583",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "c3f7c2cf",
+          "titulo": "Citigroup aprueba la venta de operaciones rusas, señalando una pérdida de 1.200 millones de dólares",
+          "link": "https://www.themoscowtimes.com/2025/12/30/citigroup-approves-sale-of-russian-operations-flagging-12bln-loss-a91578",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "f15f8ae5",
+          "titulo": "Las conversaciones del G20 en EE. UU. se centrarán en economía, no en geopolítica - Sherpa ruso",
+          "link": "https://sputnikglobe.com/20260102/g20-talks-in-us-to-focus-on-economics-not-geopolitics--russian-sherpa-1123403048.html",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "7384f493",
+          "titulo": "Argentina apunta a los dólares estadounidenses acaparados bajo los colchones, suaviza las reglas de evasión fiscal",
+          "link": "https://www.scmp.com/news/world/americas/article/3338587/argentina-targets-us-dollars-hoarded-under-mattresses-eases-tax-evasion-rules?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "199e9218",
+          "titulo": "¿Justo o sucio? Malasia lucha por digerir su pacto comercial con Estados Unidos",
+          "link": "https://www.scmp.com/week-asia/economics/article/3338562/fair-or-foul-malaysia-struggles-stomach-its-us-trade-pact?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "106fe341",
+          "titulo": "Reino Unido y China permiten más vuelos directos",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2ebd50a3108bc8c67218fe.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "b709079e",
+          "titulo": "Pato DaDong listo para la inauguración en Nueva York",
+          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e230fa310eefe3e9a28eb.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "b709079e",
+          "titulo": "Pato DaDong listo para la inauguración en Nueva York",
+          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e230fa310eefe3e9a28eb.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "b709079e",
+          "titulo": "Pato DaDong listo para la inauguración en Nueva York",
+          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2e230fa310eefe3e9a28eb.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1cb6965c",
+          "titulo": "Gran Bretaña y la UE podrían llegar a un acuerdo comercial en un año, dice el jefe del Brexit",
+          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2df983a310eefe3e9a271a.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1cb6965c",
+          "titulo": "Gran Bretaña y la UE podrían llegar a un acuerdo comercial en un año, dice el jefe del Brexit",
+          "link": "http://www.chinadaily.com.cn/a/201712/11/WS5a2df983a310eefe3e9a271a.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "33275098",
+          "titulo": "Por qué las prohibiciones de plástico no están funcionando y qué hay que cambiar",
+          "link": "https://www.dw.com/en/why-plastic-bans-aren-t-working-and-what-needs-to-change/a-74980708?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "c96f82af",
+          "titulo": "BYD de China supera a Tesla como el principal vendedor de vehículos eléctricos del mundo",
+          "link": "https://www.dw.com/en/china-s-byd-overtakes-tesla-as-world-s-top-ev-seller/a-75370504?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "adcadd97",
+          "titulo": "Los trabajadores indios ganan el salario medio más alto en Alemania",
+          "link": "https://www.dw.com/en/indian-workers-earn-highest-median-pay-in-germany/a-75370401?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "Resumen estratégico de Energía y Recursos",
+      "color": "#10b981",
+      "particulas": [
+        {
+          "id": "5fad6b23",
+          "titulo": "El CEO de Rosatom y el jefe del OIEA se reúnen en Kaliningrado",
+          "link": "https://tass.com/economy/1969625",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "c94a9bec",
+          "titulo": "China se compromete a aumentar la producción de energía de oeste a este a medida que la IA y la fabricación de alta tecnología impulsan la demanda",
+          "link": "https://www.scmp.com/economy/china-economy/article/3338522/china-vows-ramp-west-east-power-output-ai-hi-tech-manufacturing-fuel-demand?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "27303fe8",
+          "titulo": "Las colinas de Aravalli se sacuden con el sonido de la maquinaria",
+          "link": "https://www.thehindu.com/sci-tech/energy-and-environment/the-aravalli-hills-are-shaken-with-the-sound-of-machinery/article70464970.ece",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "8acef12d",
+          "titulo": "Los desastres naturales están afectando gravemente a Himachal, dice un informe; los expertos buscan cambios en las políticas",
+          "link": "https://www.thehindu.com/news/national/himachal-pradesh/natural-disasters-taking-heavy-toll-on-himachal-says-report-experts-seek-policy-changes/article70464082.ece",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "bbcd3e6d",
+          "titulo": "La inmersión profunda de la India en la frontera helada",
+          "link": "https://www.thehindu.com/news/national/telangana/indias-deep-dive-into-the-frozen-frontier/article70461345.ece",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "47847614",
+          "titulo": "El ICA de Delhi mejora a 'pobre' en 235; Se levanta la Etapa III de GRAP",
+          "link": "https://timesofindia.indiatimes.com/city/delhi/delhi-aqi-improves-to-poor-at-235-as-city-wakes-up-to-chilly-windy-morning-grap-stage-iii-lifted/articleshow/126316315.cms",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "4aaac189",
+          "titulo": "Ghana: Ghana reducirá las importaciones de gasolina de Nigeria a medida que se reinicien las operaciones de la refinería de Tema",
+          "link": "https://allafrica.com/stories/202601020311.html",
+          "bloque": "AFRICA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "60f19969",
+          "titulo": "La Tierra se acerca a un punto de inflexión ambiental",
+          "link": "https://www.wired.com/story/the-earth-is-nearing-an-environmental-tipping-point/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "ea31d5d4",
+          "titulo": "Los costos ambientales y de derechos humanos de las inversiones de energía limpia de China en el extranjero",
+          "link": "https://www.wired.com/story/chinas-clean-energy-investments-abroad-are-a-boon-for-climate-but-human-rights-and-the-environment-are-a-different-story/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "3f3c65bd",
+          "titulo": "El glaciar Doomsday se acerca cada vez más al colapso irreversible",
+          "link": "https://www.wired.com/story/the-doomsday-glacier-is-getting-closer-and-closer-to-irreversible-collapse/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "8181e829",
+          "titulo": "El almacenamiento de energía hidroeléctrica bombeada está teniendo un renacimiento",
+          "link": "https://www.wired.com/story/pumped-hydro-energy-storage-is-having-a-renaissance/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "4e9cde49",
+          "titulo": "Cada startup de fusión que ha recaudado más de 100 millones de dólares",
+          "link": "https://techcrunch.com/2025/12/31/every-fusion-startup-that-has-raised-over-100m/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "Resumen estratégico de Soberanía y Alianzas",
+      "color": "#f59e0b",
+      "particulas": [
+        {
+          "id": "40211d7b",
+          "titulo": "El alcalde de la ciudad de Nueva York, Zohran Mamdani, jura en una ceremonia pública",
+          "link": "https://www.washingtonpost.com/nation/2026/01/01/nyc-mayor-zohran-mamdani-sworn-in/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "419ac0c7",
+          "titulo": "La Casa Blanca establece un cronograma de nueve semanas para obtener la aprobación del salón de baile de Trump",
+          "link": "https://www.washingtonpost.com/politics/2025/12/31/trump-ballroom-timeline-reviews/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "bd39cb10",
+          "titulo": "Ella proporciona la materia prima a la máquina de influencia de Trump",
+          "link": "https://www.washingtonpost.com/politics/2026/01/01/trump-social-influencer-martin/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "a6f3cd49",
+          "titulo": "Trump está reconstituyendo el panel de Bellas Artes para revisar su salón de baile",
+          "link": "https://www.washingtonpost.com/politics/2026/01/01/trump-fine-arts-appointees/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "9f7d1259",
+          "titulo": "El jefe de Gagauzia se enfrenta a la corte: desarrollos recientes",
+          "link": "https://tass.com/world/1969667",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "8d08978b",
+          "titulo": "Reseña de prensa: Europa busca bloquear el deshielo entre Estados Unidos y Rusia mientras Rusia considera su papel en las conversaciones entre Estados Unidos e Irán",
+          "link": "https://tass.com/pressreview/1969589",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "48b78a71",
+          "titulo": "Sombra de 'potencial divorcio brutal' entre Trump-Musk se cierne sobre los republicanos - TV",
+          "link": "https://tass.com/world/1969641",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "567a7b24",
+          "titulo": "La UE debe concluir un acuerdo de limitación de armas con Rusia, dice Orban",
+          "link": "https://tass.com/world/1969637",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "df3f8087",
+          "titulo": "Dodon pide a Sandu y Recean que no sucumban a los intentos occidentales de arrastrar a Moldavia a la guerra",
+          "link": "https://tass.com/world/1969631",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "8dd1b9ff",
+          "titulo": "Orban ve a la UE preparándose para otra década de lucha contra Rusia en medio de una guerra de poder en Ucrania",
+          "link": "https://tass.com/world/1969613",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "dcb7b276",
+          "titulo": "Rusia defenderá los derechos de los hablantes de ruso en Ucrania para resolver la crisis, dice Lavrov",
+          "link": "https://tass.com/politics/1969607",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d720c5dd",
+          "titulo": "Conversación telefónica con el Presidente de Bielorrusia Alexander Lukashenko",
+          "link": "http://en.kremlin.ru/events/president/news/78985",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "9fb5283a",
+          "titulo": "El partido respaldado por los militares de Myanmar lidera la primera fase de las elecciones por un amplio margen",
+          "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338595/myanmar-military-backed-party-leads-elections-first-phase-wide-margin?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "e2987318",
+          "titulo": "Los separatistas de Yemen anuncian la constitución, los EAU retiran todas sus tropas",
+          "link": "https://www.scmp.com/news/world/middle-east/article/3338592/yemens-separatists-announce-constitution-uae-withdraws-all-its-troops?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "eb454224",
+          "titulo": "Lawrence Wong agradece a Trump la invitación al G20, Singapur y Estados Unidos marcan el hito del 60 aniversario",
+          "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338588/lawrence-wong-thanks-trump-g20-invitation-singapore-us-mark-60th-milestone?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1673c8c0",
+          "titulo": "Por qué resurge la conversación sobre una opción nuclear japonesa, y por qué alarma a los críticos",
+          "link": "https://www.scmp.com/week-asia/politics/article/3338570/why-talk-japanese-nuclear-option-resurfacing-and-why-it-alarms-critics?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "02c83f9b",
+          "titulo": "¿Puede Europa sobrevivir a su parálisis paralizante?",
+          "link": "https://www.scmp.com/opinion/world-opinion/article/3338435/can-europe-survive-its-crippling-paralysis?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1cfdb247",
+          "titulo": "Trump se reunirá con el enviado de Estados Unidos a China después de una llamada con el Primer Ministro de Japón, Takaichi, mientras concluyen los simulacros de Taiwán",
+          "link": "https://www.scmp.com/news/us/diplomacy/article/3338582/trump-meet-us-envoy-perdue-after-call-japans-takaichi-taiwan-drills-conclude?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "ff8880a1",
+          "titulo": "Se reúnen ministros chinos, rusos e indios",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f0d6ca3108bc8c6721934.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "ff8880a1",
+          "titulo": "Se reúnen ministros chinos, rusos e indios",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f0d6ca3108bc8c6721934.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "Resumen estratégico de Tecnología y Espacio",
+      "color": "#8b5cf6",
+      "particulas": [
+        {
+          "id": "7114920c",
+          "titulo": "El Centro Khrunichev comienza la producción de tres cohetes Angara-A5M para lanzar módulos ROS",
+          "link": "https://tass.com/science/1969671",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "286bddb5",
+          "titulo": "Un juez de Moscú desestima la demanda colectiva de los usuarios de WhatsApp contra Roskomnadzor",
+          "link": "https://www.themoscowtimes.com/2025/12/29/moscow-judge-tosses-whatsapp-users-class-action-lawsuit-against-roskomnadzor-a91574",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d1ec15c8",
+          "titulo": "Guerra tecnológica: China da pasos seguros para desarrollar más innovación en IA en 2026",
+          "link": "https://www.scmp.com/tech/tech-war/article/3338528/tech-war-china-takes-confident-strides-develop-more-ai-innovation-2026?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "c6c609c7",
+          "titulo": "Ahora podemos ver bailar nuestros propios genes",
+          "link": "https://www.scmp.com/opinion/world-opinion/article/3338412/we-can-now-watch-our-own-genes-dance?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "6baa1a4b",
+          "titulo": "El sector biofarmacéutico de China 'en una posición privilegiada para desafiar el liderazgo de Estados Unidos'",
+          "link": "https://www.scmp.com/news/china/science/article/3338481/chinas-biopharma-sector-prime-position-challenge-us-leadership?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "554f4846",
+          "titulo": "Satélite lanzado para el primer país árabe",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f225ea3108bc8c67219dd.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "554f4846",
+          "titulo": "Satélite lanzado para el primer país árabe",
+          "link": "http://www.chinadaily.com.cn/a/201712/12/WS5a2f225ea3108bc8c67219dd.html",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "5206024d",
+          "titulo": "US court: ‘Top Gun: Maverick’ didn’t infringe Israeli writer’s copyright",
+          "link": "https://www.timesofisrael.com/us-court-upholds-ruling-top-gun-maverick-didnt-infringe-israeli-writers-copyright/",
+          "bloque": "MID_EAST",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "00b6bc92",
+          "titulo": "El sector de la aviación despegará en A.P. ya que el aeropuerto de Bhogapuram está listo para la prueba de validación de vuelo el 4 de enero",
+          "link": "https://www.thehindu.com/news/national/andhra-pradesh/aviation-sector-to-take-wings-in-ap-as-bhogapuram-airport-all-set-for-flight-validation-test-on-january-4/article70462753.ece",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "66d3ce39",
+          "titulo": "'El fin de mí': Eric Schmidt de Google sobre la IA; dice que 55 años de codificación fueron eliminados",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/google-ex-ceo-eric-schmidt-what-i-did-my-whole-early-life-is-wiped-off-by/articleshow/126304028.cms",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "7a7a63ae",
+          "titulo": "El ex jefe de IA de Tesla: Google Waymo no puede igualar la tecnología de conducción autónoma de Tesla; explica por qué",
+          "link": "https://timesofindia.indiatimes.com/technology/tech-news/after-being-called-out-by-elon-musk-teslas-ex-ai-director-andrej-karpathy-says-google-waymo-cannot-do/articleshow/126285839.cms",
+          "bloque": "INDIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "dc29ebc1",
+          "titulo": "He aquí el Múltiple, el Concepto que cambió la forma en que los matemáticos ven el espacio",
+          "link": "https://www.wired.com/story/behold-the-manifold-the-concept-that-changed-how-mathematicians-view-space/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1a3833b3",
+          "titulo": "¿Podrías usar un bote de remos para caminar por el fondo del mar como Jack Sparrow?",
+          "link": "https://www.wired.com/story/using-a-rowboat-to-walk-on-the-seafloor-like-jack-sparrow/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "4319a790",
+          "titulo": "AlphaFold cambió la ciencia. Después de 5 años, todavía está evolucionando",
+          "link": "https://www.wired.com/story/alphafold-changed-science-after-5-years-its-still-evolving/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d9ed3bf1",
+          "titulo": "Brain Gear es el nuevo dispositivo portátil de moda",
+          "link": "https://www.wired.com/story/expired-tired-wired-wearables/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "131406b5",
+          "titulo": "La investigación revela la forma óptima de optimizar",
+          "link": "https://www.wired.com/story/researchers-discover-the-optimal-way-to-optimize/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "be385d82",
+          "titulo": "La nueva empresa cerebral de Sam Altman, Merge Labs, se separará de una organización sin fines de lucro",
+          "link": "https://www.wired.com/story/sam-altman-brain-computer-interface-merge-labs-spin-out-nonprofit-forest-neurotech/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "ba29c20d",
+          "titulo": "India ordena a X de Musk que arregle Grok por contenido de IA 'obsceno'",
+          "link": "https://techcrunch.com/2026/01/02/india-orders-musks-x-to-fix-grok-over-obscene-ai-content/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d433d900",
+          "titulo": "10 gadgets útiles para tu primer apartamento",
+          "link": "https://techcrunch.com/2026/01/02/10-useful-gadgets-for-your-first-apartment/",
+          "bloque": "GLOBAL",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "Resumen estratégico de Sociedad y Derechos",
+      "color": "#ec4899",
+      "particulas": [
+        {
+          "id": "2920ff9a",
+          "titulo": "Casi 200 animales rescatados de una fábrica de cachorros",
+          "link": "https://www.cbsnews.com/philadelphia/news/almost-200-animals-rescued-from-puppy-mill-in-ocean-county/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1a4b3d4d",
+          "titulo": "Ella le prometió a su esposo mantener su granja de árboles en funcionamiento",
+          "link": "https://www.news5cleveland.com/news/local-news/she-made-a-promise-to-her-husband-to-keep-their-tree-farm-going",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "a61e80cc",
+          "titulo": "Jugadores de fútbol americano de secundaria obtienen perspectiva ayudando a veteranos",
+          "link": "https://www.kristv.com/news/local-news/high-school-football-players-gain-new-perspective-helping-veterans",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "63bf6969",
+          "titulo": "Milwaukee Dancing Grannies planea regresar",
+          "link": "https://www.wisn.com/article/milwaukee-dancing-grannies-planning-return-to-waukesha/42138823",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "87f02e00",
+          "titulo": "¿Cómo están impactando las nuevas leyes de protesta a las manifestaciones políticas?",
+          "link": "https://www.washingtonpost.com/nation/2026/01/02/anti-protest-laws-randy-fine/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "802f92ad",
+          "titulo": "El Servicio de Parques Nacionales gastará $ 54 millones en fuentes históricas de D.C.",
+          "link": "https://www.washingtonpost.com/dc-md-va/2026/01/02/park-service-dc-fountains-budget/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "dc8deb99",
+          "titulo": "¿Testimonio de expertos o sesgo anti-Islam? El caso de agresión sexual pone a prueba el límite legal.",
+          "link": "https://www.washingtonpost.com/national-security/2026/01/02/expert-testimony-domestic-violence-islam/",
+          "bloque": "USA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "72a1db22",
+          "titulo": "Putin goza de un fuerte apoyo entre el pueblo ruso, según la última encuesta",
+          "link": "https://tass.com/politics/1969617",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "4b260834",
+          "titulo": "Más del 80% de los rusos confían en Putin - encuesta",
+          "link": "https://tass.com/society/1969599",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "f2981ab4",
+          "titulo": "Felicitaciones al personal del Museo Estatal al Aire Libre de Historia, Arquitectura y Etnografía de Kizhi",
+          "link": "http://en.kremlin.ru/events/president/news/78987",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "1739546c",
+          "titulo": "Discurso de Año Nuevo a la Nación",
+          "link": "http://en.kremlin.ru/events/president/news/78954",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d541e69e",
+          "titulo": "Discurso en el Día del Rescatista",
+          "link": "http://en.kremlin.ru/events/president/news/78867",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "b05f5e2f",
+          "titulo": "Condolencias por el fallecimiento de Vera Alentova",
+          "link": "http://en.kremlin.ru/events/president/news/78865",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "8de83500",
+          "titulo": "Para la diáspora rusa en tiempos de guerra, las tradiciones de Año Nuevo se convierten en un vínculo con el hogar",
+          "link": "https://www.themoscowtimes.com/2026/01/01/for-russias-wartime-diaspora-new-years-traditions-become-a-tether-to-home-a91600",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "2d74a9a2",
+          "titulo": "'Esperando el fin de la guerra': los rusos comparten sus deseos de Año Nuevo para 2026",
+          "link": "https://www.themoscowtimes.com/2025/12/31/hoping-for-an-end-to-the-war-russians-share-their-new-years-wishes-for-2026-a91573",
+          "bloque": "RUSSIA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "0f9bf3a1",
+          "titulo": "Eximir a los maestros sustitutos de Hong Kong de los certificados de práctica, dicen los directores",
+          "link": "https://www.scmp.com/news/hong-kong/education/article/3338589/exempt-hong-kong-substitute-teachers-practising-certificates-principals-say?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "a741afdd",
+          "titulo": "Asia, que envejece, necesita empleadas domésticas, pero ¿puede mantenerlas a salvo?",
+          "link": "https://www.scmp.com/week-asia/health-environment/article/3338555/ageing-asia-needs-domestic-helpers-can-it-keep-them-safe?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "81c794d5",
+          "titulo": "Un incendio causado por un cortocircuito de un cargador de teléfono en un piso de Hong Kong hiere a 4 y mata a un gato",
+          "link": "https://www.scmp.com/news/hong-kong/society/article/3338594/fire-caused-short-circuit-phone-charger-hong-kong-flat-injures-4-kills-cat?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "c559e144",
+          "titulo": "Los refugios de animales de Singapur luchan contra los costes y la disminución de la adopción",
+          "link": "https://www.scmp.com/week-asia/lifestyle-culture/article/3338563/singapores-animal-shelters-struggle-costs-falling-adoption?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        },
+        {
+          "id": "d02414ab",
+          "titulo": "La temperatura en Hong Kong desciende a 11,4 grados Celsius, la más baja de este invierno",
+          "link": "https://www.scmp.com/news/hong-kong/health-environment/article/3338590/temperature-hong-kong-falls-114-degrees-celsius-lowest-winter?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 100,
+          "metodo": "ID-Vault Binary Cache",
+          "sesgo": "Consenso"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "updated": "2026-01-03T04:21:15.027703"
+  }
 }
