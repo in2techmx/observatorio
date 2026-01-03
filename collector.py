@@ -2,6 +2,31 @@ import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct,
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from google import genai
+import os, json, datetime, time, urllib.request, hashlib, re, sys, math, struct, logging
+import xml.etree.ElementTree as ET
+from collections import defaultdict
+from google import genai
+
+# ============================================================================
+# GESTIÓN SEGURA DE RUTAS (FALLBACK)
+# ============================================================================
+CACHE_DIR = "vector_cache"
+HIST_DIR = "historico_noticias/diario"
+
+# Cargar configuración dinámica de init_env.py si existe
+if os.path.exists(".proximity_env"):
+    with open(".proximity_env", "r") as f:
+        for line in f:
+            if "CACHE_DIR=" in line: CACHE_DIR = line.split("=")[1].strip()
+
+# Asegurar creación final
+for d in [CACHE_DIR, HIST_DIR]:
+    try: os.makedirs(d, exist_ok=True)
+    except: pass
+
+LOG_FILE = "system_audit.log"
+AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos", 
+         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
 
 # ============================================================================
 # CONFIGURACIÓN ESTRATÉGICA
@@ -763,3 +788,4 @@ if __name__ == "__main__":
     else:
         print("\n⚠️  El análisis encontró problemas. Revisa los logs.")
         sys.exit(1)
+
