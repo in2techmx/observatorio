@@ -476,6 +476,60 @@ FORMATO SALIDA (JSON PURO):
                     it.proximity = 0.0
                     it.bias_label = "Error Vectorial"
 
+    # --- FASE 3.5: SÍNTESIS NARRATIVA (EL DIÁLOGO) ---
+    def generate_narrative_syntheses(self):
+        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico...")
+        valid_items = [it for it in self.active_items if it.area in AREAS]
+        
+        self.syntheses = {} # Store synthesis per area
+
+        for area in AREAS:
+            area_items = [it for it in valid_items if it.area == area]
+            if len(area_items) < 3:
+                self.syntheses[area] = "Insuficiente data para establecer diálogo."
+                continue
+            
+            # Select representative headlines from diverse regions
+            # Max 2 per region to ensure variety
+            selection = []
+            grouped = defaultdict(list)
+            for it in area_items: grouped[it.region].append(it)
+            
+            for region, items in grouped.items():
+                # Sort by confidence or proximity if available, else random
+                items.sort(key=lambda x: x.proximity, reverse=True)
+                selection.extend(items[:2])
+                
+            if not selection: continue
+
+            # Construct Prompt
+            headlines_text = "\n".join([f"- [{it.region}] {it.original_title}" for it in selection[:8]])
+            
+            prompt = f"""ACT AS: Geopolitical Analyst.
+TASK: Synthesize the 'dialogue' between these regions regarding '{area}'.
+INPUT HEADLINES:
+{headlines_text}
+
+INSTRUCTIONS:
+1. Identify the core tension or agreement.
+2. Format as a single, high-impact sentence (Max 30 words).
+3. Contrast perspectives (e.g., "While USA focuses on X, China emphasizes Y...").
+4. Language: Spanish.
+
+OUTPUT TEXT ONLY."""
+
+            try:
+                resp = self.client.models.generate_content(
+                    model="gemini-2.0-flash", 
+                    contents=prompt,
+                    config={"temperature": 0.4}
+                )
+                if resp.text:
+                    self.syntheses[area] = resp.text.strip()
+            except Exception as e:
+                logging.error(f"Error Synthesis {area}: {e}")
+                self.syntheses[area] = "Análisis en curso..."
+
     # --- FASE 4: EXPORTACIÓN ---
     def export(self):
         logging.info("💾 FASE 4: Exportación...")
@@ -494,8 +548,13 @@ FORMATO SALIDA (JSON PURO):
             consensus = "ALTO" if avg > 80 else "MODERADO" if avg > 60 else "BAJO"
             emoji = "🟢" if avg > 80 else "🟡" if avg > 60 else "🟠" if avg > 50 else "🔴"
 
+            # Get synthesis
+            sintesis = self.syntheses.get(area, "Analizando señales globales...")
+
             carousel.append({
-                "area": area, "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
+                "area": area, 
+                "sintesis": sintesis, # Add synthesis to JSON
+                "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
                 "color": colors.get(area, "#666"),
                 "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
                 "particulas": particles[:30]
@@ -524,6 +583,7 @@ FORMATO SALIDA (JSON PURO):
             self.fetch_signals()
             self.run_triage()
             self.compute_vectors_and_proximity()
+            self.generate_narrative_syntheses() # Phase 3.5
             self.export()
             return True
         except Exception as e:

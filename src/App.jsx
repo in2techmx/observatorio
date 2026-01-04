@@ -6,7 +6,9 @@ import NewsCard from './components/NewsCard';
 
 function App() {
     const [selectedNews, setSelectedNews] = useState(null);
-    const [eventsData, setEventsData] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [meta, setMeta] = useState(null);
+    const [syntheses, setSyntheses] = useState({}); // Store synthesis per category
     const [loading, setLoading] = useState(true);
 
     // Fetch real data from gravity_carousel.json
@@ -16,22 +18,32 @@ function App() {
                 const response = await fetch('./gravity_carousel.json');
                 const text = await response.text();
                 // Handle potential trailing commas or minor JSON errors if needed, but assuming valid JSON for now
-                const json = JSON.parse(text);
+                const data = JSON.parse(text);
 
-                if (json.carousel) {
+                if (data.carousel) {
                     // ADAPTER: Transform nested carousel structure to flat events list expected by components
                     // Structure: { carousel: [ { area: "Name", particulas: [...] } ] }
-                    const flatEvents = json.carousel.flatMap(categoryBlock => {
+                    const adaptedEvents = data.carousel.flatMap(categoryBlock => {
                         return (categoryBlock.particulas || []).map(p => ({
-                            ...p,
-                            category: categoryBlock.area, // Map 'area' to 'category'
-                            title: p.titulo,              // Map 'titulo' to 'title'
-                            country: p.bloque,            // Map 'bloque' to 'country'
-                            analysis: p.titulo,           // Fallback: use title as analysis since no summary exists in JSON
-                            proximity_score: (p.proximidad / 10).toFixed(1) // Map 0-100 to 0-10
+                            id: p.id,
+                            title: p.titulo, // Map Spanish key to English prop
+                            link: p.link,
+                            country: p.bloque,
+                            source_url: p.link,
+                            proximity_score: p.proximidad / 10, // Map 0-100 to 0-10
+                            category: categoryBlock.area
                         }));
                     });
-                    setEventsData(flatEvents);
+
+                    // Create a map of synthesis per category
+                    const synthesisMap = {};
+                    data.carousel.forEach(cat => {
+                        synthesisMap[cat.area] = cat.sintesis;
+                    });
+
+                    setEvents(adaptedEvents);
+                    setMeta(data.meta || {});
+                    setSyntheses(synthesisMap); // New state for synthesis
                 }
             } catch (error) {
                 console.error("Failed to load gravity data:", error);
@@ -46,14 +58,14 @@ function App() {
     // Group data by category dynamically
     const categories = useMemo(() => {
         const groups = {};
-        eventsData.forEach(event => {
+        events.forEach(event => {
             if (!groups[event.category]) {
                 groups[event.category] = [];
             }
             groups[event.category].push(event);
         });
         return groups;
-    }, [eventsData]);
+    }, [events]);
 
     if (loading) {
         return <div className="min-h-screen bg-black text-white flex items-center justify-center">Initializing Gravity Link...</div>;
@@ -73,11 +85,12 @@ function App() {
                     </h3>
                 </div>
 
-                {Object.entries(categories).map(([category, events]) => (
+                {Object.entries(categories).map(([category, categoryEvents]) => (
                     <CategoryDeck
                         key={category}
                         category={category}
-                        events={events}
+                        events={categoryEvents}
+                        synthesis={syntheses[category]}
                         onSelectNews={setSelectedNews}
                     />
                 ))}

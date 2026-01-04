@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Radio } from 'lucide-react';
 import RadarView from './RadarView';
 import NewsList from './NewsList';
 
-const CategoryDeck = ({ category, events, onSelectNews }) => {
+const CategoryDeck = ({ category, events, synthesis, onSelectNews }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [hoveredId, setHoveredId] = useState(null);
 
@@ -46,6 +46,15 @@ const CategoryDeck = ({ category, events, onSelectNews }) => {
                     </button>
                 </div>
             </div>
+
+            {/* AI Narrative Synthesis Banner */}
+            {synthesis && (
+                <div className="px-6 pb-4 -mt-2">
+                    <div className="text-sm font-mono text-cyan-300/80 border-l-2 border-cyan-500 pl-4 italic">
+                        "{synthesis}"
+                    </div>
+                </div>
+            )}
 
             {/* Expanded Content (Netflix Drawer Style) */}
             <AnimatePresence>
