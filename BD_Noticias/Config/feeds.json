@@ -1,0 +1,46 @@
+{
+    "NORTEAMERICA": [
+        "http://rss.cnn.com/rss/cnn_topstories.rss",
+        "http://feeds.foxnews.com/foxnews/latest",
+        "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114",
+        "https://feeds.npr.org/1001/rss.xml",
+        "https://www.washingtontimes.com/rss/headlines/news/security/"
+    ],
+    "LATINOAMERICA": [
+        "https://www.jornada.com.mx/rss/edicion.xml?v=1",
+        "https://www.eluniversal.com.mx/rss",
+        "https://www.clarin.com/rss/lo-ultimo/",
+        "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada",
+        "https://www.bbc.com/mundo/ultimas_noticias/index.xml"
+    ],
+    "EUROPA": [
+        "http://feeds.bbci.co.uk/news/world/europe/rss.xml",
+        "https://www.france24.com/en/europe/rss",
+        "https://www.dw.com/en/top-stories/s-9097/rss.xml",
+        "https://www.theguardian.com/world/europe/rss",
+        "https://rss.elconfidencial.com/mundo/"
+    ],
+    "MEDIO_ORIENTE": [
+        "https://www.aljazeera.com/xml/rss/all.xml",
+        "https://www.jpost.com/rss/rssfeedsheadlines.aspx",
+        "https://www.arabnews.com/cat/2/rss.xml",
+        "https://www.trtworld.com/feed/news/middle-east"
+    ],
+    "ASIA_PACIFICO": [
+        "http://feeds.bbci.co.uk/news/world/asia/rss.xml",
+        "https://www3.nhk.or.jp/nhkworld/en/news/list/all.xml",
+        "https://www.scmp.com/rss/91/feed",
+        "https://asia.nikkei.com/rss/feed/nar",
+        "https://www.straitstimes.com/news/asia/rss.xml"
+    ],
+    "AFRICA": [
+        "http://feeds.bbci.co.uk/news/world/africa/rss.xml",
+        "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf",
+        "https://www.news24.com/news24/partner/rss/go/news24/Africa"
+    ],
+    "RUSIA_CIS": [
+        "https://tass.com/rss/v2.xml",
+        "https://themoscowtimes.com/rss/news",
+        "https://meduza.io/rss/en"
+    ]
+}

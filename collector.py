@@ -10,750 +10,383 @@ import sys
 import math
 import struct
 import logging
-import random
-import xml.etree.ElementTree as ET
-from collections import defaultdict
 import argparse
+import csv
+from collections import defaultdict
+import feedparser
+import xml.etree.ElementTree as ET
 from google import genai
+from google.genai import types
 
-# ============================================================================
-# CONFIGURACIÓN GLOBAL Y ARGUMENTOS
-# ============================================================================
-CACHE_DIR = "vector_cache"
-HIST_DIR = "historico_noticias/diario"
-LOG_FILE = "system_audit.log"
+# --- LOGGING SETUP ---
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(levelname)-8s | %(message)s')
 
-# Cargar configuración dinámica
-if os.path.exists(".proximity_env"):
-    with open(".proximity_env", "r") as f:
-        for line in f:
-            if "CACHE_DIR=" in line:
-                CACHE_DIR = line.split("=")[1].strip()
+# --- CONFIGURATION (LOADED EXTERNALLY) ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_DIR = os.path.join(BASE_DIR, "BD_Noticias", "Config")
+DATA_DIR = os.path.join(BASE_DIR, "BD_Noticias", "Diario")
 
-# Gestión de Argumentos
-parser = argparse.ArgumentParser()
-parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategic, full')
-args, _ = parser.parse_known_args()
+def load_json_config(filename):
+    try:
+        path = os.path.join(CONFIG_DIR, filename)
+        if not os.path.exists(path):
+            # Fallback for CI/CD if dir structure slightly different
+            logging.error(f"FATAL: Config file not found: {path}")
+            sys.exit(1)
+            
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        logging.error(f"FATAL: Could not load config {filename}: {e}")
+        sys.exit(1)
 
-if args.mode == 'full':
-    FETCH_LIMIT = 150
-    print("🔥 MODO FULL: Límite 150 items/feed")
-elif args.mode == 'strategic':
-    FETCH_LIMIT = 80
-    print("🛡️ MODO ESTRATÉGICO: Límite 80 items/feed")
-else:
-    FETCH_LIMIT = 50 # Increased from 30
-    print("⚡ MODO TÁCTICO: Límite 50 items/feed")
+RSS_FEEDS = load_json_config("feeds.json")
+PROMPTS = load_json_config("prompts.json")
 
-# ============================================================================
-# CONFIGURACIÓN DE ÁREAS Y FUENTES
-# ============================================================================
-AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos",
-         "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
-
-FUENTES = {
-    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.propublica.org/feeds/propublica/main", "https://www.democracynow.org/democracynow.rss", "https://theintercept.com/feed/?lang=en"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news", "https://meduza.io/rss/en", "https://novayagazeta.eu/feed/rss", "https://theins.ru/en/feed"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "https://hongkongfp.com/feed/", "https://chinadigitaltimes.net/feed/", "https://asia.nikkei.com/rss/feed/nar"],
-    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://www.bellingcat.com/feed/", "https://www.opendemocracy.net/en/feed/"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.arabnews.com/cat/1/rss.xml", "https://www.middleeasteye.net/rss", "https://www.haaretz.com/cmlink/1.4608", "https://www.al-monitor.com/rss", "https://www.972mag.com/feed/", "https://www.trtworld.com/rss/news.xml"],
-    "LATAM": ["https://en.mercopress.com/rss", "https://buenosairesherald.com/feed", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", "https://insightcrime.org/feed/", "https://nacla.org/rss.xml", "https://www.clarin.com/rss/lo-ultimo/", "https://www.eluniversal.com.mx/rss/mundo.xml"],
-    "AFRICA": ["https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partner/rss/rssfeed.xml", "https://www.africanews.com/feed/", "https://www.theafricareport.com/feed/", "https://mg.co.za/feed/", "http://saharareporters.com/feeds/news"],
-    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://indianexpress.com/section/india/feed/", "https://caravanmagazine.in/feed/rss", "https://thewire.in/rss", "https://scroll.in/feed", "https://www.straitstimes.com/news/world/rss.xml"],
-    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best", "https://globalvoices.org/feed/", "https://theconversation.com/global/articles.atom"]
+# --- CATEGORIES ---
+CATEGORIES = {
+    "War & Conflict": ["war", "military", "attack", "defense", "strike", "weapon", "gaza", "ukraine", "israel", "russia", "hamas", "idf", "putin", "zelensky", "nato", "missile", "drone", "casualties", "ceasefire", "hostage", "bombing", "troops", "invade", "nuclear"],
+    "Global Economy": ["economy", "market", "finance", "stock", "trade", "inflation", "rate", "bank", "currency", "oil", "gas", "energy", "supply", "debt", "gdp", "rececssion", "investment", "tax", "budget", "crypto", "fed", "ecb", "opec"],
+    "Politics & Policy": ["politics", "election", "vote", "congress", "senate", "parliament", "leader", "president", "minister", "law", "bill", "court", "policy", "campaign", "party", "democrat", "republican", "tory", "labour", "polls", "scandal", "diplomacy", "summit", "treaty"],
+    "Science & Tech": ["technology", "science", "space", "ai", "cyber", "internet", "cern", "nasa", "spacex", "apple", "google", "microsoft", "chip", "quantum", "robot", "pharma", "vaccine", "climate", "energy", "fusion", "biotech"],
+    "Social & Rights": ["society", "rights", "protest", "strike", "labor", "health", "education", "immigration", "border", "refugee", "human", "women", "culture", "art", "media"],
+    "Other": []
 }
 
-# ============================================================================
-# INICIALIZACIÓN DE DIRECTORIOS
-# ============================================================================
-def initialize_directories():
-    global CACHE_DIR
-    targets = [CACHE_DIR, HIST_DIR]
-    
-    for d in targets:
-        try:
-            if os.path.exists(d):
-                if not os.path.isdir(d):
-                    try: os.remove(d)
-                    except: pass
-                    os.makedirs(d, exist_ok=True)
-            else:
-                os.makedirs(d, exist_ok=True)
-        except Exception as e:
-            print(f"⚠️ Error directorio {d}: {e}")
-            if d == CACHE_DIR: 
-                CACHE_DIR = "/tmp/vector_cache"
-                os.makedirs(CACHE_DIR, exist_ok=True)
+FETCH_LIMIT = 50 # Default (Tactical)
 
-initialize_directories()
-
-# ============================================================================
-# LOGGING
-# ============================================================================
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s | %(levelname)-8s | %(message)s',
-    handlers=[logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'), logging.StreamHandler(sys.stdout)]
-)
-
-# ============================================================================
-# CLASES Y UTILIDADES
-# ============================================================================
 class NewsItem:
     def __init__(self, item_id, title, link, region, source_url, description=""):
         self.id = item_id
         self.original_title = self._sanitize(title)
-        self.description = self._sanitize(description)[:300]
+        self.description = self._sanitize(description)[:500]
         self.link = link if self._valid_url(link) else None
         self.region = region
         self.source_url = source_url
-        self.translated_title = None
-        self.area = None
-        self.confidence = 0.0
-        self.keywords = []
-        self.vector = None
-        self.proximity = 50.0
-        self.bias_label = "Neutral"
+        self.category = None # Will be assigned by AI or keyword
+        
+        # Computed fields
+        self.embedding = None
+        self.proximity_score = 0.0
+        
+        # Audit fields
+        self.audit_tags = [] # e.g., ["keyword_fallback", "ai_classified"]
 
-    @staticmethod
-    def _valid_url(url):
-        return bool(re.match(r'^https?://', str(url), re.IGNORECASE)) if url else False
-
-    @staticmethod
-    def _sanitize(text):
+    def _sanitize(self, text):
         if not text: return ""
-        text = re.sub(r'<[^>]+>', '', text)
-        return re.sub(r'\s+', ' ', text).strip()[:400]
-
-    def to_dict(self):
-        return {
-            "id": self.id[:12], "titulo": self.translated_title or self.original_title,
-            "link": self.link, "bloque": self.region, "proximidad": round(self.proximity, 1),
-            "sesgo": self.bias_label, "confianza": round(self.confidence, 1),
-            "keywords": self.keywords[:5]
-        }
+        # Remove HTML tags specifically
+        clean = re.sub(r'<[^>]+>', '', str(text))
+        return clean.strip()
+    
+    def _valid_url(self, url):
+        return url and url.startswith("http")
 
 class IroncladCollectorPro:
     def __init__(self, api_key):
         self.client = genai.Client(api_key=api_key)
         self.active_items = []
-        self.stats = {"items_raw": 0, "items_classified": 0, "cache_hits": 0, "cache_misses": 0, "errors": 0}
+        self.stats = {"fetched": 0, "classified": 0, "vectors": 0, "errors": 0}
         self.start_time = time.time()
+        
+        # Create output dirs
+        os.makedirs(DATA_DIR, exist_ok=True)
+        os.makedirs("public", exist_ok=True)
+        os.makedirs("vector_cache", exist_ok=True)
 
-    def safe_json_extract(self, text):
-        if not text: return None
-        try: return json.loads(text.strip())
-        except: pass
-        match = re.search(r'\{.*\}', text, re.DOTALL)
-        return json.loads(match.group()) if match else None
-
-    # --- NUEVO: SEMANTIC DEDUPLICATION ---
-    def is_duplicate(self, title, existing_items):
-        """Revisa si el título ya existe semánticamente en la lista dada."""
-        # Limpieza básica
-        def clean(t): return re.sub(r'\W+', ' ', t.lower()).strip()
-        
-        t_clean = clean(title)
-        
-        for item in existing_items:
-            # 1. Coincidencia exacta o muy cercana de texto
-            i_clean = clean(item.original_title)
-            if t_clean == i_clean or t_clean in i_clean or i_clean in t_clean:
-                return True
-                
-            # 2. Distancia de Jaccard simple para texto
-            set_a = set(t_clean.split())
-            set_b = set(i_clean.split())
-            intersection = len(set_a.intersection(set_b))
-            union = len(set_a.union(set_b))
-            if union > 0 and (intersection / union) > 0.6: # 60% overlap de palabras
-                return True
-                
-        return False
-
-    # --- NUEVO: VALIDACIÓN DE RESPUESTA ---
-    def validate_gemini_response(self, response_text, expected_count):
-        """Valida que la respuesta de Gemini sea completa"""
-        if not response_text:
-            logging.error("Respuesta vacía de Gemini")
-            return None
-        
-        data = self.safe_json_extract(response_text)
-        
-        if not data:
-            logging.error("No se pudo extraer JSON de la respuesta")
-            return None
-        
-        if 'res' not in data:
-            logging.error("JSON no tiene clave 'res'")
-            return None
-        
-        # Verificar que tenemos items
-        if len(data['res']) < expected_count:
-            logging.warning(f"⚠️ Se esperaban {expected_count} items, se recibieron {len(data['res'])}")
-        
-        return data
-
-    # --- NUEVO: FALLBACK CLASSIFICATION ---
-    def fallback_classification(self, batch):
-        """Clasificación simple basada en keywords cuando Gemini falla"""
-        if not batch: return
-        
-        # Keywords Multilingües (EN/ES) para mejor cobertura
-        keywords_map = {
-            "Seguridad y Conflictos": ["military", "defense", "war", "attack", "terror", "nato", "army", "conflict", "guerra", "militar", "ataque", "terrorismo", "defensa", "conflicto", "armada"],
-            "Economía y Sanciones": ["economy", "finance", "sanction", "market", "trade", "bank", "inflation", "stock", "gdp", "debt", "economía", "finanzas", "sanciones", "comercio", "mercado", "inflación", "banco", "deuda"],
-            "Energía y Recursos": ["energy", "oil", "gas", "mining", "climate", "renewable", "nuclear", "solar", "water", "carbon", "energía", "petróleo", "gas", "minería", "clima", "nuclear", "agua", "recursos"],
-            "Soberanía y Alianzas": ["alliance", "treaty", "diplomacy", "summit", "sovereignty", "brics", "un", "relations", "foreign", "alianza", "tratado", "diplomacia", "cumbre", "soberanía", "relaciones", "brics"],
-            "Tecnología y Espacio": ["technology", "space", "digital", "satellite", "ai", "cyber", "chip", "moon", "launch", "rocket", "tecnología", "espacio", "digital", "satélite", "ia", "ciber", "luna", "cohete"],
-            "Sociedad y Derechos": ["rights", "human", "protest", "health", "education", "justice", "law", "court", "immigration", "derechos", "humanos", "protesta", "salud", "educación", "justicia", "ley", "corte", "inmigración"]
-        }
-        
-        count = 0
-        for item in batch:
-            if item.area: continue # Ya clasificado
-            
-            title_lower = item.original_title.lower()
-            scores = {area: 0 for area in AREAS}
-            
-            for area, keywords in keywords_map.items():
-                for keyword in keywords:
-                    if keyword in title_lower:
-                        scores[area] += 1
-            
-            best_area = max(scores.items(), key=lambda x: x[1])
-            if best_area[1] > 0:
-                item.area = best_area[0]
-                item.confidence = min(50 + best_area[1] * 10, 85)
-                item.translated_title = item.original_title # Se queda en inglés como fallback
-                item.keywords = ["fallback_mode"]
-                item.bias_label = "Clasificación Automática"
-                count += 1
-                logging.debug(f"Fallback: '{item.original_title[:20]}...' -> {item.area}")
-        
-        if count > 0:
-            logging.info(f"🛡️ Fallback recuperó {count} noticias.")
-            self.stats["items_classified"] += count
-
-    # --- GESTIÓN DE CACHÉ ---
-    def get_cached_vector(self, text):
-        if not text: return None
-        v_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
-        path = os.path.join(CACHE_DIR, f"{v_hash}.bin")
-        if os.path.exists(path):
-            try:
-                with open(path, 'rb') as f:
-                    data = f.read()
-                    self.stats["cache_hits"] += 1
-                    return list(struct.unpack(f'{len(data)//4}f', data))
-            except: pass
-        return None
-
-    def save_vector(self, text, vector):
-        if not text or not vector: return
-        try:
-            v_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
-            path = os.path.join(CACHE_DIR, f"{v_hash}.bin")
-            with open(path, 'wb') as f:
-                f.write(struct.pack(f'{len(vector)}f', *vector))
-            self.stats["cache_misses"] += 1
-        except: pass
-
-    # --- CLASIFICACIÓN DE ÁREAS ---
-    def classify_area(self, area_name):
-        if not area_name: return None
-        area_lower = area_name.lower().strip()
-        
-        for area in AREAS:
-            if area.lower() == area_lower: return area
-            
-        scores = {area: 0 for area in AREAS}
-        keywords_map = {
-            "Seguridad y Conflictos": ["defensa", "militar", "conflicto", "terrorismo", "ataque", "ejército", "guerra"],
-            "Economía y Sanciones": ["económico", "finanzas", "sanciones", "mercado", "comercio", "inflación", "banco", "pib"],
-            "Energía y Recursos": ["energía", "petróleo", "gas", "minería", "renovable", "clima", "nuclear", "agua"],
-            "Soberanía y Alianzas": ["soberanía", "alianza", "diplomacia", "tratado", "geopolítica", "cumbre", "brics"],
-            "Tecnología y Espacio": ["tecnología", "espacio", "digital", "satélite", "ia", "ciber", "chip", "luna"],
-            "Sociedad y Derechos": ["derechos", "humano", "social", "salud", "educación", "protesta", "ley", "justicia"]
-        }
-        
-        for area, kws in keywords_map.items():
-            for kw in kws:
-                if kw in area_lower: scores[area] += 1
-        
-        best = max(scores.items(), key=lambda x: x[1])
-        return best[0] if best[1] > 0 else None
-
-    # --- FASE 1: RECOLECCIÓN ---
     def fetch_signals(self):
         logging.info(f"📡 FASE 1: Recolección (Límite: {FETCH_LIMIT})...")
         cnt = 0
-        for region, urls in FUENTES.items():
-            for url in urls:
+        
+        for region, feeds in RSS_FEEDS.items():
+            for url in feeds:
                 try:
-                    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-                    with urllib.request.urlopen(req, timeout=15) as r:
-                        root = ET.fromstring(r.read().decode('utf-8', errors='ignore'))
-                        items = root.findall('.//item') or root.findall('.//entry') or root.findall('.//{*}item')
+                    d = feedparser.parse(url)
+                    for entry in d.entries[:FETCH_LIMIT]:
+                        title = entry.get('title', '')
+                        link = entry.get('link', '')
                         
-                        for item in items[:FETCH_LIMIT]:
-                            title = getattr(item.find('title') or item.find('{*}title'), 'text', '')
-                            link = getattr(item.find('link') or item.find('{*}link'), 'text', '')
-                            # Extract Description/Summary
-                            desc = getattr(item.find('description') or item.find('{*}description') or item.find('summary') or item.find('{*}summary'), 'text', '')
+                        # Extract description (RSS often uses 'summary' or 'description')
+                        desc = entry.get('summary', '') or entry.get('description', '')
+                        
+                        if not title: continue
+                        
+                        # ID Generation
+                        raw_id = f"{title}|{link}"
+                        item_id = hashlib.md5(raw_id.encode()).hexdigest()
+                        
+                        # Regional Deduplication Logic
+                        # Only check if this title exists WITHIN this region
+                        region_items = [x for x in self.active_items if x.region == region]
+                        
+                        if not self.is_duplicate(title, region_items):
+                            news = NewsItem(item_id, title, link, region, url, desc)
+                            self.active_items.append(news)
+                            cnt += 1
+                        else:
+                            # Audit: Track discarded duplicates? (Optional, maybe too verbose)
+                            pass
                             
-                            if not link: link = (item.find('link') or item.find('{*}link') or {}).get('href', '')
-                            
-                            if title and link and len(title)>10:
-                                uid = f"{region}_{cnt}_{hashlib.md5(link.encode()).hexdigest()[:8]}"
-                                news = NewsItem(uid, title, link, region, url, desc)
-                                
-                                # Check deduplication against current active items
-                                if not self.is_duplicate(title, self.active_items):
-                                    self.active_items.append(news)
-                                    cnt += 1
-                                else:
-                                    logging.debug(f"Duplicate skipped: {title}")
-                except: self.stats["errors"] += 1
-        self.stats["items_raw"] = len(self.active_items)
+                except Exception as e:
+                    logging.warning(f"Feed error {url}: {e}")
+        
+        self.stats["fetched"] = cnt
+        logging.info(f"✅ Recolectados {cnt} items únicos (Regional Dedupe Active).")
 
-    # --- FASE 2: TRIAGE (MEJORADO) ---
+    def is_duplicate(self, title, existing_items):
+        # Ultra-simple Jaccard or exact match for speed
+        t_clean = title.lower().strip()
+        for item in existing_items:
+            if t_clean == item.original_title.lower().strip(): return True
+            # TODO: Add fuzzy logic here if needed via specialized module
+        return False
+
     def run_triage(self):
-        if not self.active_items: return
         logging.info(f"🔎 FASE 2: Clasificación IA ({len(self.active_items)} items)...")
-
-        # PROMPT DE INGENIERÍA MEJORADO (BILINGÜE)
-        prompt = f"""ANALISTA DE INTELIGENCIA GEOPOLÍTICA
-OBJETIVO: Clasificar titulares en: {', '.join(AREAS)}
-SALIDA: Generar metadatos en ESPAÑOL e INGLÉS.
-
-INSTRUCCIONES:
-1. MANTÉN el MISMO ID numérico.
-2. TITULO_ES: Traduce al español.
-3. TITULO_EN: Traduce al inglés (o mantén si ya es inglés).
-4. AREA: Una de las categorías permitidas.
-5. CONFIANZA: 0-100.
-6. KEYWORDS: 3-5 palabras clave.
-
-EJEMPLO:
-ID:0 | TITULO: "China announces new lunar base"
-→ {{"id": 0, "area": "Tecnología y Espacio", "titulo_es": "China anuncia nueva base lunar", "titulo_en": "China announces new lunar base", "confianza": 95, "keywords": ["China", "Luna", "Base"]}}
-
-FORMATO SALIDA (JSON PURO):
-{{
-  "res": [
-    {{"id": 0, "area": "...", "titulo_es": "...", "titulo_en": "...", "confianza": ..., "keywords": [...]}}
-  ]
-}}"""
         
-        batch_size = 20
-        for i in range(0, len(self.active_items), batch_size):
-            batch = self.active_items[i:i+batch_size]
-            
-            # IDs simples para evitar confusión de la IA
-            batch_text = "\n".join([f"ID:{idx} | TITULO: {item.original_title}" for idx, item in enumerate(batch)])
-            
-            try:
-                resp = self.client.models.generate_content(
-                    model="gemini-2.0-flash", 
-                    contents=f"{prompt}\n\nENTRADA:\n{batch_text}",
-                    config={"temperature": 0.0}
-                )
-                
-                # Validación mejorada
-                data = self.validate_gemini_response(resp.text, len(batch))
-                
-                if data and 'res' in data:
-                    for res in data['res']:
-                        try:
-                            idx = int(res.get('id', -1))
-                            if 0 <= idx < len(batch):
-                                target = batch[idx]
-                                area = self.classify_area(res.get('area',''))
-                                if area:
-                                    target.area = area
-                                    target.translated_title = res.get('titulo_es','')
-                                    target.original_title = res.get('titulo_en', target.original_title) # Store EN here or specifically? Let's keep original_title as EN/Source but maybe overwrite if translation is better?
-                                    # Actually better to store normalized EN separately.
-                                    target.title_en = res.get('titulo_en', target.original_title)
-                                    target.confidence = res.get('confianza',0)
-                                    target.keywords = res.get('keywords',[])[:5]
-                                    self.stats["items_classified"] += 1
-                        except: continue
-            except Exception as e:
-                logging.error(f"Error Batch IA: {str(e)[:50]}")
-                self.stats["errors"] += 1
-            
-            # EJECUTAR FALLBACK
-            unclassified = [item for item in batch if item.area is None]
-            if unclassified:
-                self.fallback_classification(unclassified)
-                # Fallback sets title_en to original_title by default
-                for x in unclassified: 
-                    if not hasattr(x, 'title_en'): x.title_en = x.original_title
-            
-            time.sleep(1)
+        # Batching for Gemini
+        batch_size = 15
+        items_to_classify = [x for x in self.active_items if not x.category]
+        batches = [items_to_classify[i:i + batch_size] for i in range(0, len(items_to_classify), batch_size)]
 
-    # --- FASE 3: VECTORES (ESCALA NO LINEAL MEJORADA) ---
+        for batch in batches:
+            try:
+                self._classify_batch_ai(batch)
+            except Exception as e:
+                logging.error(f"Error Batch IA: {e}")
+                logging.info(f"🛡️ Fallback recuperó {len(batch)} noticias.")
+                self._classify_batch_keyword(batch)
+                
+        self.stats["classified"] = len(self.active_items)
+
+    def _classify_batch_ai(self, batch):
+        cat_list = ", ".join(CATEGORIES.keys())
+        # Provide Title + Description for better context
+        items_str = json.dumps([{"id": x.id, "text": f"{x.original_title} - {x.description[:100]}"} for x in batch])
+        
+        prompt = PROMPTS["CLASSIFY_USER"].replace("[catlist]", cat_list) + f"\n\nITEMS: {items_str}"
+        
+        response = self.client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(response_mime_type="application/json")
+        )
+        
+        try:
+            res = json.loads(response.text)
+            results = res.get("results", [])
+            
+            res_map = {r["id"]: r["category"] for r in results}
+            
+            for item in batch:
+                if item.id in res_map:
+                    item.category = res_map[item.id]
+                    item.audit_tags.append("AI_class")
+                else:
+                    self._classify_single_keyword(item)
+                    
+        except json.JSONDecodeError:
+            raise Exception("Invalid JSON from AI")
+
+    def _classify_batch_keyword(self, batch):
+        for item in batch:
+            self._classify_single_keyword(item)
+
+    def _classify_single_keyword(self, item):
+        txt = (item.original_title + " " + item.description).lower()
+        item.category = "Other"
+        item.audit_tags.append("keyword_fallback")
+        
+        for cat, keywords in CATEGORIES.items():
+            if any(k in txt for k in keywords):
+                item.category = cat
+                break
+
     def compute_vectors_and_proximity(self):
-        logging.info("📐 FASE 3: Análisis Vectorial (Escala No-Lineal)...")
+        logging.info("A FASE 3: Generación de Vectores y Proximidad (Global vs Regional)...")
+        # For V4, we use a simpler text-embedding-004 approach for speed/quality
         
-        need_embedding = []
-        valid_items = [it for it in self.active_items if it.area in AREAS]
+        texts = [x.original_title for x in self.active_items]
+        if not texts: return
+
+        # 1. Batch Embed all titles
+        # In a real heavy production, we'd batch this. For <2000 items, one go implies multiple calls but managed by lib?
+        # Let's batch manually to be safe.
+        BATCH_EMBED = 100
         
-        for item in valid_items:
-            # Use English title for embedding as it's often the source lingua franca
-            text_key = getattr(item, 'title_en', item.original_title)
-            
-            cached = self.get_cached_vector(text_key)
-            if cached:
-                item.vector = cached
-            else:
-                need_embedding.append(item)
-        
-        # Procesar nuevos en batches
-        batch_size = 100
-        for i in range(0, len(need_embedding), batch_size):
-            batch = need_embedding[i:i+batch_size]
-            texts = [getattr(item, 'title_en', item.original_title) for item in batch]
+        for i in range(0, len(self.active_items), BATCH_EMBED):
+            batch = self.active_items[i:i+BATCH_EMBED]
+            batch_texts = [x.original_title for x in batch]
             
             try:
-                resp = self.client.models.embed_content(
-                    model="text-embedding-004", contents=texts,
-                    config={'task_type': 'RETRIEVAL_DOCUMENT'}
+                embeddings = self.client.models.embed_content(
+                    model="text-embedding-004",
+                    contents=batch_texts,
                 )
-                
-                for idx, item in enumerate(batch):
-                    if idx < len(resp.embeddings):
-                        item.vector = resp.embeddings[idx].values
-                        text_key = getattr(item, 'title_en', item.original_title)
-                        self.save_vector(text_key, item.vector)
+                # Parse embeddings object
+                for j, emb_result in enumerate(embeddings.embeddings):
+                    batch[j].embedding = emb_result.values
             except Exception as e:
-                logging.error(f"Error Embeddings: {e}")
-                for item in batch:
-                    random.seed(hash(item.original_title))
-                    item.vector = [random.uniform(-0.1, 0.1) for _ in range(768)]
-
-        # Proximity Calculation
-        for area in AREAS:
-            area_items = [it for it in valid_items if it.area == area and it.vector]
-            if not area_items: continue
-            
-            # 1. Calculate Regional Centroids
-            region_map = defaultdict(list)
-            for it in area_items:
-                region_map[it.region].append(it.vector)
-            
-            regional_centroids = []
-            for r_vecs in region_map.values():
-                c = [sum(col)/len(r_vecs) for col in zip(*r_vecs)]
-                regional_centroids.append(c)
-                
-            # 2. Global Egalitarian Centroid
-            if not regional_centroids: continue
-            
-            global_c = [sum(col)/len(regional_centroids) for col in zip(*regional_centroids)]
-            mag_g = math.sqrt(sum(x*x for x in global_c))
-
-            for it in area_items:
-                # Cosine Similarity
-                mag_a = math.sqrt(sum(a*a for a in it.vector))
-                if mag_a * mag_g > 0:
-                    dot = sum(a*b for a,b in zip(it.vector, global_c))
-                    sim = dot / (mag_a * mag_g)
-                    
-                    # Normalization
-                    baseline = 0.5
-                    if sim < baseline:
-                        it.proximity = 0.0
-                        it.bias_label = "Divergente"
-                    else:
-                        normalized = (sim - baseline) / (1 - baseline)
-                        score = math.pow(normalized, 3) * 100
-                        it.proximity = max(0.0, min(100.0, float(score)))
-                        
-                        if it.proximity > 80: it.bias_label = "Núcleo Narrativo"
-                        elif it.proximity > 60: it.bias_label = "Alta Convergencia"
-                        elif it.proximity > 40: it.bias_label = "Alineado"
-                        elif it.proximity > 20: it.bias_label = "Periférico"
-                        else: it.bias_label = "Divergente"
-                else:
-                    it.proximity = 0.0
-                    it.bias_label = "Error Vectorial"
-
-    # --- FASE 3.5: CLUSTERING & SÍNTESIS NARRATIVA ---
-    def generate_narrative_syntheses(self):
-        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico Bilingüe...")
-        valid_items = [it for it in self.active_items if it.area in AREAS]
+                logging.error(f"Embed Error: {e}")
         
-        self.syntheses = {} # Store synthesis per area
+        # 2. Compute Global Consensus (Centroid)
+        valid_vecs = [x.embedding for x in self.active_items if x.embedding]
+        if not valid_vecs: return
+        
+        dim = len(valid_vecs[0])
+        centroid = [sum(col)/len(valid_vecs) for col in zip(*valid_vecs)]
+        
+        # 3. Compute Distance
+        for item in self.active_items:
+            if item.embedding:
+                item.proximity_score = self._cosine_similarity(item.embedding, centroid)
+                self.stats["vectors"] += 1
 
-        for area in AREAS:
-            area_items = [it for it in valid_items if it.area == area]
-            if len(area_items) < 3:
-                self.syntheses[area] = {"es": "Datos insuficientes.", "en": "Insufficient data."}
-                continue
+    def _cosine_similarity(self, v1, v2):
+        dot = sum(a*b for a,b in zip(v1, v2))
+        norm1 = math.sqrt(sum(a*a for a in v1))
+        norm2 = math.sqrt(sum(a*a for a in v2))
+        return dot / (norm1 * norm2) if norm1 and norm2 else 0
+
+    def generate_narrative_syntheses(self):
+        logging.info("🧠 FASE 4: Síntesis Narrativa Regional...")
+        self.syntheses = {}
+        
+        # Group by Category + Region for synthesis
+        # We want distinct regional voices
+        
+        synthesis_tasks = [] # (region, category, [items])
+        
+        # For the carousel, we organize by Category primarily, but we need the synthesis to be rich.
+        # Let's synthesize by (Category + Region) then merge?
+        # Or simpler: For each Category, generate ONE synthesis that mentions regional clashes.
+        # PROMPT says: "Synthesize a coherent 'Situation Report' that captures the dominant narrative of this region."
+        
+        # Let's grab the TOP 5 categories by volume
+        cat_counts = defaultdict(int)
+        for i in self.active_items: cat_counts[i.category] += 1
+        top_cats = sorted(cat_counts, key=cat_counts.get, reverse=True)[:5]
+        
+        final_syntheses = {} # cat -> text
+        
+        for cat in top_cats:
+            cat_items = [x for x in self.active_items if x.category == cat]
+            # Group these items by region
+            region_map = defaultdict(list)
+            for x in cat_items: region_map[x.region].append(x)
             
-            # CLUSTER BY REGION
-            grouped = defaultdict(list)
-            for it in area_items: grouped[it.region].append(it)
-            
+            # Select representative items from each region
             representative_headlines = []
+            for reg, items in region_map.items():
+                # Pick top 3 most "proximal" (central) or just first 3?
+                # Let's pick 3 diverse ones
+                top3 = items[:3]
+                for x in top3:
+                    representative_headlines.append(f"[{reg}] {x.original_title} | {x.description[:100]}")
             
-            for region, items in grouped.items():
-                if not items: continue
-                # Simple Centroid Clustering
-                if len(items) > 1 and all(it.vector for it in items):
-                    vectors = [it.vector for it in items if it.vector]
-                    if not vectors: continue
-                    centroid = [sum(col)/len(vectors) for col in zip(*vectors)]
-                    
-                    best_item = None
-                    best_sim = -1
-                    for it in items:
-                        if not it.vector: continue
-                        dot = sum(a*b for a,b in zip(it.vector, centroid))
-                        mag = math.sqrt(sum(x*x for x in it.vector)) * math.sqrt(sum(x*x for x in centroid))
-                        if mag > 0:
-                            sim = dot / mag
-                            if sim > best_sim:
-                                best_sim = sim
-                                best_item = it
-                    
-                    if best_item:
-                        # Use English title for synthesis prompt if possible
-                        title_for_prompt = getattr(best_item, 'title_en', best_item.original_title)
-                        desc_for_prompt = best_item.description[:200] if best_item.description else ""
-                        representative_headlines.append(f"[{region}] {title_for_prompt} | {desc_for_prompt}")
-                else:
-                    title_for_prompt = getattr(items[0], 'title_en', items[0].original_title)
-                    desc_for_prompt = items[0].description[:200] if items[0].description else ""
-                    representative_headlines.append(f"[{region}] {title_for_prompt} | {desc_for_prompt}")
-
-            if not representative_headlines: continue
-
-            # GENERATE DIALOGUE (BILINGUAL)
-            headlines_text = "\n".join(representative_headlines[:8])
+            text_block = "\n".join(representative_headlines)
             
-            prompt = f"""ACT AS: Senior Geopolitical Intelligence Analyst.
-TASK: Produce a high-level Intelligence Briefing on the 'dialogue' between regions regarding '{area}'.
-INPUT (Dominant Regional Narratives):
-{headlines_text}
-
-INSTRUCTIONS:
-1. ANALYZE cross-regional dynamics (tensions, alignments).
-2. GENERATE TWO OUTPUTS (English and Spanish) in JSON format.
-3. CONTENT: One powerful summary sentence + 2-3 sentences of observations + 1 forecast sentence.
-4. TONE: Professional, concise, geopolitical.
-
-FORMAT (JSON):
-{{
-  "es": "INFORME: ... OBSERVACIONES: ... PRONÓSTICO: ...",
-  "en": "BRIEF: ... OBSERVATIONS: ... FORECAST: ..."
-}}"""
-
+            # Send to AI
+            task_prompt = PROMPTS["NARRATIVE_SYSTEM"].replace("{region}", "GLOBAL/MULTI-REGIONAL")
+            user_msg = f"CATEGORY: {cat}\n\n{text_block}"
+            
             try:
                 resp = self.client.models.generate_content(
                     model="gemini-2.0-flash", 
-                    contents=prompt,
-                    config={"temperature": 0.4, "response_mime_type": "application/json"}
+                    contents=task_prompt + "\n\n" + user_msg
                 )
-                if resp.text:
-                    data = json.loads(resp.text)
-                    self.syntheses[area] = data
+                final_syntheses[cat] = resp.text.strip()
             except Exception as e:
-                logging.error(f"Error Synthesis {area}: {e}")
-                self.syntheses[area] = {"es": "Análisis en curso...", "en": "Analysis in progress..."}
+                final_syntheses[cat] = "Analysis pending..."
 
-    # --- FASE 4: EXPORTACIÓN ---
+        self.syntheses = final_syntheses
+
+    def save_audit_csv(self):
+        logging.info("💾 FASE 6: Guardando Auditoría (Excel)...")
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
+        filename = os.path.join(DATA_DIR, f"run_{timestamp}.csv")
+        
+        try:
+            with open(filename, 'w', newline='', encoding='utf-8-sig') as f: # utf-8-sig for Excel
+                writer = csv.writer(f)
+                writer.writerow(["ID", "Region", "Category", "Source", "Title", "Description", "Proximity", "Tags"])
+                
+                for item in self.active_items:
+                    writer.writerow([
+                        item.id,
+                        item.region,
+                        item.category,
+                        item.source_url,
+                        item.original_title,
+                        item.description,
+                        f"{item.proximity_score:.4f}",
+                        "|".join(item.audit_tags)
+                    ])
+            logging.info(f"✅ Auditoría guardada: {filename}")
+        except Exception as e:
+            logging.error(f"Error saving CSV: {e}")
+
     def export(self):
-        logging.info("💾 FASE 4: Exportación Bilingüe...")
+        logging.info("📦 FASE 7: Exportación JSON para Frontend...")
+        
+        # Group for Carousel
         carousel = []
-        colors = {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}
-
-        for area in AREAS:
-            items = [it for it in self.active_items if it.area == area]
-            if not items: continue
+        for cat, synthesis in self.syntheses.items():
+            items = [x for x in self.active_items if x.category == cat]
             
+            # Map items to particles
             particles = []
-            for it in items:
-                d = it.to_dict()
-                # Inject bilingual fields
-                d['titulo_en'] = getattr(it, 'title_en', it.original_title)
-                d['titulo_es'] = it.translated_title or it.original_title
-                particles.append(d)
-
-            particles.sort(key=lambda x: x['proximidad'], reverse=True)
-            avg = sum(p['proximidad'] for p in particles)/len(particles)
+            for x in items:
+                particles.append({
+                    "id": x.id,
+                    "title": x.original_title,
+                    "titulo_es": x.original_title, # Duplicate for now
+                    "titulo_en": x.original_title,
+                    "region": x.region,
+                    "proximity_score": x.proximity_score,
+                    "url": x.link
+                })
             
-            trend = "↑" if avg > 60 else "↓" if avg < 40 else "→"
-            consensus = "ALTO" if avg > 80 else "MODERADO" if avg > 60 else "BAJO"
-            emoji = "🟢" if avg > 80 else "🟡" if avg > 60 else "🟠" if avg > 50 else "🔴"
-
-            # Get synthesis (now a dict with en/es)
-            syn_data = self.syntheses.get(area, {})
+            # Meta metrics
+            avg = sum(p["proximity_score"] for p in particles) / len(particles) if particles else 0
             
-            # Robust Type Checking
-            if isinstance(syn_data, list):
-                if len(syn_data) > 0 and isinstance(syn_data[0], dict):
-                    syn_data = syn_data[0]
-                else:
-                    syn_data = {} # Invalid list structure
-            
-            # Fallback if string (legacy safety)
-            if isinstance(syn_data, str): 
-                syn_data = {"es": syn_data, "en": syn_data}
-            
-            # Final safety check before .get
-            if not isinstance(syn_data, dict):
-                syn_data = {"es": "Datos no disponibles", "en": "Data unavailable"}
-
             carousel.append({
-                "area": area, 
-                "sintesis": syn_data.get("es", "Análisis en curso..."),
-                "sintesis_en": syn_data.get("en", "Analysis in progress..."),
-                "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
-                "color": colors.get(area, "#666"),
-                "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
-                "particulas": particles[:60]
+                "area": cat,
+                "sintesis": synthesis,
+                "sintesis_en": synthesis, # Placeholder for translation
+                "count": len(items),
+                "avg_proximity": avg,
+                "particulas": particles
             })
-
-        meta = {
-            "updated": datetime.datetime.now().isoformat(),
-            "execution_seconds": round(time.time() - self.start_time, 2),
-            "stats": self.stats,
-            "config": {"mode": args.mode, "limit": FETCH_LIMIT}
+            
+        final = {
+            "carousel": carousel, 
+            "meta": {"generated": datetime.datetime.now().isoformat()}
         }
         
-        final = {"carousel": carousel, "meta": meta}
-        
-        # Ensure public directory exists
-        if not os.path.exists("public"):
-            os.makedirs("public")
-            
-        with open("public/gravity_carousel.json", "w", encoding="utf-8") as f: json.dump(final, f, indent=2, ensure_ascii=False)
-        try:
-            with open(os.path.join(HIST_DIR, f"{datetime.datetime.now():%Y-%m-%d}.json"), "w", encoding="utf-8") as f:
-                json.dump(final, f, indent=2, ensure_ascii=False)
-        except: pass
-
-    # --- FASE 5: HISTORICAL BRIEFS (AUTO-GENERATOR) ---
-    def generate_briefs(self):
-        logging.info("📜 FASE 5: Generando Archivo Histórico (Briefs)...")
-        # Ensure hist dir exists and has files
-        if not os.path.exists(HIST_DIR): return
-
-        files = sorted([f for f in os.listdir(HIST_DIR) if f.endswith('.json')])
-        if not files: return
-
-        # Load existing briefs if any
-        briefs_path = "public/briefs.json"
-        existing_briefs = {}
-        if os.path.exists(briefs_path):
-            try:
-                with open(briefs_path, 'r', encoding='utf-8') as f:
-                    existing_briefs = json.load(f)
-            except: pass
-
-        # Helper: Get Week/Month key from filename (YYYY-MM-DD.json)
-        def get_keys(filename):
-            try:
-                dt = datetime.datetime.strptime(filename.replace(".json",""), "%Y-%m-%d")
-                year = dt.year
-                month = dt.month
-                week = dt.isocalendar()[1]
-                return f"M{month}-{year}", f"W{week}-{year}"
-            except: return None, None
-
-        # Group Daily Data
-        grouped = defaultdict(list)
-        for fname in files:
-            m_key, w_key = get_keys(fname)
-            if m_key:
-                grouped[m_key].append(fname)
-                grouped[w_key].append(fname)
-
-        # Process Groups
-        new_reports = existing_briefs.get("reports", {})
-        
-        for key, filenames in grouped.items():
-            if key in new_reports: continue # Already generated
-
-            # Logic: Only generate if period is "complete" or it's a past period?
-            # For demo, we treat any group with > 1 file as generate-able.
-            # In production, check if week/month has ended.
-            if len(filenames) < 1: continue 
-
-            logging.info(f"   > Generando Informe para {key} ({len(filenames)} días)...")
-
-            # Collect Syntheses from those days
-            all_syntheses = []
-            for fname in filenames:
-                try:
-                    with open(os.path.join(HIST_DIR, fname), 'r', encoding='utf-8') as f:
-                        d = json.load(f)
-                        if 'carousel' in d:
-                            for cat in d['carousel']:
-                                if cat.get('sintesis'):
-                                    all_syntheses.append(f"[{cat['area']}] {cat['sintesis']}")
-                except: pass
-
-            if not all_syntheses: continue
-
-            # Generate Summary via Gemini
-            context = "\n".join(all_syntheses[:30]) # Limit context window
-            type_label = "Mensual" if "M" in key else "Semanal"
-            
-            prompt = f"""ACT AS: Chief Strategy Officer.
-TASK: Write a '{type_label} Intelligence Report' based on these daily snippets.
-INPUT: 
-{context}
-
-INSTRUCTIONS:
-1. Identify the ONE major overarching theme of this period.
-2. Summarize the key geopolitical shift.
-3. FORMAT:
-   "REPORT {key}: [Title of the Period]. \n\nEXECUTIVE SUMMARY: [50 words summary].\n\nKEY DRIVERS: [List 2-3 main factors]."
-4. Language: Spanish.
-OUTPUT TEXT ONLY."""
-
-            try:
-                resp = self.client.models.generate_content(
-                    model="gemini-2.0-flash", contents=prompt
-                )
-                if resp.text:
-                    new_reports[key] = {
-                        "id": key,
-                        "type": type_label,
-                        "content": resp.text.strip(),
-                        "date": datetime.datetime.now().isoformat()
-                    }
-            except Exception as e:
-                logging.error(f"Error Brief {key}: {e}")
-
-        # Save Updated Briefs
-        final_briefs = {"reports": new_reports}
-        with open(briefs_path, "w", encoding="utf-8") as f:
-            json.dump(final_briefs, f, indent=2, ensure_ascii=False)
-
+        with open("public/gravity_carousel.json", "w", encoding='utf-8') as f:
+            json.dump(final, f, indent=2)
 
     def run(self):
         try:
             self.fetch_signals()
             self.run_triage()
             self.compute_vectors_and_proximity()
-            self.generate_narrative_syntheses() # Phase 3.5
+            self.generate_narrative_syntheses()
+            self.save_audit_csv() # NEW: Audit Step
             self.export()
-            self.generate_briefs() # Phase 5
             return True
         except Exception as e:
             logging.error(f"FATAL: {e}", exc_info=True)
             return False
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="tactical")
+    args = parser.parse_args()
+    
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
-        print("❌ ERROR: GEMINI_API_KEY no encontrada"); sys.exit(1)
-    
+        print("Set GEMINI_API_KEY"); sys.exit(1)
+        
     col = IroncladCollectorPro(key)
-    sys.exit(0 if col.run() else 1)
+    col.run()
