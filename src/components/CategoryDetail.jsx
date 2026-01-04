@@ -16,6 +16,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
 
     const [hoveredId, setHoveredId] = useState(null);
     const [filterRegion, setFilterRegion] = useState(null); // New: Filter by region
+    const [selectedRadarId, setSelectedRadarId] = useState(null); // Lifted state
 
     if (!category) return null;
 
@@ -114,9 +115,11 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                 <div className="relative h-[350px] md:h-full flex flex-col items-center justify-center p-2 bg-white/5 rounded-xl border border-white/5 order-2 md:order-1">
                     <RadarView
                         events={events}
-                        onNodeClick={onSelectNews}
+                        onNodeClick={onSelectNews} // Legacy prop, might be unused in RadarView now
                         language={language}
                         hoveredId={hoveredId} // Pass hover state from list
+                        selectedNodeId={selectedRadarId} // Sync Selection
+                        onNodeSelect={setSelectedRadarId} // Allow Radar to update state
                     />
                 </div>
 
@@ -132,11 +135,11 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                         {filteredEvents.map((event) => (
                             <div
                                 key={event.id}
-                                onClick={() => onSelectNews(event)}
+                                onClick={() => setSelectedRadarId(event.id)} // CLICK NOW SELECTS IN RADAR
                                 onMouseEnter={() => setHoveredId(event.id)} // Sync Hover
                                 onMouseLeave={() => setHoveredId(null)}
                                 className={`group relative p-4 bg-black/40 border rounded-md cursor-pointer transition-all duration-200 flex flex-col gap-2
-                                    ${hoveredId === event.id ? 'border-cyan-500 bg-cyan-900/20' : 'border-white/5 hover:border-white/20 hover:bg-white/5'}
+                                    ${hoveredId === event.id || selectedRadarId === event.id ? 'border-cyan-500 bg-cyan-900/20' : 'border-white/5 hover:border-white/20 hover:bg-white/5'}
                                 `}
                             >
                                 {/* Header: Region & Score */}
@@ -185,6 +188,16 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                                         [ {language === 'EN' ? 'SOURCE' : 'FUENTE'} ]
                                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                                     </a>
+
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onSelectNews(event);
+                                        }}
+                                        className="text-white hover:text-cyan-400 font-bold ml-4 border-b border-white/20 hover:border-cyan-400 transition-colors"
+                                    >
+                                        &gt;&gt; {language === 'EN' ? 'ANALYZE' : 'ANALIZAR'}
+                                    </button>
                                 </div>
                             </div>
                         ))}

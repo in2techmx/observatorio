@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect, selectedRegion }) => {
-    const [selectedNodeId, setSelectedNodeId] = useState(null);
+const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect, selectedRegion, selectedNodeId, onNodeSelect }) => {
+    // Internal state removed, controlled via props now
+    // const [selectedNodeId, setSelectedNodeId] = useState(null);
 
     // Canvas config
     const size = 400;
@@ -132,7 +133,7 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                 width="100%"
                 height="100%"
                 className="overflow-visible"
-                onClick={() => setSelectedNodeId(null)}
+                onClick={() => onNodeSelect(null)} // Deselect on bg click
             >
                 {/* 1. TACTICAL GRID LAYER */}
                 <defs>
@@ -258,7 +259,7 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                             onMouseLeave={() => onHover(null)}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setSelectedNodeId(isSelected ? null : ev.id);
+                                onNodeSelect(isSelected ? null : ev.id);
                             }}
                             className="cursor-pointer transition-all duration-300"
                         >
