@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import LandingHero from './components/LandingHero';
-import CategoryDeck from './components/CategoryDeck';
+import GravityCarousel from './components/GravityCarousel';
+import CategoryDetail from './components/CategoryDetail';
 import NewsCard from './components/NewsCard';
 
 function App() {
