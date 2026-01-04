@@ -66,3 +66,26 @@
 2026-01-04 00:38:39,075 | INFO     | AFC is enabled with max remote calls: 10.
 2026-01-04 00:38:39,768 | INFO     | AFC is enabled with max remote calls: 10.
 2026-01-04 00:38:40,417 | INFO     | 💾 FASE 4: Exportación...
+2026-01-04 04:23:47,776 | INFO     | 📡 FASE 1: Recolección (Límite: 12)...
+2026-01-04 04:24:14,751 | INFO     | 🔎 FASE 2: Clasificación IA (240 items)...
+2026-01-04 04:24:14,751 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:24:22,545 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:24:30,350 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:24:38,037 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:24:46,381 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:24:54,345 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:02,024 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:09,780 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:18,079 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:25,221 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:33,645 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:42,339 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:50,725 | INFO     | 📐 FASE 3: Análisis Vectorial...
+2026-01-04 04:25:51,566 | INFO     | 💬 FASE 3.5: Generando Diálogo Geopolítico...
+2026-01-04 04:25:51,566 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:52,371 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:53,152 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:53,869 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:54,602 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:55,414 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 04:25:56,186 | INFO     | 💾 FASE 4: Exportación...
