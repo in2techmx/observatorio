@@ -138,8 +138,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                 height="100%"
                 className="overflow-visible"
                 onClick={() => setSelectedNodeId(null)}
-            >
-                {/* Radar Grid Circles - High Visibility */}
+                {/* Radar Grid Circles - MAX Visibility */}
                 {[0.2, 0.4, 0.6, 0.8, 1].map((scale, i) => (
                     <circle
                         key={i}
@@ -147,163 +146,162 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                         cy={center}
                         r={maxRadius * scale}
                         fill="none"
-                        stroke="#22d3ee" // Cyan-400
-                        strokeWidth={1}
-                        strokeOpacity={0.4} // High contrast
-                        strokeDasharray="4 4"
+                        stroke={i === 4 ? "#06b6d4" : "#333"} // Outer ring cyan, inner rings dark gray/white
+                        strokeWidth={i === 4 ? 2 : 1}
+                        strokeOpacity={i === 4 ? 1 : 0.5} // High contrast
+                        strokeDasharray={i === 4 ? "0" : "4 4"}
                         pointerEvents="none"
-                        className="animate-pulse"
                     />
                 ))}
 
                 {/* Crosshairs - High Visibility */}
-                <line x1={center} y1={0} x2={center} y2={size} stroke="#22d3ee" strokeWidth={1} strokeOpacity={0.3} pointerEvents="none" />
-                <line x1={0} y1={center} x2={size} y2={center} stroke="#22d3ee" strokeWidth={1} strokeOpacity={0.3} pointerEvents="none" />
+                <line x1={center} y1={0} x2={center} y2={size} stroke="#333" strokeWidth={1} strokeOpacity={0.5} pointerEvents="none" />
+            <line x1={0} y1={center} x2={size} y2={center} stroke="#333" strokeWidth={1} strokeOpacity={0.5} pointerEvents="none" />
 
-                {/* Region Labels (Perimeter) */}
-                {Object.entries(regionAngles).map(([region, angle]) => {
-                    // Check if this region exists in current events
-                    if (!events.some(e => e.country === region)) return null;
+            {/* Region Labels (Perimeter) */}
+            {Object.entries(regionAngles).map(([region, angle]) => {
+                // Check if this region exists in current events
+                if (!events.some(e => e.country === region)) return null;
 
-                    const rad = angle * (Math.PI / 180);
-                    const labelR = maxRadius + 20; // Push out a bit
-                    const x = center + labelR * Math.cos(rad);
-                    const y = center + labelR * Math.sin(rad);
+                const rad = angle * (Math.PI / 180);
+                const labelR = maxRadius + 20; // Push out a bit
+                const x = center + labelR * Math.cos(rad);
+                const y = center + labelR * Math.sin(rad);
 
-                    return (
-                        <text
-                            key={region}
-                            x={x}
-                            y={y}
-                            fill={regionColors[region]}
-                            fontSize="8"
-                            textAnchor="middle"
-                            alignmentBaseline="middle"
-                            opacity="0.7"
-                            className="uppercase tracking-widest font-mono"
-                        >
-                            {region}
-                        </text>
-                    );
-                })}
+                return (
+                    <text
+                        key={region}
+                        x={x}
+                        y={y}
+                        fill={regionColors[region]}
+                        fontSize="8"
+                        textAnchor="middle"
+                        alignmentBaseline="middle"
+                        opacity="0.7"
+                        className="uppercase tracking-widest font-mono"
+                    >
+                        {region}
+                    </text>
+                );
+            })}
 
-                {/* Center Gravity Well */}
-                <circle cx={center} cy={center} r={5} fill="#06b6d4" className="animate-pulse" opacity="0.5" pointerEvents="none" />
+            {/* Center Gravity Well */}
+            <circle cx={center} cy={center} r={5} fill="#06b6d4" className="animate-pulse" opacity="0.5" pointerEvents="none" />
 
-                {/* Nodes */}
-                {layout.map((node, i) => {
-                    // Coordinates come from our physics engine now
-                    const { x, y } = node;
-                    const ev = node.data;
-                    const isHovered = hoveredId === ev.id;
-                    const isSelected = selectedNodeId === ev.id;
-                    const nodeColor = regionColors[ev.country] || "white";
+            {/* Nodes */}
+            {layout.map((node, i) => {
+                // Coordinates come from our physics engine now
+                const { x, y } = node;
+                const ev = node.data;
+                const isHovered = hoveredId === ev.id;
+                const isSelected = selectedNodeId === ev.id;
+                const nodeColor = regionColors[ev.country] || "white";
 
-                    return (
-                        <g
-                            key={ev.id}
-                            onMouseEnter={() => onHover(ev.id)}
-                            onMouseLeave={() => onHover(null)}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedNodeId(isSelected ? null : ev.id);
-                            }}
-                            className="cursor-pointer transition-all duration-300"
-                        >
-                            {/* Connector Line to Center (optional aesthetic) */}
-                            {(isHovered || isSelected) && (
-                                <line
-                                    x1={center}
-                                    y1={center}
-                                    x2={x}
-                                    y2={y}
-                                    stroke={nodeColor}
-                                    strokeWidth="1"
-                                    strokeOpacity="0.3"
-                                />
-                            )}
+                return (
+                    <g
+                        key={ev.id}
+                        onMouseEnter={() => onHover(ev.id)}
+                        onMouseLeave={() => onHover(null)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedNodeId(isSelected ? null : ev.id);
+                        }}
+                        className="cursor-pointer transition-all duration-300"
+                    >
+                        {/* Connector Line to Center (optional aesthetic) */}
+                        {(isHovered || isSelected) && (
+                            <line
+                                x1={center}
+                                y1={center}
+                                x2={x}
+                                y2={y}
+                                stroke={nodeColor}
+                                strokeWidth="1"
+                                strokeOpacity="0.3"
+                            />
+                        )}
 
+                        <motion.circle
+                            cx={x}
+                            cy={y}
+                            r={isSelected ? 6 : (isHovered ? 8 : 4)}
+                            fill={isSelected ? nodeColor : (isHovered ? nodeColor : nodeColor)}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: i * 0.1, type: "spring" }}
+                        />
+
+                        {/* Alert Ring for selected */}
+                        {isSelected && (
+                            <circle
+                                cx={x}
+                                cy={y}
+                                r={10}
+                                fill="none"
+                                stroke={nodeColor}
+                                strokeWidth={2}
+                            />
+                        )}
+
+                        {/* Proximity Halo for hover */}
+                        {isHovered && !isSelected && (
                             <motion.circle
                                 cx={x}
                                 cy={y}
-                                r={isSelected ? 6 : (isHovered ? 8 : 4)}
-                                fill={isSelected ? nodeColor : (isHovered ? nodeColor : nodeColor)}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: i * 0.1, type: "spring" }}
+                                r={12}
+                                fill="transparent"
+                                stroke="#06b6d4"
+                                strokeWidth={1}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1.5, opacity: 0 }}
+                                transition={{ repeat: Infinity, duration: 1.5 }}
                             />
-
-                            {/* Alert Ring for selected */}
-                            {isSelected && (
-                                <circle
-                                    cx={x}
-                                    cy={y}
-                                    r={10}
-                                    fill="none"
-                                    stroke={nodeColor}
-                                    strokeWidth={2}
-                                />
-                            )}
-
-                            {/* Proximity Halo for hover */}
-                            {isHovered && !isSelected && (
-                                <motion.circle
-                                    cx={x}
-                                    cy={y}
-                                    r={12}
-                                    fill="transparent"
-                                    stroke="#06b6d4"
-                                    strokeWidth={1}
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1.5, opacity: 0 }}
-                                    transition={{ repeat: Infinity, duration: 1.5 }}
-                                />
-                            )}
-                        </g>
-                    );
-                })}
-            </svg>
-
-            {/* Mini Info Card Overlay */}
-            <AnimatePresence>
-                {selectedEvent && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-white/10 p-4 rounded-xl z-20 w-[280px] text-center backdrop-blur-md shadow-2xl"
-                        style={{ borderColor: regionColors[selectedEvent.country] }}
-                    >
-                        <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: regionColors[selectedEvent.country] }}>
-                                {selectedEvent.country}
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-mono">
-                                {selectedEvent.source_url ? new URL(selectedEvent.source_url).hostname.replace('www.', '') : 'Unknown Source'}
-                            </span>
-                        </div>
-
-                        <h4 className="text-sm font-bold text-white mb-2 leading-tight text-left">
-                            {selectedEvent.title}
-                        </h4>
-
-                        {/* Analysis / Keywords Brief */}
-                        {selectedEvent.analysis && (
-                            <p className="text-[10px] text-gray-400 text-left mb-3 line-clamp-3 leading-relaxed">
-                                {selectedEvent.analysis}
-                            </p>
                         )}
+                    </g>
+                );
+            })}
+        </svg>
 
-                        <div className="flex justify-between items-center mt-2">
-                            <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
-                                PROX: {Number(selectedEvent.proximity_score).toFixed(2)}
-                            </div>
-                            <span className="text-[9px] text-gray-500">Tap for details</span>
-                        </div>
-                    </motion.div>
+            {/* Mini Info Card Overlay */ }
+    <AnimatePresence>
+        {selectedEvent && (
+            <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-white/10 p-4 rounded-xl z-20 w-[280px] text-center backdrop-blur-md shadow-2xl"
+                style={{ borderColor: regionColors[selectedEvent.country] }}
+            >
+                <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: regionColors[selectedEvent.country] }}>
+                        {selectedEvent.country}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-mono">
+                        {selectedEvent.source_url ? new URL(selectedEvent.source_url).hostname.replace('www.', '') : 'Unknown Source'}
+                    </span>
+                </div>
+
+                <h4 className="text-sm font-bold text-white mb-2 leading-tight text-left">
+                    {selectedEvent.title}
+                </h4>
+
+                {/* Analysis / Keywords Brief */}
+                {selectedEvent.analysis && (
+                    <p className="text-[10px] text-gray-400 text-left mb-3 line-clamp-3 leading-relaxed">
+                        {selectedEvent.analysis}
+                    </p>
                 )}
-            </AnimatePresence>
-        </div>
+
+                <div className="flex justify-between items-center mt-2">
+                    <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
+                        PROX: {Number(selectedEvent.proximity_score).toFixed(2)}
+                    </div>
+                    <span className="text-[9px] text-gray-500">Tap for details</span>
+                </div>
+            </motion.div>
+        )}
+    </AnimatePresence>
+        </div >
     );
 };
 

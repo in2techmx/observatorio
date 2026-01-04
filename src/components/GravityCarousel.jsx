@@ -32,15 +32,13 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect }) => {
     // 4. Animation Loop
     useAnimationFrame((t, delta) => {
         if (!isHovered && !isDragging) {
-            // Speed of auto-scroll
-            const moveBy = -0.05 * delta; // Adjust usage of delta for consistent speed
+            // Speed of auto-scroll - SLOWER per request
+            const moveBy = -0.02 * delta;
             baseX.set(baseX.get() + moveBy);
         }
     });
 
     // 5. Seamless Loop Logic
-    // Wrap the x value so it stays within [-TOTAL_WIDTH, 0]
-    // We render 3 sets of items to ensure coverage during the wrap transition
     const x = useTransform(baseX, v => {
         return `${((v % TOTAL_WIDTH) - TOTAL_WIDTH) % TOTAL_WIDTH}px`;
     });
@@ -55,31 +53,27 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect }) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Fade Edges */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
 
-            <div className="flex items-center justify-center mb-6">
-                <h3 className="text-[10px] uppercase tracking-[0.4em] text-gray-500 animate-pulse">
-                    Select Sector to Decrypt
-                </h3>
-            </div>
+            {/* Note: User asked to leave initial explanation, which is in LandingHero. 
+                But if we need space here, we can remove the "Select Sector" pulse text if redundant. 
+                Keeping straightforward layout. */}
 
             {/* Draggable Track */}
             <motion.div
                 className="flex gap-8 px-8 items-center cursor-grab active:cursor-grabbing"
-                style={{ x, width: TOTAL_WIDTH * 3 }} // Width for 3 sets
+                style={{ x, width: TOTAL_WIDTH * 3 }}
                 drag="x"
-                dragConstraints={{ left: -TOTAL_WIDTH * 2, right: 0 }} // Loose constraints, mostly for feel
+                dragConstraints={{ left: -TOTAL_WIDTH * 2, right: 0 }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 onDrag={(event, info) => {
-                    // Update baseX with drag delta to keep sync
                     baseX.set(baseX.get() + info.delta.x);
                 }}
             >
                 {/* Render 3 Sets for infinite illusion */}
                 {[...categories, ...categories, ...categories].map((cat, index) => {
-                    // Unique Key needs to be index-based for duplicates
                     const uniqueKey = `cat-${index}`;
                     const originalIndex = index % categories.length;
                     const isSelected = selectedCategory === cat.name;
@@ -88,20 +82,20 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect }) => {
                     return (
                         <motion.div
                             key={uniqueKey}
-                            onClick={() => !isDragging && onSelect(cat.name)} // Prevent click on drag
+                            onClick={() => !isDragging && onSelect(cat.name)}
                             whileHover={{ scale: 1.05, filter: "brightness(1.5)" }}
                             className={`
                                 relative flex-shrink-0 w-[260px] h-[160px] rounded-xl 
                                 border-2 transition-all duration-300 group overflow-hidden
-                                backdrop-blur-md select-none
+                                backdrop-blur-xl select-none
                                 ${isSelected
-                                    ? 'scale-110 border-white shadow-[0_0_50px_rgba(255,255,255,0.3)] z-10 bg-black'
-                                    : 'opacity-90 hover:opacity-100 bg-zinc-900/60 border-white/20 hover:border-white/50'
+                                    ? 'scale-110 border-white shadow-[0_0_60px_rgba(255,255,255,0.4)] z-10 bg-black' // Stronger selected glow
+                                    : 'opacity-100 bg-white/5 border-white/20 hover:border-white/60 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]' // Clearer glass effect
                                 }
                             `}
                             style={{
                                 borderColor: isSelected ? color : (isSelected ? 'white' : 'rgba(255,255,255,0.2)'),
-                                boxShadow: isSelected ? `0 0 40px ${color}60` : 'none'
+                                boxShadow: isSelected ? `0 0 50px ${color}80` : 'none' // Enhanced color glow
                             }}
                         >
                             {/* Visual Effects */}

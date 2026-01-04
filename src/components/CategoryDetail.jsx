@@ -44,13 +44,13 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                 </button>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-opacity-5">
+            {/* Scrollable Content - Black & Glass Aesthetic */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar bg-black/90">
                 <div className="container mx-auto px-4 md:px-6 py-8">
 
-                    {/* Specialist Analysis Block */}
+                    {/* Specialist Analysis Block - Sleek Black */}
                     {synthesis && (
-                        <div className="mb-12 p-6 border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-900/20 to-transparent rounded-r-xl backdrop-blur-sm">
+                        <div className="mb-12 p-6 border-l-4 border-cyan-500 bg-white/5 rounded-r-xl backdrop-blur-md shadow-lg">
                             <h4 className="text-xs uppercase font-bold tracking-[0.2em] text-cyan-400 mb-3 flex items-center gap-2">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -59,7 +59,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                                 Specialist Briefing
                             </h4>
                             <div className="prose prose-invert prose-sm max-w-none">
-                                <p className="text-gray-200 font-mono leading-relaxed whitespace-pre-line text-sm md:text-base border-l border-white/5 pl-4">
+                                <p className="text-gray-200 font-mono leading-relaxed whitespace-pre-line text-sm md:text-base border-l border-white/10 pl-4">
                                     {synthesis}
                                 </p>
                             </div>
@@ -69,14 +69,15 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                     {/* Main Content Layout */}
                     <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-start justify-center">
 
-                        {/* Block 1: The Radar */}
-                        <div className="flex-1 flex flex-col items-center w-full min-h-[500px] p-6 bg-black/40 rounded-3xl border border-white/10 shadow-2xl">
+                        {/* Block 1: The Radar (LEFT) - Pure Black Background */}
+                        <div className="flex-1 flex flex-col items-center w-full min-h-[500px] p-6 bg-black rounded-3xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.8)]">
                             <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-8 flex items-center gap-2">
                                 <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 Radar de Proximidad
                             </h3>
                             <div className="w-full max-w-[500px] aspect-square relative group">
-                                <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors duration-500" />
+                                {/* Subtle center glow, but mostly black */}
+                                <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-3xl opacity-50" />
                                 <RadarView
                                     events={events}
                                     hoveredId={hoveredId}
@@ -95,13 +96,13 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                             </div>
                         </div>
 
-                        {/* Block 2: The List */}
+                        {/* Block 2: The List (RIGHT) - Glass Cards */}
                         <div className="flex-1 w-full xl:max-w-2xl">
                             <h3 className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-6 pl-2 flex items-center gap-2">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                                 Intelligence Feed
                             </h3>
-                            <div className="bg-black/20 rounded-2xl border border-white/5 p-1">
+                            <div className="bg-transparent space-y-2">
                                 <NewsList
                                     events={events}
                                     hoveredId={hoveredId}
