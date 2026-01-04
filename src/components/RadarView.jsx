@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const RadarView = ({ events, hoveredId, onHover, language = 'EN' }) => {
+const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect, selectedRegion }) => {
     const [selectedNodeId, setSelectedNodeId] = useState(null);
 
     // Canvas config
@@ -155,30 +155,36 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN' }) => {
                 <line x1={center} y1={0} x2={center} y2={size} stroke="#333" strokeWidth={1} strokeOpacity={0.5} pointerEvents="none" />
                 <line x1={0} y1={center} x2={size} y2={center} stroke="#333" strokeWidth={1} strokeOpacity={0.5} pointerEvents="none" />
 
-                {/* Region Labels (Perimeter) */}
+                {/* Region Labels (Perimeter) - CLICKABLE */}
                 {Object.entries(regionAngles).map(([region, angle]) => {
                     const labelText = t.regions[region] || region;
-                    // Only show if relevant region exists in data? Or always show structural regions? 
-                    // Showing always helps orientation context.
-                    // But simpler to filter if requested. Let's keep logic: if !events.some return null.
-                    if (!events.some(e => e.country === region)) return null;
+                    // Check if region has data
+                    const hasEvents = events.some(e => e.country === region);
+                    if (!hasEvents) return null;
 
                     const rad = angle * (Math.PI / 180);
                     const labelR = maxRadius + 20;
                     const x = center + labelR * Math.cos(rad);
                     const y = center + labelR * Math.sin(rad);
 
+                    const isSelected = selectedRegion === region;
+
                     return (
                         <text
                             key={region}
                             x={x}
                             y={y}
-                            fill={regionColors[region]}
-                            fontSize="8"
+                            fill={isSelected ? "#22d3ee" : regionColors[region]}
+                            fontSize={isSelected ? "10" : "8"}
                             textAnchor="middle"
                             alignmentBaseline="middle"
-                            opacity="0.9"
-                            className="uppercase tracking-widest font-mono font-bold"
+                            opacity={isSelected ? "1" : "0.7"}
+                            className="uppercase tracking-widest font-mono font-bold cursor-pointer transition-all duration-300 hover:opacity-100"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (onRegionSelect) onRegionSelect(isSelected ? null : region);
+                            }}
+                            style={{ filter: isSelected ? "drop-shadow(0 0 5px cyan)" : "none" }}
                         >
                             {labelText}
                         </text>
