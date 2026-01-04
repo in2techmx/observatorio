@@ -41,7 +41,7 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
         if (!events.length) return;
 
         let nodes = events.map(ev => {
-            const baseAngleDeg = regionAngles[ev.country] || regionAngles[ev.region] || (Math.random() * 360);
+            const baseAngleDeg = regionAngles[ev.region] || regionAngles[ev.country] || (Math.random() * 360);
             const jitter = (Math.random() - 0.5) * 40;
             const angleRad = (baseAngleDeg + jitter) * (Math.PI / 180);
             // Proximity Score (0-10) - ensure numeric
@@ -180,7 +180,7 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                 {/* Region Labels (Perimeter) - CLICKABLE & GLOWING */}
                 {Object.entries(regionAngles).map(([region, angle]) => {
                     const labelText = t.regions[region] || region;
-                    const hasEvents = events.some(e => e.country === region);
+                    const hasEvents = events.some(e => e.region === region || e.country === region);
                     if (!hasEvents) return null;
 
                     const rad = angle * (Math.PI / 180);
@@ -232,7 +232,7 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                     const ev = node.data;
                     const isHovered = hoveredId === ev.id;
                     const isSelected = selectedNodeId === ev.id;
-                    const nodeColor = regionColors[ev.country] || "white";
+                    const nodeColor = regionColors[ev.region] || regionColors[ev.country] || "white";
 
                     return (
                         <g
@@ -292,13 +292,13 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                         exit={{ opacity: 0, scale: 0.9 }}
                         className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-xl border border-white/20 p-4 rounded-none z-20 w-[280px] text-center shadow-[0_0_30px_rgba(0,0,0,0.8)]"
                         style={{
-                            borderTop: `2px solid ${regionColors[selectedEvent.country]}`,
+                            borderTop: `2px solid ${regionColors[selectedEvent.region]}`,
                             clipPath: "polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%)" // Tactical Shape
                         }}
                     >
                         <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-widest font-mono" style={{ color: regionColors[selectedEvent.country] }}>
-                                {t.regions[selectedEvent.country] || selectedEvent.country}
+                            <span className="text-[10px] font-bold uppercase tracking-widest font-mono" style={{ color: regionColors[selectedEvent.region] }}>
+                                {t.regions[selectedEvent.region] || selectedEvent.region}
                             </span>
                             <span className="text-[9px] text-gray-400 font-mono">
                                 ID: {selectedEvent.id.toString().slice(-4)}
