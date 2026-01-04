@@ -138,7 +138,6 @@ function App() {
                         onClose={() => setSelectedNews(null)}
                     />
                 )}
-                )}
             </AnimatePresence>
 
             {/* 5. ARCHIVES PANEL */}
