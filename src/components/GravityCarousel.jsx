@@ -67,23 +67,15 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect, language = 'E
             >
                 {/* Loop 3 times for seamless infinite feel */}
                 {[...categories, ...categories, ...categories].map((catItem, i) => {
-                    // catItem is now { name: "Category Name", count: 12 }
+                    // catItem is now { name: "Category Name", count: 12, color: "#..." }
                     const catName = catItem.name;
                     const catCount = catItem.count || 0;
 
                     const isSelected = selectedCategory === catName;
 
-                    // Distinct Color Logic - EXPANDED PALETTE
-                    const colorMap = {
-                        "Seguridad y Conflictos": "#ef4444",      // Red-500
-                        "Economía y Sanciones": "#3b82f6",        // Blue-500
-                        "Energía y Recursos": "#10b981",          // Emerald-500
-                        "Soberanía y Alianzas": "#f59e0b",        // Amber-500
-                        "Tecnología y Espacio": "#8b5cf6",        // Violet-500
-                        "Sociedad y Derechos": "#ec4899",         // Pink-500
-                        "Desconocido": "#64748b"                  // Slate-500
-                    };
-                    const color = colorMap[catName] || "#fff";
+                    // Distinct Color Logic - DYNAMIC FROM BACKEND
+                    // Use the color passed from App.jsx (which comes from collector.json)
+                    const color = catItem.color || "#fff";
 
                     // Translation
                     const displayName = categoryTranslations?.[catName]?.[language.toLowerCase()] || catName;

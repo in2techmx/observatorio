@@ -73,24 +73,25 @@ function App() {
                         }));
                     });
 
-                    // Create a map of synthesis per category (handling bilingual object or string fallback)
-                    const synthesisMap = {};
+                    // Create a map of synthesis AND COLORS per category
+                    const categoryMetaMap = {};
                     data.carousel.forEach(cat => {
                         // Backend now sends sintesis (es) and sintesis_en
                         // Map structure: string or object
-                        if (cat.sintesis_en) {
-                            synthesisMap[cat.area] = {
-                                en: cat.sintesis_en,
-                                es: cat.sintesis
-                            };
-                        } else {
-                            synthesisMap[cat.area] = cat.sintesis; // Fallback legacy
-                        }
+                        const synthesis = cat.sintesis_en ? {
+                            en: cat.sintesis_en,
+                            es: cat.sintesis
+                        } : cat.sintesis;
+
+                        categoryMetaMap[cat.area] = {
+                            synthesis,
+                            color: cat.color // Capture color from backend
+                        };
                     });
 
                     setEvents(adaptedEvents);
                     setMeta(data.meta || {});
-                    setSyntheses(synthesisMap);
+                    setSyntheses(categoryMetaMap); // Now stores {synthesis, color}
                 }
             } catch (error) {
                 console.error("Failed to load gravity data:", error);
@@ -102,14 +103,17 @@ function App() {
         fetchData();
     }, []);
 
-    // Prepare data for Carousel (Category Name + Count)
+    // Prepare data for Carousel (Category Name + Count + Color)
     const categoriesList = useMemo(() => {
         const counts = {};
         events.forEach(e => { counts[e.category] = (counts[e.category] || 0) + 1; });
-        // Use syntheses keys to ensure consistent order if preferred, or events
-        return Object.keys(syntheses).length > 0
-            ? Object.keys(syntheses).map(cat => ({ name: cat, count: counts[cat] || 0 }))
-            : [...new Set(events.map(e => e.category))].map(cat => ({ name: cat, count: counts[cat] || 0 }));
+
+        // Use syntheses keys which now have the metadata
+        return Object.keys(syntheses).map(catKey => ({
+            name: catKey,
+            count: counts[catKey] || 0,
+            color: syntheses[catKey]?.color // Pass the color!
+        }));
     }, [events, syntheses]);
 
     // Filter events for selected category
@@ -176,7 +180,7 @@ function App() {
                     <CategoryDetail
                         category={selectedCategory}
                         events={activeEvents}
-                        synthesis={syntheses[selectedCategory]}
+                        synthesis={syntheses[selectedCategory]?.synthesis} // Access nested synthesis property
                         onSelectNews={setSelectedNews}
                         onClose={handleCloseOverlay}
                         language={language}
