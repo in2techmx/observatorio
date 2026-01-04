@@ -460,7 +460,11 @@ FORMATO SALIDA (JSON PURO):
         }
         
         final = {"carousel": carousel, "meta": meta}
-        with open("gravity_carousel.json", "w", encoding="utf-8") as f: json.dump(final, f, indent=2, ensure_ascii=False)
+        # Ensure public directory exists
+        if not os.path.exists("public"):
+            os.makedirs("public")
+            
+        with open("public/gravity_carousel.json", "w", encoding="utf-8") as f: json.dump(final, f, indent=2, ensure_ascii=False)
         try:
             with open(os.path.join(HIST_DIR, f"{datetime.datetime.now():%Y-%m-%d}.json"), "w", encoding="utf-8") as f:
                 json.dump(final, f, indent=2, ensure_ascii=False)

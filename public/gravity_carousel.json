@@ -1,0 +1,1748 @@
+{
+  "carousel": [
+    {
+      "area": "Seguridad y Conflictos",
+      "punto_cero": "🟢 ALTO | Avg: 92.1% | ↑",
+      "color": "#ef4444",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 92.05128205128206
+      },
+      "particulas": [
+        {
+          "id": "EUROPE_76_5a",
+          "titulo": "Ataque a Venezuela: lo que sabemos hasta ahora mientras EE. UU. captura al presidente Maduro",
+          "link": "https://www.theguardian.com/world/2026/jan/03/venezuela-attack-what-we-know-so-far-as-trump-claims-maduro-captured",
+          "bloque": "EUROPE",
+          "proximidad": 96.0,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Venezuela",
+            "ataque",
+            "EE. UU.",
+            "Maduro"
+          ]
+        },
+        {
+          "id": "EUROPE_85_2c",
+          "titulo": "🔴 Ver en vivo: Trump ofrece una conferencia de prensa sobre la operación para capturar a Maduro en Venezuela",
+          "link": "https://www.france24.com/en/americas/20260103-live-venezuela-declares-state-of-emergency-after-reported-us-military-aggression",
+          "bloque": "EUROPE",
+          "proximidad": 95.5,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Trump",
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_91_27",
+          "titulo": "EE. UU. ataca Venezuela y captura a Maduro y su esposa",
+          "link": "https://www.france24.com/en/video/20260103-us-strikes-venezuela-and-captures-maduro-and-his-wife",
+          "bloque": "EUROPE",
+          "proximidad": 94.9,
+          "sesgo": "Consenso Global",
+          "confianza": 98,
+          "keywords": [
+            "EE. UU.",
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_82_f9",
+          "titulo": "Venezuela: EE. UU. listo para 'dirigir' el país, 'Maduro capturado'",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-us-ready-to-run-the-country-maduro-captured",
+          "bloque": "EUROPE",
+          "proximidad": 94.8,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Venezuela",
+            "EE. UU.",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_74_80",
+          "titulo": "Donald Trump dice que EE. UU. 'va a dirigir' Venezuela después de los ataques nocturnos - en vivo",
+          "link": "https://www.theguardian.com/world/live/2026/jan/03/caracas-explosions-venezuela-maduro-latest-news-updates-live",
+          "bloque": "EUROPE",
+          "proximidad": 94.6,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Donald Trump",
+            "EE. UU.",
+            "Venezuela",
+            "ataques"
+          ]
+        },
+        {
+          "id": "EUROPE_99_c8",
+          "titulo": "¿Qué hay detrás de la destitución de Maduro en Venezuela por parte de Trump?",
+          "link": "https://www.dw.com/en/what-is-behind-trump-s-ouster-of-venezuela-s-maduro/a-75232235?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 94.6,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Trump",
+            "Venezuela",
+            "Maduro",
+            "destitución"
+          ]
+        },
+        {
+          "id": "EUROPE_81_f2",
+          "titulo": "Venezuela: ¿Qué sigue para Nicolás Maduro?",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-what-s-next-for-nicolas-maduro",
+          "bloque": "EUROPE",
+          "proximidad": 94.5,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Venezuela",
+            "Nicolás Maduro",
+            "futuro"
+          ]
+        },
+        {
+          "id": "CHINA_60_3c0",
+          "titulo": "El autoproclamado 'Presidente de la paz' Trump bombardea Venezuela, ataca Nigeria y advierte a Irán",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338630/self-proclaimed-peace-president-trump-bombs-venezuela-strikes-nigeria-warns-iran?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 94.4,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Trump",
+            "Venezuela",
+            "Nigeria",
+            "Irán"
+          ]
+        },
+        {
+          "id": "EUROPE_90_c6",
+          "titulo": "Venezuela: Maduro y su esposa 'capturados' enfrentarán cargos de terrorismo",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-maduro-and-his-wife-captured-will-face-terrorism-charges",
+          "bloque": "EUROPE",
+          "proximidad": 94.2,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Venezuela",
+            "Maduro",
+            "terrorismo",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_80_61",
+          "titulo": "REPETICIÓN: Conferencia de prensa del presidente de EE. UU. Donald Trump sobre el ataque y la captura de Maduro en Venezuela",
+          "link": "https://www.france24.com/en/video/20260103-replay-us-president-donald-trump-press-conference-on-venezuela-s-attack-and-capture-of-maduro",
+          "bloque": "EUROPE",
+          "proximidad": 93.7,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Trump",
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_86_6c",
+          "titulo": "Cómo Nicolás Maduro tomó la presidencia en Venezuela",
+          "link": "https://www.france24.com/en/video/20260103-how-nicol%C3%A1s-maduro-took-the-presidency-in-venezuela",
+          "bloque": "EUROPE",
+          "proximidad": 93.7,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Nicolás Maduro",
+            "Venezuela",
+            "presidencia"
+          ]
+        },
+        {
+          "id": "EUROPE_100_5",
+          "titulo": "Se escuchan explosiones en la capital venezolana, Caracas",
+          "link": "https://www.dw.com/en/explosions-heard-in-venezuelan-capital-of-caracas/a-75373526?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 93.6,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Explosiones",
+            "Caracas",
+            "Venezuela"
+          ]
+        },
+        {
+          "id": "EUROPE_93_e1",
+          "titulo": "Ucrania actualiza: Trump dice que Putin está 'matando a demasiada gente'",
+          "link": "https://www.dw.com/en/ukraine-updates-trump-says-putin-killing-too-many-people/live-75373512?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 93.5,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Ucrania",
+            "Trump",
+            "Putin",
+            "conflicto"
+          ]
+        },
+        {
+          "id": "MID_EAST_114",
+          "titulo": "Fotos: Consecuencias de los ataques aéreos estadounidenses en Venezuela",
+          "link": "https://www.aljazeera.com/gallery/2026/1/3/photos-aftermath-of-us-air-strikes-in-venezuela?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 93.5,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "EE.UU.",
+            "ataques aéreos",
+            "Venezuela",
+            "consecuencias"
+          ]
+        },
+        {
+          "id": "EUROPE_83_0b",
+          "titulo": "'Narcoterrorismo', transición 'segura' y petróleo: Trump habla después de la captura de Maduro",
+          "link": "https://www.france24.com/en/live-news/20260103-%F0%9F%94%B4-live-maduro-has-been-indicted-for-his-narcoterrorism-campaign-says-trump",
+          "bloque": "EUROPE",
+          "proximidad": 93.2,
+          "sesgo": "Consenso Global",
+          "confianza": 93,
+          "keywords": [
+            "Trump",
+            "Maduro",
+            "Venezuela",
+            "narcoterrorismo"
+          ]
+        },
+        {
+          "id": "EUROPE_87_d0",
+          "titulo": "Venezuela: Una señal de alivio, pero el futuro del país sigue siendo incierto",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-a-sign-of-relief-but-country-s-future-remains-uncertain",
+          "bloque": "EUROPE",
+          "proximidad": 93.2,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Venezuela",
+            "futuro",
+            "incertidumbre"
+          ]
+        },
+        {
+          "id": "EUROPE_101_9",
+          "titulo": "EE.UU.: El FBI arresta a un hombre por presunto complot de ataque de Año Nuevo",
+          "link": "https://www.dw.com/en/us-fbi-arrests-man-over-alleged-nye-attack-plot/a-75373274?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 93.1,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "FBI",
+            "arresto",
+            "ataque",
+            "EE.UU."
+          ]
+        },
+        {
+          "id": "RUSSIA_54_a5",
+          "titulo": "El ejército ruso revela más detalles del presunto ataque con drones a la residencia de Putin",
+          "link": "https://www.themoscowtimes.com/2025/12/31/russian-military-reveals-more-details-of-alleged-drone-attack-on-putins-residence-a91593",
+          "bloque": "RUSSIA",
+          "proximidad": 93.0,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Rusia",
+            "drones",
+            "Putin",
+            "ataque"
+          ]
+        },
+        {
+          "id": "EUROPE_89_20",
+          "titulo": "Donald Trump dice que Maduro y su esposa están a bordo de un buque de guerra estadounidense",
+          "link": "https://www.france24.com/en/video/20260103-donald-trump-says-maduro-and-his-wife-aboard-a-us-warship",
+          "bloque": "EUROPE",
+          "proximidad": 93.0,
+          "sesgo": "Consenso Global",
+          "confianza": 94,
+          "keywords": [
+            "Donald Trump",
+            "Maduro",
+            "Venezuela",
+            "buque de guerra"
+          ]
+        },
+        {
+          "id": "RUSSIA_55_5c",
+          "titulo": "Drones ucranianos atacan sitios de energía y hogares en toda Rusia, dicen funcionarios",
+          "link": "https://www.themoscowtimes.com/2025/12/31/ukrainian-drones-strike-energy-sites-and-homes-across-russia-officials-say-a91592",
+          "bloque": "RUSSIA",
+          "proximidad": 92.7,
+          "sesgo": "Consenso Global",
+          "confianza": 94,
+          "keywords": [
+            "Ucrania",
+            "drones",
+            "Rusia",
+            "energía"
+          ]
+        },
+        {
+          "id": "RUSSIA_42_c2",
+          "titulo": "Rusia toma medidas a partir de los ataques de Kiev contra instalaciones pacíficas - Kremlin",
+          "link": "https://tass.com/politics/1968289",
+          "bloque": "RUSSIA",
+          "proximidad": 92.2,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Rusia",
+            "Kiev",
+            "ataques",
+            "Kremlin"
+          ]
+        },
+        {
+          "id": "EUROPE_102_8",
+          "titulo": "México: Un poderoso terremoto mata al menos a 2 personas",
+          "link": "https://www.dw.com/en/mexico-powerful-earthquake-kills-at-least-2-people/a-75373261?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 91.6,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "México",
+            "terremoto",
+            "muertos"
+          ]
+        },
+        {
+          "id": "RUSSIA_37_65",
+          "titulo": "Rusia tomará todas las medidas para resolver el delito relacionado con los ataques a los aeródromos - Kremlin",
+          "link": "https://tass.com/politics/1968317",
+          "bloque": "RUSSIA",
+          "proximidad": 91.5,
+          "sesgo": "Consenso Global",
+          "confianza": 91,
+          "keywords": [
+            "Rusia",
+            "aeródromos",
+            "ataques",
+            "crimen"
+          ]
+        },
+        {
+          "id": "USA_10_bd682",
+          "titulo": "La Guardia Costera suspende la búsqueda de sobrevivientes de los últimos ataques de embarcaciones",
+          "link": "https://www.nytimes.com/2026/01/02/us/politics/coast-guard-survivors-boat-strikes.html",
+          "bloque": "USA",
+          "proximidad": 91.3,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Guardia Costera",
+            "búsqueda",
+            "embarcaciones"
+          ]
+        },
+        {
+          "id": "USA_27_72f69",
+          "titulo": "El FBI dice que una operación encubierta frustró un ataque terrorista inspirado en ISIS",
+          "link": "https://www.washingtonpost.com/national-security/2026/01/02/terror-plot-north-carolina-fbi/",
+          "bloque": "USA",
+          "proximidad": 91.3,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "FBI",
+            "ISIS",
+            "terrorismo",
+            "ataque"
+          ]
+        },
+        {
+          "id": "RUSSIA_51_d3",
+          "titulo": "EE.UU. descubre que Ucrania no atacó la residencia Valdai de Putin – WSJ",
+          "link": "https://www.themoscowtimes.com/2026/01/01/us-finds-ukraine-did-not-attack-putins-valdai-residence-wsj-a91597",
+          "bloque": "RUSSIA",
+          "proximidad": 91.2,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "EEUU",
+            "Ucrania",
+            "Putin",
+            "ataque"
+          ]
+        },
+        {
+          "id": "USA_11_8c225",
+          "titulo": "Se ordena que el sospechoso de la bomba casera de D.C. permanezca en la cárcel hasta el juicio",
+          "link": "https://www.nytimes.com/2026/01/02/us/politics/dc-pipe-bomb-suspect-jail.html",
+          "bloque": "USA",
+          "proximidad": 91.0,
+          "sesgo": "Consenso Global",
+          "confianza": 93,
+          "keywords": [
+            "bomba casera",
+            "D.C.",
+            "juicio"
+          ]
+        },
+        {
+          "id": "EUROPE_95_56",
+          "titulo": "Los hutíes de Yemen se beneficiarían si la lucha comienza de nuevo",
+          "link": "https://www.dw.com/en/yemen-s-houthis-would-benefit-if-fighting-begins-again/a-75370222?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 90.9,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "Yemen",
+            "hutíes",
+            "conflicto",
+            "lucha"
+          ]
+        },
+        {
+          "id": "RUSSIA_32_3d",
+          "titulo": "Ucrania y Rusia analizarán los memorandos intercambiados en las conversaciones - Ministerio de Asuntos Exteriores",
+          "link": "https://tass.com/politics/1968329",
+          "bloque": "RUSSIA",
+          "proximidad": 90.6,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Ucrania",
+            "Rusia",
+            "conversaciones",
+            "memorandos"
+          ]
+        },
+        {
+          "id": "RUSSIA_49_2e",
+          "titulo": "El líder del Cuerpo de Voluntarios Rusos sigue vivo, dice el GUR de Ucrania",
+          "link": "https://www.themoscowtimes.com/2026/01/01/russian-volunteer-corps-leader-is-still-alive-ukraines-gur-says-a91599",
+          "bloque": "RUSSIA",
+          "proximidad": 90.6,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Rusia",
+            "Ucrania",
+            "GUR",
+            "voluntarios"
+          ]
+        }
+      ]
+    },
+    {
+      "area": "Economía y Sanciones",
+      "punto_cero": "🟢 ALTO | Avg: 88.5% | ↑",
+      "color": "#3b82f6",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 88.53636363636365
+      },
+      "particulas": [
+        {
+          "id": "USA_20_c6835",
+          "titulo": "La economía de China tiene un comienzo sólido, aumentando un 4,5% en el primer trimestre de 2023",
+          "link": "https://www.cnn.com/2023/04/17/economy/china-gdp-q1-2023-intl-hnk/index.html",
+          "bloque": "USA",
+          "proximidad": 90.8,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "China",
+            "economía",
+            "crecimiento",
+            "PIB"
+          ]
+        },
+        {
+          "id": "GLOBAL_127_6",
+          "titulo": "Los bancos europeos planean recortar 200.000 empleos a medida que la IA se afianza",
+          "link": "https://techcrunch.com/2026/01/01/european-banks-plan-to-cut-200000-jobs-as-ai-takes-hold/",
+          "bloque": "GLOBAL",
+          "proximidad": 90.3,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "bancos europeos",
+            "IA",
+            "empleos"
+          ]
+        },
+        {
+          "id": "GLOBAL_120_c",
+          "titulo": "Las 16 mejores startups de logística, fabricación y materiales de Disrupt Startup Battlefield",
+          "link": "https://techcrunch.com/2026/01/02/the-16-top-logistics-manufacturing-materials-startups-from-disrupt-startup-battlefield/",
+          "bloque": "GLOBAL",
+          "proximidad": 90.0,
+          "sesgo": "Consenso Global",
+          "confianza": 75,
+          "keywords": [
+            "logística",
+            "fabricación",
+            "startups"
+          ]
+        },
+        {
+          "id": "RUSSIA_43_ca",
+          "titulo": "Precios de los diamantes mixtos en mayo - agencia de la industria",
+          "link": "https://tass.com/economy/1968279",
+          "bloque": "RUSSIA",
+          "proximidad": 89.6,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "diamantes",
+            "precios",
+            "mercado"
+          ]
+        },
+        {
+          "id": "USA_22_2da3d",
+          "titulo": "McDonald's está mejorando sus hamburguesas",
+          "link": "https://www.cnn.com/2023/04/17/business/mcdonalds-burgers/index.html",
+          "bloque": "USA",
+          "proximidad": 88.6,
+          "sesgo": "Consenso Global",
+          "confianza": 70,
+          "keywords": [
+            "McDonald's",
+            "hamburguesas",
+            "negocios"
+          ]
+        },
+        {
+          "id": "USA_8_edebc9",
+          "titulo": "El Super PAC de Trump recaudó más de $100 millones en los últimos meses",
+          "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-super-pac-maga-inc-fundraising.html",
+          "bloque": "USA",
+          "proximidad": 88.5,
+          "sesgo": "Consenso Global",
+          "confianza": 82,
+          "keywords": [
+            "Trump",
+            "Super PAC",
+            "recaudación"
+          ]
+        },
+        {
+          "id": "GLOBAL_118_1",
+          "titulo": "Las ventas anuales de Tesla disminuyen un 9% al ser superadas por BYD como líder mundial de vehículos eléctricos",
+          "link": "https://techcrunch.com/2026/01/02/tesla-annual-sales-decline-9-as-its-overtaken-by-byd-as-global-ev-leader/",
+          "bloque": "GLOBAL",
+          "proximidad": 88.2,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Tesla",
+            "BYD",
+            "vehículos eléctricos",
+            "ventas"
+          ]
+        },
+        {
+          "id": "RUSSIA_46_23",
+          "titulo": "La economía de Rusia en 2026: más guerra, crecimiento más lento e impuestos más altos",
+          "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
+          "bloque": "RUSSIA",
+          "proximidad": 87.9,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Rusia",
+            "economía",
+            "guerra",
+            "impuestos"
+          ]
+        },
+        {
+          "id": "GLOBAL_124_d",
+          "titulo": "Incluso cuando los precios mundiales de los cultivos caen, Arya.ag de la India está atrayendo inversores y manteniéndose rentable",
+          "link": "https://techcrunch.com/2026/01/01/even-as-global-crop-prices-fall-indias-arya-ag-is-attracting-investors-and-staying-profitable/",
+          "bloque": "GLOBAL",
+          "proximidad": 87.6,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "precios cultivos",
+            "India",
+            "inversores"
+          ]
+        },
+        {
+          "id": "CHINA_63_800",
+          "titulo": "Se descubre que una empresa de Hong Kong sancionada por EE. UU. en la represión de Venezuela utiliza una dirección falsa",
+          "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338627/hong-kong-firm-sanctioned-us-venezuela-crackdown-found-use-bogus-address?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 87.5,
+          "sesgo": "Consenso Global",
+          "confianza": 89,
+          "keywords": [
+            "Hong Kong",
+            "sanciones",
+            "Venezuela",
+            "EE.UU."
+          ]
+        },
+        {
+          "id": "USA_18_28950",
+          "titulo": "McCarthy hace un llamamiento a los republicanos para que respalden el plan del techo de deuda",
+          "link": "https://www.cnn.com/2023/04/18/politics/mccarthy-debt-limit-plan/index.html",
+          "bloque": "USA",
+          "proximidad": 84.9,
+          "sesgo": "Alineación",
+          "confianza": 84,
+          "keywords": [
+            "McCarthy",
+            "republicanos",
+            "techo deuda"
+          ]
+        }
+      ]
+    },
+    {
+      "area": "Energía y Recursos",
+      "punto_cero": "🟢 ALTO | Avg: 87.6% | ↑",
+      "color": "#10b981",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 87.6
+      },
+      "particulas": [
+        {
+          "id": "RUSSIA_40_71",
+          "titulo": "El reabastecimiento de las reservas de gas de Europa es más lento de lo habitual, la situación se vuelve tensa",
+          "link": "https://tass.com/economy/1968299",
+          "bloque": "RUSSIA",
+          "proximidad": 89.4,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "gas",
+            "Europa",
+            "reabastecimiento",
+            "reservas"
+          ]
+        },
+        {
+          "id": "CHINA_57_e7f",
+          "titulo": "Un incendio de cable corta el suministro eléctrico a decenas de miles de hogares y negocios de Berlín",
+          "link": "https://www.scmp.com/news/world/europe/article/3338637/cable-fire-cuts-power-tens-thousands-berlin-homes-and-businesses?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 89.4,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "Berlín",
+            "electricidad",
+            "incendio",
+            "cable"
+          ]
+        },
+        {
+          "id": "RUSSIA_38_29",
+          "titulo": "Francia y Bélgica se oponen a la prohibición de las importaciones de gas de Rusia a la UE - Politico",
+          "link": "https://tass.com/economy/1968311",
+          "bloque": "RUSSIA",
+          "proximidad": 88.3,
+          "sesgo": "Consenso Global",
+          "confianza": 94,
+          "keywords": [
+            "Francia",
+            "Bélgica",
+            "gas",
+            "Rusia",
+            "UE"
+          ]
+        },
+        {
+          "id": "GLOBAL_132_6",
+          "titulo": "La Tierra se acerca a un punto de inflexión ambiental",
+          "link": "https://www.wired.com/story/the-earth-is-nearing-an-environmental-tipping-point/",
+          "bloque": "GLOBAL",
+          "proximidad": 86.8,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Tierra",
+            "medio ambiente",
+            "cambio climático"
+          ]
+        },
+        {
+          "id": "GLOBAL_131_d",
+          "titulo": "El Gran Juego de Poder",
+          "link": "https://www.wired.com/story/expired-tired-wired-nuclear-plants/",
+          "bloque": "GLOBAL",
+          "proximidad": 84.1,
+          "sesgo": "Alineación",
+          "confianza": 60,
+          "keywords": [
+            "energía",
+            "recursos",
+            "poder"
+          ]
+        }
+      ]
+    },
+    {
+      "area": "Soberanía y Alianzas",
+      "punto_cero": "🟢 ALTO | Avg: 92.1% | ↑",
+      "color": "#f59e0b",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 92.075
+      },
+      "particulas": [
+        {
+          "id": "EUROPE_94_00",
+          "titulo": "Trump dice que EE. UU. 'dirigirá' Venezuela después de la destitución de Maduro",
+          "link": "https://www.dw.com/en/trump-says-us-will-run-venezuela-after-maduro-ouster/live-75373644?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 96.6,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Trump",
+            "EE. UU.",
+            "Venezuela",
+            "Maduro"
+          ]
+        },
+        {
+          "id": "MID_EAST_105",
+          "titulo": "Un 'equipo' de EE.UU. dirigirá Venezuela después de la 'captura' de Maduro",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/3/team-from-us-to-run-venezuela-after-capture-of-maduro?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 96.5,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "EE.UU.",
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "RUSSIA_44_92",
+          "titulo": "Rusia exige la liberación de Maduro tras los ataques militares de Estados Unidos a Venezuela",
+          "link": "https://www.themoscowtimes.com/2026/01/03/russia-demands-release-of-maduro-after-us-military-strikes-venezuela-a91602",
+          "bloque": "RUSSIA",
+          "proximidad": 96.2,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Rusia",
+            "Maduro",
+            "Venezuela",
+            "EEUU"
+          ]
+        },
+        {
+          "id": "EUROPE_88_68",
+          "titulo": "México condena los ataques de Estados Unidos contra Venezuela",
+          "link": "https://www.france24.com/en/video/20260103-mexico-condemns-us-strikes-on-venezuela",
+          "bloque": "EUROPE",
+          "proximidad": 96.1,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "México",
+            "EE. UU.",
+            "Venezuela",
+            "condena"
+          ]
+        },
+        {
+          "id": "MID_EAST_109",
+          "titulo": "Trump dice que EE.UU. 'dirigirá' Venezuela después de la captura de Nicolás Maduro",
+          "link": "https://www.aljazeera.com/news/2026/1/3/trump-says-us-will-run-venezuela-after-nicolas-maduro-seized?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 96.1,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Trump",
+            "EE.UU.",
+            "Venezuela",
+            "Maduro"
+          ]
+        },
+        {
+          "id": "MID_EAST_110",
+          "titulo": "Legisladores estadounidenses reaccionan al ataque contra Venezuela, 'captura' de Nicolás Maduro",
+          "link": "https://www.aljazeera.com/news/2026/1/3/us-lawmakers-react-to-attack-on-venezuela-capture-of-maduro?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 95.6,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "EE.UU.",
+            "Venezuela",
+            "Maduro",
+            "ataque"
+          ]
+        },
+        {
+          "id": "EUROPE_75_a3",
+          "titulo": "'Envía una señal horrible': políticos estadounidenses reaccionan a la captura de Nicolás Maduro",
+          "link": "https://www.theguardian.com/us-news/2026/jan/03/us-politicians-reaction-capture-venezuelan-president-maduro",
+          "bloque": "EUROPE",
+          "proximidad": 95.4,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "EE. UU.",
+            "políticos",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "MID_EAST_115",
+          "titulo": "Colombia se prepara con alarma tras la destitución de Maduro en Venezuela por parte de EE.UU.",
+          "link": "https://www.aljazeera.com/news/2026/1/3/colombia-braces-with-alarm-after-maduros-removal-in-venezuela-by-us?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 94.5,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Colombia",
+            "Venezuela",
+            "Maduro",
+            "EE.UU."
+          ]
+        },
+        {
+          "id": "MID_EAST_107",
+          "titulo": "Trump: EE.UU. 'captura' a Maduro en 'plena noche'",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/3/trump-us-captures-maduro-in-dead-of?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 94.1,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Trump",
+            "EE.UU.",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "USA_1_ca8cd8",
+          "titulo": "Trump dice que vio la captura de Maduro en tiempo real",
+          "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-capture-maduro-venezuela.html",
+          "bloque": "USA",
+          "proximidad": 93.9,
+          "sesgo": "Consenso Global",
+          "confianza": 75,
+          "keywords": [
+            "Trump",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_73_67",
+          "titulo": "'Es imposible no sentir alivio': venezolanos del Reino Unido por la captura de Maduro",
+          "link": "https://www.theguardian.com/world/2026/jan/03/its-impossible-not-to-feel-relief-uk-venezuelans-on-maduros-capture",
+          "bloque": "EUROPE",
+          "proximidad": 92.7,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Reino Unido",
+            "venezolanos",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "EUROPE_71_3d",
+          "titulo": "El jefe de la junta de Guinea elegido presidente después del boicot de la oposición",
+          "link": "https://www.theguardian.com/world/2025/dec/31/guinea-junta-chief-mamady-doumbouya-elected-president-after-opposition-boycott",
+          "bloque": "EUROPE",
+          "proximidad": 92.2,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Guinea",
+            "junta",
+            "elecciones",
+            "boicot"
+          ]
+        },
+        {
+          "id": "EUROPE_77_7a",
+          "titulo": "Gran Bretaña no está involucrada en el ataque estadounidense a Venezuela, dice Keir Starmer",
+          "link": "https://www.theguardian.com/world/2026/jan/03/us-venezuela-attack-britain-not-involved-says-starmer",
+          "bloque": "EUROPE",
+          "proximidad": 91.9,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Gran Bretaña",
+            "EE. UU.",
+            "Venezuela",
+            "ataque"
+          ]
+        },
+        {
+          "id": "RUSSIA_36_b1",
+          "titulo": "El primer ministro paquistaní pide a Putin que ayude a resolver el conflicto con India - ayudante",
+          "link": "https://tass.com/world/1968319",
+          "bloque": "RUSSIA",
+          "proximidad": 91.1,
+          "sesgo": "Consenso Global",
+          "confianza": 93,
+          "keywords": [
+            "Pakistán",
+            "Putin",
+            "India",
+            "conflicto"
+          ]
+        },
+        {
+          "id": "CHINA_59_9ee",
+          "titulo": "Intervenciones estadounidenses en América Latina: una historia de golpes de estado y conflictos",
+          "link": "https://www.scmp.com/news/world/united-states-canada/article/3338634/us-interventions-latin-america-history-coups-and-conflicts?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 90.6,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "EEUU",
+            "América Latina",
+            "intervenciones",
+            "conflictos"
+          ]
+        },
+        {
+          "id": "EUROPE_72_d5",
+          "titulo": "Las tensiones entre saudíes y emiratíes por el futuro de Yemen llegan al punto de ebullición",
+          "link": "https://www.theguardian.com/world/2025/dec/30/saudi-arabia-uae-tension-future-yemen-boiling-point",
+          "bloque": "EUROPE",
+          "proximidad": 90.5,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Arabia Saudita",
+            "Emiratos Árabes Unidos",
+            "Yemen",
+            "tensiones"
+          ]
+        },
+        {
+          "id": "USA_16_8b15f",
+          "titulo": "El Partido Republicano se prepara para bloquear la votación para reemplazar a Feinstein en el Comité Judicial del Senado",
+          "link": "https://www.cnn.com/2023/04/18/politics/schumer-senate-feinstein-vote-cardin/index.html",
+          "bloque": "USA",
+          "proximidad": 90.0,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Republicanos",
+            "Feinstein",
+            "Senado"
+          ]
+        },
+        {
+          "id": "EUROPE_92_05",
+          "titulo": "¿Quién es el nuevo jefe de gabinete de Zelenskyy, Kyrylo Budanov?",
+          "link": "https://www.dw.com/en/who-is-zelenskyy-s-new-chief-of-staff-kyrylo-budanov/a-75375476?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 89.7,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Zelenskyy",
+            "Kyrylo Budanov",
+            "Ucrania"
+          ]
+        },
+        {
+          "id": "USA_31_40211",
+          "titulo": "El alcalde de la ciudad de Nueva York, Zohran Mamdani, jura el cargo en una ceremonia pública",
+          "link": "https://www.washingtonpost.com/nation/2026/01/01/nyc-mayor-zohran-mamdani-sworn-in/",
+          "bloque": "USA",
+          "proximidad": 88.8,
+          "sesgo": "Consenso Global",
+          "confianza": 78,
+          "keywords": [
+            "Nueva York",
+            "alcalde",
+            "ceremonia",
+            "política"
+          ]
+        },
+        {
+          "id": "EUROPE_70_80",
+          "titulo": "Los términos de EE. UU. 'adaptarse, reducirse o morir' para un fondo de ayuda de $ 2 mil millones significarán que la ONU se inclinará ante Washington, dicen los expertos",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
+          "bloque": "EUROPE",
+          "proximidad": 88.5,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "EE.UU.",
+            "ONU",
+            "ayuda",
+            "soberanía"
+          ]
+        },
+        {
+          "id": "RUSSIA_50_73",
+          "titulo": "Finlandia incauta un buque de carga sospechoso de dañar un cable submarino",
+          "link": "https://www.themoscowtimes.com/2026/01/01/finland-seizes-cargo-ship-suspected-of-damaging-undersea-cable-a91598",
+          "bloque": "RUSSIA",
+          "proximidad": 88.0,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Finlandia",
+            "cable submarino",
+            "incautación",
+            "seguridad"
+          ]
+        },
+        {
+          "id": "RUSSIA_34_41",
+          "titulo": "El Ministerio de Defensa de Bielorrusia espera fortalecer significativamente la cooperación con Pakistán",
+          "link": "https://tass.com/world/1968325",
+          "bloque": "RUSSIA",
+          "proximidad": 87.8,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Bielorrusia",
+            "Pakistán",
+            "cooperación",
+            "defensa"
+          ]
+        },
+        {
+          "id": "EUROPE_78_c6",
+          "titulo": "La hija de Kim Jong-un visita el mausoleo estatal, alimentando la especulación de que será la próxima gobernante de Corea del Norte",
+          "link": "https://www.theguardian.com/world/2026/jan/02/kim-jong-un-daughter-ju-ae-north-korean-ruler-speculation",
+          "bloque": "EUROPE",
+          "proximidad": 87.6,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Kim Jong-un",
+            "Corea del Norte",
+            "sucesión",
+            "mausoleo"
+          ]
+        },
+        {
+          "id": "USA_26_d4794",
+          "titulo": "Tim Walz era una esperanza demócrata. Ahora, es un saco de boxeo republicano.",
+          "link": "https://www.washingtonpost.com/politics/2026/01/03/minnesota-fraud-tim-walz/",
+          "bloque": "USA",
+          "proximidad": 85.4,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Tim Walz",
+            "demócrata",
+            "republicano",
+            "política"
+          ]
+        }
+      ]
+    },
+    {
+      "area": "Tecnología y Espacio",
+      "punto_cero": "🟢 ALTO | Avg: 87.1% | ↑",
+      "color": "#8b5cf6",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 87.13076923076923
+      },
+      "particulas": [
+        {
+          "id": "GLOBAL_116_b",
+          "titulo": "India ordena a X de Musk que arregle Grok por contenido de IA 'obsceno'",
+          "link": "https://techcrunch.com/2026/01/02/india-orders-musks-x-to-fix-grok-over-obscene-ai-content/",
+          "bloque": "GLOBAL",
+          "proximidad": 92.5,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "India",
+            "Musk",
+            "X",
+            "IA"
+          ]
+        },
+        {
+          "id": "GLOBAL_119_a",
+          "titulo": "El imperio de IA de Nvidia: Una mirada a sus principales inversiones en startups",
+          "link": "https://techcrunch.com/2026/01/02/nvidias-ai-empire-a-look-at-its-top-startup-investments/",
+          "bloque": "GLOBAL",
+          "proximidad": 90.1,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Nvidia",
+            "IA",
+            "startups",
+            "inversiones"
+          ]
+        },
+        {
+          "id": "USA_23_a47ff",
+          "titulo": "Las acciones de la empresa matriz de Google caen por temor a que pueda perder cuota de mercado de búsqueda frente a rivales impulsados por la IA",
+          "link": "https://www.cnn.com/2023/04/17/tech/google-ai-search-engine-stock-drop/index.html",
+          "bloque": "USA",
+          "proximidad": 89.2,
+          "sesgo": "Consenso Global",
+          "confianza": 92,
+          "keywords": [
+            "Google",
+            "IA",
+            "cuota mercado",
+            "tecnología"
+          ]
+        },
+        {
+          "id": "GLOBAL_122_4",
+          "titulo": "En 2026, la IA pasará de la exageración al pragmatismo",
+          "link": "https://techcrunch.com/2026/01/02/in-2026-ai-will-move-from-hype-to-pragmatism/",
+          "bloque": "GLOBAL",
+          "proximidad": 88.6,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "IA",
+            "inteligencia artificial",
+            "futuro"
+          ]
+        },
+        {
+          "id": "GLOBAL_138_4",
+          "titulo": "AlphaFold cambió la ciencia. Después de 5 años, todavía está evolucionando",
+          "link": "https://www.wired.com/story/alphafold-changed-science-after-5-years-its-still-evolving/",
+          "bloque": "GLOBAL",
+          "proximidad": 87.8,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "AlphaFold",
+            "ciencia",
+            "IA"
+          ]
+        },
+        {
+          "id": "EUROPE_98_6f",
+          "titulo": "Grok bajo fuego por sexualizar imágenes de mujeres y niños",
+          "link": "https://www.dw.com/en/grok-under-fire-for-sexualizing-women-and-children-s-images/a-75373792?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 87.7,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Grok",
+            "IA",
+            "sexualización",
+            "imágenes"
+          ]
+        },
+        {
+          "id": "USA_7_31344e",
+          "titulo": "Un error de software obligará a 325.000 californianos a reemplazar las identificaciones reales",
+          "link": "https://www.nytimes.com/2026/01/02/us/california-real-id-dmv-error.html",
+          "bloque": "USA",
+          "proximidad": 87.6,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "software",
+            "identificaciones",
+            "California"
+          ]
+        },
+        {
+          "id": "GLOBAL_125_1",
+          "titulo": "Una guía para elegir el Apple Watch adecuado",
+          "link": "https://techcrunch.com/2026/01/01/is-the-apple-watch-se-3-a-good-deal/",
+          "bloque": "GLOBAL",
+          "proximidad": 86.3,
+          "sesgo": "Consenso Global",
+          "confianza": 65,
+          "keywords": [
+            "Apple Watch",
+            "guía",
+            "tecnología"
+          ]
+        },
+        {
+          "id": "GLOBAL_134_d",
+          "titulo": "He aquí el Manifold, el concepto que cambió la forma en que los matemáticos ven el espacio",
+          "link": "https://www.wired.com/story/behold-the-manifold-the-concept-that-changed-how-mathematicians-view-space/",
+          "bloque": "GLOBAL",
+          "proximidad": 85.5,
+          "sesgo": "Consenso Global",
+          "confianza": 50,
+          "keywords": [
+            "Manifold",
+            "matemáticas",
+            "espacio"
+          ]
+        },
+        {
+          "id": "GLOBAL_121_4",
+          "titulo": "Pebble reinicia su smartwatch más delgado con el Pebble Round 2",
+          "link": "https://techcrunch.com/2026/01/02/pebble-reboots-its-thinnest-smartwatch-with-the-pebble-round-2/",
+          "bloque": "GLOBAL",
+          "proximidad": 85.4,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Pebble",
+            "smartwatch",
+            "tecnología"
+          ]
+        },
+        {
+          "id": "CHINA_67_3dd",
+          "titulo": "El científico de IA Ling Haibin, padre de la primera aplicación de identificación de plantas del mundo, deja EE. UU. por China",
+          "link": "https://www.scmp.com/news/china/science/article/3338607/ai-scientist-ling-haibin-father-worlds-first-plant-id-app-leaves-us-china?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 85.2,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "IA",
+            "Ling Haibin",
+            "China",
+            "EE.UU."
+          ]
+        },
+        {
+          "id": "GLOBAL_136_1",
+          "titulo": "¿Podrías usar un bote de remos para caminar por el fondo marino como Jack Sparrow?",
+          "link": "https://www.wired.com/story/using-a-rowboat-to-walk-on-the-seafloor-like-jack-sparrow/",
+          "bloque": "GLOBAL",
+          "proximidad": 83.8,
+          "sesgo": "Alineación",
+          "confianza": 40,
+          "keywords": [
+            "bote",
+            "fondo marino",
+            "tecnología"
+          ]
+        },
+        {
+          "id": "GLOBAL_123_4",
+          "titulo": "Clicks presenta su propia versión del smartphone BlackBerry, además de un teclado móvil acoplable de 79 dólares",
+          "link": "https://techcrunch.com/2026/01/02/clicks-debuts-its-own-take-on-the-blackberry-smartphone-plus-a-79-snap-on-mobile-keyboard/",
+          "bloque": "GLOBAL",
+          "proximidad": 83.0,
+          "sesgo": "Alineación",
+          "confianza": 70,
+          "keywords": [
+            "Clicks",
+            "BlackBerry",
+            "smartphone"
+          ]
+        }
+      ]
+    },
+    {
+      "area": "Sociedad y Derechos",
+      "punto_cero": "🟢 ALTO | Avg: 88.8% | ↑",
+      "color": "#ec4899",
+      "meta_netflix": {
+        "consensus": "ALTO",
+        "trend": "↑",
+        "avg_proximity": 88.7979166666667
+      },
+      "particulas": [
+        {
+          "id": "RUSSIA_39_87",
+          "titulo": "La postura de Putin sobre la moratoria de la pena de muerte se mantiene firme - Portavoz del Kremlin",
+          "link": "https://tass.com/politics/1968307",
+          "bloque": "RUSSIA",
+          "proximidad": 92.4,
+          "sesgo": "Consenso Global",
+          "confianza": 87,
+          "keywords": [
+            "Putin",
+            "pena de muerte",
+            "moratoria",
+            "Kremlin"
+          ]
+        },
+        {
+          "id": "MID_EAST_113",
+          "titulo": "Miedo, alegría, esperanza: los venezolanos reaccionan a la captura de Maduro",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/3/fear-joy-hope-venezuelans-react-to-maduro-capture?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 92.2,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Venezuela",
+            "Maduro",
+            "reacciones",
+            "captura"
+          ]
+        },
+        {
+          "id": "USA_28_87f02",
+          "titulo": "Cómo las nuevas leyes de protesta están impactando las manifestaciones políticas",
+          "link": "https://www.washingtonpost.com/nation/2026/01/02/anti-protest-laws-randy-fine/",
+          "bloque": "USA",
+          "proximidad": 92.1,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "protestas",
+            "leyes",
+            "manifestaciones",
+            "política"
+          ]
+        },
+        {
+          "id": "EUROPE_96_97",
+          "titulo": "Incendio de Nochevieja en Suiza: los gerentes del bar enfrentan una investigación criminal",
+          "link": "https://www.dw.com/en/swiss-nye-fire-bar-managers-face-criminal-investigation/a-75378122?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 92.0,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Suiza",
+            "incendio",
+            "Nochevieja",
+            "investigación"
+          ]
+        },
+        {
+          "id": "CHINA_62_a94",
+          "titulo": "Los viajeros lo patean en China mientras el turismo a caballo avanza",
+          "link": "https://www.scmp.com/economy/china-economy/article/3338523/travellers-hoof-it-china-horseback-tourism-makes-strides?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 91.7,
+          "sesgo": "Consenso Global",
+          "confianza": 70,
+          "keywords": [
+            "China",
+            "turismo",
+            "caballo"
+          ]
+        },
+        {
+          "id": "EUROPE_103_2",
+          "titulo": "La banda de K-Pop BTS se prepara para regresar en marzo",
+          "link": "https://www.dw.com/en/k-pop-band-bts-set-to-make-comeback-in-march/a-75372972?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 91.4,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "K-Pop",
+            "BTS",
+            "regreso",
+            "música"
+          ]
+        },
+        {
+          "id": "USA_24_0eaed",
+          "titulo": "Mármol, esculturas de hielo y óptica: la presidencia remota de Trump genera escrutinio",
+          "link": "https://www.washingtonpost.com/politics/2026/01/03/trump-mar-a-lago-winter-white-house/",
+          "bloque": "USA",
+          "proximidad": 91.2,
+          "sesgo": "Consenso Global",
+          "confianza": 75,
+          "keywords": [
+            "Trump",
+            "presidencia",
+            "escrutinio",
+            "política"
+          ]
+        },
+        {
+          "id": "RUSSIA_52_2d",
+          "titulo": "'Esperando el fin de la guerra': los rusos comparten sus deseos de Año Nuevo para 2026",
+          "link": "https://www.themoscowtimes.com/2025/12/31/hoping-for-an-end-to-the-war-russians-share-their-new-years-wishes-for-2026-a91573",
+          "bloque": "RUSSIA",
+          "proximidad": 91.1,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Rusia",
+            "guerra",
+            "Año Nuevo",
+            "deseos"
+          ]
+        },
+        {
+          "id": "EUROPE_68_19",
+          "titulo": "El conductor de Anthony Joshua acusado de conducción peligrosa tras un accidente mortal en Nigeria",
+          "link": "https://www.theguardian.com/world/2026/jan/02/anthony-joshuas-driver-charged-with-dangerous-driving-after-fatal-crash-in-nigeria",
+          "bloque": "EUROPE",
+          "proximidad": 91.0,
+          "sesgo": "Consenso Global",
+          "confianza": 70,
+          "keywords": [
+            "Anthony Joshua",
+            "Nigeria",
+            "accidente"
+          ]
+        },
+        {
+          "id": "EUROPE_84_8c",
+          "titulo": "AFCON 2025: Senegal y Sudán abren la fase eliminatoria en Tánger",
+          "link": "https://www.france24.com/en/tv-shows/sports/20260103-afcon-2025-senegal-and-sudan-open-knockout-stage-at-tangier",
+          "bloque": "EUROPE",
+          "proximidad": 90.9,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "AFCON 2025",
+            "Senegal",
+            "Sudán",
+            "fútbol"
+          ]
+        },
+        {
+          "id": "USA_25_a2632",
+          "titulo": "Miles de votos por correo podrían ser descontados bajo la nueva política de la oficina de correos",
+          "link": "https://www.washingtonpost.com/politics/2026/01/03/elections-mail-ballots-post-office/",
+          "bloque": "USA",
+          "proximidad": 90.7,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "votos",
+            "correo",
+            "política",
+            "elecciones"
+          ]
+        },
+        {
+          "id": "USA_9_c7e59b",
+          "titulo": "Excursionista muere en presunto ataque de león de montaña, el primero en Colorado en décadas",
+          "link": "https://www.nytimes.com/2026/01/02/us/mountain-lion-attack-hiker-dead-colorado.html",
+          "bloque": "USA",
+          "proximidad": 90.4,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "excursionista",
+            "león de montaña",
+            "ataque"
+          ]
+        },
+        {
+          "id": "USA_30_dc8de",
+          "titulo": "¿Testimonio de expertos o sesgo anti-Islam? Un caso de agresión sexual pone a prueba el límite legal.",
+          "link": "https://www.washingtonpost.com/national-security/2026/01/02/expert-testimony-domestic-violence-islam/",
+          "bloque": "USA",
+          "proximidad": 90.3,
+          "sesgo": "Consenso Global",
+          "confianza": 82,
+          "keywords": [
+            "Islam",
+            "agresión sexual",
+            "sesgo",
+            "legal"
+          ]
+        },
+        {
+          "id": "USA_21_d1b40",
+          "titulo": "Incluso cuando las esposas ganan tanto como los maridos, todavía hacen más en casa",
+          "link": "https://www.cnn.com/2023/04/16/success/husbands-wives-earning-division-of-labor-pew-survey/index.html",
+          "bloque": "USA",
+          "proximidad": 90.2,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "género",
+            "trabajo doméstico",
+            "igualdad"
+          ]
+        },
+        {
+          "id": "USA_19_4cced",
+          "titulo": "La Corte Suprema parece simpatizar con el trabajador postal que no trabajaba los domingos en una disputa sobre adaptaciones religiosas",
+          "link": "https://www.cnn.com/2023/04/18/politics/groff-dejoy-supreme-court-religious-liberty/index.html",
+          "bloque": "USA",
+          "proximidad": 90.1,
+          "sesgo": "Consenso Global",
+          "confianza": 83,
+          "keywords": [
+            "Corte Suprema",
+            "trabajador postal",
+            "religión"
+          ]
+        },
+        {
+          "id": "GLOBAL_129_8",
+          "titulo": "¿Qué es la 'Super Gripe' que se está propagando en Europa y Estados Unidos?",
+          "link": "https://www.wired.com/story/what-is-super-flu-spreading-in-united-states-europe/",
+          "bloque": "GLOBAL",
+          "proximidad": 90.1,
+          "sesgo": "Consenso Global",
+          "confianza": 70,
+          "keywords": [
+            "super gripe",
+            "Europa",
+            "Estados Unidos"
+          ]
+        },
+        {
+          "id": "EUROPE_97_1b",
+          "titulo": "Kenia llora la muerte del icónico elefante Craig",
+          "link": "https://www.dw.com/en/kenya-mourns-death-of-iconic-elephant-craig/a-75378118?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 90.0,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Kenia",
+            "elefante Craig",
+            "muerte",
+            "conservación"
+          ]
+        },
+        {
+          "id": "MID_EAST_106",
+          "titulo": "El entrenador de Sudáfrica no mostrará 'piedad' a Camerún en la AFCON 2025",
+          "link": "https://www.aljazeera.com/sports/2026/1/3/south-africa-manager-to-show-no-mercy-to-cameroon-at-afcon-2025?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 90.0,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Sudáfrica",
+            "Camerún",
+            "AFCON",
+            "fútbol"
+          ]
+        },
+        {
+          "id": "MID_EAST_108",
+          "titulo": "El Real Madrid 'apurará el plazo' para que Mbappé regrese a la Supercopa contra el Atlético",
+          "link": "https://www.aljazeera.com/sports/2026/1/3/real-madrid-to-push-deadline-for-mbappe-to-make-atletico-super-cup-return?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 90.0,
+          "sesgo": "Consenso Global",
+          "confianza": 75,
+          "keywords": [
+            "Real Madrid",
+            "Mbappé",
+            "Supercopa",
+            "fútbol"
+          ]
+        },
+        {
+          "id": "GLOBAL_135_e",
+          "titulo": "Los costos ambientales y de derechos humanos de las inversiones de China en energía limpia en el extranjero",
+          "link": "https://www.wired.com/story/chinas-clean-energy-investments-abroad-are-a-boon-for-climate-but-human-rights-and-the-environment-are-a-different-story/",
+          "bloque": "GLOBAL",
+          "proximidad": 89.6,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "China",
+            "energía limpia",
+            "derechos humanos"
+          ]
+        },
+        {
+          "id": "USA_29_802f9",
+          "titulo": "El Servicio de Parques Nacionales gastará $54 millones en fuentes emblemáticas de D.C.",
+          "link": "https://www.washingtonpost.com/dc-md-va/2026/01/02/park-service-dc-fountains-budget/",
+          "bloque": "USA",
+          "proximidad": 89.5,
+          "sesgo": "Consenso Global",
+          "confianza": 65,
+          "keywords": [
+            "Parques Nacionales",
+            "fuentes",
+            "Washington D.C.",
+            "infraestructura"
+          ]
+        },
+        {
+          "id": "CHINA_58_232",
+          "titulo": "Los gerentes de un bar suizo enfrentan una investigación por negligencia después de un incendio fatal en la víspera de Año Nuevo que mató a 40 personas",
+          "link": "https://www.scmp.com/news/world/europe/article/3338635/managers-swiss-bar-face-negligence-probe-after-fatal-new-years-fire-killed-40?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 89.3,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "Suiza",
+            "incendio",
+            "negligencia",
+            "Año Nuevo"
+          ]
+        },
+        {
+          "id": "USA_17_5bb98",
+          "titulo": "Médicos antiaborto instan a la Corte Suprema a mantener las restricciones de la mifepristona",
+          "link": "https://www.cnn.com/2023/04/18/politics/abortion-supreme-court-mifepristone-restrictions-filing/index.html",
+          "bloque": "USA",
+          "proximidad": 89.0,
+          "sesgo": "Consenso Global",
+          "confianza": 86,
+          "keywords": [
+            "antiaborto",
+            "Corte Suprema",
+            "mifepristona"
+          ]
+        },
+        {
+          "id": "USA_0_8cd9e8",
+          "titulo": "Asad Haider, crítico izquierdista de la política de identidad, muere a los 38",
+          "link": "https://www.nytimes.com/2026/01/03/us/politics/asad-haider-dead.html",
+          "bloque": "USA",
+          "proximidad": 88.9,
+          "sesgo": "Consenso Global",
+          "confianza": 80,
+          "keywords": [
+            "Asad Haider",
+            "política identidad",
+            "fallecimiento"
+          ]
+        },
+        {
+          "id": "RUSSIA_41_30",
+          "titulo": "Japón reporta la tasa de natalidad más baja registrada en 2024, revela el ministerio",
+          "link": "https://tass.com/society/1968297",
+          "bloque": "RUSSIA",
+          "proximidad": 88.9,
+          "sesgo": "Consenso Global",
+          "confianza": 95,
+          "keywords": [
+            "Japón",
+            "tasa natalidad",
+            "demografía"
+          ]
+        },
+        {
+          "id": "CHINA_56_45d",
+          "titulo": "Miembros de la diáspora iraní en el Reino Unido se manifiestan en Londres para apoyar a los manifestantes en Irán",
+          "link": "https://www.scmp.com/news/world/europe/article/3338638/members-iranian-diaspora-uk-rally-london-support-protesters-iran?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 88.8,
+          "sesgo": "Consenso Global",
+          "confianza": 90,
+          "keywords": [
+            "Irán",
+            "diáspora",
+            "Reino Unido",
+            "protestas"
+          ]
+        },
+        {
+          "id": "USA_12_df833",
+          "titulo": "El liderazgo de la cárcel del condado de Fulton, Georgia, renuncia después de la muerte de un recluso y acusaciones de condiciones insalubres",
+          "link": "https://www.cnn.com/2023/04/18/us/fulton-county-jail-leadership-resignations-lashawn-thompson-death/index.html",
+          "bloque": "USA",
+          "proximidad": 88.5,
+          "sesgo": "Consenso Global",
+          "confianza": 87,
+          "keywords": [
+            "cárcel",
+            "Fulton County",
+            "renuncia"
+          ]
+        },
+        {
+          "id": "MID_EAST_112",
+          "titulo": "Jake Paul pierde el ranking de peso crucero de la AMB después de la derrota ante Anthony Joshua",
+          "link": "https://www.aljazeera.com/sports/2026/1/3/jake-paul-loses-wba-cruiserweight-rankings-after-loss-to-anthony-joshua?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 88.5,
+          "sesgo": "Consenso Global",
+          "confianza": 70,
+          "keywords": [
+            "Jake Paul",
+            "AMB",
+            "boxeo",
+            "Joshua"
+          ]
+        },
+        {
+          "id": "USA_5_922a53",
+          "titulo": "Tribunal Federal de Apelaciones dice que la prohibición de portar armas a la vista en California es inconstitucional",
+          "link": "https://www.nytimes.com/2026/01/02/us/ninth-circuit-california-gun-law.html",
+          "bloque": "USA",
+          "proximidad": 88.4,
+          "sesgo": "Consenso Global",
+          "confianza": 85,
+          "keywords": [
+            "California",
+            "armas",
+            "inconstitucional"
+          ]
+        },
+        {
+          "id": "RUSSIA_48_8d",
+          "titulo": "Para la diáspora rusa en tiempos de guerra, las tradiciones de Año Nuevo se convierten en un vínculo con el hogar",
+          "link": "https://www.themoscowtimes.com/2026/01/01/for-russias-wartime-diaspora-new-years-traditions-become-a-tether-to-home-a91600",
+          "bloque": "RUSSIA",
+          "proximidad": 88.2,
+          "sesgo": "Consenso Global",
+          "confianza": 88,
+          "keywords": [
+            "Rusia",
+            "diáspora",
+            "guerra",
+            "tradiciones"
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "updated": "2026-01-03T18:59:45.175713",
+    "execution_seconds": 79.6,
+    "stats": {
+      "items_raw": 140,
+      "items_classified": 140,
+      "cache_hits": 94,
+      "cache_misses": 46,
+      "errors": 4
+    },
+    "config": {
+      "mode": "tactical",
+      "limit": 12
+    }
+  }
+}
