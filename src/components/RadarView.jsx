@@ -107,195 +107,228 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
             : (selectedEvent.titulo_es || selectedEvent.translated_title || selectedEvent.title);
     };
 
+    // Zoom & Pan State
+    const [zoom, setZoom] = useState(1);
+    const containerRef = React.useRef(null);
+
+    const handleWheel = (e) => {
+        e.preventDefault(); // Prevent page scroll when zooming radar
+        const newZoom = Math.min(Math.max(zoom - e.deltaY * 0.001, 0.5), 3);
+        setZoom(newZoom);
+    };
+
     return (
-        <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center">
+        <div
+            ref={containerRef}
+            className="relative w-full max-w-[400px] aspect-square flex items-center justify-center overflow-hidden touch-none"
+            onWheel={handleWheel}
+        >
             {/* Click background to deselect */}
-            <svg
-                viewBox={`0 0 ${size} ${size}`}
-                width="100%"
-                height="100%"
-                className="overflow-visible"
-                onClick={() => onNodeSelect(null)} // Deselect on bg click
+            <motion.div
+                drag
+                dragConstraints={containerRef}
+                dragElastic={0.1}
+                animate={{ scale: zoom }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="w-full h-full flex items-center justify-center cursor-move"
+                onClick={() => onNodeSelect(null)}
             >
-                {/* 1. TACTICAL GRID LAYER */}
-                <defs>
-                    <radialGradient id="radarRadial" cx="0.5" cy="0.5" r="0.5">
-                        <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.1" />
-                        <stop offset="100%" stopColor="#000" stopOpacity="0" />
-                    </radialGradient>
-                    <filter id="neonGlow">
-                        <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-                        <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-                </defs>
-
-                {/* Background Glow */}
-                <circle cx={center} cy={center} r={maxRadius} fill="url(#radarRadial)" opacity="0.4" />
-
-                {/* Radar Scan Animation */}
-                <motion.g
-                    animate={{ rotate: 360 }}
-                    transition={{
-                        repeat: Infinity,
-                        duration: 8,
-                        ease: "linear"
-                    }}
-                    style={{ originX: "50%", originY: "50%" }}
+                <svg
+                    viewBox={`0 0 ${size} ${size}`}
+                    width="100%"
+                    height="100%"
+                    className="overflow-visible"
+                    style={{ pointerEvents: 'none' }} // Let clicks pass through to sub-elements
                 >
-                    <g opacity="0.5">
-                        <path d={`M${center},${center} L${center},0 A${center},${center} 0 0,1 ${size},${center} L${center},${center}`} fill="url(#radarRadial)" opacity="0.2" />
-                        <line x1={center} y1={center} x2={center} y2={0} stroke="#22d3ee" strokeWidth="1" />
-                    </g>
-                </motion.g>
+                    {/* 1. TACTICAL GRID LAYER */}
+                    <defs>
+                        <radialGradient id="radarRadial" cx="0.5" cy="0.5" r="0.5">
+                            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.1" />
+                            <stop offset="100%" stopColor="#000" stopOpacity="0" />
+                        </radialGradient>
+                        <filter id="neonGlow">
+                            <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
 
-                {/* Concentric Rings (Tactical) */}
-                {[0.2, 0.4, 0.6, 0.8, 1].map((scale, i) => (
-                    <circle
-                        key={i}
-                        cx={center}
-                        cy={center}
-                        r={maxRadius * scale}
-                        fill="none"
-                        stroke={i === 4 ? "#06b6d4" : "#1e293b"} // Cyan Outer, Slate Inner
-                        strokeWidth={i === 4 ? 2 : 1}
-                        strokeOpacity={i === 4 ? 1 : 0.4}
-                        strokeDasharray={i === 4 ? "0" : "2 2"} // Micro-dashed inner rings
-                        filter={i === 4 ? "url(#neonGlow)" : "none"}
-                        pointerEvents="none"
-                    />
-                ))}
+                    {/* Background Glow */}
+                    <circle cx={center} cy={center} r={maxRadius} fill="url(#radarRadial)" opacity="0.4" pointerEvents="all" />
 
-                {/* Crosshairs & Ticks */}
-                <line x1={center} y1={20} x2={center} y2={size - 20} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.3} pointerEvents="none" />
-                <line x1={20} y1={center} x2={size - 20} y2={center} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.3} pointerEvents="none" />
-
-                {/* 45 degree lines */}
-                <line x1={center - maxRadius} y1={center - maxRadius} x2={center + maxRadius} y2={center + maxRadius} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.1} />
-                <line x1={center + maxRadius} y1={center - maxRadius} x2={center - maxRadius} y2={center + maxRadius} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.1} />
-
-
-                {/* Region Labels (Perimeter) - CLICKABLE & GLOWING */}
-                {Object.entries(regionAngles).map(([region, angle]) => {
-                    const labelText = t.regions[region] || region;
-                    const hasEvents = events.some(e => e.region === region || e.country === region);
-                    if (!hasEvents) return null;
-
-                    const rad = angle * (Math.PI / 180);
-                    const labelR = maxRadius + 25; // Push out slightly
-                    const x = center + labelR * Math.cos(rad);
-                    const y = center + labelR * Math.sin(rad);
-
-                    const isSelected = selectedRegion === region;
-
-                    return (
-                        <g key={region} onClick={(e) => {
-                            e.stopPropagation();
-                            if (onRegionSelect) onRegionSelect(isSelected ? null : region);
-                        }} className="cursor-pointer">
-                            {/* Connector Line */}
-                            <line
-                                x1={center + (maxRadius + 5) * Math.cos(rad)}
-                                y1={center + (maxRadius + 5) * Math.sin(rad)}
-                                x2={center + (maxRadius + 15) * Math.cos(rad)}
-                                y2={center + (maxRadius + 15) * Math.sin(rad)}
-                                stroke={isSelected ? "#22d3ee" : "#334155"}
-                                strokeWidth={isSelected ? 2 : 1}
-                            />
-
-                            <text
-                                x={x}
-                                y={y}
-                                fill={isSelected ? "#22d3ee" : regionColors[region]}
-                                fontSize={isSelected ? "11" : "9"} // Larger font
-                                textAnchor="middle"
-                                alignmentBaseline="middle"
-                                opacity={isSelected ? "1" : "0.7"}
-                                className={`uppercase tracking-widest font-mono font-bold transition-all duration-300 ${isSelected ? 'animate-pulse' : 'hover:opacity-100'}`}
-                                style={{
-                                    textShadow: isSelected ? "0 0 10px #22d3ee" : "none",
-                                    fontFamily: 'Rajdhani'
-                                }}
-                            >
-                                {labelText}
-                            </text>
+                    {/* Radar Scan Animation */}
+                    <motion.g
+                        animate={{ rotate: 360 }}
+                        transition={{
+                            repeat: Infinity,
+                            duration: 8,
+                            ease: "linear"
+                        }}
+                        style={{ originX: "50%", originY: "50%" }}
+                    >
+                        <g opacity="0.5">
+                            <path d={`M${center},${center} L${center},0 A${center},${center} 0 0,1 ${size},${center} L${center},${center}`} fill="url(#radarRadial)" opacity="0.2" />
+                            <line x1={center} y1={center} x2={center} y2={0} stroke="#22d3ee" strokeWidth="1" />
                         </g>
+                    </motion.g>
 
-                    );
-                })}
+                    {/* Concentric Rings (Tactical) */}
+                    {[0.2, 0.4, 0.6, 0.8, 1].map((scale, i) => (
+                        <circle
+                            key={i}
+                            cx={center}
+                            cy={center}
+                            r={maxRadius * scale}
+                            fill="none"
+                            stroke={i === 4 ? "#06b6d4" : "#1e293b"} // Cyan Outer, Slate Inner
+                            strokeWidth={i === 4 ? 2 : 1}
+                            strokeOpacity={i === 4 ? 1 : 0.4}
+                            strokeDasharray={i === 4 ? "0" : "2 2"} // Micro-dashed inner rings
+                            filter={i === 4 ? "url(#neonGlow)" : "none"}
+                            pointerEvents="none"
+                        />
+                    ))}
 
-                {/* Nodes - NEON ORBS */}
-                {layout.map((node, i) => {
-                    const { x, y } = node;
-                    const ev = node.data;
-                    const isHovered = hoveredId === ev.id;
-                    const isSelected = selectedNodeId === ev.id;
-                    const nodeColor = regionColors[ev.region] || regionColors[ev.country] || "white";
+                    {/* Crosshairs & Ticks */}
+                    <line x1={center} y1={20} x2={center} y2={size - 20} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.3} pointerEvents="none" />
+                    <line x1={20} y1={center} x2={size - 20} y2={center} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.3} pointerEvents="none" />
 
-                    return (
-                        <g
-                            key={ev.id}
-                            onMouseEnter={() => onHover(ev.id)}
-                            onMouseLeave={() => onHover(null)}
-                            onClick={(e) => {
+                    {/* 45 degree lines */}
+                    <line x1={center - maxRadius} y1={center - maxRadius} x2={center + maxRadius} y2={center + maxRadius} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.1} />
+                    <line x1={center + maxRadius} y1={center - maxRadius} x2={center - maxRadius} y2={center + maxRadius} stroke="#06b6d4" strokeWidth={0.5} strokeOpacity={0.1} />
+
+
+                    {/* Region Labels (Perimeter) - CLICKABLE & GLOWING */}
+                    {Object.entries(regionAngles).map(([region, angle]) => {
+                        const labelText = t.regions[region] || region;
+                        const hasEvents = events.some(e => e.region === region || e.country === region);
+                        if (!hasEvents) return null;
+
+                        const rad = angle * (Math.PI / 180);
+                        const labelR = maxRadius + 25; // Push out slightly
+                        const x = center + labelR * Math.cos(rad);
+                        const y = center + labelR * Math.sin(rad);
+
+                        const isSelected = selectedRegion === region;
+
+                        return (
+                            <g key={region} onClick={(e) => {
                                 e.stopPropagation();
-                                onNodeSelect(isSelected ? null : ev.id);
-                            }}
-                            className="cursor-pointer transition-all duration-300"
-                        >
-                            {(isHovered || isSelected) && (
+                                if (onRegionSelect) onRegionSelect(isSelected ? null : region);
+                            }} className="cursor-pointer" pointerEvents="all">
+                                {/* Connector Line */}
                                 <line
-                                    x1={center}
-                                    y1={center}
-                                    x2={x}
-                                    y2={y}
-                                    stroke={nodeColor}
-                                    strokeWidth="1"
-                                    strokeOpacity="0.8"
-                                    strokeDasharray="2 2"
+                                    x1={center + (maxRadius + 5) * Math.cos(rad)}
+                                    y1={center + (maxRadius + 5) * Math.sin(rad)}
+                                    x2={center + (maxRadius + 15) * Math.cos(rad)}
+                                    y2={center + (maxRadius + 15) * Math.sin(rad)}
+                                    stroke={isSelected ? "#22d3ee" : "#334155"}
+                                    strokeWidth={isSelected ? 2 : 1}
                                 />
-                            )}
 
-                            {/* Glow halo */}
-                            <circle
-                                cx={x} cy={y}
-                                r={isSelected ? 10 : (isHovered ? 8 : 2)}
-                                fill={nodeColor}
-                                opacity="0.3"
-                                filter="url(#neonGlow)"
-                            />
+                                <text
+                                    x={x}
+                                    y={y}
+                                    fill={isSelected ? "#22d3ee" : regionColors[region]}
+                                    fontSize={isSelected ? "11" : "9"} // Larger font
+                                    textAnchor="middle"
+                                    alignmentBaseline="middle"
+                                    opacity={isSelected ? "1" : "0.7"}
+                                    className={`uppercase tracking-widest font-mono font-bold transition-all duration-300 ${isSelected ? 'animate-pulse' : 'hover:opacity-100'}`}
+                                    style={{
+                                        textShadow: isSelected ? "0 0 10px #22d3ee" : "none",
+                                        fontFamily: 'Rajdhani'
+                                    }}
+                                >
+                                    {labelText}
+                                </text>
+                            </g>
 
-                            <motion.circle
-                                cx={x}
-                                cy={y}
-                                r={isSelected ? 4 : (isHovered ? 5 : 2.5)}
-                                fill={isSelected ? "#fff" : nodeColor}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: i * 0.02, type: "spring" }}
-                                stroke={isSelected ? nodeColor : "none"}
-                                strokeWidth={isSelected ? 2 : 0}
-                            />
-                        </g>
-                    );
-                })}
-            </svg>
+                        );
+                    })}
 
-            {/* Mini Info Card Overlay - GLASS TACTICAL */}
+                    {/* Nodes - NEON ORBS */}
+                    {layout.map((node, i) => {
+                        const { x, y } = node;
+                        const ev = node.data;
+                        const isHovered = hoveredId === ev.id;
+                        const isSelected = selectedNodeId === ev.id;
+                        const nodeColor = regionColors[ev.region] || regionColors[ev.country] || "white";
+
+                        return (
+                            <g
+                                key={ev.id}
+                                onMouseEnter={() => onHover(ev.id)}
+                                onMouseLeave={() => onHover(null)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onNodeSelect(isSelected ? null : ev.id);
+                                }}
+                                className="cursor-pointer transition-all duration-300"
+                                pointerEvents="all"
+                            >
+                                {(isHovered || isSelected) && (
+                                    <line
+                                        x1={center}
+                                        y1={center}
+                                        x2={x}
+                                        y2={y}
+                                        stroke={nodeColor}
+                                        strokeWidth="1"
+                                        strokeOpacity="0.8"
+                                        strokeDasharray="2 2"
+                                    />
+                                )}
+
+                                {/* Glow halo */}
+                                <circle
+                                    cx={x} cy={y}
+                                    r={isSelected ? 10 : (isHovered ? 8 : 2)}
+                                    fill={nodeColor}
+                                    opacity="0.3"
+                                    filter="url(#neonGlow)"
+                                />
+
+                                <motion.circle
+                                    cx={x}
+                                    cy={y}
+                                    r={isSelected ? 4 : (isHovered ? 5 : 2.5)}
+                                    fill={isSelected ? "#fff" : nodeColor}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ delay: i * 0.02, type: "spring" }}
+                                    stroke={isSelected ? nodeColor : "none"}
+                                    strokeWidth={isSelected ? 2 : 0}
+                                />
+                            </g>
+                        );
+                    })}
+                </svg>
+            </motion.div>
+
+            {/* Tactical Zoom Controls */}
+            <div className="absolute bottom-4 right-4 flex flex-col gap-1 z-30">
+                <button onClick={() => setZoom(Math.min(zoom + 0.2, 3))} className="w-6 h-6 bg-black/50 border border-cyan-500/50 text-cyan-500 flex items-center justify-center hover:bg-cyan-900/50 rounded pointer-events-auto">+</button>
+                <button onClick={() => setZoom(1)} className="w-6 h-6 bg-black/50 border border-cyan-500/50 text-xs text-cyan-500 flex items-center justify-center hover:bg-cyan-900/50 rounded pointer-events-auto">R</button>
+                <button onClick={() => setZoom(Math.max(zoom - 0.2, 0.5))} className="w-6 h-6 bg-black/50 border border-cyan-500/50 text-cyan-500 flex items-center justify-center hover:bg-cyan-900/50 rounded pointer-events-auto">-</button>
+            </div>
+
+            {/* ... Mini Info Card Overlay ... */}
             <AnimatePresence>
                 {selectedEvent && (
                     <motion.div
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-xl border border-white/20 p-4 rounded-none z-20 w-[280px] text-center shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-xl border border-white/20 p-4 rounded-none z-20 w-[280px] text-center shadow-[0_0_30px_rgba(0,0,0,0.8)] pointer-events-none"
                         style={{
                             borderTop: `2px solid ${regionColors[selectedEvent.region]}`,
                             clipPath: "polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%)" // Tactical Shape
                         }}
                     >
+                        {/* Card content kept same, just adding pointer-events-none to avoid interfering with drag if overlayed */}
                         <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
                             <span className="text-[10px] font-bold uppercase tracking-widest font-mono" style={{ color: regionColors[selectedEvent.region] }}>
                                 {t.regions[selectedEvent.region] || selectedEvent.region}
