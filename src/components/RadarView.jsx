@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { REGION_COLORS, REGION_ANGLES } from '../constants/regions';
 
 const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect, selectedRegion, selectedNodeId, onNodeSelect }) => {
     // Internal state removed, controlled via props now
@@ -10,30 +11,11 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
     const center = size / 2;
     const maxRadius = size / 2 - 20;
 
-    // Regional Color Palette
-    // Regional Color Palette (Cyberpunk Neon) - MATCHES BACKEND KEYS
-    const regionColors = {
-        "NORTEAMERICA": "#00f3ff",   // Cyan Neon
-        "LATINOAMERICA": "#00ff9f",  // Matrix Green
-        "EUROPA": "#2980b9",         // Blue
-        "ASIA_PACIFICO": "#e056fd",  // Purple Neon
-        "MEDIO_ORIENTE": "#f0932b",  // Orange
-        "RUSIA_CIS": "#ff3f34",      // Red Neon
-        "AFRICA": "#f6e58d",         // Yellow
-        "GLOBAL": "#ffffff"          // White
-    };
+    // Use imported constants for consistent coloring logic
+    const regionColors = REGION_COLORS;
+    const regionAngles = REGION_ANGLES;
 
-    // 7 Regions distributed over 360 degrees (~51.4 deg each)
-    // Organized roughly geographically clockwise
-    const regionAngles = {
-        "NORTEAMERICA": 0,    // Top Right
-        "EUROPA": 51,
-        "RUSIA_CIS": 102,
-        "ASIA_PACIFICO": 154,
-        "MEDIO_ORIENTE": 205,
-        "AFRICA": 257,
-        "LATINOAMERICA": 308  // Top Left
-    };
+    // Translations
 
     // Translations
     const t = {
