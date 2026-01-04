@@ -51,15 +51,15 @@ AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos
          "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
 
 FUENTES = {
-    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.foxnews.com/rss/feed/world"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news", "https://rt.com/rss/news/"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "http://www.xinhuanet.com/english/rss/world.xml"],
-    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://www.euronews.com/rss?format=mrss&level=theme&name=world"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.arabnews.com/cat/1/rss.xml", "https://www.jpost.com/rss/rssfeedsheadlines.aspx"],
-    "LATAM": ["https://en.mercopress.com/rss", "https://www.telesurenglish.net/rss/headlines.xml", "https://buenosairesherald.com/feed", "https://mexiconewsdaily.com/feed/"],
-    "AFRICA": ["https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partner/rss/rssfeed.xml", "https://www.theeastafrican.co.ke/rss/news.xml"],
-    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://www.ndtv.com/rss/world-news"],
-    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://techcrunch.com/feed/", "https://www.wired.com/feed/category/science/latest/rss", "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best"]
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.propublica.org/feeds/propublica/main", "https://www.democracynow.org/democracynow.rss", "https://theintercept.com/feed/?lang=en"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news", "https://meduza.io/rss/en", "https://novayagazeta.eu/feed/rss", "https://theins.ru/en/feed"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "https://hongkongfp.com/feed/", "https://chinadigitaltimes.net/feed/"],
+    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://www.bellingcat.com/feed/", "https://www.opendemocracy.net/en/feed/"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.arabnews.com/cat/1/rss.xml", "https://www.middleeasteye.net/rss", "https://www.haaretz.com/cmlink/1.4608", "https://www.al-monitor.com/rss", "https://www.972mag.com/feed/"],
+    "LATAM": ["https://en.mercopress.com/rss", "https://buenosairesherald.com/feed", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", "https://insightcrime.org/feed/", "https://nacla.org/rss.xml"],
+    "AFRICA": ["https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partner/rss/rssfeed.xml", "https://www.africanews.com/feed/", "https://www.theafricareport.com/feed/", "https://mg.co.za/feed/", "http://saharareporters.com/feeds/news"],
+    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://indianexpress.com/section/india/feed/", "https://caravanmagazine.in/feed/rss", "https://thewire.in/rss", "https://scroll.in/feed"],
+    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best", "https://globalvoices.org/feed/", "https://theconversation.com/global/articles.atom"]
 }
 
 # ============================================================================
@@ -386,9 +386,9 @@ FORMATO SALIDA (JSON PURO):
             
             time.sleep(1)
 
-    # --- FASE 3: VECTORES (ALINEACIÓN CORRECTA) ---
+    # --- FASE 3: VECTORES (ESCALA NO LINEAL MEJORADA) ---
     def compute_vectors_and_proximity(self):
-        logging.info("📐 FASE 3: Análisis Vectorial...")
+        logging.info("📐 FASE 3: Análisis Vectorial (Escala No-Lineal)...")
         
         need_embedding = []
         valid_items = [it for it in self.active_items if it.area in AREAS]
@@ -448,7 +448,6 @@ FORMATO SALIDA (JSON PURO):
                 
             # 2. Global Egalitarian Centroid ("The Center of Truth")
             # Average of REGIONAL centroids, not individual items.
-            # This ensures USA (50 items) doesn't drown out Africa (2 items).
             if not regional_centroids: continue
             
             global_c = [sum(col)/len(regional_centroids) for col in zip(*regional_centroids)]
@@ -461,24 +460,33 @@ FORMATO SALIDA (JSON PURO):
                     dot = sum(a*b for a,b in zip(it.vector, global_c))
                     sim = dot / (mag_a * mag_g) # Range -1 to 1
                     
-                    # Map to 0-100 Base Score
-                    # If regions disagree, global_c is "Grey", so "White" items will have lower similarity.
-                    # If regions agree, global_c is "White", so "White" items have 100 similarity.
-                    it.proximity = max(0.0, min(100.0, (sim + 1) * 50))
+                    # --- NUEVA ESCALA NO LINEAL ---
+                    # 1. Clip base relevance: Ignoramos similitudes < 0.6 (ruido)
+                    # 2. Stretch: Expandimos el rango 0.6-1.0 al 0-100%
+                    # 3. Power curve: Elevamos al cubo para separar los "muy cercanos"
                     
-                    # Assign Dynamic Labels
-                    if it.proximity > 85: it.bias_label = "Núcleo Narrativo"
-                    elif it.proximity > 70: it.bias_label = "Alta Convergencia"
-                    elif it.proximity > 50: it.bias_label = "Alineado"
-                    elif it.proximity > 35: it.bias_label = "Periférico"
-                    else: it.bias_label = "Divergente"
+                    baseline = 0.6
+                    if sim < baseline:
+                        it.proximity = 0.0
+                        it.bias_label = "Divergente"
+                    else:
+                        normalized = (sim - baseline) / (1 - baseline) # 0.0 to 1.0
+                        score = math.pow(normalized, 3) * 100 # Power curve
+                        it.proximity = max(0.0, min(100.0, float(score))) # Ensure within bounds
+                    
+                        # Assign Dynamic Labels (Recalibrated for new scale)
+                        if it.proximity > 80: it.bias_label = "Núcleo Narrativo"
+                        elif it.proximity > 60: it.bias_label = "Alta Convergencia"
+                        elif it.proximity > 40: it.bias_label = "Alineado"
+                        elif it.proximity > 20: it.bias_label = "Periférico"
+                        else: it.bias_label = "Divergente"
                 else:
                     it.proximity = 0.0
                     it.bias_label = "Error Vectorial"
 
-    # --- FASE 3.5: SÍNTESIS NARRATIVA (EL DIÁLOGO) ---
+    # --- FASE 3.5: CLUSTERING & SÍNTESIS NARRATIVA ---
     def generate_narrative_syntheses(self):
-        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico...")
+        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico (Regional Clustering)...")
         valid_items = [it for it in self.active_items if it.area in AREAS]
         
         self.syntheses = {} # Store synthesis per area
@@ -489,25 +497,50 @@ FORMATO SALIDA (JSON PURO):
                 self.syntheses[area] = "Insuficiente data para establecer diálogo."
                 continue
             
-            # Select representative headlines from diverse regions
-            # Max 2 per region to ensure variety
-            selection = []
+            # --- 1. CLUSTER BY REGION ---
+            # Instead of taking random items, we find the "Dominant Topic" per region
             grouped = defaultdict(list)
             for it in area_items: grouped[it.region].append(it)
             
+            representative_headlines = []
+            
             for region, items in grouped.items():
-                # Sort by confidence or proximity if available, else random
-                items.sort(key=lambda x: x.proximity, reverse=True)
-                selection.extend(items[:2])
-                
-            if not selection: continue
+                if not items: continue
+                # Simple "Center of Mass" Clustering for this Region
+                # 1. Find the item closest to the region's centroid (The "Representative" Article)
+                if len(items) > 1 and all(it.vector for it in items):
+                    # Calculate centroid
+                    vectors = [it.vector for it in items if it.vector]
+                    if not vectors: continue
+                    centroid = [sum(col)/len(vectors) for col in zip(*vectors)]
+                    
+                    # Find closest item to centroid
+                    best_item = None
+                    best_sim = -1
+                    for it in items:
+                        if not it.vector: continue
+                        dot = sum(a*b for a,b in zip(it.vector, centroid))
+                        mag = math.sqrt(sum(x*x for x in it.vector)) * math.sqrt(sum(x*x for x in centroid))
+                        if mag > 0:
+                            sim = dot / mag
+                            if sim > best_sim:
+                                best_sim = sim
+                                best_item = it
+                    
+                    if best_item:
+                        representative_headlines.append(f"[{region}] {best_item.original_title}")
+                else:
+                    # Fallback for single item or no vectors
+                    representative_headlines.append(f"[{region}] {items[0].original_title}")
 
-            # Construct Prompt
-            headlines_text = "\n".join([f"- [{it.region}] {it.original_title}" for it in selection[:8]])
+            if not representative_headlines: continue
+
+            # --- 2. GENERATE DIALOGUE ---
+            headlines_text = "\n".join(representative_headlines[:8])
             
             prompt = f"""ACT AS: Geopolitical Analyst.
 TASK: Synthesize the 'dialogue' between these regions regarding '{area}'.
-INPUT HEADLINES:
+INPUT (Dominant Regional Narratives):
 {headlines_text}
 
 INSTRUCTIONS:
