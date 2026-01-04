@@ -51,10 +51,19 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
             const angleRad = (baseAngleDeg + jitter) * (Math.PI / 180);
 
             // Proximity Score (0-10)
-            const score = Number(ev.proximity_score || ev.proximidad || 0);
-            // Invert: High score = close to center (small radius)
-            // We map 0-10 score to radius. 10 -> 20px, 0 -> maxRadius
-            const r = Math.max(20, maxRadius * (1 - (score / 12)));
+            const rawScore = Number(ev.proximity_score || ev.proximidad || 0);
+
+            // SEMANTIC ZOOM: Data is compressed between 8.3 and 9.7
+            // We expand [8.2, 9.8] to fit the full radar radius.
+            const minInterest = 8.2;
+            const maxInterest = 9.8;
+
+            let normalized = (rawScore - minInterest) / (maxInterest - minInterest);
+            normalized = Math.max(0, Math.min(1, normalized)); // Clamp to 0-1
+
+            // Invert: 1.0 (High Score) -> Center (15px radius)
+            //         0.0 (Low Score)  -> Perimeter (maxRadius)
+            const r = maxRadius * (1 - normalized) * 0.9 + 15; // 0.9 scale to leave edge buffer
 
             return {
                 id: ev.id,
