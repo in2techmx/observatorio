@@ -423,26 +423,33 @@ class GeoCoreCollector:
         logging.info(f"✅ Exportado: {len(carousel)} categorías, {self.stats['total_selected']} noticias")
 
     def _generate_category_synthesis(self, category, regional_narratives, items):
-        """Genera síntesis temática que resalta divergencias narrativas entre regiones"""
+        """Genera síntesis temática usando titulares específicos para evitar repetición"""
         
-        if not regional_narratives:
+        # Agrupar titulares por región
+        headlines_by_region = defaultdict(list)
+        for item in items:
+            headlines_by_region[item.region].append(f"- {item.title}")
+            
+        if not headlines_by_region:
             return f"Análisis de {category} en desarrollo."
-        
-        # Construir prompt que resalte divergencias
-        narratives_text = "\n".join([f"- {region}: {narrative}" for region, narrative in regional_narratives.items()])
+
+        # Construir prompt con titulares específicos del tema
+        source_text = ""
+        for region, headlines in headlines_by_region.items():
+            # Usar hasta 8 titulares por región para dar contexto rico
+            source_text += f"\nREGION: {region}\n" + "\n".join(headlines[:8])
         
         prompt = f"""CATEGORY: {category}
-
-REGIONAL NARRATIVES:
-{narratives_text}
-
-TASK:
-Analyze how different regions are covering this topic. Write a 2-3 sentence synthesis that:
-1. Identifies the CORE ISSUE being covered
-2. Highlights KEY DIVERGENCES in how regions frame/report it (e.g., "Western media emphasizes X, while Russian sources focus on Y")
-3. Notes any CONSENSUS points if they exist
-
-Be specific and analytical. Avoid generic statements. Focus on narrative differences."""
+        
+        SOURCE MATERIAL (Specific Headlines per Region):
+        {source_text}
+        
+        TASK: Synthesize the global narrative divergence on this specific topic based ONLY on the headlines above.
+        - Analyze specific events mentioned in these headlines.
+        - Contrast regional perspectives (e.g. "While West focuses on [Specific Event X], Russia emphasizes [Perspective Y]").
+        - Be specific to the headlines provided. Do NOT use generic geopolitical boilerplate.
+        
+        OUTPUT: A single dense analytical paragraph (approx 60-80 words). Neutral tone."""
 
         try:
             response = self.client.models.generate_content(
@@ -452,8 +459,7 @@ Be specific and analytical. Avoid generic statements. Focus on narrative differe
             return response.text.strip()
         except Exception as e:
             logging.warning(f"Error generando síntesis para {category}: {e}")
-            # Fallback a síntesis simple
-            return f"{category}: {len(items)} noticias de {len(regional_narratives)} regiones. Perspectivas: {', '.join(regional_narratives.keys())}."
+            return f"{category}: {len(items)} noticias. Divergencia detectada entre {', '.join(headlines_by_region.keys())}."
 
     def run(self):
         try:
