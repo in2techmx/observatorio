@@ -1,15 +1,9 @@
 google-genai
-
+feedparser
 numpy
-
 beautifulsoup4
-
 requests
-
 lxml
-
 urllib3
-
 python-dateutil
-
 pyyaml
