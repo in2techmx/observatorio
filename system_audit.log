@@ -321,3 +321,65 @@
 2026-01-04 09:54:50,663 | INFO     | AFC is enabled with max remote calls: 10.
 2026-01-04 09:54:53,016 | INFO     | 💾 FASE 4: Exportación Bilingüe...
 2026-01-04 09:54:53,036 | INFO     | 📜 FASE 5: Generando Archivo Histórico (Briefs)...
+2026-01-04 10:03:29,790 | INFO     | 📡 FASE 1: Recolección (Límite: 50)...
+2026-01-04 10:04:08,846 | INFO     | 🔎 FASE 2: Clasificación IA (985 items)...
+2026-01-04 10:04:08,846 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:04:20,262 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:04:31,005 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:04:41,974 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:04:52,968 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:05:05,519 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:05:16,897 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:05:29,852 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:05:41,204 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:05:50,707 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:06:02,615 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:06:12,918 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:06:25,627 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:06:39,259 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:06:54,825 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:07:07,452 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:07:19,985 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:07:32,489 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:07:44,101 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:07:56,917 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:08:09,306 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:08:19,145 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:08:29,665 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:08:40,123 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:08:50,772 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:00,186 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:09,603 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:20,983 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:31,078 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:40,869 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:09:50,060 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:00,152 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:10,997 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:22,141 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:31,617 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:42,867 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:10:56,262 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:11:06,944 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:11:19,517 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:11:28,838 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:11:39,372 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:11:49,577 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:02,354 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:12,124 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:21,992 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:33,584 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:44,733 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:12:55,720 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:06,495 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:17,357 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:21,019 | INFO     | 📐 FASE 3: Análisis Vectorial (Escala No-Lineal)...
+2026-01-04 10:13:21,863 | INFO     | 💬 FASE 3.5: Generando Diálogo Geopolítico Bilingüe...
+2026-01-04 10:13:21,896 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:23,884 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:26,111 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:27,973 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:30,184 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:32,148 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 10:13:34,420 | INFO     | 💾 FASE 4: Exportación Bilingüe...
+2026-01-04 10:13:34,435 | INFO     | 📜 FASE 5: Generando Archivo Histórico (Briefs)...
