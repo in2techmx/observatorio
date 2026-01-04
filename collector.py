@@ -332,6 +332,17 @@ class GeoCoreCollector:
         """Exporta JSON para el frontend (organizado por REGIÓN para compatibilidad con UI)"""
         logging.info("📦 FASE 5: Exportación JSON...")
         
+        # Mapa de colores por región para restaurar estética
+        REGION_COLORS = {
+            "NORTEAMERICA": "#00f3ff",  # Cyan Neon
+            "LATINOAMERICA": "#00ff9f", # Green Neon
+            "EUROPA": "#2980b9",        # Blue
+            "ASIA_PACIFICO": "#e056fd", # Purple Neon
+            "MEDIO_ORIENTE": "#f0932b", # Orange
+            "RUSIA_CIS": "#ff3f34",     # Red Neon
+            "AFRICA": "#f6e58d"         # Yellow
+        }
+        
         carousel = []
         
         # Organizar por REGIÓN (como espera el frontend)
@@ -354,10 +365,14 @@ class GeoCoreCollector:
             # Calcular promedio de proximidad
             avg_proximity = sum(p["proximity_score"] for p in particles) / len(particles) if particles else 0
             
+            # Obtener color o default
+            color = REGION_COLORS.get(region, "#888888")
+            
             carousel.append({
                 "area": region,  # REGIÓN (como espera el frontend)
                 "sintesis": data["narrative"],
                 "sintesis_en": data["narrative"],
+                "color": color, # Restauramos el color!
                 "count": len(particles),
                 "avg_proximity": round(avg_proximity, 2),
                 "particulas": particles
