@@ -612,6 +612,106 @@ INSTRUCTIONS:
                 json.dump(final, f, indent=2, ensure_ascii=False)
         except: pass
 
+    # --- FASE 5: HISTORICAL BRIEFS (AUTO-GENERATOR) ---
+    def generate_briefs(self):
+        logging.info("📜 FASE 5: Generando Archivo Histórico (Briefs)...")
+        # Ensure hist dir exists and has files
+        if not os.path.exists(HIST_DIR): return
+
+        files = sorted([f for f in os.listdir(HIST_DIR) if f.endswith('.json')])
+        if not files: return
+
+        # Load existing briefs if any
+        briefs_path = "public/briefs.json"
+        existing_briefs = {}
+        if os.path.exists(briefs_path):
+            try:
+                with open(briefs_path, 'r', encoding='utf-8') as f:
+                    existing_briefs = json.load(f)
+            except: pass
+
+        # Helper: Get Week/Month key from filename (YYYY-MM-DD.json)
+        def get_keys(filename):
+            try:
+                dt = datetime.datetime.strptime(filename.replace(".json",""), "%Y-%m-%d")
+                year = dt.year
+                month = dt.month
+                week = dt.isocalendar()[1]
+                return f"M{month}-{year}", f"W{week}-{year}"
+            except: return None, None
+
+        # Group Daily Data
+        grouped = defaultdict(list)
+        for fname in files:
+            m_key, w_key = get_keys(fname)
+            if m_key:
+                grouped[m_key].append(fname)
+                grouped[w_key].append(fname)
+
+        # Process Groups
+        new_reports = existing_briefs.get("reports", {})
+        
+        for key, filenames in grouped.items():
+            if key in new_reports: continue # Already generated
+
+            # Logic: Only generate if period is "complete" or it's a past period?
+            # For demo, we treat any group with > 1 file as generate-able.
+            # In production, check if week/month has ended.
+            if len(filenames) < 1: continue 
+
+            logging.info(f"   > Generando Informe para {key} ({len(filenames)} días)...")
+
+            # Collect Syntheses from those days
+            all_syntheses = []
+            for fname in filenames:
+                try:
+                    with open(os.path.join(HIST_DIR, fname), 'r', encoding='utf-8') as f:
+                        d = json.load(f)
+                        if 'carousel' in d:
+                            for cat in d['carousel']:
+                                if cat.get('sintesis'):
+                                    all_syntheses.append(f"[{cat['area']}] {cat['sintesis']}")
+                except: pass
+
+            if not all_syntheses: continue
+
+            # Generate Summary via Gemini
+            context = "\n".join(all_syntheses[:30]) # Limit context window
+            type_label = "Mensual" if "M" in key else "Semanal"
+            
+            prompt = f"""ACT AS: Chief Strategy Officer.
+TASK: Write a '{type_label} Intelligence Report' based on these daily snippets.
+INPUT: 
+{context}
+
+INSTRUCTIONS:
+1. Identify the ONE major overarching theme of this period.
+2. Summarize the key geopolitical shift.
+3. FORMAT:
+   "REPORT {key}: [Title of the Period]. \n\nEXECUTIVE SUMMARY: [50 words summary].\n\nKEY DRIVERS: [List 2-3 main factors]."
+4. Language: Spanish.
+OUTPUT TEXT ONLY."""
+
+            try:
+                resp = self.client.models.generate_content(
+                    model="gemini-2.0-flash", contents=prompt
+                )
+                if resp.text:
+                    new_reports[key] = {
+                        "id": key,
+                        "type": type_label,
+                        "content": resp.text.strip(),
+                        "date": datetime.datetime.now().isoformat()
+                    }
+            except Exception as e:
+                logging.error(f"Error Brief {key}: {e}")
+
+        # Save Updated Briefs
+        final_briefs = {"reports": new_reports}
+        with open(briefs_path, "w", encoding="utf-8") as f:
+            json.dump(final_briefs, f, indent=2, ensure_ascii=False)
+
+
     def run(self):
         try:
             self.fetch_signals()
@@ -619,6 +719,7 @@ INSTRUCTIONS:
             self.compute_vectors_and_proximity()
             self.generate_narrative_syntheses() # Phase 3.5
             self.export()
+            self.generate_briefs() # Phase 5
             return True
         except Exception as e:
             logging.error(f"FATAL: {e}", exc_info=True)
