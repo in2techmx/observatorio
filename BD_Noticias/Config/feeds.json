@@ -4,43 +4,83 @@
         "http://feeds.foxnews.com/foxnews/latest",
         "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114",
         "https://feeds.npr.org/1001/rss.xml",
-        "https://www.washingtontimes.com/rss/headlines/news/security/"
+        "https://www.washingtontimes.com/rss/headlines/news/security/",
+        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+        "https://www.wsj.com/xml/rss/3_7085.xml",
+        "https://www.politico.com/rss/politics08.xml",
+        "https://www.reuters.com/rssFeed/topNews",
+        "https://www.bloomberg.com/feed/podcast/bloomberg-surveillance.xml",
+        "https://thehill.com/feed/",
+        "https://www.axios.com/feeds/feed.rss"
     ],
     "LATINOAMERICA": [
         "https://www.jornada.com.mx/rss/edicion.xml?v=1",
         "https://www.eluniversal.com.mx/rss",
         "https://www.clarin.com/rss/lo-ultimo/",
         "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada",
-        "https://www.bbc.com/mundo/ultimas_noticias/index.xml"
+        "https://www.bbc.com/mundo/ultimas_noticias/index.xml",
+        "https://www.infobae.com/feeds/rss/",
+        "https://www.lanacion.com.ar/arc/outboundfeeds/rss/",
+        "https://www.eltiempo.com/rss/colombia.xml",
+        "https://www.emol.com/rss/rss.asp",
+        "https://www.elespectador.com/rss/noticias/",
+        "https://www.milenio.com/rss/portada"
     ],
     "EUROPA": [
         "http://feeds.bbci.co.uk/news/world/europe/rss.xml",
         "https://www.france24.com/en/europe/rss",
         "https://www.dw.com/en/top-stories/s-9097/rss.xml",
         "https://www.theguardian.com/world/europe/rss",
-        "https://rss.elconfidencial.com/mundo/"
+        "https://rss.elconfidencial.com/mundo/",
+        "https://www.euronews.com/rss",
+        "https://www.telegraph.co.uk/news/rss.xml",
+        "https://www.independent.co.uk/news/world/europe/rss",
+        "https://www.lemonde.fr/rss/une.xml",
+        "https://www.spiegel.de/international/index.rss",
+        "https://www.ft.com/world?format=rss",
+        "https://www.politico.eu/feed/"
     ],
     "MEDIO_ORIENTE": [
         "https://www.aljazeera.com/xml/rss/all.xml",
         "https://www.jpost.com/rss/rssfeedsheadlines.aspx",
         "https://www.arabnews.com/cat/2/rss.xml",
-        "https://www.trtworld.com/feed/news/middle-east"
+        "https://www.trtworld.com/feed/news/middle-east",
+        "https://www.haaretz.com/cmlink/1.628752",
+        "https://www.timesofisrael.com/feed/",
+        "https://www.middleeasteye.net/rss",
+        "https://www.al-monitor.com/rss.xml",
+        "https://english.alarabiya.net/rss.xml"
     ],
     "ASIA_PACIFICO": [
         "http://feeds.bbci.co.uk/news/world/asia/rss.xml",
         "https://www3.nhk.or.jp/nhkworld/en/news/list/all.xml",
         "https://www.scmp.com/rss/91/feed",
         "https://asia.nikkei.com/rss/feed/nar",
-        "https://www.straitstimes.com/news/asia/rss.xml"
+        "https://www.straitstimes.com/news/asia/rss.xml",
+        "https://www.thehindu.com/news/national/feeder/default.rss",
+        "https://www.japantimes.co.jp/feed/",
+        "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml",
+        "https://www.globaltimes.cn/rss/outbrain.xml",
+        "https://www.theaustralian.com.au/feed/",
+        "https://www.koreaherald.com/common/rss_xml.php"
     ],
     "AFRICA": [
         "http://feeds.bbci.co.uk/news/world/africa/rss.xml",
         "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf",
-        "https://www.news24.com/news24/partner/rss/go/news24/Africa"
+        "https://www.news24.com/news24/partner/rss/go/news24/Africa",
+        "https://www.dailymaverick.co.za/dmrss/",
+        "https://www.theeastafrican.co.ke/tea/rss",
+        "https://www.africanews.com/feed/",
+        "https://www.businessdailyafrica.com/bd/rss"
     ],
     "RUSIA_CIS": [
         "https://tass.com/rss/v2.xml",
         "https://themoscowtimes.com/rss/news",
-        "https://meduza.io/rss/en"
+        "https://meduza.io/rss/en",
+        "https://www.rt.com/rss/",
+        "https://sputniknews.com/export/rss2/archive/index.xml",
+        "https://www.interfax.ru/rss.asp",
+        "https://www.kyivpost.com/feed",
+        "https://www.rferl.org/api/zq-iqetepqii"
     ]
 }
