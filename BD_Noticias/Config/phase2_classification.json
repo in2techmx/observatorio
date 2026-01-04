@@ -22,6 +22,8 @@
         "grouped_by": "category",
         "includes_regional_diversity": true,
         "expected_categories": 5,
-        "expected_items_per_category": "15-20 (varies by news cycle)"
+        "expected_items_per_category": "Varies widely (10-40+) depending on global news cycle",
+        "total_input": "35-140 items (from Phase 1: 7 regions × 5-20 selected items each)",
+        "distribution_note": "Categories are NOT evenly distributed. If War dominates the news cycle, that category will have more items than others."
     }
 }
