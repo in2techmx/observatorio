@@ -103,20 +103,19 @@ function App() {
                     />
                 </div>
 
-                {/* B. Active Category Detailed View */}
-                <div className="relative z-0 min-h-[800px] pt-4 pb-20 bg-gradient-to-b from-black to-zinc-900">
-                    <AnimatePresence mode="wait">
-                        {selectedCategory && (
-                            <CategoryDetail
-                                key={selectedCategory}
-                                category={selectedCategory}
-                                events={activeEvents}
-                                synthesis={syntheses[selectedCategory]}
-                                onSelectNews={setSelectedNews}
-                            />
-                        )}
-                    </AnimatePresence>
-                </div>
+                {/* B. Active Category Detailed View - REFACTORED TO OVERLAY */}
+                <AnimatePresence>
+                    {selectedCategory && (
+                        <CategoryDetail
+                            key={selectedCategory}
+                            category={selectedCategory}
+                            events={activeEvents}
+                            synthesis={syntheses[selectedCategory]}
+                            onSelectNews={setSelectedNews}
+                            onClose={() => setSelectedCategory(null)}
+                        />
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* 3. FOOTER */}

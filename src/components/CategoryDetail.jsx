@@ -3,81 +3,118 @@ import RadarView from './RadarView';
 import NewsList from './NewsList';
 import { motion } from 'framer-motion';
 
-const CategoryDetail = ({ category, events, synthesis, onSelectNews }) => {
+const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) => {
     const [hoveredId, setHoveredId] = useState(null);
+    if (!category) return null;
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="relative z-20 w-full bg-black/40 border-t border-white/10 backdrop-blur-xl min-h-[600px]"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col overflow-hidden"
         >
-            {/* Header / Synthesis Strip */}
-            <div className="w-full border-b border-white/5 bg-white/5">
-                <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            {/* Header Bar */}
+            <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-white/10 bg-black/50 shrink-0">
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={onClose}
+                        className="p-2 -ml-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors group"
+                        title="Back to Navigation"
+                    >
+                        <svg className="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    </button>
                     <div>
-                        <h2 className="text-3xl font-bold tracking-tighter text-white uppercase">{category}</h2>
-                        <span className="text-xs font-mono text-cyan-400 border border-cyan-900/50 bg-cyan-900/10 px-2 py-0.5 rounded">
-                            {events.length} SIGNALS DETECTED
+                        <h2 className="text-2xl md:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 uppercase">
+                            {category}
+                        </h2>
+                        <span className="text-[10px] font-mono text-cyan-500 tracking-widest uppercase block mt-1">
+                            // {events.length} SIGNALS DETECTED
                         </span>
                     </div>
+                </div>
+
+                <button
+                    onClick={onClose}
+                    className="p-3 rounded-full hover:bg-red-500/10 text-gray-500 hover:text-red-500 transition-colors border border-transparent hover:border-red-500/50"
+                    title="Close Overlay"
+                >
+                    <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-opacity-5">
+                <div className="container mx-auto px-4 md:px-6 py-8">
 
                     {/* Specialist Analysis Block */}
                     {synthesis && (
-                        <div className="mt-6 p-4 border-l-2 border-cyan-500 bg-cyan-900/10 max-w-4xl rounded-r-lg">
-                            <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-cyan-400 mb-2 flex items-center gap-2">
-                                <span className="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse" />
+                        <div className="mb-12 p-6 border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-900/20 to-transparent rounded-r-xl backdrop-blur-sm">
+                            <h4 className="text-xs uppercase font-bold tracking-[0.2em] text-cyan-400 mb-3 flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                                </span>
                                 Specialist Briefing
                             </h4>
-                            <p className="text-sm text-gray-300 font-mono leading-relaxed whitespace-pre-line">
-                                {synthesis}
-                            </p>
+                            <div className="prose prose-invert prose-sm max-w-none">
+                                <p className="text-gray-200 font-mono leading-relaxed whitespace-pre-line text-sm md:text-base border-l border-white/5 pl-4">
+                                    {synthesis}
+                                </p>
+                            </div>
                         </div>
                     )}
+
+                    {/* Main Content Layout */}
+                    <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-start justify-center">
+
+                        {/* Block 1: The Radar */}
+                        <div className="flex-1 flex flex-col items-center w-full min-h-[500px] p-6 bg-black/40 rounded-3xl border border-white/10 shadow-2xl">
+                            <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-8 flex items-center gap-2">
+                                <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                Radar de Proximidad
+                            </h3>
+                            <div className="w-full max-w-[500px] aspect-square relative group">
+                                <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors duration-500" />
+                                <RadarView
+                                    events={events}
+                                    hoveredId={hoveredId}
+                                    onHover={setHoveredId}
+                                />
+                            </div>
+                            <div className="mt-8 flex gap-8 text-[10px] text-gray-500 font-mono text-center">
+                                <div>
+                                    <span className="block text-white font-bold mb-1">CENTER</span>
+                                    High Convergence
+                                </div>
+                                <div>
+                                    <span className="block text-white font-bold mb-1">PERIMETER</span>
+                                    Weak Signals
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Block 2: The List */}
+                        <div className="flex-1 w-full xl:max-w-2xl">
+                            <h3 className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-6 pl-2 flex items-center gap-2">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                Intelligence Feed
+                            </h3>
+                            <div className="bg-black/20 rounded-2xl border border-white/5 p-1">
+                                <NewsList
+                                    events={events}
+                                    hoveredId={hoveredId}
+                                    onHover={setHoveredId}
+                                    onSelect={onSelectNews}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-
-            {/* Main Content Area */ }
-    <div className="container mx-auto px-6 py-8">
-        <div className="flex flex-col xl:flex-row gap-12 items-start justify-center">
-
-            {/* Block 1: The Radar */}
-            <div className="flex-1 flex flex-col items-center w-full min-h-[500px] p-6 bg-black/20 rounded-2xl border border-white/5">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-8 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
-                    Radar de Proximidad
-                </h3>
-                <div className="scale-110">
-                    <RadarView
-                        events={events}
-                        hoveredId={hoveredId}
-                        onHover={setHoveredId}
-                    />
-                </div>
-                <p className="text-[10px] text-gray-500 mt-8 max-w-xs text-center leading-relaxed">
-                    Los nodos centrales (Radio Interno) representan alta convergencia geopolítica. Los nodos externos son señales débiles o aisladas.
-                </p>
-            </div>
-
-            {/* Block 2: The List */}
-            <div className="flex-1 w-full xl:max-w-2xl min-h-[500px]">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6 pl-2">
-                    Feed de Inteligencia
-                </h3>
-                <NewsList
-                    events={events}
-                    hoveredId={hoveredId}
-                    onHover={setHoveredId}
-                    onSelect={onSelectNews}
-                />
-            </div>
-
-        </div>
-    </div>
-        </motion.div >
+        </motion.div>
     );
 };
 

@@ -139,7 +139,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                 className="overflow-visible"
                 onClick={() => setSelectedNodeId(null)}
             >
-                {/* Radar Grid Circles */}
+                {/* Radar Grid Circles - High Visibility */}
                 {[0.2, 0.4, 0.6, 0.8, 1].map((scale, i) => (
                     <circle
                         key={i}
@@ -147,16 +147,18 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                         cy={center}
                         r={maxRadius * scale}
                         fill="none"
-                        stroke="white"
-                        strokeOpacity={0.15} // Increased opacity from 0.05
+                        stroke="#22d3ee" // Cyan-400
+                        strokeWidth={1}
+                        strokeOpacity={0.4} // High contrast
                         strokeDasharray="4 4"
                         pointerEvents="none"
+                        className="animate-pulse"
                     />
                 ))}
 
-                {/* Crosshairs */}
-                <line x1={center} y1={0} x2={center} y2={size} stroke="white" strokeOpacity={0.05} pointerEvents="none" />
-                <line x1={0} y1={center} x2={size} y2={center} stroke="white" strokeOpacity={0.05} pointerEvents="none" />
+                {/* Crosshairs - High Visibility */}
+                <line x1={center} y1={0} x2={center} y2={size} stroke="#22d3ee" strokeWidth={1} strokeOpacity={0.3} pointerEvents="none" />
+                <line x1={0} y1={center} x2={size} y2={center} stroke="#22d3ee" strokeWidth={1} strokeOpacity={0.3} pointerEvents="none" />
 
                 {/* Region Labels (Perimeter) */}
                 {Object.entries(regionAngles).map(([region, angle]) => {

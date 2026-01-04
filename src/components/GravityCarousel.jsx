@@ -62,51 +62,51 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect }) => {
                             <motion.div
                                 key={uniqueKey}
                                 onClick={() => onSelect(cat.name)}
-                                whileHover={{ scale: 1.05, filter: "brightness(1.2)" }}
+                                whileHover={{ scale: 1.05, filter: "brightness(1.5)" }}
                                 className={`
-                                    relative flex-shrink-0 w-[260px] h-[150px] rounded-xl cursor-pointer 
-                                    border transition-all duration-500 group overflow-hidden
-                                    backdrop-blur-sm
+                                    relative flex-shrink-0 w-[260px] h-[160px] rounded-xl cursor-pointer 
+                                    border-2 transition-all duration-300 group overflow-hidden
+                                    backdrop-blur-md
                                     ${isSelected
-                                        ? 'scale-110 border-white shadow-[0_0_40px_rgba(255,255,255,0.1)] z-10 bg-black'
-                                        : 'opacity-70 grayscale hover:grayscale-0 hover:opacity-100 bg-zinc-900/30 border-white/10'
+                                        ? 'scale-110 border-white shadow-[0_0_50px_rgba(255,255,255,0.3)] z-10 bg-black'
+                                        : 'opacity-90 hover:opacity-100 bg-zinc-900/60 border-white/20 hover:border-white/50'
                                     }
                                 `}
                                 style={{
-                                    borderColor: isSelected ? color : 'rgba(255,255,255,0.1)',
-                                    boxShadow: isSelected ? `0 0 30px ${color}40` : 'none'
+                                    borderColor: isSelected ? color : (isSelected ? 'white' : 'rgba(255,255,255,0.2)'),
+                                    boxShadow: isSelected ? `0 0 40px ${color}60` : 'none'
                                 }}
                             >
-                                {/* Scanline Effect */}
-                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                                {/* Scanline Effect - Brighter */}
+                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
 
                                 {/* Content */}
                                 <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10">
                                     <div
-                                        className="w-1.5 h-1.5 rounded-full mb-3 shadow-[0_0_10px_currentColor]"
-                                        style={{ backgroundColor: color, boxShadow: `0 0 15px ${color}` }}
+                                        className="w-2 h-2 rounded-full mb-3 shadow-[0_0_15px_currentColor]"
+                                        style={{ backgroundColor: color, boxShadow: `0 0 20px ${color}` }}
                                     />
                                     <h3
-                                        className="text-lg font-bold uppercase tracking-wider leading-none"
+                                        className="text-xl font-black uppercase tracking-wider leading-none"
                                         style={{
-                                            color: isSelected ? 'white' : 'gray',
-                                            textShadow: isSelected ? `0 0 20px ${color}` : 'none'
+                                            color: isSelected ? 'white' : '#e5e7eb', // lighter gray for non-selected
+                                            textShadow: isSelected ? `0 0 25px ${color}` : '0 0 10px rgba(0,0,0,0.8)'
                                         }}
                                     >
                                         {cat.name}
                                     </h3>
-                                    <span className="text-[9px] mt-2 font-mono text-gray-500 tracking-widest">
+                                    <span className={`text-[10px] mt-2 font-mono tracking-widest ${isSelected ? 'text-white' : 'text-gray-400'}`}>
                                         {cat.count} NODES
                                     </span>
                                 </div>
 
-                                {/* Active Indicator Bar */}
+                                {/* Active Indicator Bar - Thicker */}
                                 {isSelected && (
                                     <motion.div
                                         layoutId="activeBar"
-                                        className="absolute bottom-0 left-0 w-full h-0.5"
-                                        style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }}
+                                        className="absolute bottom-0 left-0 w-full h-1"
+                                        style={{ backgroundColor: color, boxShadow: `0 0 20px ${color}` }}
                                     />
                                 )}
                             </motion.div>
