@@ -9,8 +9,9 @@ function App() {
     const [selectedNews, setSelectedNews] = useState(null);
     const [events, setEvents] = useState([]);
     const [meta, setMeta] = useState(null);
-    const [syntheses, setSyntheses] = useState({}); // Store synthesis per category
-    const [loading, setLoading] = useState(true);
+    const [syntheses, setSyntheses] = useState({});
+    // State for the new Carousel Navigation
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     // Fetch real data from gravity_carousel.json
     useEffect(() => {
@@ -18,22 +19,20 @@ function App() {
             try {
                 const response = await fetch('./gravity_carousel.json');
                 const text = await response.text();
-                // Handle potential trailing commas or minor JSON errors if needed, but assuming valid JSON for now
                 const data = JSON.parse(text);
 
                 if (data.carousel) {
-                    // ADAPTER: Transform nested carousel structure to flat events list expected by components
-                    // Structure: { carousel: [ { area: "Name", particulas: [...] } ] }
+                    // ADAPTER: Transform nested carousel structure to flat events list
                     const adaptedEvents = data.carousel.flatMap(categoryBlock => {
                         return (categoryBlock.particulas || []).map(p => ({
                             id: p.id,
-                            title: p.titulo, // Map Spanish key to English prop
+                            title: p.titulo,
                             link: p.link,
                             country: p.bloque,
                             source_url: p.link,
-                            proximity_score: p.proximidad / 10, // Map 0-100 to 0-10
+                            proximity_score: p.proximidad / 10, // Map 0-100 to 0-10 for Radar
                             category: categoryBlock.area,
-                            analysis: (p.keywords || []).join(', ') + ". " + (p.sesgo || ""), // Fallback content
+                            analysis: (p.keywords || []).join(', ') + ". " + (p.sesgo || ""),
                             keywords: p.keywords
                         }));
                     });
@@ -46,61 +45,77 @@ function App() {
 
                     setEvents(adaptedEvents);
                     setMeta(data.meta || {});
-                    setSyntheses(synthesisMap); // New state for synthesis
+                    setSyntheses(synthesisMap);
                 }
             } catch (error) {
                 console.error("Failed to load gravity data:", error);
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchData();
     }, []);
 
-    // Group data by category dynamically
-    const categories = useMemo(() => {
-        const groups = {};
-        events.forEach(event => {
-            if (!groups[event.category]) {
-                groups[event.category] = [];
-            }
-            groups[event.category].push(event);
-        });
-        return groups;
-    }, [events]);
+    // Select the first category by default once events are loaded
+    useEffect(() => {
+        if (events.length > 0 && !selectedCategory) {
+            // Find unique categories order
+            const uniqueCats = [...new Set(events.map(e => e.category))];
+            if (uniqueCats.length > 0) setSelectedCategory(uniqueCats[0]);
+        }
+    }, [events, selectedCategory]);
 
-    if (loading) {
-        return <div className="min-h-screen bg-black text-white flex items-center justify-center">Initializing Gravity Link...</div>;
-    }
+    // Prepare data for Carousel (Category Name + Count)
+    const categoriesList = useMemo(() => {
+        const counts = {};
+        events.forEach(e => { counts[e.category] = (counts[e.category] || 0) + 1; });
+        // Use syntheses keys to ensure consistent order if preferred, or events
+        return Object.keys(syntheses).length > 0
+            ? Object.keys(syntheses).map(cat => ({ name: cat, count: counts[cat] || 0 }))
+            : [...new Set(events.map(e => e.category))].map(cat => ({ name: cat, count: counts[cat] || 0 }));
+    }, [events, syntheses]);
+
+    // Filter events for selected category
+    const activeEvents = useMemo(() => {
+        return selectedCategory ? events.filter(e => e.category === selectedCategory) : [];
+    }, [selectedCategory, events]);
+
 
     return (
         <div className="min-h-screen bg-black text-white font-sans selection:bg-cyan-500 selection:text-black">
 
-            {/* 1. HERO SECTION (Explanation) */}
+            {/* 1. HERO SECTION */}
             <LandingHero />
 
-            {/* 2. MAIN CONTENT (The Decks) */}
-            <main id="main-monitor" className="relative z-10 -mt-20 pb-20 space-y-2">
-                <div className="px-6 md:px-12 mb-4">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500">
-                        Monitor de Inteligencia en Tiempo Real
-                    </h3>
+            {/* 2. MAIN NAV INTERFACE (Gravity Stream) */}
+            <div id="main-monitor" className="relative min-h-screen bg-black -mt-10 z-10">
+
+                {/* A. Horizontal 3D Carousel (Sticky Header) */}
+                <div className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl">
+                    <GravityCarousel
+                        categories={categoriesList}
+                        selectedCategory={selectedCategory}
+                        onSelect={setSelectedCategory}
+                    />
                 </div>
 
-                {Object.entries(categories).map(([category, categoryEvents]) => (
-                    <CategoryDeck
-                        key={category}
-                        category={category}
-                        events={categoryEvents}
-                        synthesis={syntheses[category]}
-                        onSelectNews={setSelectedNews}
-                    />
-                ))}
-            </main>
+                {/* B. Active Category Detailed View */}
+                <div className="relative z-0 min-h-[800px] pt-4 pb-20 bg-gradient-to-b from-black to-zinc-900">
+                    <AnimatePresence mode="wait">
+                        {selectedCategory && (
+                            <CategoryDetail
+                                key={selectedCategory}
+                                category={selectedCategory}
+                                events={activeEvents}
+                                synthesis={syntheses[selectedCategory]}
+                                onSelectNews={setSelectedNews}
+                            />
+                        )}
+                    </AnimatePresence>
+                </div>
+            </div>
 
             {/* 3. FOOTER */}
-            <footer className="py-12 border-t border-white/5 text-center text-gray-600 text-sm">
+            <footer className="py-12 border-t border-white/5 text-center text-gray-600 text-sm bg-black">
                 <p>Observatorio V2 &copy; 2026. Powered by Gemini 2.0 Flash.</p>
             </footer>
 
@@ -108,7 +123,7 @@ function App() {
             <AnimatePresence>
                 {selectedNews && (
                     <NewsCard
-                        event={selectedNews}
+                        event={events.find(e => e.id === selectedNews)}
                         onClose={() => setSelectedNews(null)}
                     />
                 )}
