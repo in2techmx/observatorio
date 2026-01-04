@@ -336,24 +336,30 @@ class GeoCoreCollector:
             logging.error(f"Error guardando CSV: {e}")
 
     def export(self):
-        """Exporta JSON para el frontend (organizado por REGIÓN para compatibilidad con UI)"""
+        """Exporta JSON para el frontend (organizado por CATEGORÍA TEMÁTICA con colores Cyberpunk)"""
         logging.info("📦 FASE 5: Exportación JSON...")
         
-        # Mapa de colores por región para restaurar estética
-        REGION_COLORS = {
-            "NORTEAMERICA": "#00f3ff",  # Cyan Neon
-            "LATINOAMERICA": "#00ff9f", # Green Neon
-            "EUROPA": "#2980b9",        # Blue
-            "ASIA_PACIFICO": "#e056fd", # Purple Neon
-            "MEDIO_ORIENTE": "#f0932b", # Orange
-            "RUSIA_CIS": "#ff3f34",     # Red Neon
-            "AFRICA": "#f6e58d"         # Yellow
+        # Colores Cyberpunk por Temática
+        THEME_COLORS = {
+            "War & Conflict": "#ff0055",    # Neon Red
+            "Global Economy": "#00ff9f",    # Matrix Green
+            "Politics & Policy": "#00f3ff", # Cyan Neon
+            "Science & Tech": "#bf00ff",    # Electric Purple
+            "Social & Rights": "#ffbe0b",   # Cyber Yellow
+            "Other": "#888888"              # Grey
         }
         
         carousel = []
+        categories_config = CATEGORIES["categories"]
         
-        # Organizar por REGIÓN (como espera el frontend)
-        for region, data in self.regional_data.items():
+        for category, items in self.thematic_groups.items():
+            if not items:
+                continue
+            
+            # Obtener configuración y Color Cyberpunk
+            # Priorizamos el color del mapa THEME_COLORS, fallback al config
+            color = THEME_COLORS.get(category, categories_config.get(category, {}).get("color", "#888888"))
+            
             particles = [
                 {
                     "id": item.id,
@@ -361,25 +367,33 @@ class GeoCoreCollector:
                     "titulo_es": item.title,
                     "titulo_en": item.title,
                     "region": item.region,
-                    "category": item.category,  # Incluimos categoría para análisis
                     "url": item.link,
                     "description": item.description,
                     "proximity_score": round(item.proximity_score, 2)
                 }
-                for item in data["items"]
+                for item in items
             ]
             
             # Calcular promedio de proximidad
             avg_proximity = sum(p["proximity_score"] for p in particles) / len(particles) if particles else 0
             
-            # Obtener color o default
-            color = REGION_COLORS.get(region, "#888888")
+            # Generar síntesis temática usando IA (captura divergencias narrativas)
+            regional_narratives = defaultdict(str)
+            for item in items:
+                # Buscar la narrativa regional original
+                for region, data in self.regional_data.items():
+                    if item in data["items"]:
+                        regional_narratives[region] = data["narrative"]
+                        break
+            
+            # Crear síntesis con IA que capture divergencias
+            synthesis = self._generate_category_synthesis(category, regional_narratives, items)
             
             carousel.append({
-                "area": region,  # REGIÓN (como espera el frontend)
-                "sintesis": data["narrative"],
-                "sintesis_en": data["narrative"],
-                "color": color, # Restauramos el color!
+                "area": category, # AHORA POR TEMÁTICA
+                "sintesis": synthesis,
+                "sintesis_en": synthesis,
+                "color": color,   # COLOR CYBERPUNK
                 "count": len(particles),
                 "avg_proximity": round(avg_proximity, 2),
                 "particulas": particles
@@ -398,7 +412,7 @@ class GeoCoreCollector:
         with open("public/gravity_carousel.json", "w", encoding='utf-8') as f:
             json.dump(final, f, indent=2, ensure_ascii=False)
         
-        logging.info(f"✅ Exportado: {len(carousel)} regiones, {self.stats['total_selected']} noticias")
+        logging.info(f"✅ Exportado: {len(carousel)} categorías, {self.stats['total_selected']} noticias")
 
     def _generate_category_synthesis(self, category, regional_narratives, items):
         """Genera síntesis temática que resalta divergencias narrativas entre regiones"""
