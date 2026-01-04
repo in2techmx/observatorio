@@ -249,14 +249,29 @@ class GeoCoreCollector:
                 texts.append(text)
             
             try:
-                embeddings_response = self.client.models.embed_content(
-                    model=embedding_model,
-                    contents=texts
-                )
+                # Procesar en lotes de 100 (límite de la API de Gemini)
+                BATCH_SIZE = 100
+                all_embeddings = []
                 
+                for i in range(0, len(texts), BATCH_SIZE):
+                    batch_texts = texts[i:i + BATCH_SIZE]
+                    try:
+                        embeddings_response = self.client.models.embed_content(
+                            model=embedding_model,
+                            contents=batch_texts
+                        )
+                        # Extraer valores y añadir a la lista general
+                        batch_values = [e.values for e in embeddings_response.embeddings]
+                        all_embeddings.extend(batch_values)
+                    except Exception as e:
+                         logging.error(f"Error en batch {i}: {e}")
+                         # Rellenar con None para mantener índices alineados si falla un batch
+                         all_embeddings.extend([None] * len(batch_texts))
+
                 # Asignar embeddings a cada item
-                for i, emb_result in enumerate(embeddings_response.embeddings):
-                    items[i].embedding = emb_result.values
+                for i, embedding_values in enumerate(all_embeddings):
+                    if embedding_values:
+                         items[i].embedding = embedding_values
                 
                 # 2. Calcular centroide (vector promedio) - method from config
                 valid_embeddings = [item.embedding for item in items if item.embedding]
