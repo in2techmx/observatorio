@@ -1,4 +1,4 @@
-# PROXIMITY ENGINE V5 - GeoCore Architecture (Regional Narrative Extraction)
+# PROXIMITY ENGINE V5.1 - GeoCore Architecture (Regional Narrative Extraction)
 import os
 import json
 import datetime
