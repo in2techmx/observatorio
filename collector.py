@@ -35,14 +35,14 @@ parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategi
 args, _ = parser.parse_known_args()
 
 if args.mode == 'full':
-    FETCH_LIMIT = 100
-    print("🔥 MODO FULL: Límite 100 items/feed")
+    FETCH_LIMIT = 150
+    print("🔥 MODO FULL: Límite 150 items/feed")
 elif args.mode == 'strategic':
-    FETCH_LIMIT = 60
-    print("🛡️ MODO ESTRATÉGICO: Límite 60 items/feed")
+    FETCH_LIMIT = 80
+    print("🛡️ MODO ESTRATÉGICO: Límite 80 items/feed")
 else:
-    FETCH_LIMIT = 30
-    print("⚡ MODO TÁCTICO: Límite 30 items/feed")
+    FETCH_LIMIT = 50 # Increased from 30
+    print("⚡ MODO TÁCTICO: Límite 50 items/feed")
 
 # ============================================================================
 # CONFIGURACIÓN DE ÁREAS Y FUENTES
@@ -53,12 +53,12 @@ AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos
 FUENTES = {
     "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.propublica.org/feeds/propublica/main", "https://www.democracynow.org/democracynow.rss", "https://theintercept.com/feed/?lang=en"],
     "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news", "https://meduza.io/rss/en", "https://novayagazeta.eu/feed/rss", "https://theins.ru/en/feed"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "https://hongkongfp.com/feed/", "https://chinadigitaltimes.net/feed/"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "https://hongkongfp.com/feed/", "https://chinadigitaltimes.net/feed/", "https://asia.nikkei.com/rss/feed/nar"],
     "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://www.bellingcat.com/feed/", "https://www.opendemocracy.net/en/feed/"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.arabnews.com/cat/1/rss.xml", "https://www.middleeasteye.net/rss", "https://www.haaretz.com/cmlink/1.4608", "https://www.al-monitor.com/rss", "https://www.972mag.com/feed/"],
-    "LATAM": ["https://en.mercopress.com/rss", "https://buenosairesherald.com/feed", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", "https://insightcrime.org/feed/", "https://nacla.org/rss.xml"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.arabnews.com/cat/1/rss.xml", "https://www.middleeasteye.net/rss", "https://www.haaretz.com/cmlink/1.4608", "https://www.al-monitor.com/rss", "https://www.972mag.com/feed/", "https://www.trtworld.com/rss/news.xml"],
+    "LATAM": ["https://en.mercopress.com/rss", "https://buenosairesherald.com/feed", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", "https://insightcrime.org/feed/", "https://nacla.org/rss.xml", "https://www.clarin.com/rss/lo-ultimo/", "https://www.eluniversal.com.mx/rss/mundo.xml"],
     "AFRICA": ["https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partner/rss/rssfeed.xml", "https://www.africanews.com/feed/", "https://www.theafricareport.com/feed/", "https://mg.co.za/feed/", "http://saharareporters.com/feeds/news"],
-    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://indianexpress.com/section/india/feed/", "https://caravanmagazine.in/feed/rss", "https://thewire.in/rss", "https://scroll.in/feed"],
+    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://indianexpress.com/section/india/feed/", "https://caravanmagazine.in/feed/rss", "https://thewire.in/rss", "https://scroll.in/feed", "https://www.straitstimes.com/news/world/rss.xml"],
     "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best", "https://globalvoices.org/feed/", "https://theconversation.com/global/articles.atom"]
 }
 

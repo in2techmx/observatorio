@@ -83,82 +83,75 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
             </div>
 
             {/* Scrollable Content Container - Responsive Logic */}
-            {/* Mobile: Standard vertical scroll. Desktop: Flex row that fits screen (if content allows) or scrolls internally */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar bg-black/90 w-full">
-                <div className="container mx-auto px-4 md:px-8 py-8 h-full flex flex-col">
+            {/* 2. Main Content Grid */}
+            <div className="flex-1 overflow-y-auto md:overflow-hidden p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 relative">
 
-                    {/* Specialist Analysis Block */}
-                    {synthesisText && !filterRegion && (
-                        <div className="mb-8 md:mb-12 p-6 border-l-4 border-cyan-500 bg-white/5 rounded-r-xl backdrop-blur-md shadow-lg shrink-0">
-                            <h4 className="text-xs uppercase font-bold tracking-[0.2em] text-cyan-400 mb-3 flex items-center gap-2">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                                </span>
-                                {t.briefing}
-                            </h4>
-                            <div className="prose prose-invert prose-sm max-w-none">
-                                <p className="text-gray-200 font-mono leading-relaxed whitespace-pre-line text-sm md:text-base border-l border-white/10 pl-4">
-                                    {synthesisText}
-                                </p>
-                            </div>
-                        </div>
-                    )}
+                {/* TOP BRIEF (Mobile: Stacked first, Desktop: Absolute top or span-2? 
+                   User said "Brief arriba". In a 2-col layout, "Top" implies spanning both cols or being outside grid. 
+                   Let's put it OUTSIDE the grid, just below Header, if we want full width top. 
+                   OR make grid-cols-1 md:grid-cols-2 and put Brief in a col-span-2 div first.
+                */}
+                <div className="md:col-span-2 mb-4">
+                    <div className="bg-gradient-to-r from-cyan-900/20 to-transparent border-l-4 border-cyan-500 p-6 rounded-r-xl">
+                        <h3 className="text-xs font-bold text-cyan-400 mb-2 uppercase tracking-widest">
+                            {language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA'}
+                        </h3>
+                        <p className="text-lg md:text-xl text-gray-200 font-light leading-relaxed font-mono">
+                            {/* Strict Language Toggle for Synthesis */}
+                            {(typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis) || (language === 'EN' ? "No briefing available." : "No hay informe disponible.")}
+                        </p>
+                    </div>
+                </div>
 
-                    {/* Main Content Layout - Desktop: Side-by-Side / Mobile: Stacked */}
-                    <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-start justify-center flex-1">
+                {/* LEFT: RADAR (Interactive) */}
+                <div className="relative h-[400px] md:h-full flex flex-col items-center justify-center p-4 bg-white/5 rounded-2xl border border-white/10 order-2 md:order-1">
+                    <RadarView
+                        events={events}
+                        onNodeClick={onSelectNews}
+                        language={language}
+                    />
+                    {/* Overlay Instruction */}
+                    <div className="absolute bottom-4 left-4 text-[10px] text-gray-500 font-mono">
+                        {language === 'EN' ? "CLICK NODE TO INSPECT" : "CLIC EN NODO PARA INSPECCIONAR"}
+                    </div>
+                </div>
 
-                        {/* Block 1: The Radar (LEFT) - Pure Black Background */}
-                        <div className="flex-1 flex flex-col items-center w-full min-h-[400px] xl:h-auto xl:sticky xl:top-0 p-6 bg-black rounded-3xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.8)] shrink-0">
-                            <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-8 flex items-center gap-2">
-                                <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                {t.radarTitle}
-                            </h3>
-                            <div className="w-full max-w-[500px] aspect-square relative group">
-                                {/* Subtle center glow, but mostly black */}
-                                <div className="absolute inset-0 bg-cyan-500/5 rounded-full blur-3xl opacity-50" />
-                                <RadarView
-                                    events={events} // Pass full events to radar to show all context
-                                    hoveredId={hoveredId}
-                                    onHover={setHoveredId}
-                                    language={language}
-                                    onRegionSelect={setFilterRegion} // Pass handler
-                                    selectedRegion={filterRegion} // Pass state
-                                />
-                            </div>
-                            <div className="mt-8 flex gap-8 text-[10px] text-gray-500 font-mono text-center">
-                                <div>
-                                    <span className="block text-white font-bold mb-1">{t.center}</span>
-                                    {t.centerDesc}
+                {/* RIGHT: NEWS FEED (Scrollable) */}
+                <div className="flex flex-col h-full overflow-hidden order-3 md:order-2">
+                    <h3 className="text-xs font-bold text-gray-500 mb-4 flex items-center gap-2 px-2 shrink-0">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+                        {language === 'EN' ? 'INCOMING SIGNALS' : 'SEÑALES ENTRANTES'}
+                        <span className="text-cyan-500">[{events.length}]</span>
+                    </h3>
+
+                    <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar pb-20 md:pb-0">
+                        {events.map((event) => (
+                            <div
+                                key={event.id}
+                                onClick={() => onSelectNews(event)}
+                                className="group relative p-4 bg-black/40 border border-white/10 hover:border-cyan-500/50 hover:bg-cyan-900/10 rounded-lg cursor-pointer transition-all"
+                            >
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="text-[10px] font-bold text-cyan-400 bg-cyan-900/30 px-2 py-0.5 rounded uppercase tracking-wider">
+                                        {event.region || "GLOBAL"}
+                                    </span>
+                                    <span className="text-[10px] text-gray-500 font-mono">
+                                        {Math.round(event.proximity_score * 10)}% PROX
+                                    </span>
                                 </div>
-                                <div>
-                                    <span className="block text-white font-bold mb-1">{t.perimeter}</span>
-                                    {t.perimeterDesc}
+                                <h4 className="text-sm font-medium text-gray-200 group-hover:text-white leading-snug mb-2">
+                                    {language === 'EN' ? (event.titulo_en || event.title) : (event.titulo_es || event.title)}
+                                </h4>
+                                <div className="flex items-center justify-between text-[10px] text-gray-600 font-mono">
+                                    <span>{new Date().toLocaleDateString()}</span>
+                                    <span className="group-hover:text-cyan-400 transition-colors">>> READ</span>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Block 2: The List (RIGHT) - Glass Cards */}
-                        <div className="flex-1 w-full xl:max-w-2xl xl:h-full xl:overflow-y-auto custom-scrollbar pr-2">
-                            <h3 className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-6 pl-2 flex items-center gap-2 sticky top-0 bg-black/90 pb-4 z-10 backdrop-blur-sm">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-                                {t.feedTitle}
-                            </h3>
-                            <div className="bg-transparent space-y-2 pb-12">
-                                <NewsList
-                                    events={filteredEvents} // Pass filtered events
-                                    hoveredId={hoveredId}
-                                    onHover={setHoveredId}
-                                    onSelect={onSelectNews}
-                                    language={language}
-                                />
-                            </div>
-                        </div>
-
+                        ))}
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
