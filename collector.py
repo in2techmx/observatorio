@@ -389,10 +389,18 @@ class GeoCoreCollector:
             # Crear síntesis con IA que capture divergencias
             synthesis = self._generate_category_synthesis(category, regional_narratives, items)
             
+            # Sanitizar nombres de regiones para consistencia (ej. USA vs NORTEAMERICA)
+            # Mapeo simple para asegurar keys consistentes en frontend
+            export_regional_narratives = {}
+            for region, narrative in regional_narratives.items():
+                clean_region = region.split("_")[0] # EUROPA_WEST -> EUROPA
+                export_regional_narratives[region] = narrative
+
             carousel.append({
                 "area": category, # AHORA POR TEMÁTICA
                 "sintesis": synthesis,
                 "sintesis_en": synthesis,
+                "regional_syntheses": export_regional_narratives, # NEW: Per-region narratives
                 "color": color,   # COLOR CYBERPUNK
                 "count": len(particles),
                 "avg_proximity": round(avg_proximity, 2),
