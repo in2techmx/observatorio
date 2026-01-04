@@ -1,0 +1,27 @@
+{
+    "version": "1.0",
+    "description": "Phase 2: Thematic Classification Logic",
+    "method": "keyword_matching",
+    "fallback_category": "Other",
+    "min_keyword_matches": 1,
+    "classification_rules": {
+        "search_fields": [
+            "title",
+            "description"
+        ],
+        "case_sensitive": false,
+        "priority_order": "first_match",
+        "notes": [
+            "Categories are defined in categories.json",
+            "Each news item is classified by matching keywords in title + description",
+            "First matching category wins (based on priority in categories.json)",
+            "If no match, item goes to 'Other' category"
+        ]
+    },
+    "output_format": {
+        "grouped_by": "category",
+        "includes_regional_diversity": true,
+        "expected_categories": 5,
+        "expected_items_per_category": "15-20 (varies by news cycle)"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "version": "1.0",
+    "description": "Phase 3: Proximity Calculation Logic (Centroid-based)",
+    "embedding_model": "text-embedding-004",
+    "embedding_fields": [
+        "title",
+        "description"
+    ],
+    "embedding_separator": " ",
+    "centroid_calculation": {
+        "method": "mean_vector",
+        "scope": "per_category",
+        "min_items_for_centroid": 2,
+        "description": "Calculate the average (centroid) of all news embeddings within each category"
+    },
+    "distance_metric": {
+        "type": "cosine_similarity",
+        "normalization": "0_to_100",
+        "formula": "((cosine_similarity + 1) / 2) * 100",
+        "interpretation": {
+            "high_score_80_100": "Narrative aligns with global consensus on this topic",
+            "medium_score_50_79": "Moderate alignment with some regional nuance",
+            "low_score_0_49": "Divergent regional perspective, unique narrative angle"
+        }
+    },
+    "batch_processing": {
+        "enabled": true,
+        "batch_size": 100,
+        "notes": "Process embeddings in batches to optimize API calls"
+    },
+    "output": {
+        "field_name": "proximity_score",
+        "decimal_places": 2,
+        "stored_in_item": true,
+        "used_for_radar_visualization": true
+    },
+    "geopolitical_insight": {
+        "purpose": "Measure narrative convergence/divergence across regions",
+        "center_represents": "Global consensus narrative on this topic",
+        "periphery_represents": "Regional-specific perspectives and interpretations",
+        "example": "On 'War & Conflict': USA + Europe near center (aligned), Russia + China on periphery (divergent narrative)"
+    }
+}

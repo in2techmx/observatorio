@@ -34,6 +34,8 @@ RSS_FEEDS = load_config("feeds.json")
 PROMPTS = load_config("prompts.json")
 PIPELINE = load_config("pipeline_logic.json")
 CATEGORIES = load_config("categories.json")
+PHASE2_CONFIG = load_config("phase2_classification.json")
+PHASE3_CONFIG = load_config("phase3_proximity.json")
 
 # --- NEWS ITEM ---
 class NewsItem:
@@ -171,16 +173,24 @@ class GeoCoreCollector:
         
         logging.info(f"  📊 Total de noticias a clasificar: {len(all_items)}")
         
-        # Clasificar cada noticia por categoría usando keywords
+        # Clasificar cada noticia por categoría usando keywords (config from phase2_classification.json)
         categories_data = CATEGORIES["categories"]
+        fallback_cat = PHASE2_CONFIG["fallback_category"]
+        case_sensitive = PHASE2_CONFIG["classification_rules"]["case_sensitive"]
         
         for item in all_items:
-            text = (item.title + " " + item.description).lower()
-            item.category = "Other"  # Default
+            # Build search text from configured fields
+            search_fields = PHASE2_CONFIG["classification_rules"]["search_fields"]
+            text_parts = [getattr(item, field, "") for field in search_fields]
+            text = " ".join(text_parts)
+            if not case_sensitive:
+                text = text.lower()
+            
+            item.category = fallback_cat  # Default from config
             
             # Buscar coincidencias con keywords
             for cat_name, cat_info in categories_data.items():
-                if cat_name == "Other":
+                if cat_name == fallback_cat:
                     continue
                 keywords = cat_info["keywords"]
                 if any(keyword in text for keyword in keywords):
@@ -203,19 +213,30 @@ class GeoCoreCollector:
         
         import math
         
+        # Load config parameters
+        embedding_model = PHASE3_CONFIG["embedding_model"]
+        embedding_fields = PHASE3_CONFIG["embedding_fields"]
+        separator = PHASE3_CONFIG["embedding_separator"]
+        min_items = PHASE3_CONFIG["centroid_calculation"]["min_items_for_centroid"]
+        
         for category, items in self.thematic_groups.items():
-            if len(items) < 2:
-                logging.info(f"  ⚠️ {category}: Insuficientes items para centroide ({len(items)})")
+            if len(items) < min_items:
+                logging.info(f"  ⚠️ {category}: Insuficientes items para centroide ({len(items)} < {min_items})")
                 continue
             
             logging.info(f"  🎯 Procesando: {category} ({len(items)} items)")
             
             # 1. Generar embeddings para todos los items de esta categoría
-            texts = [f"{item.title} {item.description}" for item in items]
+            # Build text from configured fields
+            texts = []
+            for item in items:
+                field_values = [getattr(item, field, "") for field in embedding_fields]
+                text = separator.join(field_values)
+                texts.append(text)
             
             try:
                 embeddings_response = self.client.models.embed_content(
-                    model="text-embedding-004",
+                    model=embedding_model,
                     contents=texts
                 )
                 
@@ -223,7 +244,7 @@ class GeoCoreCollector:
                 for i, emb_result in enumerate(embeddings_response.embeddings):
                     items[i].embedding = emb_result.values
                 
-                # 2. Calcular centroide (vector promedio)
+                # 2. Calcular centroide (vector promedio) - method from config
                 valid_embeddings = [item.embedding for item in items if item.embedding]
                 if not valid_embeddings:
                     continue
@@ -232,15 +253,17 @@ class GeoCoreCollector:
                 centroid = [sum(col)/len(valid_embeddings) for col in zip(*valid_embeddings)]
                 
                 # 3. Calcular distancia de cada item al centroide
+                # Using distance metric from config
                 for item in items:
                     if item.embedding:
-                        # Cosine similarity
+                        # Cosine similarity (as per config)
                         dot = sum(a*b for a,b in zip(item.embedding, centroid))
                         norm1 = math.sqrt(sum(a*a for a in item.embedding))
                         norm2 = math.sqrt(sum(a*a for a in centroid))
                         similarity = dot / (norm1 * norm2) if norm1 and norm2 else 0
                         
-                        # Convertir a score 0-100 (mayor = más cerca del consenso)
+                        # Normalize to 0-100 using formula from config
+                        # Formula: ((cosine_similarity + 1) / 2) * 100
                         item.proximity_score = ((similarity + 1) / 2) * 100
                 
                 logging.info(f"    ✅ Proximidad calculada para {len(valid_embeddings)} items")
