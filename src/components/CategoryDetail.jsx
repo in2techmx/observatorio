@@ -18,7 +18,6 @@ const CategoryDetail = ({ category, events, synthesis, regionalSyntheses, onSele
 
     const [hoveredId, setHoveredId] = useState(null);
     const [filterRegion, setFilterRegion] = useState(null); // New: Filter by region
-    const [selectedRadarId, setSelectedRadarId] = useState(null); // Lifted state
 
     if (!category) return null;
 
