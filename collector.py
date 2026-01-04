@@ -35,14 +35,14 @@ parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategi
 args, _ = parser.parse_known_args()
 
 if args.mode == 'full':
-    FETCH_LIMIT = 60
-    print("🔥 MODO FULL: Límite 60 items/feed")
+    FETCH_LIMIT = 100
+    print("🔥 MODO FULL: Límite 100 items/feed")
 elif args.mode == 'strategic':
-    FETCH_LIMIT = 40
-    print("🛡️ MODO ESTRATÉGICO: Límite 40 items/feed")
+    FETCH_LIMIT = 60
+    print("🛡️ MODO ESTRATÉGICO: Límite 60 items/feed")
 else:
-    FETCH_LIMIT = 20
-    print("⚡ MODO TÁCTICO: Límite 20 items/feed")
+    FETCH_LIMIT = 30
+    print("⚡ MODO TÁCTICO: Límite 30 items/feed")
 
 # ============================================================================
 # CONFIGURACIÓN DE ÁREAS Y FUENTES
@@ -197,14 +197,14 @@ class IroncladCollectorPro:
         """Clasificación simple basada en keywords cuando Gemini falla"""
         if not batch: return
         
-        # Keywords en inglés (fuentes originales)
+        # Keywords Multilingües (EN/ES) para mejor cobertura
         keywords_map = {
-            "Seguridad y Conflictos": ["military", "defense", "war", "attack", "terror", "pentagon", "nato", "army", "strike", "conflict"],
-            "Economía y Sanciones": ["economy", "finance", "sanction", "market", "trade", "bank", "inflation", "stock", "gdp", "debt"],
-            "Energía y Recursos": ["energy", "oil", "gas", "mining", "climate", "renewable", "nuclear", "solar", "water", "carbon"],
-            "Soberanía y Alianzas": ["alliance", "treaty", "diplomacy", "summit", "sovereignty", "brics", "un", "relations", "foreign"],
-            "Tecnología y Espacio": ["technology", "space", "digital", "satellite", "ai", "cyber", "chip", "moon", "launch", "rocket"],
-            "Sociedad y Derechos": ["rights", "human", "protest", "health", "education", "justice", "law", "court", "immigration"]
+            "Seguridad y Conflictos": ["military", "defense", "war", "attack", "terror", "nato", "army", "conflict", "guerra", "militar", "ataque", "terrorismo", "defensa", "conflicto", "armada"],
+            "Economía y Sanciones": ["economy", "finance", "sanction", "market", "trade", "bank", "inflation", "stock", "gdp", "debt", "economía", "finanzas", "sanciones", "comercio", "mercado", "inflación", "banco", "deuda"],
+            "Energía y Recursos": ["energy", "oil", "gas", "mining", "climate", "renewable", "nuclear", "solar", "water", "carbon", "energía", "petróleo", "gas", "minería", "clima", "nuclear", "agua", "recursos"],
+            "Soberanía y Alianzas": ["alliance", "treaty", "diplomacy", "summit", "sovereignty", "brics", "un", "relations", "foreign", "alianza", "tratado", "diplomacia", "cumbre", "soberanía", "relaciones", "brics"],
+            "Tecnología y Espacio": ["technology", "space", "digital", "satellite", "ai", "cyber", "chip", "moon", "launch", "rocket", "tecnología", "espacio", "digital", "satélite", "ia", "ciber", "luna", "cohete"],
+            "Sociedad y Derechos": ["rights", "human", "protest", "health", "education", "justice", "law", "court", "immigration", "derechos", "humanos", "protesta", "salud", "educación", "justicia", "ley", "corte", "inmigración"]
         }
         
         count = 0
