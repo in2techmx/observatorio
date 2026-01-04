@@ -95,33 +95,86 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
             </div>
 
             {/* Scrollable Content Container - Responsive Logic */}
-            <div className="flex-1 overflow-y-auto md:overflow-hidden p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 relative">
+            <div className="flex-1 overflow-hidden p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 relative">
 
-                {/* TOP BRIEF: Compact Layout */}
-                <div className="md:col-span-2 mb-2">
-                    <div className="bg-gradient-to-r from-cyan-900/10 to-transparent border-l-2 border-cyan-500 pl-4 py-2 rounded-r-lg">
-                        <div className="flex items-baseline gap-3 mb-1">
-                            <h3 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
-                                {language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA'}
-                            </h3>
-                            <div className="h-[1px] flex-1 bg-cyan-900/30"></div>
-                        </div>
-                        <p className="text-sm md:text-base text-gray-300 font-light leading-snug font-sans max-w-4xl">
-                            {(typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis) || (language === 'EN' ? "No briefing available." : "No hay informe disponible.")}
-                        </p>
+                {/* DYNAMIC TOP PANEL: BRIEFING OR INSPECTION */}
+                <div className="md:col-span-2 min-h-[120px] shrink-0">
+                    <div className={`h-full border-l-4 pl-4 py-3 rounded-r-lg transition-all duration-300 ${selectedRadarId
+                        ? 'bg-gradient-to-r from-gray-900 via-gray-900/50 to-transparent border-white'
+                        : 'bg-gradient-to-r from-cyan-900/10 to-transparent border-cyan-500'}`}>
+
+                        {selectedRadarId ? (
+                            // === INSPECTION MODE (Selected Item) ===
+                            (() => {
+                                const item = events.find(e => e.id === selectedRadarId);
+                                const regionColor = REGION_COLORS[item.region] || "#fff";
+                                return (
+                                    <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded text-black uppercase tracking-widest"
+                                                style={{ backgroundColor: regionColor }}>
+                                                TARGET LOCKED: {item.region}
+                                            </span>
+                                            <div className="h-[1px] flex-1 bg-white/20"></div>
+                                            <span className="text-[10px] text-gray-400 font-mono">
+                                                CONFIDENCE: {item.confianza || '95'}% | BIAS: {item.sesgo || 'NEUTRAL'}
+                                            </span>
+                                        </div>
+
+                                        <h3 className="text-lg md:text-xl font-bold text-white leading-tight mb-2 font-display">
+                                            {language === 'EN' ? (item.titulo_en || item.title) : (item.titulo_es || item.title)}
+                                        </h3>
+
+                                        <div className="flex flex-wrap gap-4 text-xs text-gray-300 font-sans">
+                                            {item.snippet && (
+                                                <p className="max-w-4xl opacity-90 border-l-2 border-white/20 pl-2 italic">
+                                                    "{item.snippet}"
+                                                </p>
+                                            )}
+
+                                            <div className="flex flex-wrap gap-2 mt-1">
+                                                {(item.keywords || []).slice(0, 5).map((kw, i) => (
+                                                    <span key={i} className="text-[9px] border border-white/20 px-1.5 rounded text-gray-400 font-mono">
+                                                        #{kw}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()
+                        ) : (
+                            // === BRIEFING MODE (Default) ===
+                            <>
+                                <div className="flex items-baseline gap-3 mb-1">
+                                    <h3 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
+                                        {language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA'}
+                                    </h3>
+                                    <div className="h-[1px] flex-1 bg-cyan-900/30"></div>
+                                </div>
+                                <p className="text-sm md:text-base text-gray-300 font-light leading-snug font-sans max-w-5xl">
+                                    {(typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis) || (language === 'EN' ? "No briefing available." : "No hay informe disponible.")}
+                                </p>
+                            </>
+                        )}
                     </div>
                 </div>
 
                 {/* LEFT: RADAR (Interactive) */}
-                <div className="relative h-[350px] md:h-full flex flex-col items-center justify-center p-2 bg-white/5 rounded-xl border border-white/5 order-2 md:order-1">
+                <div className="relative h-[300px] md:h-full flex flex-col items-center justify-center p-2 bg-white/5 rounded-xl border border-white/5 order-2 md:order-1 overflow-hidden">
                     <RadarView
                         events={events}
-                        onNodeClick={onSelectNews} // Legacy prop, might be unused in RadarView now
+                        onNodeClick={onSelectNews} // Legacy prop
                         language={language}
-                        hoveredId={hoveredId} // Pass hover state from list
-                        selectedNodeId={selectedRadarId} // Sync Selection
-                        onNodeSelect={setSelectedRadarId} // Allow Radar to update state
+                        hoveredId={hoveredId}
+                        selectedNodeId={selectedRadarId}
+                        onNodeSelect={setSelectedRadarId}
                     />
+                    {/* Radar Legend/Status */}
+                    <div className="absolute bottom-2 left-4 text-[9px] font-mono text-white/30 pointer-events-none">
+                        RADAR_STATUS: ACTIVE<br />
+                        SCANNING_SECTOR: {filterRegion || "GLOBAL"}
+                    </div>
                 </div>
 
                 {/* RIGHT: NEWS FEED (Scrollable) */}
