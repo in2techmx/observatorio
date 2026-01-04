@@ -3,7 +3,9 @@ import RadarView from './RadarView';
 import { motion } from 'framer-motion';
 import { REGION_COLORS } from '../constants/regions';
 
-const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, language = 'EN', categoryTranslations }) => {
+const CategoryDetail = ({ category, events, synthesis, regionalSyntheses, onSelectNews, onClose, language = 'EN', categoryTranslations }) => {
+    const [selectedRadarId, setSelectedRadarId] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
 
     // Helper to clean URL
     const tryParseDomain = (url) => {
