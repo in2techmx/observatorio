@@ -1,10 +1,10 @@
 import json, sys, os
 
 try:
-    if not os.path.exists('gravity_carousel.json'):
+    if not os.path.exists('public/gravity_carousel.json'):
         sys.exit(1)
         
-    with open('gravity_carousel.json', 'r', encoding='utf-8') as f:
+    with open('public/gravity_carousel.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     
     if 'carousel' not in data or not isinstance(data['carousel'], list):
