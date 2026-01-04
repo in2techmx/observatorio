@@ -133,75 +133,97 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                     </h3>
 
                     <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar pb-20 md:pb-0">
-                        {filteredEvents.map((event) => (
-                            <div
-                                key={event.id}
-                                onClick={() => setSelectedRadarId(event.id)} // CLICK NOW SELECTS IN RADAR
-                                onMouseEnter={() => setHoveredId(event.id)} // Sync Hover
-                                onMouseLeave={() => setHoveredId(null)}
-                                className={`group relative p-4 bg-black/40 border rounded-md cursor-pointer transition-all duration-200 flex flex-col gap-2
-                                    ${hoveredId === event.id || selectedRadarId === event.id ? 'border-cyan-500 bg-cyan-900/20' : 'border-white/5 hover:border-white/20 hover:bg-white/5'}
-                                `}
-                            >
-                                {/* Header: Region & Score */}
-                                <div className="flex justify-between items-start">
-                                    <span className="text-[9px] font-bold text-cyan-400 bg-cyan-900/30 px-1.5 rounded uppercase tracking-wider">
-                                        {event.region || "GLOBAL"}
-                                    </span>
-                                    <span className={`text-[9px] font-mono ${hoveredId === event.id ? 'text-white' : 'text-gray-600'}`}>
-                                        PROX: {Math.round(event.proximity_score * 10)}%
-                                    </span>
-                                </div>
+                        {filteredEvents.map((event) => {
+                            // Resolve Color
+                            const regionColor = REGION_COLORS[event.region] || REGION_COLORS["GLOBAL"] || "#fff";
+                            const isSelected = hoveredId === event.id || selectedRadarId === event.id;
 
-                                {/* Title */}
-                                <h4 className={`text-sm font-bold leading-tight ${hoveredId === event.id ? 'text-white' : 'text-gray-200'}`}>
-                                    {language === 'EN' ? (event.titulo_en || event.title) : (event.titulo_es || event.title)}
-                                </h4>
-
-                                {/* Snippet / Synthesis */}
-                                {event.snippet && (
-                                    <p className="text-xs text-gray-400 leading-snug line-clamp-3 font-sans border-l-2 border-white/10 pl-2">
-                                        {event.snippet}
-                                    </p>
-                                )}
-
-                                {/* Footer: Metadata & Source Link */}
-                                <div className="flex items-center justify-between text-[10px] text-gray-500 font-mono mt-1 pt-2 border-t border-white/5">
-                                    <div className="flex gap-2">
-                                        <span>{new Date().toLocaleDateString()}</span>
-                                        {/* Parse domain from URL if possible */}
-                                        {event.source_url && (
-                                            <span className="text-cyan-600 truncate max-w-[100px]">
-                                                {tryParseDomain(event.source_url)}
-                                            </span>
-                                        )}
+                            return (
+                                <div
+                                    key={event.id}
+                                    onClick={() => setSelectedRadarId(event.id)}
+                                    onMouseEnter={() => setHoveredId(event.id)}
+                                    onMouseLeave={() => setHoveredId(null)}
+                                    // Dynamic Style: Border and Background follow Region Color
+                                    className={`group relative p-4 bg-black/40 border rounded-md cursor-pointer transition-all duration-200 flex flex-col gap-2`}
+                                    style={{
+                                        borderColor: isSelected ? regionColor : 'rgba(255,255,255,0.05)',
+                                        backgroundColor: isSelected ? `${regionColor}10` : 'rgba(0,0,0,0.4)',
+                                        boxShadow: isSelected ? `0 0 15px ${regionColor}20` : 'none'
+                                    }}
+                                >
+                                    {/* Header: Region & Score */}
+                                    <div className="flex justify-between items-start">
+                                        <span
+                                            className="text-[9px] font-bold px-1.5 rounded uppercase tracking-wider"
+                                            style={{
+                                                color: regionColor,
+                                                backgroundColor: `${regionColor}20`,
+                                                border: `1px solid ${regionColor}40`
+                                            }}
+                                        >
+                                            {event.region || "GLOBAL"}
+                                        </span>
+                                        <span className={`text-[9px] font-mono ${isSelected ? 'text-white' : 'text-gray-600'}`}>
+                                            PROX: {Math.round(event.proximity_score * 10)}%
+                                        </span>
                                     </div>
 
-                                    <a
-                                        href={event.source_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className={`flex items-center gap-1 transition-colors uppercase tracking-wider hover:underline
-                                            ${hoveredId === event.id ? 'text-cyan-400' : 'group-hover:text-cyan-400'}
-                                        `}
-                                    >
-                                        [ {language === 'EN' ? 'SOURCE' : 'FUENTE'} ]
-                                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                    </a>
+                                    {/* Title */}
+                                    <h4 className={`text-sm font-bold leading-tight ${isSelected ? 'text-white' : 'text-gray-200'}`}>
+                                        {language === 'EN' ? (event.titulo_en || event.title) : (event.titulo_es || event.title)}
+                                    </h4>
 
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            onSelectNews(event);
-                                        }}
-                                        className="text-white hover:text-cyan-400 font-bold ml-4 border-b border-white/20 hover:border-cyan-400 transition-colors"
-                                    >
-                                        &gt;&gt; {language === 'EN' ? 'ANALYZE' : 'ANALIZAR'}
-                                    </button>
+                                    {/* Snippet / Synthesis */}
+                                    {event.snippet && (
+                                        <p
+                                            className="text-xs text-gray-400 leading-snug line-clamp-3 font-sans border-l-2 pl-2"
+                                            style={{ borderColor: `${regionColor}40` }}
+                                        >
+                                            {event.snippet}
+                                        </p>
+                                    )}
+
+                                    {/* Footer: Metadata & Source Link */}
+                                    <div className="flex items-center justify-between text-[10px] text-gray-500 font-mono mt-1 pt-2 border-t border-white/5">
+                                        <div className="flex gap-2">
+                                            <span>{new Date().toLocaleDateString()}</span>
+                                            {event.source_url && (
+                                                <span className="truncate max-w-[100px]" style={{ color: isSelected ? regionColor : undefined }}>
+                                                    {tryParseDomain(event.source_url)}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <a
+                                            href={event.source_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="flex items-center gap-1 transition-colors uppercase tracking-wider hover:underline"
+                                            style={{ color: isSelected ? regionColor : undefined }}
+                                        >
+                                            [ {language === 'EN' ? 'SOURCE' : 'FUENTE'} ]
+                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                        </a>
+
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onSelectNews(event);
+                                            }}
+                                            className="font-bold ml-4 border-b border-white/20 transition-colors"
+                                            style={{
+                                                color: isSelected ? '#fff' : regionColor,
+                                                borderColor: isSelected ? regionColor : undefined
+                                            }}
+                                        >
+                                            &gt;&gt; {language === 'EN' ? 'ANALYZE' : 'ANALIZAR'}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>
