@@ -1,7 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const LandingHero = () => {
+const LandingHero = ({ language = 'EN', toggleLanguage }) => {
+    // Dictionary
+    const t = {
+        subtitle: language === 'EN' ? "Global Intelligence Observatory" : "Observatorio de Inteligencia Global",
+        desc: language === 'EN'
+            ? "Decentralized monitoring of geopolitical signals. Tracking convergence across 7 strategic regions."
+            : "Monitoreo descentralizado de señales geopolíticas. Rastreando la convergencia en 7 regiones estratégicas.",
+        legend1: language === 'EN' ? "Category Decks" : "Decks de Categoría",
+        legend2: language === 'EN' ? "Gravity Score (1-10)" : "Puntaje de Gravedad (1-10)"
+    };
+
     return (
         <div className="relative w-full h-[25vh] md:h-[20vh] flex items-center justify-between px-6 md:px-12 border-b border-white/10 overflow-hidden bg-black z-50">
             {/* Background Effects */}
@@ -23,29 +33,38 @@ const LandingHero = () => {
                 </motion.div>
                 <div className="flex flex-col gap-1 mt-2">
                     <p className="text-xs text-cyan-500 font-bold tracking-widest uppercase">
-                        Global Intelligence Observatory
+                        {t.subtitle}
                     </p>
                     <p className="text-[10px] md:text-xs text-gray-400 font-mono leading-relaxed max-w-md hidden md:block">
-                        Decentralized monitoring of geopolitical signals.
-                        Tracking convergence across 7 strategic regions.
+                        {t.desc}
                     </p>
                 </div>
             </div>
 
-            {/* Right: Micro-Legend (Horizontal) */}
+            {/* Right: Micro-Legend & Language Toggle */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="z-10 hidden md:flex items-center gap-6"
+                className="z-10 flex items-center gap-6"
             >
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 backdrop-blur-sm">
+                {/* Language Toggle */}
+                <button
+                    onClick={toggleLanguage}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition-all active:scale-95"
+                >
+                    <span className={`text-[10px] font-bold ${language === 'EN' ? 'text-cyan-400' : 'text-gray-500'}`}>EN</span>
+                    <div className="h-3 w-[1px] bg-white/20"></div>
+                    <span className={`text-[10px] font-bold ${language === 'ES' ? 'text-cyan-400' : 'text-gray-500'}`}>ES</span>
+                </button>
+
+                <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 backdrop-blur-sm">
                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-                    <span className="text-[10px] uppercase text-gray-300 tracking-wider font-bold">Category Decks</span>
+                    <span className="text-[10px] uppercase text-gray-300 tracking-wider font-bold">{t.legend1}</span>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 backdrop-blur-sm">
+                <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 backdrop-blur-sm">
                     <div className="w-1.5 h-1.5 rounded-full bg-magenta-400 shadow-[0_0_8px_rgba(232,121,249,0.8)]"></div>
-                    <span className="text-[10px] uppercase text-gray-300 tracking-wider font-bold">Gravity Score (1-10)</span>
+                    <span className="text-[10px] uppercase text-gray-300 tracking-wider font-bold">{t.legend2}</span>
                 </div>
             </motion.div>
         </div>

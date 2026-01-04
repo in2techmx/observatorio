@@ -84,38 +84,44 @@ function App() {
         return selectedCategory ? events.filter(e => e.category === selectedCategory) : [];
     }, [selectedCategory, events]);
 
+    // Handlers for the new overlay logic
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+        setIsOverlayOpen(true);
+    };
+
+    const handleCloseOverlay = () => {
+        setIsOverlayOpen(false);
+        setSelectedCategory(null);
+    };
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-cyan-500 selection:text-black">
+        <div className="relative w-full min-h-screen bg-black text-white font-sans selection:bg-cyan-500/30 overflow-hidden">
 
-            {/* 1. HERO SECTION */}
-            <LandingHero />
+            {/* Header / Hero with Language Toggle */}
+            <LandingHero
+                language={language}
+                toggleLanguage={toggleLanguage}
+            />
 
-            {/* 2. MAIN NAV INTERFACE (Gravity Stream) */}
-            <div id="main-monitor" className="relative min-h-screen bg-black -mt-10 z-10">
-
-                {/* A. Horizontal 3D Carousel (Sticky Header) */}
-                <div className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl">
+            {/* Main Content: Carousel */}
+            <div className="relative z-10 flex flex-col items-center justify-center h-[75vh]">
+                {loading ? (
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin"></div>
+                        <p className="text-cyan-500 font-mono text-sm animate-pulse">
+                            {language === 'EN' ? 'INITIALIZING SATELLITE LINK...' : 'INICIALIZANDO ENLACE SATELITAL...'}
+                        </p>
+                    </div>
+                ) : (
                     <GravityCarousel
-                        categories={categoriesList}
-                        selectedCategory={selectedCategory}
-                        onSelect={setSelectedCategory}
+                        categories={categoriesList} // Changed from 'data' to 'categories' to match existing prop
+                        selectedCategory={selectedCategory} // Changed from 'data' to 'selectedCategory' to match existing prop
+                        onSelect={handleCategorySelect} // Changed from 'onCategorySelect' to 'onSelect' to match existing prop
+                        language={language}
+                        categoryTranslations={CATEGORY_TRANSLATIONS}
                     />
-                </div>
-
-                {/* B. Active Category Detailed View - REFACTORED TO OVERLAY */}
-                <AnimatePresence>
-                    {selectedCategory && (
-                        <CategoryDetail
-                            key={selectedCategory}
-                            category={selectedCategory}
-                            events={activeEvents}
-                            synthesis={syntheses[selectedCategory]}
-                            onSelectNews={setSelectedNews}
-                            onClose={() => setSelectedCategory(null)}
-                        />
-                    )}
-                </AnimatePresence>
+                )}
             </div>
 
             {/* 3. FOOTER */}

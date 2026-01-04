@@ -2,14 +2,25 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe } from 'lucide-react';
 
-const NewsList = ({ events, hoveredId, onHover, onSelect }) => {
+const NewsList = ({ events, hoveredId, onHover, onSelect, language = 'EN' }) => {
+    // Labels
+    const t = {
+        read: language === 'EN' ? "Read Intelligence" : "Leer Informe",
+        noData: language === 'EN' ? "No sufficient data for deep analysis." : "Datos insuficientes para análisis profundo.",
+        keywords: language === 'EN' ? "Keywords" : "Claves"
+    };
+
     return (
         <div className="flex flex-col gap-3 h-[600px] overflow-y-auto pr-2 custom-scrollbar pb-20">
             {events.map((ev) => {
                 const isHovered = hoveredId === ev.id;
+                // Bilingual Title Logic
+                const displayTitle = language === 'EN'
+                    ? (ev.titulo_en || ev.original_title || ev.title)
+                    : (ev.titulo_es || ev.translated_title || ev.title);
 
-                // Parse domain for display
-                const domain = ev.source_url ? new URL(ev.source_url).hostname.replace('www.', '') : 'External Source';
+                // Domain Parsing
+                const domain = ev.source_url ? new URL(ev.source_url).hostname.replace('www.', '') : 'Source';
 
                 return (
                     <motion.div
@@ -29,32 +40,37 @@ const NewsList = ({ events, hoveredId, onHover, onSelect }) => {
                         <div className="flex justify-between items-start mb-3">
                             <div className="flex items-center gap-2">
                                 <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${isHovered ? 'bg-cyan-900/20 text-cyan-400 border-cyan-500/30' : 'bg-white/5 text-gray-500 border-white/10'}`}>
-                                    {ev.country}
+                                    {ev.region || ev.country}
                                 </span>
                                 <span className="text-[9px] text-gray-600 font-mono flex items-center gap-1">
                                     <Globe size={10} /> {domain}
                                 </span>
                             </div>
                             <span className={`text-[10px] font-mono ${isHovered ? 'text-cyan-400' : 'text-gray-600'}`}>
-                                {Number(ev.proximity_score).toFixed(2)}
+                                {Number(ev.proximity_score || ev.proximidad || 0).toFixed(2)}
                             </span>
                         </div>
 
                         <h3 className={`text-sm font-semibold leading-snug mb-3 ${isHovered ? 'text-white' : 'text-gray-400'}`}>
-                            {ev.title}
+                            {displayTitle}
                         </h3>
 
-                        {/* Always show analysis/commentary in list view (specialist inputs) */}
+                        {/* Analysis / Keywords / Snippet */}
                         <div className={`text-xs overflow-hidden border-l-2 pl-3 ${isHovered ? 'border-cyan-500/50 text-gray-300' : 'border-white/10 text-gray-500'}`}>
                             <p className="line-clamp-3 leading-relaxed italic">
-                                "{ev.analysis || "No sufficient data for deep analysis."}"
+                                {ev.analysis
+                                    ? `"${ev.analysis}"`
+                                    : (ev.keywords && ev.keywords.length > 0)
+                                        ? `${t.keywords}: ${ev.keywords.join(', ')}`
+                                        : `"${ev.snippet || t.noData}"`
+                                }
                             </p>
                         </div>
 
                         {isHovered && (
                             <div className="mt-3 flex justify-end">
                                 <div className="flex items-center gap-1 text-cyan-400 text-[9px] uppercase font-bold tracking-widest animate-pulse">
-                                    Read Intelligence <ArrowRight size={10} />
+                                    {t.read} <ArrowRight size={10} />
                                 </div>
                             </div>
                         )}

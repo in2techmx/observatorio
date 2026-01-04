@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const RadarView = ({ events, hoveredId, onHover }) => {
+const RadarView = ({ events, hoveredId, onHover, language = 'EN' }) => {
     const [selectedNodeId, setSelectedNodeId] = useState(null);
 
     // Canvas config
@@ -34,6 +34,24 @@ const RadarView = ({ events, hoveredId, onHover }) => {
         "GLOBAL": 0
     };
 
+    // Translations
+    const t = {
+        regions: {
+            "USA": language === 'EN' ? "USA" : "EE.UU",
+            "RUSSIA": language === 'EN' ? "RUSSIA" : "RUSIA",
+            "CHINA": "CHINA",
+            "EUROPE": language === 'EN' ? "EUROPE" : "EUROPA",
+            "MID_EAST": language === 'EN' ? "M. EAST" : "O. MEDIO",
+            "LATAM": "LATAM",
+            "AFRICA": language === 'EN' ? "AFRICA" : "ÁFRICA",
+            "INDIA": "INDIA",
+            "GLOBAL": "GLOBAL"
+        },
+        tap: language === 'EN' ? "Tap for details" : "Tocar para ver más",
+        unknown: language === 'EN' ? "Unknown Source" : "Fuente Desconocida",
+        keywords: language === 'EN' ? "Keywords" : "Claves"
+    };
+
     // PHYSICS ENGINE ----------------
     const [layout, setLayout] = useState([]);
 
@@ -44,8 +62,9 @@ const RadarView = ({ events, hoveredId, onHover }) => {
             const baseAngleDeg = regionAngles[ev.country] || regionAngles[ev.region] || (Math.random() * 360);
             const jitter = (Math.random() - 0.5) * 40;
             const angleRad = (baseAngleDeg + jitter) * (Math.PI / 180);
-            // Proximity Score (0-10)
-            const r = maxRadius * (1 - (ev.proximity_score / 10));
+            // Proximity Score (0-10) - ensure numeric
+            const score = Number(ev.proximity_score || ev.proximidad || 0);
+            const r = maxRadius * (1 - (score / 10));
 
             return {
                 id: ev.id,
@@ -98,6 +117,14 @@ const RadarView = ({ events, hoveredId, onHover }) => {
 
     const selectedEvent = events.find(e => e.id === selectedNodeId);
 
+    // Bilingual title helper for selected event
+    const getSelectedTitle = () => {
+        if (!selectedEvent) return "";
+        return language === 'EN'
+            ? (selectedEvent.titulo_en || selectedEvent.original_title || selectedEvent.title)
+            : (selectedEvent.titulo_es || selectedEvent.translated_title || selectedEvent.title);
+    };
+
     return (
         <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center">
             {/* Click background to deselect */}
@@ -130,7 +157,12 @@ const RadarView = ({ events, hoveredId, onHover }) => {
 
                 {/* Region Labels (Perimeter) */}
                 {Object.entries(regionAngles).map(([region, angle]) => {
+                    const labelText = t.regions[region] || region;
+                    // Only show if relevant region exists in data? Or always show structural regions? 
+                    // Showing always helps orientation context.
+                    // But simpler to filter if requested. Let's keep logic: if !events.some return null.
                     if (!events.some(e => e.country === region)) return null;
+
                     const rad = angle * (Math.PI / 180);
                     const labelR = maxRadius + 20;
                     const x = center + labelR * Math.cos(rad);
@@ -148,7 +180,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                             opacity="0.9"
                             className="uppercase tracking-widest font-mono font-bold"
                         >
-                            {region}
+                            {labelText}
                         </text>
                     );
                 })}
@@ -222,25 +254,30 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                     >
                         <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
                             <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: regionColors[selectedEvent.country] }}>
-                                {selectedEvent.country}
+                                {t.regions[selectedEvent.country] || selectedEvent.country}
                             </span>
                             <span className="text-[10px] text-gray-400 font-mono">
-                                {selectedEvent.source_url ? new URL(selectedEvent.source_url).hostname.replace('www.', '') : 'Unknown Source'}
+                                {selectedEvent.source_url ? new URL(selectedEvent.source_url).hostname.replace('www.', '') : t.unknown}
                             </span>
                         </div>
                         <h4 className="text-sm font-bold text-white mb-2 leading-tight text-left">
-                            {selectedEvent.title}
+                            {getSelectedTitle()}
                         </h4>
-                        {selectedEvent.analysis && (
-                            <p className="text-[10px] text-gray-400 text-left mb-3 line-clamp-3 leading-relaxed">
-                                {selectedEvent.analysis}
-                            </p>
-                        )}
+
+                        <p className="text-[10px] text-gray-400 text-left mb-3 line-clamp-3 leading-relaxed">
+                            {selectedEvent.analysis
+                                ? selectedEvent.analysis
+                                : (selectedEvent.keywords && selectedEvent.keywords.length > 0)
+                                    ? `${t.keywords}: ${selectedEvent.keywords.join(', ')}`
+                                    : (selectedEvent.snippet || "")
+                            }
+                        </p>
+
                         <div className="flex justify-between items-center mt-2">
                             <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
-                                PROX: {Number(selectedEvent.proximity_score).toFixed(2)}
+                                PROX: {Number(selectedEvent.proximity_score || selectedEvent.proximidad || 0).toFixed(2)}
                             </div>
-                            <span className="text-[9px] text-gray-500">Tap for details</span>
+                            <span className="text-[9px] text-gray-500">{t.tap}</span>
                         </div>
                     </motion.div>
                 )}

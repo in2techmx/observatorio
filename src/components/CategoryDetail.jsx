@@ -3,9 +3,28 @@ import RadarView from './RadarView';
 import NewsList from './NewsList';
 import { motion } from 'framer-motion';
 
-const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) => {
+const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, language = 'EN', categoryTranslations }) => {
     const [hoveredId, setHoveredId] = useState(null);
     if (!category) return null;
+
+    // Translation Helpers
+    const isEn = language === 'EN';
+    const t = {
+        signals: isEn ? "SIGNALS DETECTED" : "SEÑALES DETECTADAS",
+        briefing: isEn ? "Specialist Briefing" : "Informe de Especialista",
+        radarTitle: isEn ? "Proximity Radar" : "Radar de Proximidad",
+        feedTitle: isEn ? "Intelligence Feed" : "Señales en Tiempo Real",
+        center: isEn ? "CENTER" : "CENTRO",
+        centerDesc: isEn ? "High Convergence" : "Alta Convergencia",
+        perimeter: isEn ? "PERIMETER" : "PERÍMETRO",
+        perimeterDesc: isEn ? "Weak Signals" : "Señales Débiles"
+    };
+
+    // Resolve Category Name
+    const categoryName = categoryTranslations?.[category]?.[language.toLowerCase()] || category;
+
+    // Resolve Synthesis Text
+    const synthesisText = typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis;
 
     return (
         <motion.div
@@ -21,16 +40,16 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                     <button
                         onClick={onClose}
                         className="p-2 -ml-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors group"
-                        title="Back to Navigation"
+                        title={isEn ? "Back" : "Volver"}
                     >
                         <svg className="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                     </button>
                     <div>
                         <h2 className="text-2xl md:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 uppercase">
-                            {category}
+                            {categoryName}
                         </h2>
                         <span className="text-[10px] font-mono text-cyan-500 tracking-widest uppercase block mt-1">
-                            // {events.length} SIGNALS DETECTED
+                            // {events.length} {t.signals}
                         </span>
                     </div>
                 </div>
@@ -38,7 +57,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                 <button
                     onClick={onClose}
                     className="p-3 rounded-full hover:bg-red-500/10 text-gray-500 hover:text-red-500 transition-colors border border-transparent hover:border-red-500/50"
-                    title="Close Overlay"
+                    title="Close"
                 >
                     <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
@@ -49,18 +68,18 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                 <div className="container mx-auto px-4 md:px-6 py-8">
 
                     {/* Specialist Analysis Block - Sleek Black */}
-                    {synthesis && (
+                    {synthesisText && (
                         <div className="mb-12 p-6 border-l-4 border-cyan-500 bg-white/5 rounded-r-xl backdrop-blur-md shadow-lg">
                             <h4 className="text-xs uppercase font-bold tracking-[0.2em] text-cyan-400 mb-3 flex items-center gap-2">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                                 </span>
-                                Specialist Briefing
+                                {t.briefing}
                             </h4>
                             <div className="prose prose-invert prose-sm max-w-none">
                                 <p className="text-gray-200 font-mono leading-relaxed whitespace-pre-line text-sm md:text-base border-l border-white/10 pl-4">
-                                    {synthesis}
+                                    {synthesisText}
                                 </p>
                             </div>
                         </div>
@@ -73,7 +92,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                         <div className="flex-1 flex flex-col items-center w-full min-h-[500px] p-6 bg-black rounded-3xl border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.8)]">
                             <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-8 flex items-center gap-2">
                                 <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                Radar de Proximidad
+                                {t.radarTitle}
                             </h3>
                             <div className="w-full max-w-[500px] aspect-square relative group">
                                 {/* Subtle center glow, but mostly black */}
@@ -82,16 +101,17 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                                     events={events}
                                     hoveredId={hoveredId}
                                     onHover={setHoveredId}
+                                    language={language}
                                 />
                             </div>
                             <div className="mt-8 flex gap-8 text-[10px] text-gray-500 font-mono text-center">
                                 <div>
-                                    <span className="block text-white font-bold mb-1">CENTER</span>
-                                    High Convergence
+                                    <span className="block text-white font-bold mb-1">{t.center}</span>
+                                    {t.centerDesc}
                                 </div>
                                 <div>
-                                    <span className="block text-white font-bold mb-1">PERIMETER</span>
-                                    Weak Signals
+                                    <span className="block text-white font-bold mb-1">{t.perimeter}</span>
+                                    {t.perimeterDesc}
                                 </div>
                             </div>
                         </div>
@@ -100,7 +120,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                         <div className="flex-1 w-full xl:max-w-2xl">
                             <h3 className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-6 pl-2 flex items-center gap-2">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-                                Intelligence Feed
+                                {t.feedTitle}
                             </h3>
                             <div className="bg-transparent space-y-2">
                                 <NewsList
@@ -108,6 +128,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose }) 
                                     hoveredId={hoveredId}
                                     onHover={setHoveredId}
                                     onSelect={onSelectNews}
+                                    language={language}
                                 />
                             </div>
                         </div>
