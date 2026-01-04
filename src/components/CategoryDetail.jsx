@@ -150,14 +150,14 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
                         ) : (
                             // === BRIEFING MODE (Global or Regional) ===
                             (() => {
-                                // Determine content: Regional or Global
-                                const activeNarrative = (selectedRegion && regionalSyntheses && regionalSyntheses[selectedRegion])
-                                    ? regionalSyntheses[selectedRegion]
-                                    : (synthesis && typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis);
+                                // Determine content: Global only (SAFE ROLLBACK)
+                                // const activeNarrative = (selectedRegion && regionalSyntheses && regionalSyntheses[selectedRegion])
+                                //     ? regionalSyntheses[selectedRegion]
+                                //     : (synthesis && typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis);
 
-                                const title = selectedRegion
-                                    ? `${language === 'EN' ? 'REGIONAL INTEL' : 'INTEL REGIONAL'}: ${selectedRegion}`
-                                    : (language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA');
+                                const activeNarrative = (synthesis && typeof synthesis === 'object') ? synthesis[language.toLowerCase()] : synthesis;
+
+                                const title = language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA';
 
                                 return (
                                     <>
