@@ -44,9 +44,11 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
 
     // Filter Events
     // Filter Events SAFE
-    const safeEvents = Array.isArray(events) ? events : [];
+    const rawEvents = Array.isArray(events) ? events : [];
+    const safeEvents = rawEvents.filter(e => e && typeof e === 'object');
+
     const filteredEvents = filterRegion
-        ? safeEvents.filter(e => e && (e.country === filterRegion || e.region === filterRegion))
+        ? safeEvents.filter(e => e.country === filterRegion || e.region === filterRegion)
         : safeEvents;
 
     return (
@@ -178,7 +180,7 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
                 {/* LEFT: RADAR (Interactive) */}
                 <div className="relative h-[300px] md:h-full flex flex-col items-center justify-center p-2 bg-white/5 rounded-xl border border-white/5 order-2 md:order-1 overflow-hidden">
                     <RadarView
-                        events={events}
+                        events={safeEvents}
                         onNodeClick={onSelectNews} // Legacy prop
                         language={language}
                         hoveredId={hoveredId}
