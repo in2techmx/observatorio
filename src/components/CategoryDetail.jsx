@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import RadarView from './RadarView';
-import NewsList from './NewsList';
 import { motion } from 'framer-motion';
 import { REGION_COLORS } from '../constants/regions';
 
