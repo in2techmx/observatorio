@@ -143,18 +143,31 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                                 );
                             })()
                         ) : (
-                            // === BRIEFING MODE (Default) ===
-                            <>
-                                <div className="flex items-baseline gap-3 mb-1">
-                                    <h3 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
-                                        {language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA'}
-                                    </h3>
-                                    <div className="h-[1px] flex-1 bg-cyan-900/30"></div>
-                                </div>
-                                <p className="text-sm md:text-base text-gray-300 font-light leading-snug font-sans max-w-5xl">
-                                    {(typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis) || (language === 'EN' ? "No briefing available." : "No hay informe disponible.")}
-                                </p>
-                            </>
+                            // === BRIEFING MODE (Global or Regional) ===
+                            (() => {
+                                // Determine content: Regional or Global
+                                const activeNarrative = (selectedRegion && regionalSyntheses && regionalSyntheses[selectedRegion])
+                                    ? regionalSyntheses[selectedRegion]
+                                    : (typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis);
+
+                                const title = selectedRegion
+                                    ? `${language === 'EN' ? 'REGIONAL INTEL' : 'INTEL REGIONAL'}: ${selectedRegion}`
+                                    : (language === 'EN' ? 'INTELLIGENCE BRIEF' : 'INFORME DE INTELIGENCIA');
+
+                                return (
+                                    <>
+                                        <div className="flex items-baseline gap-3 mb-1">
+                                            <h3 className={`text-[10px] font-bold uppercase tracking-widest ${selectedRegion ? 'text-purple-400' : 'text-cyan-400'}`}>
+                                                {title}
+                                            </h3>
+                                            <div className={`h-[1px] flex-1 ${selectedRegion ? 'bg-purple-900/30' : 'bg-cyan-900/30'}`}></div>
+                                        </div>
+                                        <p className="text-sm md:text-base text-gray-300 font-light leading-snug font-sans max-w-5xl animate-in fade-in">
+                                            {activeNarrative || (language === 'EN' ? "No briefing available." : "No hay informe disponible.")}
+                                        </p>
+                                    </>
+                                );
+                            })()
                         )}
                     </div>
                 </div>
@@ -168,6 +181,8 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                         hoveredId={hoveredId}
                         selectedNodeId={selectedRadarId}
                         onNodeSelect={setSelectedRadarId}
+                        selectedRegion={selectedRegion}
+                        onRegionSelect={setSelectedRegion}
                     />
                     {/* Radar Legend/Status */}
                     <div className="absolute bottom-2 left-4 text-[9px] font-mono text-white/30 pointer-events-none">
