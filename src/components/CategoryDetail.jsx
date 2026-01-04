@@ -151,7 +151,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
