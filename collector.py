@@ -51,12 +51,15 @@ AREAS = ["Seguridad y Conflictos", "Economía y Sanciones", "Energía y Recursos
          "Soberanía y Alianzas", "Tecnología y Espacio", "Sociedad y Derechos"]
 
 FUENTES = {
-    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics"],
-    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news"],
-    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml"],
-    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all"],
-    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.arabnews.com/cat/1/rss.xml"],
-    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://techcrunch.com/feed/", "https://www.wired.com/feed/category/science/latest/rss"]
+    "USA": ["https://rss.nytimes.com/services/xml/rss/nyt/US.xml", "http://rss.cnn.com/rss/edition_us.rss", "https://feeds.washingtonpost.com/rss/politics", "https://www.foxnews.com/rss/feed/world"],
+    "RUSSIA": ["https://tass.com/rss/v2.xml", "http://en.kremlin.ru/events/president/news/feed", "https://themoscowtimes.com/rss/news", "https://rt.com/rss/news/"],
+    "CHINA": ["https://www.scmp.com/rss/91/feed", "https://www.chinadaily.com.cn/rss/world_rss.xml", "https://www.globaltimes.cn/rss/china.xml", "http://www.xinhuanet.com/english/rss/world.xml"],
+    "EUROPE": ["https://www.theguardian.com/world/rss", "https://www.france24.com/en/rss", "https://rss.dw.com/xml/rss-en-all", "https://www.euronews.com/rss?format=mrss&level=theme&name=world"],
+    "MID_EAST": ["https://www.aljazeera.com/xml/rss/all.xml", "https://www.trtworld.com/rss", "https://www.arabnews.com/cat/1/rss.xml", "https://www.jpost.com/rss/rssfeedsheadlines.aspx"],
+    "LATAM": ["https://en.mercopress.com/rss", "https://www.telesurenglish.net/rss/headlines.xml", "https://buenosairesherald.com/feed", "https://mexiconewsdaily.com/feed/"],
+    "AFRICA": ["https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "https://www.news24.com/news24/partner/rss/rssfeed.xml", "https://www.theeastafrican.co.ke/rss/news.xml"],
+    "INDIA": ["https://timesofindia.indiatimes.com/rssfeeds/296589292.cms", "https://www.thehindu.com/news/international/feeder/default.rss", "https://www.ndtv.com/rss/world-news"],
+    "GLOBAL": ["https://www.economist.com/sections/international/rss.xml", "https://techcrunch.com/feed/", "https://www.wired.com/feed/category/science/latest/rss", "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best"]
 }
 
 # ============================================================================
@@ -141,6 +144,30 @@ class IroncladCollectorPro:
         except: pass
         match = re.search(r'\{.*\}', text, re.DOTALL)
         return json.loads(match.group()) if match else None
+
+    # --- NUEVO: SEMANTIC DEDUPLICATION ---
+    def is_duplicate(self, title, existing_items):
+        """Revisa si el título ya existe semánticamente en la lista dada."""
+        # Limpieza básica
+        def clean(t): return re.sub(r'\W+', ' ', t.lower()).strip()
+        
+        t_clean = clean(title)
+        
+        for item in existing_items:
+            # 1. Coincidencia exacta o muy cercana de texto
+            i_clean = clean(item.original_title)
+            if t_clean == i_clean or t_clean in i_clean or i_clean in t_clean:
+                return True
+                
+            # 2. Distancia de Jaccard simple para texto
+            set_a = set(t_clean.split())
+            set_b = set(i_clean.split())
+            intersection = len(set_a.intersection(set_b))
+            union = len(set_a.union(set_b))
+            if union > 0 and (intersection / union) > 0.6: # 60% overlap de palabras
+                return True
+                
+        return False
 
     # --- NUEVO: VALIDACIÓN DE RESPUESTA ---
     def validate_gemini_response(self, response_text, expected_count):
@@ -275,9 +302,13 @@ class IroncladCollectorPro:
                             if title and link and len(title)>10:
                                 uid = f"{region}_{cnt}_{hashlib.md5(link.encode()).hexdigest()[:8]}"
                                 news = NewsItem(uid, title, link, region, url)
-                                if news.link: 
+                                
+                                # Check deduplication against current active items
+                                if not self.is_duplicate(title, self.active_items):
                                     self.active_items.append(news)
                                     cnt += 1
+                                else:
+                                    logging.debug(f"Duplicate skipped: {title}")
                 except: self.stats["errors"] += 1
         self.stats["items_raw"] = len(self.active_items)
 
