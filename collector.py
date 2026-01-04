@@ -314,20 +314,13 @@ class GeoCoreCollector:
             logging.error(f"Error guardando CSV: {e}")
 
     def export(self):
-        """Exporta JSON para el frontend (organizado por CATEGORÍA TEMÁTICA)"""
+        """Exporta JSON para el frontend (organizado por REGIÓN para compatibilidad con UI)"""
         logging.info("📦 FASE 5: Exportación JSON...")
         
         carousel = []
-        categories_config = CATEGORIES["categories"]
         
-        for category, items in self.thematic_groups.items():
-            if not items:
-                continue
-            
-            # Obtener configuración de la categoría
-            cat_config = categories_config.get(category, {})
-            color = cat_config.get("color", "#888888")
-            
+        # Organizar por REGIÓN (como espera el frontend)
+        for region, data in self.regional_data.items():
             particles = [
                 {
                     "id": item.id,
@@ -335,33 +328,21 @@ class GeoCoreCollector:
                     "titulo_es": item.title,
                     "titulo_en": item.title,
                     "region": item.region,
+                    "category": item.category,  # Incluimos categoría para análisis
                     "url": item.link,
                     "description": item.description,
                     "proximity_score": round(item.proximity_score, 2)
                 }
-                for item in items
+                for item in data["items"]
             ]
             
             # Calcular promedio de proximidad
             avg_proximity = sum(p["proximity_score"] for p in particles) / len(particles) if particles else 0
             
-            # Generar síntesis temática usando IA (captura divergencias narrativas)
-            regional_narratives = defaultdict(str)
-            for item in items:
-                # Buscar la narrativa regional original
-                for region, data in self.regional_data.items():
-                    if item in data["items"]:
-                        regional_narratives[region] = data["narrative"]
-                        break
-            
-            # Crear síntesis con IA que capture divergencias
-            synthesis = self._generate_category_synthesis(category, regional_narratives, items)
-            
             carousel.append({
-                "area": category,
-                "sintesis": synthesis,
-                "sintesis_en": synthesis,  # TODO: Translation
-                "color": color,
+                "area": region,  # REGIÓN (como espera el frontend)
+                "sintesis": data["narrative"],
+                "sintesis_en": data["narrative"],
                 "count": len(particles),
                 "avg_proximity": round(avg_proximity, 2),
                 "particulas": particles
@@ -380,7 +361,7 @@ class GeoCoreCollector:
         with open("public/gravity_carousel.json", "w", encoding='utf-8') as f:
             json.dump(final, f, indent=2, ensure_ascii=False)
         
-        logging.info(f"✅ Exportado: {len(carousel)} categorías, {self.stats['total_selected']} noticias")
+        logging.info(f"✅ Exportado: {len(carousel)} regiones, {self.stats['total_selected']} noticias")
 
     def _generate_category_synthesis(self, category, regional_narratives, items):
         """Genera síntesis temática que resalta divergencias narrativas entre regiones"""
