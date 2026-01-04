@@ -301,7 +301,7 @@ class GeoCoreCollector:
 
     def export(self):
         """Exporta JSON para el frontend (organizado por CATEGORÍA TEMÁTICA)"""
-        logging.info("📦 FASE 4: Exportación JSON...")
+        logging.info("📦 FASE 5: Exportación JSON...")
         
         carousel = []
         categories_config = CATEGORIES["categories"]
@@ -331,7 +331,7 @@ class GeoCoreCollector:
             # Calcular promedio de proximidad
             avg_proximity = sum(p["proximity_score"] for p in particles) / len(particles) if particles else 0
             
-            # Generar síntesis temática (combinando narrativas regionales)
+            # Generar síntesis temática usando IA (captura divergencias narrativas)
             regional_narratives = defaultdict(str)
             for item in items:
                 # Buscar la narrativa regional original
@@ -340,10 +340,8 @@ class GeoCoreCollector:
                         regional_narratives[region] = data["narrative"]
                         break
             
-            # Crear síntesis combinada
-            synthesis = f"Tema: {category}. "
-            if regional_narratives:
-                synthesis += "Perspectivas regionales: " + "; ".join([f"{r}: {n[:50]}..." for r, n in list(regional_narratives.items())[:3]])
+            # Crear síntesis con IA que capture divergencias
+            synthesis = self._generate_category_synthesis(category, regional_narratives, items)
             
             carousel.append({
                 "area": category,
@@ -368,7 +366,40 @@ class GeoCoreCollector:
         with open("public/gravity_carousel.json", "w", encoding='utf-8') as f:
             json.dump(final, f, indent=2, ensure_ascii=False)
         
-        logging.info(f"✅ Exportado: {len(carousel)} regiones, {self.stats['total_selected']} noticias")
+        logging.info(f"✅ Exportado: {len(carousel)} categorías, {self.stats['total_selected']} noticias")
+
+    def _generate_category_synthesis(self, category, regional_narratives, items):
+        """Genera síntesis temática que resalta divergencias narrativas entre regiones"""
+        
+        if not regional_narratives:
+            return f"Análisis de {category} en desarrollo."
+        
+        # Construir prompt que resalte divergencias
+        narratives_text = "\n".join([f"- {region}: {narrative}" for region, narrative in regional_narratives.items()])
+        
+        prompt = f"""CATEGORY: {category}
+
+REGIONAL NARRATIVES:
+{narratives_text}
+
+TASK:
+Analyze how different regions are covering this topic. Write a 2-3 sentence synthesis that:
+1. Identifies the CORE ISSUE being covered
+2. Highlights KEY DIVERGENCES in how regions frame/report it (e.g., "Western media emphasizes X, while Russian sources focus on Y")
+3. Notes any CONSENSUS points if they exist
+
+Be specific and analytical. Avoid generic statements. Focus on narrative differences."""
+
+        try:
+            response = self.client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt
+            )
+            return response.text.strip()
+        except Exception as e:
+            logging.warning(f"Error generando síntesis para {category}: {e}")
+            # Fallback a síntesis simple
+            return f"{category}: {len(items)} noticias de {len(regional_narratives)} regiones. Perspectivas: {', '.join(regional_narratives.keys())}."
 
     def run(self):
         try:
