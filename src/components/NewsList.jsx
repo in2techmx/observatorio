@@ -4,9 +4,12 @@ import { ArrowRight, Globe } from 'lucide-react';
 
 const NewsList = ({ events, hoveredId, onHover, onSelect }) => {
     return (
-        <div className="flex flex-col gap-2 h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+        <div className="flex flex-col gap-3 h-[600px] overflow-y-auto pr-2 custom-scrollbar pb-20">
             {events.map((ev) => {
                 const isHovered = hoveredId === ev.id;
+
+                // Parse domain for display
+                const domain = ev.source_url ? new URL(ev.source_url).hostname.replace('www.', '') : 'External Source';
 
                 return (
                     <motion.div
@@ -16,39 +19,44 @@ const NewsList = ({ events, hoveredId, onHover, onSelect }) => {
                         onMouseLeave={() => onHover(null)}
                         onClick={() => onSelect(ev)}
                         className={`
-                            relative p-4 rounded-xl border cursor-pointer transition-all duration-300 group
+                            relative p-5 rounded-xl border cursor-pointer transition-all duration-300 group
                             ${isHovered
-                                ? 'bg-white/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
-                                : 'bg-white/5 border-transparent hover:bg-white/10'
+                                ? 'bg-zinc-900 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.1)]'
+                                : 'bg-black/40 border-white/5 hover:bg-zinc-900/40 hover:border-white/20'
                             }
                         `}
                     >
-                        <div className="flex justify-between items-start mb-2">
+                        <div className="flex justify-between items-start mb-3">
                             <div className="flex items-center gap-2">
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${isHovered ? 'bg-cyan-500 text-black' : 'bg-white/10 text-gray-400'}`}>
+                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${isHovered ? 'bg-cyan-900/20 text-cyan-400 border-cyan-500/30' : 'bg-white/5 text-gray-500 border-white/10'}`}>
                                     {ev.country}
                                 </span>
+                                <span className="text-[9px] text-gray-600 font-mono flex items-center gap-1">
+                                    <Globe size={10} /> {domain}
+                                </span>
                             </div>
-                            <span className={`text-xs font-mono ${isHovered ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                PROX: {ev.proximity_score}
+                            <span className={`text-[10px] font-mono ${isHovered ? 'text-cyan-400' : 'text-gray-600'}`}>
+                                {Number(ev.proximity_score).toFixed(2)}
                             </span>
                         </div>
 
-                        <h3 className={`text-sm font-semibold leading-tight mb-2 ${isHovered ? 'text-white' : 'text-gray-300'}`}>
+                        <h3 className={`text-sm font-semibold leading-snug mb-3 ${isHovered ? 'text-white' : 'text-gray-400'}`}>
                             {ev.title}
                         </h3>
 
+                        {/* Always show analysis/commentary in list view (specialist inputs) */}
+                        <div className={`text-xs overflow-hidden border-l-2 pl-3 ${isHovered ? 'border-cyan-500/50 text-gray-300' : 'border-white/10 text-gray-500'}`}>
+                            <p className="line-clamp-3 leading-relaxed italic">
+                                "{ev.analysis || "No sufficient data for deep analysis."}"
+                            </p>
+                        </div>
+
                         {isHovered && (
-                            <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                className="text-xs text-gray-400 overflow-hidden"
-                            >
-                                <p className="line-clamp-2 mb-2">{ev.analysis}</p>
-                                <div className="flex items-center gap-1 text-cyan-400 text-[10px] uppercase font-bold tracking-widest">
-                                    Deep Dive <ArrowRight size={12} />
+                            <div className="mt-3 flex justify-end">
+                                <div className="flex items-center gap-1 text-cyan-400 text-[9px] uppercase font-bold tracking-widest animate-pulse">
+                                    Read Intelligence <ArrowRight size={10} />
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
                     </motion.div>
                 );
