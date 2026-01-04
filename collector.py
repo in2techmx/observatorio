@@ -317,30 +317,27 @@ class IroncladCollectorPro:
         if not self.active_items: return
         logging.info(f"🔎 FASE 2: Clasificación IA ({len(self.active_items)} items)...")
 
-        
-        
-        # PROMPT DE INGENIERÍA MEJORADO
+        # PROMPT DE INGENIERÍA MEJORADO (BILINGÜE)
         prompt = f"""ANALISTA DE INTELIGENCIA GEOPOLÍTICA
 OBJETIVO: Clasificar titulares en: {', '.join(AREAS)}
+SALIDA: Generar metadatos en ESPAÑOL e INGLÉS.
 
 INSTRUCCIONES:
-1. MANTÉN el MISMO ID numérico (0, 1, 2...).
-2. TRADUCE al español (fiel al original).
-3. ASIGNA SOLO UN ÁREA (la más relevante).
-4. CONFIANZA: 0-100.
-5. KEYWORDS: 3-5 palabras clave.
+1. MANTÉN el MISMO ID numérico.
+2. TITULO_ES: Traduce al español.
+3. TITULO_EN: Traduce al inglés (o mantén si ya es inglés).
+4. AREA: Una de las categorías permitidas.
+5. CONFIANZA: 0-100.
+6. KEYWORDS: 3-5 palabras clave.
 
-EJEMPLOS:
-ID:0 | TITULO: "Pentagon announces new AI defense system"
-→ {{"id": 0, "area": "Seguridad y Conflictos", "titulo_es": "Pentágono anuncia nuevo sistema de defensa IA", "confianza": 95, "keywords": ["Pentágono", "IA", "defensa"]}}
-
-ID:1 | TITULO: "EU approves new sanctions against Russia"
-→ {{"id": 1, "area": "Economía y Sanciones", "titulo_es": "UE aprueba nuevas sanciones a Rusia", "confianza": 88, "keywords": ["UE", "sanciones", "Rusia"]}}
+EJEMPLO:
+ID:0 | TITULO: "China announces new lunar base"
+→ {{"id": 0, "area": "Tecnología y Espacio", "titulo_es": "China anuncia nueva base lunar", "titulo_en": "China announces new lunar base", "confianza": 95, "keywords": ["China", "Luna", "Base"]}}
 
 FORMATO SALIDA (JSON PURO):
 {{
   "res": [
-    {{"id": 0, "area": "...", "titulo_es": "...", "confianza": ..., "keywords": [...]}}
+    {{"id": 0, "area": "...", "titulo_es": "...", "titulo_en": "...", "confianza": ..., "keywords": [...]}}
   ]
 }}"""
         
@@ -371,6 +368,9 @@ FORMATO SALIDA (JSON PURO):
                                 if area:
                                     target.area = area
                                     target.translated_title = res.get('titulo_es','')
+                                    target.original_title = res.get('titulo_en', target.original_title) # Store EN here or specifically? Let's keep original_title as EN/Source but maybe overwrite if translation is better?
+                                    # Actually better to store normalized EN separately.
+                                    target.title_en = res.get('titulo_en', target.original_title)
                                     target.confidence = res.get('confianza',0)
                                     target.keywords = res.get('keywords',[])[:5]
                                     self.stats["items_classified"] += 1
@@ -379,10 +379,13 @@ FORMATO SALIDA (JSON PURO):
                 logging.error(f"Error Batch IA: {str(e)[:50]}")
                 self.stats["errors"] += 1
             
-            # EJECUTAR FALLBACK para lo que la IA se saltó
+            # EJECUTAR FALLBACK
             unclassified = [item for item in batch if item.area is None]
             if unclassified:
                 self.fallback_classification(unclassified)
+                # Fallback sets title_en to original_title by default
+                for x in unclassified: 
+                    if not hasattr(x, 'title_en'): x.title_en = x.original_title
             
             time.sleep(1)
 
@@ -393,10 +396,9 @@ FORMATO SALIDA (JSON PURO):
         need_embedding = []
         valid_items = [it for it in self.active_items if it.area in AREAS]
         
-        # Separar cacheados vs nuevos para no romper índices
         for item in valid_items:
-            # Usar título traducido si existe, sino el original
-            text_key = item.translated_title if item.translated_title else item.original_title
+            # Use English title for embedding as it's often the source lingua franca
+            text_key = getattr(item, 'title_en', item.original_title)
             
             cached = self.get_cached_vector(text_key)
             if cached:
@@ -408,7 +410,7 @@ FORMATO SALIDA (JSON PURO):
         batch_size = 100
         for i in range(0, len(need_embedding), batch_size):
             batch = need_embedding[i:i+batch_size]
-            texts = [item.translated_title if item.translated_title else item.original_title for item in batch]
+            texts = [getattr(item, 'title_en', item.original_title) for item in batch]
             
             try:
                 resp = self.client.models.embed_content(
@@ -416,15 +418,13 @@ FORMATO SALIDA (JSON PURO):
                     config={'task_type': 'RETRIEVAL_DOCUMENT'}
                 )
                 
-                # Asignación segura por índice
                 for idx, item in enumerate(batch):
                     if idx < len(resp.embeddings):
                         item.vector = resp.embeddings[idx].values
-                        text_key = item.translated_title if item.translated_title else item.original_title
+                        text_key = getattr(item, 'title_en', item.original_title)
                         self.save_vector(text_key, item.vector)
             except Exception as e:
                 logging.error(f"Error Embeddings: {e}")
-                # Vector aleatorio fallback
                 for item in batch:
                     random.seed(hash(item.original_title))
                     item.vector = [random.uniform(-0.1, 0.1) for _ in range(768)]
@@ -434,44 +434,39 @@ FORMATO SALIDA (JSON PURO):
             area_items = [it for it in valid_items if it.area == area and it.vector]
             if not area_items: continue
             
-            # 1. Calculate Regional Centroids (The "Voice" of each Region)
-            # We group vectors by region first to treat each region as 1 unit of perspective
+            # 1. Calculate Regional Centroids
             region_map = defaultdict(list)
             for it in area_items:
                 region_map[it.region].append(it.vector)
             
             regional_centroids = []
             for r_vecs in region_map.values():
-                # Average of items within this specific region
                 c = [sum(col)/len(r_vecs) for col in zip(*r_vecs)]
                 regional_centroids.append(c)
                 
-            # 2. Global Egalitarian Centroid ("The Center of Truth")
-            # Average of REGIONAL centroids, not individual items.
+            # 2. Global Egalitarian Centroid
             if not regional_centroids: continue
             
             global_c = [sum(col)/len(regional_centroids) for col in zip(*regional_centroids)]
             mag_g = math.sqrt(sum(x*x for x in global_c))
 
             for it in area_items:
-                # Cosine Similarity to Global Center
+                # Cosine Similarity
                 mag_a = math.sqrt(sum(a*a for a in it.vector))
                 if mag_a * mag_g > 0:
                     dot = sum(a*b for a,b in zip(it.vector, global_c))
-                    sim = dot / (mag_a * mag_g) # Range -1 to 1
+                    sim = dot / (mag_a * mag_g)
                     
-                    # --- NUEVA ESCALA NO LINEAL (TUNED) ---
-                    # Lower baseline to 0.5 to catch more signals
+                    # Normalization
                     baseline = 0.5
                     if sim < baseline:
                         it.proximity = 0.0
                         it.bias_label = "Divergente"
                     else:
-                        normalized = (sim - baseline) / (1 - baseline) # 0.0 to 1.0
-                        score = math.pow(normalized, 3) * 100 # Cubic Power curve
+                        normalized = (sim - baseline) / (1 - baseline)
+                        score = math.pow(normalized, 3) * 100
                         it.proximity = max(0.0, min(100.0, float(score)))
-                    
-                        # Assign Dynamic Labels (Recalibrated for new scale)
+                        
                         if it.proximity > 80: it.bias_label = "Núcleo Narrativo"
                         elif it.proximity > 60: it.bias_label = "Alta Convergencia"
                         elif it.proximity > 40: it.bias_label = "Alineado"
@@ -483,7 +478,7 @@ FORMATO SALIDA (JSON PURO):
 
     # --- FASE 3.5: CLUSTERING & SÍNTESIS NARRATIVA ---
     def generate_narrative_syntheses(self):
-        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico (Regional Clustering)...")
+        logging.info("💬 FASE 3.5: Generando Diálogo Geopolítico Bilingüe...")
         valid_items = [it for it in self.active_items if it.area in AREAS]
         
         self.syntheses = {} # Store synthesis per area
@@ -491,11 +486,10 @@ FORMATO SALIDA (JSON PURO):
         for area in AREAS:
             area_items = [it for it in valid_items if it.area == area]
             if len(area_items) < 3:
-                self.syntheses[area] = "Insuficiente data para establecer diálogo."
+                self.syntheses[area] = {"es": "Datos insuficientes.", "en": "Insufficient data."}
                 continue
             
-            # --- 1. CLUSTER BY REGION ---
-            # Instead of taking random items, we find the "Dominant Topic" per region
+            # CLUSTER BY REGION
             grouped = defaultdict(list)
             for it in area_items: grouped[it.region].append(it)
             
@@ -503,15 +497,12 @@ FORMATO SALIDA (JSON PURO):
             
             for region, items in grouped.items():
                 if not items: continue
-                # Simple "Center of Mass" Clustering for this Region
-                # 1. Find the item closest to the region's centroid (The "Representative" Article)
+                # Simple Centroid Clustering
                 if len(items) > 1 and all(it.vector for it in items):
-                    # Calculate centroid
                     vectors = [it.vector for it in items if it.vector]
                     if not vectors: continue
                     centroid = [sum(col)/len(vectors) for col in zip(*vectors)]
                     
-                    # Find closest item to centroid
                     best_item = None
                     best_sim = -1
                     for it in items:
@@ -525,14 +516,16 @@ FORMATO SALIDA (JSON PURO):
                                 best_item = it
                     
                     if best_item:
-                        representative_headlines.append(f"[{region}] {best_item.original_title}")
+                        # Use English title for synthesis prompt if possible
+                        title_for_prompt = getattr(best_item, 'title_en', best_item.original_title)
+                        representative_headlines.append(f"[{region}] {title_for_prompt}")
                 else:
-                    # Fallback for single item or no vectors
-                    representative_headlines.append(f"[{region}] {items[0].original_title}")
+                    title_for_prompt = getattr(items[0], 'title_en', items[0].original_title)
+                    representative_headlines.append(f"[{region}] {title_for_prompt}")
 
             if not representative_headlines: continue
 
-            # --- 2. GENERATE DIALOGUE ---
+            # GENERATE DIALOGUE (BILINGUAL)
             headlines_text = "\n".join(representative_headlines[:8])
             
             prompt = f"""ACT AS: Senior Geopolitical Intelligence Analyst.
@@ -541,32 +534,33 @@ INPUT (Dominant Regional Narratives):
 {headlines_text}
 
 INSTRUCTIONS:
-1. ANALYZE the cross-regional dynamics (tensions, alignments, silences).
-2. IDENTIFY:
-   - Shared concerns (Similitudes).
-   - Divergent priorities (Differences).
-   - Hidden strategic signals (Perspectives).
-3. OUTPUT FORMAT (Strict):
-   "INTELLIGENCE BRIEF: [One powerful sentence summarizing the core tension]. OBSERVATIONS: [2-3 sentences contrasting specific regional stances, e.g. 'While China focuses on X, the West prioritizes Y...']. FORECAST: [One short predictive sentence on where this leads]."
-4. LANGUAGE: Spanish (Professional, concise, geopolitical tone).
-5. LENGTH: Max 80 words total. Do not use bullet points, just running text separated by periods.
-6. OUTPUT TEXT ONLY."""
+1. ANALYZE cross-regional dynamics (tensions, alignments).
+2. GENERATE TWO OUTPUTS (English and Spanish) in JSON format.
+3. CONTENT: One powerful summary sentence + 2-3 sentences of observations + 1 forecast sentence.
+4. TONE: Professional, concise, geopolitical.
+
+FORMAT (JSON):
+{{
+  "es": "INFORME: ... OBSERVACIONES: ... PRONÓSTICO: ...",
+  "en": "BRIEF: ... OBSERVATIONS: ... FORECAST: ..."
+}}"""
 
             try:
                 resp = self.client.models.generate_content(
                     model="gemini-2.0-flash", 
                     contents=prompt,
-                    config={"temperature": 0.4}
+                    config={"temperature": 0.4, "response_mime_type": "application/json"}
                 )
                 if resp.text:
-                    self.syntheses[area] = resp.text.strip()
+                    data = json.loads(resp.text)
+                    self.syntheses[area] = data
             except Exception as e:
                 logging.error(f"Error Synthesis {area}: {e}")
-                self.syntheses[area] = "Análisis en curso..."
+                self.syntheses[area] = {"es": "Análisis en curso...", "en": "Analysis in progress..."}
 
     # --- FASE 4: EXPORTACIÓN ---
     def export(self):
-        logging.info("💾 FASE 4: Exportación...")
+        logging.info("💾 FASE 4: Exportación Bilingüe...")
         carousel = []
         colors = {"Seguridad y Conflictos": "#ef4444", "Economía y Sanciones": "#3b82f6", "Energía y Recursos": "#10b981", "Soberanía y Alianzas": "#f59e0b", "Tecnología y Espacio": "#8b5cf6", "Sociedad y Derechos": "#ec4899"}
 
@@ -574,7 +568,14 @@ INSTRUCTIONS:
             items = [it for it in self.active_items if it.area == area]
             if not items: continue
             
-            particles = [it.to_dict() for it in items]
+            particles = []
+            for it in items:
+                d = it.to_dict()
+                # Inject bilingual fields
+                d['titulo_en'] = getattr(it, 'title_en', it.original_title)
+                d['titulo_es'] = it.translated_title or it.original_title
+                particles.append(d)
+
             particles.sort(key=lambda x: x['proximidad'], reverse=True)
             avg = sum(p['proximidad'] for p in particles)/len(particles)
             
@@ -582,16 +583,19 @@ INSTRUCTIONS:
             consensus = "ALTO" if avg > 80 else "MODERADO" if avg > 60 else "BAJO"
             emoji = "🟢" if avg > 80 else "🟡" if avg > 60 else "🟠" if avg > 50 else "🔴"
 
-            # Get synthesis
-            sintesis = self.syntheses.get(area, "Analizando señales globales...")
+            # Get synthesis (now a dict with en/es)
+            syn_data = self.syntheses.get(area, {})
+            # Fallback if string (legacy safety)
+            if isinstance(syn_data, str): syn_data = {"es": syn_data, "en": syn_data}
 
             carousel.append({
                 "area": area, 
-                "sintesis": sintesis, 
+                "sintesis": syn_data.get("es", ""),
+                "sintesis_en": syn_data.get("en", ""),
                 "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
                 "color": colors.get(area, "#666"),
                 "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
-                "particulas": particles[:60] # INCREASED LIMIT TO 60
+                "particulas": particles[:60]
             })
 
         meta = {
@@ -602,6 +606,7 @@ INSTRUCTIONS:
         }
         
         final = {"carousel": carousel, "meta": meta}
+        
         # Ensure public directory exists
         if not os.path.exists("public"):
             os.makedirs("public")
