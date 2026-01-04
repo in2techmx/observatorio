@@ -39,9 +39,22 @@ const RadarView = ({ events, hoveredId, onHover }) => {
             const jitter = (Math.random() - 0.5) * 40; // +/- 20 degrees jitter
             const angleRad = (baseAngleDeg + jitter) * (Math.PI / 180);
 
-            // STRICT RADIUS: Derived from Proximity Score (0-10)
-            // Score 10 (Closest) -> Radius 0
-            // Score 0 (Farthest) -> Radius maxRadius
+            // STRICT RADIUS: Derived from Proximity Score (0-10) -> NOW 0-10 (from App.jsx) or 0-100?
+            // App.jsx divides by 10. So ev.proximity_score is 0-10.
+            // If Collector outputs 0-100.
+            // Let's rely on Proximity Score being 0-10.
+            // If Proximity is 0 (Divergent) -> Radius Max.
+            // If Proximity is 10 (Core) -> Radius 0.
+
+            // Fix: Check if range is 0-10 or 0-100. 
+            // Collector exports 0-100. App.jsx divides by 10. So it is 0-10.
+            // BUT, if score was small (e.g. 1.5%), App.jsx gave 0.15.
+            // Radius = maxRadius * (1 - 0.015). Almost max.
+
+            // Visual Fix: Spread them out more. 
+            // Instead of linear 1-score/10, let's use a non-linear visual spread?
+            // No, backend already did cubic. Let's trust the backend score.
+
             const r = maxRadius * (1 - (ev.proximity_score / 10));
 
             return {
@@ -125,7 +138,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                         r={maxRadius * scale}
                         fill="none"
                         stroke="white"
-                        strokeOpacity={0.05}
+                        strokeOpacity={0.15} // Increased opacity from 0.05
                         strokeDasharray="4 4"
                         pointerEvents="none"
                     />

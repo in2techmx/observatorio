@@ -35,14 +35,14 @@ parser.add_argument('--mode', default='tactical', help='Modo: tactical, strategi
 args, _ = parser.parse_known_args()
 
 if args.mode == 'full':
-    FETCH_LIMIT = 50
-    print("🔥 MODO FULL: Límite 50 items/feed")
+    FETCH_LIMIT = 60
+    print("🔥 MODO FULL: Límite 60 items/feed")
 elif args.mode == 'strategic':
-    FETCH_LIMIT = 25
-    print("🛡️ MODO ESTRATÉGICO: Límite 25 items/feed")
+    FETCH_LIMIT = 40
+    print("🛡️ MODO ESTRATÉGICO: Límite 40 items/feed")
 else:
-    FETCH_LIMIT = 12
-    print("⚡ MODO TÁCTICO: Límite 12 items/feed")
+    FETCH_LIMIT = 20
+    print("⚡ MODO TÁCTICO: Límite 20 items/feed")
 
 # ============================================================================
 # CONFIGURACIÓN DE ÁREAS Y FUENTES
@@ -460,19 +460,16 @@ FORMATO SALIDA (JSON PURO):
                     dot = sum(a*b for a,b in zip(it.vector, global_c))
                     sim = dot / (mag_a * mag_g) # Range -1 to 1
                     
-                    # --- NUEVA ESCALA NO LINEAL ---
-                    # 1. Clip base relevance: Ignoramos similitudes < 0.6 (ruido)
-                    # 2. Stretch: Expandimos el rango 0.6-1.0 al 0-100%
-                    # 3. Power curve: Elevamos al cubo para separar los "muy cercanos"
-                    
-                    baseline = 0.6
+                    # --- NUEVA ESCALA NO LINEAL (TUNED) ---
+                    # Lower baseline to 0.5 to catch more signals
+                    baseline = 0.5
                     if sim < baseline:
                         it.proximity = 0.0
                         it.bias_label = "Divergente"
                     else:
                         normalized = (sim - baseline) / (1 - baseline) # 0.0 to 1.0
-                        score = math.pow(normalized, 3) * 100 # Power curve
-                        it.proximity = max(0.0, min(100.0, float(score))) # Ensure within bounds
+                        score = math.pow(normalized, 3) * 100 # Cubic Power curve
+                        it.proximity = max(0.0, min(100.0, float(score)))
                     
                         # Assign Dynamic Labels (Recalibrated for new scale)
                         if it.proximity > 80: it.bias_label = "Núcleo Narrativo"
@@ -586,11 +583,11 @@ OUTPUT TEXT ONLY."""
 
             carousel.append({
                 "area": area, 
-                "sintesis": sintesis, # Add synthesis to JSON
+                "sintesis": sintesis, 
                 "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
                 "color": colors.get(area, "#666"),
                 "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
-                "particulas": particles[:30]
+                "particulas": particles[:60] # INCREASED LIMIT TO 60
             })
 
         meta = {
