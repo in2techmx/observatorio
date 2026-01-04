@@ -4,7 +4,8 @@ import LandingHero from './components/LandingHero';
 import GravityCarousel from './components/GravityCarousel';
 import CategoryDetail from './components/CategoryDetail';
 import ArchivePanel from './components/ArchivePanel';
-import NewsCard from './components/NewsCard'; // Ensure NewsCard is imported
+import NewsCard from './components/NewsCard';
+import MethodologyModal from './components/MethodologyModal'; // Imported
 
 function App() {
     // UI State
@@ -13,6 +14,7 @@ function App() {
     const [language, setLanguage] = useState('EN');
     const [showArchives, setShowArchives] = useState(false);
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+    const [showMethodology, setShowMethodology] = useState(false); // New State
 
     // Data State
     const [events, setEvents] = useState([]);
@@ -133,12 +135,14 @@ function App() {
             <LandingHero
                 language={language}
                 toggleLanguage={toggleLanguage}
+                onOpenMethodology={() => setShowMethodology(true)}
             />
 
             {/* Main Content: Carousel */}
-            <div className="relative z-10 flex flex-col items-center justify-center h-[75vh]">
+            {/* Lifted up: h-[65vh] instead of 75vh, and removed flex-col centering to let it sit naturally below header */}
+            <div className="relative z-10 flex flex-col items-center justify-start pt-12 md:justify-center md:pt-0 h-[65vh] md:h-[75vh]">
                 {loading ? (
-                    <div className="flex flex-col items-center gap-4">
+                    <div className="flex flex-col items-center gap-4 mt-12 md:mt-0">
                         <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin"></div>
                         <p className="text-cyan-500 font-mono text-sm animate-pulse">
                             {language === 'EN' ? 'INITIALIZING SATELLITE LINK...' : 'INICIALIZANDO ENLACE SATELITAL...'}
@@ -156,14 +160,14 @@ function App() {
             </div>
 
             {/* 3. FOOTER */}
-            <footer className="py-12 border-t border-white/5 text-center text-gray-600 text-sm bg-black flex flex-col items-center gap-4">
+            <footer className="py-8 md:py-12 border-t border-white/5 text-center text-gray-600 text-sm bg-black flex flex-col items-center gap-4 absolute bottom-0 w-full">
                 <button
                     onClick={() => setShowArchives(true)}
                     className="text-xs uppercase tracking-[0.2em] text-cyan-900 hover:text-cyan-400 transition-colors border border-transparent hover:border-cyan-900/30 px-4 py-2 rounded-full"
                 >
                     [ ACCESS CLASSIFIED ARCHIVES ]
                 </button>
-                <p>Observatorio V2 &copy; 2026. Powered by Gemini 2.0 Flash.</p>
+                <p className="text-[10px] md:text-sm">Observatorio V2 &copy; 2026. Powered by Gemini 2.0 Flash.</p>
             </footer>
 
             {/* 4. DETAILS OVERLAY */}
@@ -196,6 +200,16 @@ function App() {
             <AnimatePresence>
                 {showArchives && (
                     <ArchivePanel onClose={() => setShowArchives(false)} />
+                )}
+            </AnimatePresence>
+
+            {/* 7. METHODOLOGY MODAL */}
+            <AnimatePresence>
+                {showMethodology && (
+                    <MethodologyModal
+                        onClose={() => setShowMethodology(false)}
+                        language={language}
+                    />
                 )}
             </AnimatePresence>
         </div>

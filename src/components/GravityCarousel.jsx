@@ -43,10 +43,11 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect, language = 'E
 
     return (
         <div
-            className="w-full overflow-hidden py-8 relative cursor-grab active:cursor-grabbing group"
             ref={containerRef}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            // Fade Mask: Desktop only (md:mask-image). Mobile is full width.
+            className="w-full overflow-hidden py-8 relative cursor-grab active:cursor-grabbing group md:[mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)]"
         >
             {/* UI Tech Decals */}
             <div className="absolute top-2 left-0 w-full flex justify-between px-12 pointer-events-none opacity-40">

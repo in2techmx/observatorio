@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const LandingHero = ({ language = 'EN', toggleLanguage }) => {
+const LandingHero = ({ language = 'EN', toggleLanguage, onOpenMethodology }) => {
     // Dictionary
     const t = {
         subtitle: language === 'EN' ? "Global Intelligence Observatory" : "Observatorio de Inteligencia Global",
@@ -10,15 +10,16 @@ const LandingHero = ({ language = 'EN', toggleLanguage }) => {
             : "Monitoreo descentralizado de señales geopolíticas. Rastreando la convergencia en 7 regiones estratégicas.",
         steps: {
             scan: language === 'EN' ? "1. SCAN" : "1. ESCANEAR",
-            scanDesc: language === 'EN' ? "Review active feeds" : "Revisar feeds activos",
+            scanDesc: language === 'EN' ? "Scan the horizon for high-priority signal clusters." : "Escanea el horizonte buscando grupos de señales de alta prioridad.",
             select: language === 'EN' ? "2. SELECT" : "2. SELECCIONAR",
-            selectDesc: language === 'EN' ? "Open category deck" : "Abrir deck de categoría",
+            selectDesc: language === 'EN' ? "Select a category to view the tactical radar." : "Selecciona una categoría para ver el radar táctico.",
             analyze: language === 'EN' ? "3. ANALYZE" : "3. ANALIZAR",
-            analyzeDesc: language === 'EN' ? "Read synthesis & signals" : "Leer síntesis y señales"
+            analyzeDesc: language === 'EN' ? "Analyze the proximity score and synthesized intelligence." : "Analiza el puntaje de proximidad y la inteligencia sintetizada."
         },
         reports: {
             weekly: language === 'EN' ? "WEEKLY REPORT" : "REPORTE SEMANAL",
-            monthly: language === 'EN' ? "MONTHLY REPORT" : "REPORTE MENSUAL"
+            monthly: language === 'EN' ? "MONTHLY REPORT" : "REPORTE MENSUAL",
+            method: language === 'EN' ? "METHODOLOGY" : "METODOLOGÍA"
         }
     };
 
@@ -45,18 +46,25 @@ const LandingHero = ({ language = 'EN', toggleLanguage }) => {
                     <p className="text-sm md:text-base text-cyan-400 font-bold tracking-[0.3em] uppercase glow-text">
                         {t.subtitle}
                     </p>
-                    <p className="text-[10px] md:text-xs text-gray-500 font-mono leading-relaxed max-w-lg hidden md:block">
+                    <p className="text-[10px] md:text-xs text-gray-500 font-mono leading-relaxed max-w-lg block">
                         {t.desc}
                     </p>
                     {/* Tactical Report Buttons */}
-                    <div className="flex items-center justify-center md:justify-start gap-4 mt-4">
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 hover:border-cyan-500 hover:bg-cyan-500/10 transition-all rounded text-[10px] font-mono tracking-widest text-cyan-400 uppercase group">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+                        <button className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 hover:border-cyan-500 hover:bg-cyan-500/10 transition-all rounded text-[10px] font-mono tracking-widest text-cyan-400 uppercase group">
                             <svg className="w-3 h-3 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             {t.reports.weekly}
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 hover:border-magenta-500 hover:bg-magenta-500/10 transition-all rounded text-[10px] font-mono tracking-widest text-magenta-400 uppercase group">
+                        <button className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 hover:border-magenta-500 hover:bg-magenta-500/10 transition-all rounded text-[10px] font-mono tracking-widest text-magenta-400 uppercase group">
                             <svg className="w-3 h-3 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                             {t.reports.monthly}
+                        </button>
+                        <button
+                            onClick={onOpenMethodology}
+                            className="flex items-center gap-2 px-3 py-2 bg-transparent border border-gray-700 hover:border-gray-400 hover:bg-gray-800 transition-all rounded text-[10px] font-mono tracking-widest text-gray-400 hover:text-white uppercase group ml-2"
+                        >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {t.reports.method}
                         </button>
                     </div>
                 </div>
@@ -86,9 +94,9 @@ const LandingHero = ({ language = 'EN', toggleLanguage }) => {
                         { title: t.steps.select, desc: t.steps.selectDesc, color: "text-magenta-400", border: "border-magenta-500/30" },
                         { title: t.steps.analyze, desc: t.steps.analyzeDesc, color: "text-emerald-400", border: "border-emerald-500/30" }
                     ].map((step, i) => (
-                        <div key={i} className={`flex flex-col justify-center w-24 h-24 bg-black/50 backdrop-blur-sm border ${step.border} rounded-lg p-3 hover:bg-white/5 transition-colors group`}>
-                            <span className={`text-[10px] font-bold ${step.color} mb-1 group-hover:scale-105 transition-transform block`}>{step.title}</span>
-                            <span className="text-[9px] text-gray-400 leading-tight font-mono">{step.desc}</span>
+                        <div key={i} className={`flex flex-col justify-start w-32 h-32 bg-black/50 backdrop-blur-sm border ${step.border} rounded-lg p-4 hover:bg-white/5 transition-colors group`}>
+                            <span className={`text-[10px] font-bold ${step.color} mb-2 group-hover:scale-105 transition-transform block`}>{step.title}</span>
+                            <span className="text-[9px] text-gray-400 leading-relaxed font-mono block">{step.desc}</span>
                         </div>
                     ))}
                 </div>
