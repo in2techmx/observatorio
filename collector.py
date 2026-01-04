@@ -535,18 +535,22 @@ FORMATO SALIDA (JSON PURO):
             # --- 2. GENERATE DIALOGUE ---
             headlines_text = "\n".join(representative_headlines[:8])
             
-            prompt = f"""ACT AS: Geopolitical Analyst.
-TASK: Synthesize the 'dialogue' between these regions regarding '{area}'.
+            prompt = f"""ACT AS: Senior Geopolitical Intelligence Analyst.
+TASK: Produce a high-level Intelligence Briefing on the 'dialogue' between regions regarding '{area}'.
 INPUT (Dominant Regional Narratives):
 {headlines_text}
 
 INSTRUCTIONS:
-1. Identify the core tension or agreement.
-2. Format as a single, high-impact sentence (Max 30 words).
-3. Contrast perspectives (e.g., "While USA focuses on X, China emphasizes Y...").
-4. Language: Spanish.
-
-OUTPUT TEXT ONLY."""
+1. ANALYZE the cross-regional dynamics (tensions, alignments, silences).
+2. IDENTIFY:
+   - Shared concerns (Similitudes).
+   - Divergent priorities (Differences).
+   - Hidden strategic signals (Perspectives).
+3. OUTPUT FORMAT (Strict):
+   "INTELLIGENCE BRIEF: [One powerful sentence summarizing the core tension]. OBSERVATIONS: [2-3 sentences contrasting specific regional stances, e.g. 'While China focuses on X, the West prioritizes Y...']. FORECAST: [One short predictive sentence on where this leads]."
+4. LANGUAGE: Spanish (Professional, concise, geopolitical tone).
+5. LENGTH: Max 80 words total. Do not use bullet points, just running text separated by periods.
+6. OUTPUT TEXT ONLY."""
 
             try:
                 resp = self.client.models.generate_content(
