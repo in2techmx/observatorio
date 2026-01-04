@@ -43,9 +43,11 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
     const synthesisText = typeof synthesis === 'object' ? synthesis[language.toLowerCase()] : synthesis;
 
     // Filter Events
+    // Filter Events SAFE
+    const safeEvents = Array.isArray(events) ? events : [];
     const filteredEvents = filterRegion
-        ? events.filter(e => e.country === filterRegion || e.region === filterRegion)
-        : events;
+        ? safeEvents.filter(e => e && (e.country === filterRegion || e.region === filterRegion))
+        : safeEvents;
 
     return (
         <motion.div
