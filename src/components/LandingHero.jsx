@@ -10,8 +10,8 @@ const LandingHero = () => {
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
             </div>
 
-            {/* Left: Title */}
-            <div className="z-10 flex flex-col justify-center">
+            {/* Left: Title & Explanation */}
+            <div className="z-10 flex flex-col justify-center max-w-2xl">
                 <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -21,9 +21,15 @@ const LandingHero = () => {
                         PROXIMITY
                     </h1>
                 </motion.div>
-                <p className="text-xs text-gray-400 font-light mt-1 tracking-wide uppercase">
-                    Global Intelligence Observatory
-                </p>
+                <div className="flex flex-col gap-1 mt-2">
+                    <p className="text-xs text-cyan-500 font-bold tracking-widest uppercase">
+                        Global Intelligence Observatory
+                    </p>
+                    <p className="text-[10px] md:text-xs text-gray-400 font-mono leading-relaxed max-w-md hidden md:block">
+                        Decentralized monitoring of geopolitical signals.
+                        Tracking convergence across 7 strategic regions.
+                    </p>
+                </div>
             </div>
 
             {/* Right: Micro-Legend (Horizontal) */}
