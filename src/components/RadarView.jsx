@@ -269,15 +269,34 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-white/10 p-4 rounded-xl z-20 w-max max-w-[250px] text-center backdrop-blur-md shadow-2xl"
+                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-white/10 p-4 rounded-xl z-20 w-[280px] text-center backdrop-blur-md shadow-2xl"
                         style={{ borderColor: regionColors[selectedEvent.country] }}
                     >
-                        <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1" style={{ color: regionColors[selectedEvent.country] }}>
-                            {selectedEvent.country}
+                        <div className="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
+                            <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: regionColors[selectedEvent.country] }}>
+                                {selectedEvent.country}
+                            </span>
+                            <span className="text-[10px] text-gray-400 font-mono">
+                                {selectedEvent.source_url ? new URL(selectedEvent.source_url).hostname.replace('www.', '') : 'Unknown Source'}
+                            </span>
                         </div>
-                        <h4 className="text-sm font-bold text-white mb-2 leading-tight">{selectedEvent.title}</h4>
-                        <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
-                            PROX: {selectedEvent.proximity_score}
+
+                        <h4 className="text-sm font-bold text-white mb-2 leading-tight text-left">
+                            {selectedEvent.title}
+                        </h4>
+
+                        {/* Analysis / Keywords Brief */}
+                        {selectedEvent.analysis && (
+                            <p className="text-[10px] text-gray-400 text-left mb-3 line-clamp-3 leading-relaxed">
+                                {selectedEvent.analysis}
+                            </p>
+                        )}
+
+                        <div className="flex justify-between items-center mt-2">
+                            <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
+                                PROX: {Number(selectedEvent.proximity_score).toFixed(2)}
+                            </div>
+                            <span className="text-[9px] text-gray-500">Tap for details</span>
                         </div>
                     </motion.div>
                 )}
