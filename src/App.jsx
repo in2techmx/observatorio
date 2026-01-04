@@ -55,7 +55,9 @@ function App() {
         fetchData();
     }, []);
 
-    // Select the first category by default once events are loaded
+    // Select the first category by default - REMOVED per user request
+    // Initial state is "Overview" (Carousel only)
+    /*
     useEffect(() => {
         if (events.length > 0 && !selectedCategory) {
             // Find unique categories order
@@ -63,6 +65,7 @@ function App() {
             if (uniqueCats.length > 0) setSelectedCategory(uniqueCats[0]);
         }
     }, [events, selectedCategory]);
+    */
 
     // Prepare data for Carousel (Category Name + Count)
     const categoriesList = useMemo(() => {
