@@ -146,7 +146,7 @@ function App() {
                     </div>
                 ) : (
                     <GravityCarousel
-                        categories={categoriesList.map(c => c.name)} // Pass strings to carousel
+                        categories={categoriesList} // Pass full array of objects {name, count}
                         selectedCategory={selectedCategory}
                         onSelect={handleCategorySelect}
                         language={language}

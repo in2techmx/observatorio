@@ -65,62 +65,89 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect, language = 'E
                 onDragEnd={() => setIsDragging(false)}
             >
                 {/* Loop 3 times for seamless infinite feel */}
-                {[...categories, ...categories, ...categories].map((cat, i) => {
-                    const isSelected = selectedCategory === cat;
-                    // Color Logic
+                {[...categories, ...categories, ...categories].map((catItem, i) => {
+                    // catItem is now { name: "Category Name", count: 12 }
+                    const catName = catItem.name;
+                    const catCount = catItem.count || 0;
+
+                    const isSelected = selectedCategory === catName;
+
+                    // Distinct Color Logic - EXPANDED PALETTE
                     const colorMap = {
-                        "Seguridad y Conflictos": "#ef4444",
-                        "Economía y Sanciones": "#3b82f6",
-                        "Energía y Recursos": "#10b981",
-                        "Soberanía y Alianzas": "#f59e0b",
-                        "Tecnología y Espacio": "#8b5cf6",
-                        "Sociedad y Derechos": "#ec4899"
+                        "Seguridad y Conflictos": "#ef4444",      // Red-500
+                        "Economía y Sanciones": "#3b82f6",        // Blue-500
+                        "Energía y Recursos": "#10b981",          // Emerald-500
+                        "Soberanía y Alianzas": "#f59e0b",        // Amber-500
+                        "Tecnología y Espacio": "#8b5cf6",        // Violet-500
+                        "Sociedad y Derechos": "#ec4899",         // Pink-500
+                        "Desconocido": "#64748b"                  // Slate-500
                     };
-                    const color = colorMap[cat] || "#fff";
+                    const color = colorMap[catName] || "#fff";
 
                     // Translation
-                    const displayName = categoryTranslations?.[cat]?.[language.toLowerCase()] || cat;
+                    const displayName = categoryTranslations?.[catName]?.[language.toLowerCase()] || catName;
 
                     return (
                         <motion.div
-                            key={`${cat}-${i}`}
-                            onClick={() => !isDragging && onSelect(cat)}
+                            key={`${catName}-${i}`}
+                            onClick={() => !isDragging && onSelect(catName)}
                             whileHover={{ scale: 1.05, filter: "brightness(1.2)" }}
                             className={`
                                 relative flex-shrink-0 w-[280px] h-[180px] rounded-xl 
                                 border transition-all duration-500 group overflow-hidden
                                 backdrop-blur-md select-none flex flex-col items-center justify-center
                                 ${isSelected
-                                    ? 'z-20 bg-black/80 border-cyan-400 shadow-[0_0_50px_rgba(34,211,238,0.3)]'
-                                    : 'bg-white/5 border-white/10 hover:border-cyan-500/50 hover:bg-black/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]'
+                                    ? 'z-20 bg-black/90 border-transparent' // Border handled by style
+                                    : 'bg-white/5 border-white/10 hover:bg-black/40'
                                 }
                             `}
+                            style={{
+                                borderColor: isSelected ? color : undefined,
+                                boxShadow: isSelected ? `0 0 40px ${color}60` : undefined
+                            }}
                         >
-                            {/* Neon Glow Gradient Backend */}
-                            <div className={`absolute inset-0 bg-gradient-to-br from-${isSelected ? 'cyan-500/20' : 'transparent'} to-transparent opacity-50`} />
+                            {/* Neon Glow Gradient Backend - DYNAMIC COLOR */}
+                            <div className="absolute inset-0 opacity-20" style={{ background: `linear-gradient(to bottom right, ${color}, transparent)` }} />
 
                             {/* Card Content */}
-                            <div className="relative z-10 p-6 text-center">
+                            <div className="relative z-10 p-6 text-center w-full">
                                 {/* Decorative Icon Line */}
-                                <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-cyan-500 to-transparent mx-auto mb-4 opacity-50"></div>
+                                <div className="w-[1px] h-8 bg-gradient-to-b from-transparent to-transparent mx-auto mb-4 opacity-80"
+                                    style={{ backgroundImage: `linear-gradient(to bottom, transparent, ${color}, transparent)` }}
+                                ></div>
 
-                                <h3 className={`font-black text-2xl uppercase tracking-tighter leading-none mb-2 ${isSelected ? 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'text-gray-400 group-hover:text-white'}`}>
+                                <h3 className={`font-black text-2xl uppercase tracking-tighter leading-none mb-3 ${isSelected ? 'text-white' : 'text-gray-400 group-hover:text-white'}`}
+                                    style={{ textShadow: isSelected ? `0 0 20px ${color}80` : 'none' }}
+                                >
                                     {displayName}
                                 </h3>
+
+                                {/* Signal Count Badge */}
+                                <div className="inline-flex items-center gap-2 px-2 py-1 rounded border border-white/10 bg-black/40 backdrop-blur-sm">
+                                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: color }}></div>
+                                    <span className="text-[10px] font-mono tracking-widest text-gray-300">
+                                        {catCount} {language === 'EN' ? 'SIGNALS' : 'SEÑALES'}
+                                    </span>
+                                </div>
 
                                 {isSelected && (
                                     <motion.div
                                         layoutId="activeTab"
-                                        className="text-[10px] font-mono text-cyan-400 tracking-[0.3em] font-bold"
+                                        className="mt-4 text-[9px] font-mono tracking-[0.3em] font-bold absolute bottom-2 left-0 right-0"
+                                        style={{ color: color }}
                                     >
-                                        // SIGNAL_LOCKED
+                                        // LOCKED
                                     </motion.div>
                                 )}
                             </div>
 
-                            {/* Tech Borders */}
-                            <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'group-hover:opacity-50'}`}></div>
-                            <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'group-hover:opacity-50'}`}></div>
+                            {/* Tech Borders - DYNAMIC COLOR */}
+                            <div className="absolute top-0 left-0 w-full h-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
+                            />
+                            <div className="absolute bottom-0 left-0 w-full h-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
+                            />
 
                             {/* Corner Accents */}
                             <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/30"></div>
