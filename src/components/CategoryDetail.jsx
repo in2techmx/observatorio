@@ -179,6 +179,7 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
 
                 {/* LEFT: RADAR (Interactive) */}
                 <div className="relative h-[300px] md:h-full flex flex-col items-center justify-center p-2 bg-white/5 rounded-xl border border-white/5 order-2 md:order-1 overflow-hidden">
+                    {/* RADAR TEMPORARILY DISABLED FOR DEBUGGING
                     <RadarView
                         events={safeEvents}
                         onNodeClick={onSelectNews} // Legacy prop
@@ -189,6 +190,10 @@ const CategoryDetail = ({ category, events = [], synthesis = "", regionalSynthes
                         selectedRegion={selectedRegion}
                         onRegionSelect={setSelectedRegion}
                     />
+                    */}
+                    <div className="flex items-center justify-center h-full text-cyan-500 font-mono animate-pulse">
+                        [ SYSTEM DIAGNOSTIC: RADAR OFFLINE ]
+                    </div>
                     {/* Radar Legend/Status */}
                     <div className="absolute bottom-2 left-4 text-[9px] font-mono text-white/30 pointer-events-none">
                         RADAR_STATUS: ACTIVE<br />
