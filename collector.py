@@ -99,9 +99,10 @@ logging.basicConfig(
 # CLASES Y UTILIDADES
 # ============================================================================
 class NewsItem:
-    def __init__(self, item_id, title, link, region, source_url):
+    def __init__(self, item_id, title, link, region, source_url, description=""):
         self.id = item_id
         self.original_title = self._sanitize(title)
+        self.description = self._sanitize(description)[:300]
         self.link = link if self._valid_url(link) else None
         self.region = region
         self.source_url = source_url
@@ -297,11 +298,14 @@ class IroncladCollectorPro:
                         for item in items[:FETCH_LIMIT]:
                             title = getattr(item.find('title') or item.find('{*}title'), 'text', '')
                             link = getattr(item.find('link') or item.find('{*}link'), 'text', '')
+                            # Extract Description/Summary
+                            desc = getattr(item.find('description') or item.find('{*}description') or item.find('summary') or item.find('{*}summary'), 'text', '')
+                            
                             if not link: link = (item.find('link') or item.find('{*}link') or {}).get('href', '')
                             
                             if title and link and len(title)>10:
                                 uid = f"{region}_{cnt}_{hashlib.md5(link.encode()).hexdigest()[:8]}"
-                                news = NewsItem(uid, title, link, region, url)
+                                news = NewsItem(uid, title, link, region, url, desc)
                                 
                                 # Check deduplication against current active items
                                 if not self.is_duplicate(title, self.active_items):
@@ -518,10 +522,12 @@ FORMATO SALIDA (JSON PURO):
                     if best_item:
                         # Use English title for synthesis prompt if possible
                         title_for_prompt = getattr(best_item, 'title_en', best_item.original_title)
-                        representative_headlines.append(f"[{region}] {title_for_prompt}")
+                        desc_for_prompt = best_item.description[:200] if best_item.description else ""
+                        representative_headlines.append(f"[{region}] {title_for_prompt} | {desc_for_prompt}")
                 else:
                     title_for_prompt = getattr(items[0], 'title_en', items[0].original_title)
-                    representative_headlines.append(f"[{region}] {title_for_prompt}")
+                    desc_for_prompt = items[0].description[:200] if items[0].description else ""
+                    representative_headlines.append(f"[{region}] {title_for_prompt} | {desc_for_prompt}")
 
             if not representative_headlines: continue
 
