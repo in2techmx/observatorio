@@ -429,34 +429,52 @@ FORMATO SALIDA (JSON PURO):
                     random.seed(hash(item.original_title))
                     item.vector = [random.uniform(-0.1, 0.1) for _ in range(768)]
 
-        # Proximidad
+        # Proximity Calculation
         for area in AREAS:
             area_items = [it for it in valid_items if it.area == area and it.vector]
-            if len(area_items) < 2: continue
+            if not area_items: continue
             
-            reg_vecs = defaultdict(list)
-            for it in area_items: reg_vecs[it.region].append(it.vector)
-            centroids = {r: [sum(col)/len(col) for col in zip(*v)] for r,v in reg_vecs.items()}
+            # 1. Global Weighted Centroid ("Gravity Well")
+            # Averaging ALL vectors implies weighting by quantity (more items = more pull)
+            all_vecs = [it.vector for it in area_items]
+            dim = len(all_vecs[0])
+            global_c = [sum(col)/len(all_vecs) for col in zip(*all_vecs)]
+            mag_g = math.sqrt(sum(x*x for x in global_c))
             
+            # 2. Participation Factor (Gravity Strength)
+            # How many distinct regions are pulling?
+            participating_regions = set(it.region for it in area_items)
+            n_regions = len(participating_regions)
+            # 5+ regions = Strong Gravity (1.0)
+            # 3-4 regions = Moderate Gravity (0.85)
+            # 1-2 regions = Weak Gravity (0.6) - Things float further away
+            participation_factor = 1.0 if n_regions >= 5 else (0.85 if n_regions >= 3 else 0.6)
+
             for it in area_items:
-                others = [c for r,c in centroids.items() if r != it.region]
-                if not others:
-                    it.proximity = 50.0; it.bias_label = "Perspectiva Única"
-                    continue
-                
-                global_c = [sum(col)/len(col) for col in zip(*others)]
-                dot = sum(a*b for a,b in zip(it.vector, global_c))
+                # Cosine Similarity to Global Center
                 mag_a = math.sqrt(sum(a*a for a in it.vector))
-                mag_b = math.sqrt(sum(b*b for b in global_c))
-                
-                if mag_a*mag_b > 0:
-                    sim = dot/(mag_a*mag_b)
-                    it.proximity = max(0.0, min(100.0, (sim+1)*50))
-                    if it.proximity > 85: it.bias_label = "Consenso Global"
-                    elif it.proximity > 70: it.bias_label = "Alineación"
-                    elif it.proximity > 55: it.bias_label = "Tensión Moderada"
-                    elif it.proximity > 40: it.bias_label = "Divergencia"
-                    else: it.bias_label = "Contraste Radical"
+                if mag_a * mag_g > 0:
+                    dot = sum(a*b for a,b in zip(it.vector, global_c))
+                    sim = dot / (mag_a * mag_g) # Range -1 to 1
+                    
+                    # Map to 0-100 Base Score
+                    base_score = (sim + 1) * 50
+                    
+                    # Apply Gravity Strength
+                    # If gravity is weak, nothing can reach the absolute center (100)
+                    final_score = base_score * participation_factor
+                    
+                    it.proximity = max(0.0, min(100.0, final_score))
+                    
+                    # Assign Dynamic Labels
+                    if it.proximity > 85: it.bias_label = "Núcleo Narrativo"
+                    elif it.proximity > 70: it.bias_label = "Alta Convergencia"
+                    elif it.proximity > 50: it.bias_label = "Alineado"
+                    elif it.proximity > 35: it.bias_label = "Periférico"
+                    else: it.bias_label = "Divergente"
+                else:
+                    it.proximity = 0.0
+                    it.bias_label = "Error Vectorial"
 
     # --- FASE 4: EXPORTACIÓN ---
     def export(self):
