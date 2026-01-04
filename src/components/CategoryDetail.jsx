@@ -117,7 +117,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                                             </span>
                                             <div className="h-[1px] flex-1 bg-white/20"></div>
                                             <span className="text-[10px] text-gray-400 font-mono">
-                                                CONFIDENCE: {item.confianza || '95'}% | BIAS: {item.sesgo || 'NEUTRAL'}
+                                                CENTROID PROXIMITY: {Math.round(item.proximity_score * 10)}% | BIAS: {item.sesgo || 'NEUTRAL'}
                                             </span>
                                         </div>
 
