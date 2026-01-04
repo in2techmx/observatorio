@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import LandingHero from './components/LandingHero';
 import GravityCarousel from './components/GravityCarousel';
 import CategoryDetail from './components/CategoryDetail';
-import NewsCard from './components/NewsCard';
+import ArchivePanel from './components/ArchivePanel';
 
 function App() {
     const [selectedNews, setSelectedNews] = useState(null);
@@ -12,6 +12,8 @@ function App() {
     const [syntheses, setSyntheses] = useState({});
     // State for the new Carousel Navigation
     const [selectedCategory, setSelectedCategory] = useState(null);
+    // State for Archives
+    const [showArchives, setShowArchives] = useState(false);
 
     // Fetch real data from gravity_carousel.json
     useEffect(() => {
@@ -118,7 +120,13 @@ function App() {
             </div>
 
             {/* 3. FOOTER */}
-            <footer className="py-12 border-t border-white/5 text-center text-gray-600 text-sm bg-black">
+            <footer className="py-12 border-t border-white/5 text-center text-gray-600 text-sm bg-black flex flex-col items-center gap-4">
+                <button
+                    onClick={() => setShowArchives(true)}
+                    className="text-xs uppercase tracking-[0.2em] text-cyan-900 hover:text-cyan-400 transition-colors border border-transparent hover:border-cyan-900/30 px-4 py-2 rounded-full"
+                >
+                    [ ACCESS CLASSIFIED ARCHIVES ]
+                </button>
                 <p>Observatorio V2 &copy; 2026. Powered by Gemini 2.0 Flash.</p>
             </footer>
 
@@ -129,6 +137,14 @@ function App() {
                         event={events.find(e => e.id === selectedNews)}
                         onClose={() => setSelectedNews(null)}
                     />
+                )}
+                )}
+            </AnimatePresence>
+
+            {/* 5. ARCHIVES PANEL */}
+            <AnimatePresence>
+                {showArchives && (
+                    <ArchivePanel onClose={() => setShowArchives(false)} />
                 )}
             </AnimatePresence>
         </div>
