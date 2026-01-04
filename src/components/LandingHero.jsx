@@ -27,7 +27,7 @@ const LandingHero = ({ language = 'EN', toggleLanguage }) => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500 font-display">
+                    <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50 mb-4 select-none">
                         PROXIMITY
                     </h1>
                 </motion.div>

@@ -85,44 +85,48 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect, language = 'E
                         <motion.div
                             key={`${cat}-${i}`}
                             onClick={() => !isDragging && onSelect(cat)}
-                            whileHover={{ scale: 1.05, filter: "brightness(1.5)" }}
+                            whileHover={{ scale: 1.05, filter: "brightness(1.2)" }}
                             className={`
-                                relative flex-shrink-0 w-[260px] h-[160px] rounded-xl 
-                                border-2 transition-all duration-300 group overflow-hidden
-                                backdrop-blur-xl select-none
+                                relative flex-shrink-0 w-[280px] h-[180px] rounded-xl 
+                                border transition-all duration-500 group overflow-hidden
+                                backdrop-blur-md select-none flex flex-col items-center justify-center
                                 ${isSelected
-                                    ? 'scale-110 border-white shadow-[0_0_60px_rgba(255,255,255,0.4)] z-10 bg-black'
-                                    : 'opacity-100 bg-white/5 border-white/20 hover:border-white/60 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]'
+                                    ? 'z-20 bg-black/80 border-cyan-400 shadow-[0_0_50px_rgba(34,211,238,0.3)]'
+                                    : 'bg-white/5 border-white/10 hover:border-cyan-500/50 hover:bg-black/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]'
                                 }
                             `}
-                            style={{
-                                borderColor: isSelected ? color : (isSelected ? 'white' : 'rgba(255,255,255,0.2)'),
-                                boxShadow: isSelected ? `0 0 50px ${color}80` : 'none'
-                            }}
                         >
-                            {/* Card Content */}
-                            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                                {/* Icon/Graphic placeholder */}
-                                <div className={`w-2 h-2 rounded-full mb-3 shadow-[0_0_10px_currentColor]`} style={{ color }}></div>
+                            {/* Neon Glow Gradient Backend */}
+                            <div className={`absolute inset-0 bg-gradient-to-br from-${isSelected ? 'cyan-500/20' : 'transparent'} to-transparent opacity-50`} />
 
-                                <h3 className={`font-black text-lg uppercase tracking-tight leading-tight ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+                            {/* Card Content */}
+                            <div className="relative z-10 p-6 text-center">
+                                {/* Decorative Icon Line */}
+                                <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-cyan-500 to-transparent mx-auto mb-4 opacity-50"></div>
+
+                                <h3 className={`font-black text-2xl uppercase tracking-tighter leading-none mb-2 ${isSelected ? 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'text-gray-400 group-hover:text-white'}`}>
                                     {displayName}
                                 </h3>
 
                                 {isSelected && (
                                     <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className="mt-2 text-[10px] font-mono text-cyan-400 tracking-widest bg-black/50 px-2 py-1 rounded"
+                                        layoutId="activeTab"
+                                        className="text-[10px] font-mono text-cyan-400 tracking-[0.3em] font-bold"
                                     >
-                                        ACTIVE FEED
+                                        // SIGNAL_LOCKED
                                     </motion.div>
                                 )}
                             </div>
 
-                            {/* Tech Lines */}
-                            <div className="absolute top-2 right-2 w-4 h-[1px] bg-white/30"></div>
-                            <div className="absolute bottom-2 left-2 w-4 h-[1px] bg-white/30"></div>
+                            {/* Tech Borders */}
+                            <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'group-hover:opacity-50'}`}></div>
+                            <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition-opacity duration-500 ${isSelected ? 'opacity-100' : 'group-hover:opacity-50'}`}></div>
+
+                            {/* Corner Accents */}
+                            <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/30"></div>
+                            <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/30"></div>
+                            <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/30"></div>
+                            <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/30"></div>
                         </motion.div>
                     );
                 })}

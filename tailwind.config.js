@@ -7,8 +7,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                inter: ['Inter', 'sans-serif'],
-                display: ['Outfit', 'sans-serif'],
+                sans: ['Rajdhani', 'sans-serif'],
+                mono: ['Rajdhani', 'monospace'], // Cyberpunk style often uses same font
+                display: ['Rajdhani', 'sans-serif'],
             },
             colors: {
                 cyan: {
