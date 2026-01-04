@@ -434,21 +434,25 @@ FORMATO SALIDA (JSON PURO):
             area_items = [it for it in valid_items if it.area == area and it.vector]
             if not area_items: continue
             
-            # 1. Global Weighted Centroid ("Gravity Well")
-            # Averaging ALL vectors implies weighting by quantity (more items = more pull)
-            all_vecs = [it.vector for it in area_items]
-            dim = len(all_vecs[0])
-            global_c = [sum(col)/len(all_vecs) for col in zip(*all_vecs)]
-            mag_g = math.sqrt(sum(x*x for x in global_c))
+            # 1. Calculate Regional Centroids (The "Voice" of each Region)
+            # We group vectors by region first to treat each region as 1 unit of perspective
+            region_map = defaultdict(list)
+            for it in area_items:
+                region_map[it.region].append(it.vector)
             
-            # 2. Participation Factor (Gravity Strength)
-            # How many distinct regions are pulling?
-            participating_regions = set(it.region for it in area_items)
-            n_regions = len(participating_regions)
-            # 5+ regions = Strong Gravity (1.0)
-            # 3-4 regions = Moderate Gravity (0.85)
-            # 1-2 regions = Weak Gravity (0.6) - Things float further away
-            participation_factor = 1.0 if n_regions >= 5 else (0.85 if n_regions >= 3 else 0.6)
+            regional_centroids = []
+            for r_vecs in region_map.values():
+                # Average of items within this specific region
+                c = [sum(col)/len(r_vecs) for col in zip(*r_vecs)]
+                regional_centroids.append(c)
+                
+            # 2. Global Egalitarian Centroid ("The Center of Truth")
+            # Average of REGIONAL centroids, not individual items.
+            # This ensures USA (50 items) doesn't drown out Africa (2 items).
+            if not regional_centroids: continue
+            
+            global_c = [sum(col)/len(regional_centroids) for col in zip(*regional_centroids)]
+            mag_g = math.sqrt(sum(x*x for x in global_c))
 
             for it in area_items:
                 # Cosine Similarity to Global Center
@@ -458,13 +462,9 @@ FORMATO SALIDA (JSON PURO):
                     sim = dot / (mag_a * mag_g) # Range -1 to 1
                     
                     # Map to 0-100 Base Score
-                    base_score = (sim + 1) * 50
-                    
-                    # Apply Gravity Strength
-                    # If gravity is weak, nothing can reach the absolute center (100)
-                    final_score = base_score * participation_factor
-                    
-                    it.proximity = max(0.0, min(100.0, final_score))
+                    # If regions disagree, global_c is "Grey", so "White" items will have lower similarity.
+                    # If regions agree, global_c is "White", so "White" items have 100 similarity.
+                    it.proximity = max(0.0, min(100.0, (sim + 1) * 50))
                     
                     # Assign Dynamic Labels
                     if it.proximity > 85: it.bias_label = "Núcleo Narrativo"
