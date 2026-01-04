@@ -120,14 +120,28 @@ class GeoCoreCollector:
             selected_items = self._synthesize_region(region, pool)
             
             if selected_items:
+                # Mejor filtrado por ID
+                selected_ids_set = set(selected_items["selected_ids"])
+                filtered_items = [item for item in pool if item.id in selected_ids_set]
+                
+                # Enforce limits: truncate if too many, warn if too few
+                min_sel = PIPELINE["collection_params"]["output_stories_min"]
+                max_sel = PIPELINE["collection_params"]["output_stories_max"]
+                
+                if len(filtered_items) > max_sel:
+                    logging.warning(f"    ⚠️ Truncando de {len(filtered_items)} a {max_sel} items")
+                    filtered_items = filtered_items[:max_sel]
+                elif len(filtered_items) < min_sel:
+                    logging.warning(f"    ⚠️ Solo {len(filtered_items)} items válidos (esperado {min_sel})")
+                
                 self.regional_data[region] = {
                     "narrative": selected_items["narrative"],
                     "confidence": selected_items.get("confidence", "medium"),
-                    "items": [pool[i] for i in range(len(pool)) if pool[i].id in selected_items["selected_ids"]]
+                    "items": filtered_items
                 }
-                self.stats["total_selected"] += len(self.regional_data[region]["items"])
+                self.stats["total_selected"] += len(filtered_items)
                 self.stats["regions_processed"] += 1
-                logging.info(f"    ✅ Seleccionados: {len(self.regional_data[region]['items'])} / Narrativa: {selected_items['narrative'][:60]}...")
+                logging.info(f"    ✅ Seleccionados: {len(filtered_items)} / Narrativa: {selected_items['narrative'][:60]}...")
 
     def _synthesize_region(self, region, pool):
         """Envía el pool completo a la IA para síntesis y selección"""
