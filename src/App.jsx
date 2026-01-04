@@ -4,22 +4,50 @@ import LandingHero from './components/LandingHero';
 import GravityCarousel from './components/GravityCarousel';
 import CategoryDetail from './components/CategoryDetail';
 import ArchivePanel from './components/ArchivePanel';
+import NewsCard from './components/NewsCard'; // Ensure NewsCard is imported
 
 function App() {
-    const [selectedNews, setSelectedNews] = useState(null);
+    // UI State
+    const [loading, setLoading] = useState(true);
+    const [titleLoading, setTitleLoading] = useState(true);
+    const [language, setLanguage] = useState('EN');
+    const [showArchives, setShowArchives] = useState(false);
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+    // Data State
     const [events, setEvents] = useState([]);
     const [meta, setMeta] = useState(null);
     const [syntheses, setSyntheses] = useState({});
-    // State for the new Carousel Navigation
+
+    // Selection State
     const [selectedCategory, setSelectedCategory] = useState(null);
-    // State for Archives
-    const [showArchives, setShowArchives] = useState(false);
+    const [selectedNews, setSelectedNews] = useState(null);
+
+    // Translations
+    const CATEGORY_TRANSLATIONS = {
+        "Seguridad y Conflictos": { es: "Seguridad y Conflictos", en: "Security & Conflict" },
+        "Economía y Sanciones": { es: "Economía y Sanciones", en: "Economy & Sanctions" },
+        "Energía y Recursos": { es: "Energía y Recursos", en: "Energy & Resources" },
+        "Soberanía y Alianzas": { es: "Soberanía y Alianzas", en: "Sovereignty & Alliances" },
+        "Tecnología y Espacio": { es: "Tecnología y Espacio", en: "Tech & Space" },
+        "Sociedad y Derechos": { es: "Sociedad y Derechos", en: "Society & Rights" },
+        "Desconocido": { es: "Desconocido", en: "Unknown" }
+    };
+
+    const toggleLanguage = () => {
+        setLanguage(prev => prev === 'EN' ? 'ES' : 'EN');
+    };
 
     // Fetch real data from gravity_carousel.json
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Simulate cosmic link delay for effect
+                await new Promise(r => setTimeout(r, 1500));
+
                 const response = await fetch('./gravity_carousel.json');
+                if (!response.ok) throw new Error("Failed to fetch data");
+
                 const text = await response.text();
                 const data = JSON.parse(text);
 
@@ -28,21 +56,34 @@ function App() {
                     const adaptedEvents = data.carousel.flatMap(categoryBlock => {
                         return (categoryBlock.particulas || []).map(p => ({
                             id: p.id,
-                            title: p.titulo,
+                            title: p.titulo, // Default to original for safety
+                            titulo_en: p.titulo_en, // Capture bilingual fields for components to use
+                            titulo_es: p.titulo_es,
                             link: p.link,
                             country: p.bloque,
+                            region: p.bloque || p.region, // Handle inconsistent naming
                             source_url: p.link,
                             proximity_score: p.proximidad / 10, // Map 0-100 to 0-10 for Radar
                             category: categoryBlock.area,
                             analysis: (p.keywords || []).join(', ') + ". " + (p.sesgo || ""),
-                            keywords: p.keywords
+                            keywords: p.keywords,
+                            snippet: p.snippet
                         }));
                     });
 
-                    // Create a map of synthesis per category
+                    // Create a map of synthesis per category (handling bilingual object or string fallback)
                     const synthesisMap = {};
                     data.carousel.forEach(cat => {
-                        synthesisMap[cat.area] = cat.sintesis;
+                        // Backend now sends sintesis (es) and sintesis_en
+                        // Map structure: string or object
+                        if (cat.sintesis_en) {
+                            synthesisMap[cat.area] = {
+                                en: cat.sintesis_en,
+                                es: cat.sintesis
+                            };
+                        } else {
+                            synthesisMap[cat.area] = cat.sintesis; // Fallback legacy
+                        }
                     });
 
                     setEvents(adaptedEvents);
@@ -51,23 +92,13 @@ function App() {
                 }
             } catch (error) {
                 console.error("Failed to load gravity data:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchData();
     }, []);
-
-    // Select the first category by default - REMOVED per user request
-    // Initial state is "Overview" (Carousel only)
-    /*
-    useEffect(() => {
-        if (events.length > 0 && !selectedCategory) {
-            // Find unique categories order
-            const uniqueCats = [...new Set(events.map(e => e.category))];
-            if (uniqueCats.length > 0) setSelectedCategory(uniqueCats[0]);
-        }
-    }, [events, selectedCategory]);
-    */
 
     // Prepare data for Carousel (Category Name + Count)
     const categoriesList = useMemo(() => {
@@ -84,7 +115,7 @@ function App() {
         return selectedCategory ? events.filter(e => e.category === selectedCategory) : [];
     }, [selectedCategory, events]);
 
-    // Handlers for the new overlay logic
+    // Handlers
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
         setIsOverlayOpen(true);
@@ -115,9 +146,9 @@ function App() {
                     </div>
                 ) : (
                     <GravityCarousel
-                        categories={categoriesList} // Changed from 'data' to 'categories' to match existing prop
-                        selectedCategory={selectedCategory} // Changed from 'data' to 'selectedCategory' to match existing prop
-                        onSelect={handleCategorySelect} // Changed from 'onCategorySelect' to 'onSelect' to match existing prop
+                        categories={categoriesList.map(c => c.name)} // Pass strings to carousel
+                        selectedCategory={selectedCategory}
+                        onSelect={handleCategorySelect}
                         language={language}
                         categoryTranslations={CATEGORY_TRANSLATIONS}
                     />
@@ -135,17 +166,33 @@ function App() {
                 <p>Observatorio V2 &copy; 2026. Powered by Gemini 2.0 Flash.</p>
             </footer>
 
-            {/* 4. MODALS */}
+            {/* 4. DETAILS OVERLAY */}
             <AnimatePresence>
-                {selectedNews && (
-                    <NewsCard
-                        event={events.find(e => e.id === selectedNews)}
-                        onClose={() => setSelectedNews(null)}
+                {isOverlayOpen && selectedCategory && (
+                    <CategoryDetail
+                        category={selectedCategory}
+                        events={activeEvents}
+                        synthesis={syntheses[selectedCategory]}
+                        onSelectNews={setSelectedNews}
+                        onClose={handleCloseOverlay}
+                        language={language}
+                        categoryTranslations={CATEGORY_TRANSLATIONS}
                     />
                 )}
             </AnimatePresence>
 
-            {/* 5. ARCHIVES PANEL */}
+            {/* 5. MODALS */}
+            <AnimatePresence>
+                {selectedNews && (
+                    <NewsCard
+                        event={selectedNews}
+                        onClose={() => setSelectedNews(null)}
+                        language={language}
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* 6. ARCHIVES PANEL */}
             <AnimatePresence>
                 {showArchives && (
                     <ArchivePanel onClose={() => setShowArchives(false)} />
