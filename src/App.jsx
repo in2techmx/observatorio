@@ -27,13 +27,12 @@ function App() {
 
     // Translations
     const CATEGORY_TRANSLATIONS = {
-        "Seguridad y Conflictos": { es: "Seguridad y Conflictos", en: "Security & Conflict" },
-        "Economía y Sanciones": { es: "Economía y Sanciones", en: "Economy & Sanctions" },
-        "Energía y Recursos": { es: "Energía y Recursos", en: "Energy & Resources" },
-        "Soberanía y Alianzas": { es: "Soberanía y Alianzas", en: "Sovereignty & Alliances" },
-        "Tecnología y Espacio": { es: "Tecnología y Espacio", en: "Tech & Space" },
-        "Sociedad y Derechos": { es: "Sociedad y Derechos", en: "Society & Rights" },
-        "Desconocido": { es: "Desconocido", en: "Unknown" }
+        "War & Conflict": { es: "Guerra y Conflictos", en: "War & Conflict" },
+        "Global Economy": { es: "Economía Global", en: "Global Economy" },
+        "Politics & Policy": { es: "Política y Gobierno", en: "Politics & Policy" },
+        "Science & Tech": { es: "Ciencia y Tecnología", en: "Science & Tech" },
+        "Social & Rights": { es: "Sociedad y Derechos", en: "Social & Rights" },
+        "Other": { es: "Otros Temas", en: "Other Topics" }
     };
 
     const toggleLanguage = () => {
