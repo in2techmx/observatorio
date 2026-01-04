@@ -41,43 +41,54 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
         if (!events.length) return;
 
         let nodes = events.map(ev => {
-            const baseAngleDeg = regionAngles[ev.region] || regionAngles[ev.country] || (Math.random() * 360);
-            const jitter = (Math.random() - 0.5) * 40;
+            // Determine base angle (default to -90/North if unknown)
+            const regionBase = regionAngles[ev.region] || regionAngles[ev.country];
+            const baseAngleDeg = regionBase !== undefined ? regionBase : -90;
+
+            // Reduced jitter to keep within sector (sectors are ~51 deg wide)
+            // +/- 12 degrees keeps them well within the 50 degree slice
+            const jitter = (Math.random() - 0.5) * 25;
             const angleRad = (baseAngleDeg + jitter) * (Math.PI / 180);
-            // Proximity Score (0-10) - ensure numeric
+
+            // Proximity Score (0-10)
             const score = Number(ev.proximity_score || ev.proximidad || 0);
-            const r = maxRadius * (1 - (score / 10));
+            // Invert: High score = close to center (small radius)
+            // We map 0-10 score to radius. 10 -> 20px, 0 -> maxRadius
+            const r = Math.max(20, maxRadius * (1 - (score / 12)));
 
             return {
                 id: ev.id,
                 x: center + r * Math.cos(angleRad),
                 y: center + r * Math.sin(angleRad),
-                r: r,
-                angle: angleRad,
+                targetR: r, // Keep track of intended proximity
+                targetAngle: baseAngleDeg * (Math.PI / 180), // Keep track of sector center
                 data: ev,
                 vx: 0,
                 vy: 0
             };
         });
 
-        // Simple Force Simulation
-        const iterations = 120;
-        const repelStrength = 5;
+        // Improved Physics Simulation
+        const iterations = 150;
+        const repelStrength = 2; // Reduced repulsion to prevent explosion
+        const centerPull = 0.05; // Force pulling back to sector angle
         const nodeRadius = 8;
 
         for (let k = 0; k < iterations; k++) {
+            // 1. Repulsion (Nodes push each other)
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const dx = nodes[i].x - nodes[j].x;
                     const dy = nodes[i].y - nodes[j].y;
                     const distSq = dx * dx + dy * dy;
-                    const minDist = nodeRadius * 2.5;
+                    const minDist = nodeRadius * 2.2;
 
                     if (distSq < minDist * minDist && distSq > 0) {
                         const dist = Math.sqrt(distSq);
-                        const force = (minDist - dist) / dist * repelStrength * 0.1;
+                        const force = (minDist - dist) / dist * repelStrength; // Linear force
                         const fx = dx * force;
                         const fy = dy * force;
+
                         nodes[i].x += fx;
                         nodes[i].y += fy;
                         nodes[j].x -= fx;
@@ -85,13 +96,34 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
                     }
                 }
             }
-            // Constrain to Radial Orbit
+
+            // 2. Constraints (Angular & Radial)
             for (let i = 0; i < nodes.length; i++) {
                 const dx = nodes[i].x - center;
                 const dy = nodes[i].y - center;
-                const currentAngle = Math.atan2(dy, dx);
-                nodes[i].x = center + nodes[i].r * Math.cos(currentAngle);
-                nodes[i].y = center + nodes[i].r * Math.sin(currentAngle);
+                let currentAngle = Math.atan2(dy, dx);
+                let currentDist = Math.sqrt(dx * dx + dy * dy);
+
+                // A. Angular Restoring Force (Pull back to sector center)
+                // Shortest angular distance
+                let dAngle = nodes[i].targetAngle - currentAngle;
+                while (dAngle <= -Math.PI) dAngle += 2 * Math.PI;
+                while (dAngle > Math.PI) dAngle -= 2 * Math.PI;
+
+                // Softly nudge angle back
+                currentAngle += dAngle * centerPull;
+
+                // B. Hard Angular Limit (Clamp to sector +/- 25 degrees)
+                const limit = 25 * (Math.PI / 180);
+                if (dAngle > limit) currentAngle = nodes[i].targetAngle - limit;
+                if (dAngle < -limit) currentAngle = nodes[i].targetAngle + limit;
+
+                // C. Radial Hard Lock (Proximity determines radius strictly)
+                // We overwrite the calculated distance with the target distance
+                // effectively removing "radial physics" and keeping them in their proximity orbit
+                // allowing only angular sliding to avoid overlap.
+                nodes[i].x = center + nodes[i].targetR * Math.cos(currentAngle);
+                nodes[i].y = center + nodes[i].targetR * Math.sin(currentAngle);
             }
         }
         setLayout(nodes);
