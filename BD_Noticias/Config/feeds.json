@@ -11,7 +11,10 @@
         "https://www.reuters.com/rssFeed/topNews",
         "https://www.bloomberg.com/feed/podcast/bloomberg-surveillance.xml",
         "https://thehill.com/feed/",
-        "https://www.axios.com/feeds/feed.rss"
+        "https://www.axios.com/feeds/feed.rss",
+        "https://feeds.cbsnews.com/cbsnews/feed",
+        "https://abcnews.go.com/abcnews/topstories",
+        "https://www.usatoday.com/feeds/rss/news/world.cms"
     ],
     "LATINOAMERICA": [
         "https://www.jornada.com.mx/rss/edicion.xml?v=1",
@@ -24,7 +27,10 @@
         "https://www.eltiempo.com/rss/colombia.xml",
         "https://www.emol.com/rss/rss.asp",
         "https://www.elespectador.com/rss/noticias/",
-        "https://www.milenio.com/rss/portada"
+        "https://www.milenio.com/rss/portada",
+        "https://aristeguinoticias.com/feed/",
+        "https://brasil.elpais.com/rss/brasil/portada.xml",
+        "https://www.folha.uol.com.br/feed/"
     ],
     "EUROPA": [
         "http://feeds.bbci.co.uk/news/world/europe/rss.xml",
@@ -38,7 +44,9 @@
         "https://www.lemonde.fr/rss/une.xml",
         "https://www.spiegel.de/international/index.rss",
         "https://www.ft.com/world?format=rss",
-        "https://www.politico.eu/feed/"
+        "https://www.politico.eu/feed/",
+        "https://www.corriere.it/rss/homepage.xml",
+        "https://azertag.az/en/xml/rss"
     ],
     "MEDIO_ORIENTE": [
         "https://www.aljazeera.com/xml/rss/all.xml",
@@ -49,7 +57,8 @@
         "https://www.timesofisrael.com/feed/",
         "https://www.middleeasteye.net/rss",
         "https://www.al-monitor.com/rss.xml",
-        "https://english.alarabiya.net/rss.xml"
+        "https://english.alarabiya.net/rss.xml",
+        "https://www.tehrantimes.com/rss"
     ],
     "ASIA_PACIFICO": [
         "http://feeds.bbci.co.uk/news/world/asia/rss.xml",
@@ -62,7 +71,9 @@
         "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml",
         "https://www.globaltimes.cn/rss/outbrain.xml",
         "https://www.theaustralian.com.au/feed/",
-        "https://www.koreaherald.com/common/rss_xml.php"
+        "https://www.koreaherald.com/common/rss_xml.php",
+        "http://www.xinhuanet.com/english/rss/world.xml",
+        "https://timesofindia.indiatimes.com/rssfeedstopstories.cms"
     ],
     "AFRICA": [
         "http://feeds.bbci.co.uk/news/world/africa/rss.xml",
@@ -71,7 +82,8 @@
         "https://www.dailymaverick.co.za/dmrss/",
         "https://www.theeastafrican.co.ke/tea/rss",
         "https://www.africanews.com/feed/",
-        "https://www.businessdailyafrica.com/bd/rss"
+        "https://www.businessdailyafrica.com/bd/rss",
+        "https://sabcnews.com/feed/"
     ],
     "RUSIA_CIS": [
         "https://tass.com/rss/v2.xml",
@@ -81,6 +93,11 @@
         "https://sputniknews.com/export/rss2/archive/index.xml",
         "https://www.interfax.ru/rss.asp",
         "https://www.kyivpost.com/feed",
-        "https://www.rferl.org/api/zq-iqetepqii"
+        "https://www.rferl.org/api/zq-iqetepqii",
+        "https://lenta.ru/rss",
+        "https://www.vedomosti.ru/rss/news",
+        "https://rg.ru/xml/index.xml",
+        "https://www.kommersant.ru/RSS/news.xml",
+        "https://iz.ru/xml/rss/all.xml"
     ]
 }
