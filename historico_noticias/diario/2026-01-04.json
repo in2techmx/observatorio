@@ -2,27 +2,28 @@
   "carousel": [
     {
       "area": "Seguridad y Conflictos",
-      "sintesis": "Mientras EE.UU. justifica acciones contra Maduro por seguridad, Rusia denuncia ataques similares, y LatAm cuestiona la legitimidad de tales intervenciones, generando conflictos globales.",
-      "punto_cero": "🔴 BAJO | Avg: 34.6% | ↓",
+      "sintesis": "INTELIGENCIA BREVE: La soberanía nacional versus la intervención extranjera exacerba las tensiones globales en torno a la seguridad y los conflictos. OBSERVACIONES: Mientras EE.UU. y Europa justifican acciones contra Maduro, Rusia y China señalan la injerencia y cuestionan la legitimidad de tales operaciones. Latinoamérica, dividida, evalúa el impacto regional, mientras India se centra en la legalidad de las acciones estadounidenses. PRONÓSTICO: La polarización aumentará, dificultando la cooperación internacional en la resolución de conflictos.",
+      "punto_cero": "🔴 BAJO | Avg: 33.3% | ↓",
       "color": "#ef4444",
       "meta_netflix": {
         "consensus": "BAJO",
         "trend": "↓",
-        "avg_proximity": 34.617322834645684
+        "avg_proximity": 33.29924812030077
       },
       "particulas": [
         {
           "id": "EUROPE_244_5",
-          "titulo": "Ataque a Venezuela: lo que sabemos hasta ahora mientras EE.UU. captura al presidente Maduro",
+          "titulo": "Ataque a Venezuela: lo que sabemos hasta ahora mientras EE. UU. captura al presidente Maduro",
           "link": "https://www.theguardian.com/world/2026/jan/03/venezuela-attack-what-we-know-so-far-as-trump-claims-maduro-captured",
           "bloque": "EUROPE",
-          "proximidad": 60.6,
+          "proximidad": 60.2,
           "sesgo": "Alta Convergencia",
           "confianza": 95,
           "keywords": [
             "Venezuela",
             "Maduro",
-            "EE.UU."
+            "EE. UU.",
+            "captura"
           ]
         },
         {
@@ -30,9 +31,9 @@
           "titulo": "Explosiones y presuntos bombardeos en Caracas y bases militares venezolanas",
           "link": "https://en.mercopress.com/2026/01/03/explosions-and-reported-bombings-in-caracas-and-venezuelan-military-bases?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
           "bloque": "LATAM",
-          "proximidad": 59.2,
+          "proximidad": 58.4,
           "sesgo": "Alineado",
-          "confianza": 90,
+          "confianza": 95,
           "keywords": [
             "Venezuela",
             "Caracas",
@@ -41,58 +42,29 @@
           ]
         },
         {
-          "id": "EUROPE_272_2",
-          "titulo": "🔴 Ver en vivo: Trump ofrece una conferencia de prensa sobre la operación para capturar a Maduro de Venezuela",
-          "link": "https://www.france24.com/en/americas/20260103-live-venezuela-declares-state-of-emergency-after-reported-us-military-aggression",
-          "bloque": "EUROPE",
-          "proximidad": 58.6,
-          "sesgo": "Alineado",
-          "confianza": 95,
-          "keywords": [
-            "Trump",
-            "Maduro",
-            "Venezuela",
-            "captura"
-          ]
-        },
-        {
-          "id": "EUROPE_257_8",
-          "titulo": "En vivo: Venezuela se enfrenta a un vacío de poder después de que Estados Unidos capture a Maduro",
-          "link": "https://www.france24.com/en/americas/20260104-live-venezuela-maduro-held-in-us-custody-as-trump-vows-to-run-the-country-us",
-          "bloque": "EUROPE",
-          "proximidad": 58.4,
-          "sesgo": "Alineado",
-          "confianza": 95,
-          "keywords": [
-            "Venezuela",
-            "Maduro",
-            "vacío poder"
-          ]
-        },
-        {
-          "id": "RUSSIA_157_3",
+          "id": "RUSSIA_158_3",
           "titulo": "EE.UU. atacó Venezuela. Trump anunció la captura de Maduro",
           "link": "https://novayagazeta.eu/articles/2026/01/03/v-stolitse-venesuely-karakase-progremeli-vzryvy-nad-gorodom-byli-vidny-nizko-letiashchie-samolety-news",
           "bloque": "RUSSIA",
-          "proximidad": 56.6,
+          "proximidad": 55.2,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
             "EE.UU.",
             "Venezuela",
+            "ataque",
             "Trump",
-            "Maduro",
-            "ataque"
+            "Maduro"
           ]
         },
         {
-          "id": "EUROPE_265_f",
+          "id": "EUROPE_267_f",
           "titulo": "EE.UU. lanza ataques contra Venezuela, captura al presidente Maduro",
           "link": "https://www.france24.com/en/video/20260103-us-launch-strikes-on-venezuela-captures-president-maduro",
           "bloque": "EUROPE",
-          "proximidad": 55.2,
+          "proximidad": 54.6,
           "sesgo": "Alineado",
-          "confianza": 98,
+          "confianza": 95,
           "keywords": [
             "EE.UU.",
             "ataques",
@@ -101,25 +73,11 @@
           ]
         },
         {
-          "id": "EUROPE_268_f",
-          "titulo": "Venezuela: ¿Qué sigue para Nicolás Maduro?",
-          "link": "https://www.france24.com/en/video/20260103-venezuela-what-s-next-for-nicolas-maduro",
-          "bloque": "EUROPE",
-          "proximidad": 53.5,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Venezuela",
-            "Nicolás Maduro",
-            "futuro"
-          ]
-        },
-        {
           "id": "LATAM_392_a9",
           "titulo": "Los mapas y los tres momentos clave de la operación para sacar a Maduro de Venezuela",
           "link": "https://elpais.com/internacional/2026-01-03/mapas-del-ataque-de-eeuu-sobre-venezuela-objetivos-espacio-aereo-y-flota-desplegada.html",
           "bloque": "LATAM",
-          "proximidad": 51.9,
+          "proximidad": 51.6,
           "sesgo": "Alineado",
           "confianza": 89,
           "keywords": [
@@ -130,33 +88,17 @@
           ]
         },
         {
-          "id": "INDIA_460_4a",
-          "titulo": "Ataques de EE.UU. en Venezuela: ¿Tenía Trump autoridad para capturar a Maduro? Lo que dice la ley",
-          "link": "https://timesofindia.indiatimes.com/world/us/us-strikes-in-venezuela-did-trump-have-authority-to-capture-maduro-what-the-law-says/articleshow/126330958.cms",
-          "bloque": "INDIA",
-          "proximidad": 50.4,
-          "sesgo": "Alineado",
-          "confianza": 95,
-          "keywords": [
-            "EE.UU.",
-            "Venezuela",
-            "Maduro",
-            "ataques"
-          ]
-        },
-        {
-          "id": "LATAM_388_cd",
-          "titulo": "Trump captura a Maduro y toma el control de Venezuela: ¿y ahora qué?",
-          "link": "https://elpais.com/podcasts/hoy-en-el-pais/2026-01-04/trump-captura-a-maduro-y-toma-el-control-de-venezuela-y-ahora-que.html",
-          "bloque": "LATAM",
-          "proximidad": 50.2,
+          "id": "USA_7_ca8cd8",
+          "titulo": "Dentro de 'Operación Resolución Absoluta', el esfuerzo de EE.UU. para capturar a Maduro",
+          "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-capture-maduro-venezuela.html",
+          "bloque": "USA",
+          "proximidad": 49.4,
           "sesgo": "Alineado",
           "confianza": 93,
           "keywords": [
-            "Trump",
-            "Maduro",
-            "captura",
-            "Venezuela"
+            "Operación Resolución Absoluta",
+            "EEUU",
+            "Maduro"
           ]
         },
         {
@@ -164,7 +106,7 @@
           "titulo": "Reconstrucción del ataque: así fue la operación de Estados Unidos en Venezuela para capturar a Nicolás Maduro",
           "link": "https://elpais.com/internacional/2026-01-03/reconstruccion-del-ataque-asi-fue-la-mision-de-estados-unidos-en-venezuela-para-capturar-a-nicolas-maduro.html",
           "bloque": "LATAM",
-          "proximidad": 50.1,
+          "proximidad": 49.1,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -175,25 +117,11 @@
           ]
         },
         {
-          "id": "USA_7_ca8cd8",
-          "titulo": "Dentro de 'Operación Resolución Absoluta', el esfuerzo de EE.UU. para capturar a Maduro",
-          "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-capture-maduro-venezuela.html",
-          "bloque": "USA",
-          "proximidad": 49.9,
-          "sesgo": "Alineado",
-          "confianza": 93,
-          "keywords": [
-            "Operación Resolución Absoluta",
-            "EEUU",
-            "Maduro"
-          ]
-        },
-        {
           "id": "LATAM_387_a2",
           "titulo": "Videoanálisis | La captura de Nicolás Maduro, una ofensiva esperada en Venezuela",
           "link": "https://elpais.com/america/2026-01-04/videoanalisis-el-ataque-a-nicolas-maduro-una-ofensiva-esperada-en-venezuela.html",
           "bloque": "LATAM",
-          "proximidad": 49.4,
+          "proximidad": 48.9,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
@@ -204,28 +132,28 @@
           ]
         },
         {
-          "id": "INDIA_461_89",
-          "titulo": "Drogas, petróleo, inmigración ilegal: Por qué Donald Trump ordenó ataques en Venezuela; lo que sabemos hasta ahora",
-          "link": "https://timesofindia.indiatimes.com/world/us/drugs-oil-illegal-immigration-why-donald-trump-ordered-venezuela-strikes-what-we-know-so-far/articleshow/126330472.cms",
-          "bloque": "INDIA",
-          "proximidad": 49.4,
+          "id": "LATAM_388_cd",
+          "titulo": "Trump captura a Maduro y toma el control de Venezuela: ¿y ahora qué?",
+          "link": "https://elpais.com/podcasts/hoy-en-el-pais/2026-01-04/trump-captura-a-maduro-y-toma-el-control-de-venezuela-y-ahora-que.html",
+          "bloque": "LATAM",
+          "proximidad": 48.9,
           "sesgo": "Alineado",
-          "confianza": 90,
+          "confianza": 93,
           "keywords": [
             "Trump",
-            "Venezuela",
-            "ataques",
-            "drogas"
+            "Maduro",
+            "captura",
+            "Venezuela"
           ]
         },
         {
-          "id": "EUROPE_288_5",
+          "id": "EUROPE_289_5",
           "titulo": "Se escuchan explosiones en la capital venezolana, Caracas",
           "link": "https://www.dw.com/en/explosions-heard-in-venezuelan-capital-of-caracas/a-75373526?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 49.2,
+          "proximidad": 48.4,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 88,
           "keywords": [
             "Venezuela",
             "Caracas",
@@ -234,11 +162,40 @@
           ]
         },
         {
+          "id": "RUSSIA_163_4",
+          "titulo": "Rusia lanza un ataque aéreo contra el centro de Járkov, 30 personas resultan heridas",
+          "link": "https://novayagazeta.eu/articles/2026/01/02/rossiia-nanesla-aviaudar-po-tsentru-kharkova-postradali-bolee-15-chelovek-news",
+          "bloque": "RUSSIA",
+          "proximidad": 48.0,
+          "sesgo": "Alineado",
+          "confianza": 95,
+          "keywords": [
+            "Rusia",
+            "ataque aéreo",
+            "Járkov"
+          ]
+        },
+        {
+          "id": "INDIA_463_89",
+          "titulo": "Drogas, petróleo, inmigración ilegal: Por qué Donald Trump ordenó ataques en Venezuela; lo que sabemos hasta ahora",
+          "link": "https://timesofindia.indiatimes.com/world/us/drugs-oil-illegal-immigration-why-donald-trump-ordered-venezuela-strikes-what-we-know-so-far/articleshow/126330472.cms",
+          "bloque": "INDIA",
+          "proximidad": 47.8,
+          "sesgo": "Alineado",
+          "confianza": 95,
+          "keywords": [
+            "Trump",
+            "Venezuela",
+            "ataques",
+            "drogas"
+          ]
+        },
+        {
           "id": "LATAM_380_ef",
           "titulo": "“Fuerte Tiuna está explotando”: así se ha vivido en Caracas el ataque de Estados Unidos",
           "link": "https://elpais.com/america/2026-01-03/fuerte-tiuna-esta-explotando-asi-se-ha-vivido-en-caracas-el-ataque-de-estados-unidos.html",
           "bloque": "LATAM",
-          "proximidad": 49.1,
+          "proximidad": 47.7,
           "sesgo": "Alineado",
           "confianza": 92,
           "keywords": [
@@ -248,17 +205,18 @@
           ]
         },
         {
-          "id": "RUSSIA_162_4",
-          "titulo": "Rusia lanza un ataque aéreo contra el centro de Járkov, 30 personas resultan heridas",
-          "link": "https://novayagazeta.eu/articles/2026/01/02/rossiia-nanesla-aviaudar-po-tsentru-kharkova-postradali-bolee-15-chelovek-news",
-          "bloque": "RUSSIA",
-          "proximidad": 48.1,
+          "id": "INDIA_462_4a",
+          "titulo": "Ataques estadounidenses en Venezuela: ¿Tenía Trump autoridad para capturar a Maduro? Lo que dice la ley",
+          "link": "https://timesofindia.indiatimes.com/world/us/us-strikes-in-venezuela-did-trump-have-authority-to-capture-maduro-what-the-law-says/articleshow/126330958.cms",
+          "bloque": "INDIA",
+          "proximidad": 47.0,
           "sesgo": "Alineado",
-          "confianza": 98,
+          "confianza": 92,
           "keywords": [
-            "Rusia",
-            "ataque aéreo",
-            "Járkov"
+            "EEUU",
+            "Venezuela",
+            "Trump",
+            "Maduro"
           ]
         },
         {
@@ -266,7 +224,7 @@
           "titulo": "La frontera colombiana espera los coletazos de la intervención militar de Estados Unidos en Venezuela",
           "link": "https://elpais.com/america-colombia/2026-01-04/la-frontera-colombiana-espera-los-coletazos-de-la-intervencion-militar-de-estados-unidos-en-venezuela.html",
           "bloque": "LATAM",
-          "proximidad": 47.5,
+          "proximidad": 46.6,
           "sesgo": "Alineado",
           "confianza": 87,
           "keywords": [
@@ -281,12 +239,12 @@
           "titulo": "Cuatro heridos en una explosión en la ciudad de Nueva York, sospechoso detenido",
           "link": null,
           "bloque": "CHINA",
-          "proximidad": 47.2,
+          "proximidad": 46.4,
           "sesgo": "Alineado",
-          "confianza": 97,
+          "confianza": 95,
           "keywords": [
-            "Nueva York",
             "explosión",
+            "Nueva York",
             "heridos",
             "sospechoso"
           ]
@@ -296,15 +254,29 @@
           "titulo": "Última hora de Nicolás Maduro detenido y el ataque de EE UU a Venezuela, en directo | Maduro, encarcelado en Nueva York tras su captura en Caracas",
           "link": "https://elpais.com/internacional/2026-01-04/ultima-hora-de-nicolas-maduro-detenido-y-de-venezuela-tras-el-ataque-de-estados-unidos-en-directo.html",
           "bloque": "LATAM",
-          "proximidad": 47.1,
+          "proximidad": 45.9,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
             "Maduro",
             "Venezuela",
             "EEUU",
-            "ataque",
-            "detención"
+            "ataque"
+          ]
+        },
+        {
+          "id": "CHINA_197_0f",
+          "titulo": "Cuatro heridos en una explosión relacionada con el terrorismo en Manhattan",
+          "link": null,
+          "bloque": "CHINA",
+          "proximidad": 45.8,
+          "sesgo": "Alineado",
+          "confianza": 95,
+          "keywords": [
+            "terrorismo",
+            "explosión",
+            "Manhattan",
+            "heridos"
           ]
         },
         {
@@ -312,7 +284,7 @@
           "titulo": "Maduro encarcelado en Nueva York tras una audaz redada y captura – en vivo",
           "link": "https://www.theguardian.com/world/live/2026/jan/04/nicolas-maduro-jailed-us-attack-venezuela-donald-trump-reaction-latest-news-updates-live",
           "bloque": "EUROPE",
-          "proximidad": 46.8,
+          "proximidad": 45.8,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -322,48 +294,19 @@
           ]
         },
         {
-          "id": "CHINA_197_0f",
-          "titulo": "Cuatro heridos en una explosión relacionada con el terrorismo en Manhattan",
-          "link": null,
-          "bloque": "CHINA",
-          "proximidad": 46.7,
-          "sesgo": "Alineado",
-          "confianza": 96,
-          "keywords": [
-            "Manhattan",
-            "explosión",
-            "terrorismo",
-            "heridos"
-          ]
-        },
-        {
-          "id": "RUSSIA_152_2",
-          "titulo": "Trump atrapó a Maduro. EE.UU. atacó Venezuela y sacó al presidente y a su esposa del país. ¿Qué se sabe sobre la operación militar de EE.UU. y cómo reacciona el mundo?",
+          "id": "RUSSIA_153_2",
+          "titulo": "Trump atrapó a Maduro. EE.UU. atacó Venezuela y sacó al presidente y a su esposa del país. ¿Qué se sabe de la operación militar de Estados Unidos y cómo reacciona el mundo?",
           "link": "https://novayagazeta.eu/articles/2026/01/03/tramp-skhvatil-maduro",
           "bloque": "RUSSIA",
-          "proximidad": 45.6,
+          "proximidad": 45.4,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
             "Trump",
+            "Maduro",
             "EE.UU.",
             "Venezuela",
-            "Maduro",
-            "ataque"
-          ]
-        },
-        {
-          "id": "EUROPE_263_2",
-          "titulo": "En vivo: Nicolás Maduro ha llegado a una base militar en Nueva York",
-          "link": "https://www.france24.com/en/americas/20260103-live-venezuela-declares-state-of-emergency-after-reported-us-military-aggression",
-          "bloque": "EUROPE",
-          "proximidad": 45.6,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Nicolás Maduro",
-            "base militar",
-            "Nueva York"
+            "ataque militar"
           ]
         },
         {
@@ -371,7 +314,7 @@
           "titulo": "Las fuerzas rusas atacan Zaporizhzhia con ataques aéreos, sin que se reporten víctimas",
           "link": "http://www.africanews.com/2026/01/02/russian-forces-target-zaporizhzhia-with-air-strikes-no-casualties-reported/",
           "bloque": "AFRICA",
-          "proximidad": 45.4,
+          "proximidad": 44.9,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -381,31 +324,17 @@
           ]
         },
         {
-          "id": "EUROPE_258_4",
-          "titulo": "Maduro en el centro de detención de Nueva York mientras Trump dice que Estados Unidos 'dirigirá' Venezuela",
-          "link": "https://www.france24.com/en/americas/20260104-maduro-in-new-york-detention-centre-as-trump-says-us-to-run-venezuela-drug-trafficking",
-          "bloque": "EUROPE",
-          "proximidad": 45.2,
-          "sesgo": "Alineado",
-          "confianza": 95,
-          "keywords": [
-            "Maduro",
-            "Nueva York",
-            "Venezuela"
-          ]
-        },
-        {
           "id": "RUSSIA_140_a",
           "titulo": "El ejército ruso revela más detalles del presunto ataque con drones a la residencia de Putin",
           "link": "https://www.themoscowtimes.com/2025/12/31/russian-military-reveals-more-details-of-alleged-drone-attack-on-putins-residence-a91593",
           "bloque": "RUSSIA",
-          "proximidad": 44.5,
+          "proximidad": 44.4,
           "sesgo": "Alineado",
           "confianza": 92,
           "keywords": [
             "Rusia",
             "Putin",
-            "ataque dron"
+            "ataque con drones"
           ]
         },
         {
@@ -413,87 +342,14 @@
           "titulo": "Un posible terrorista suicida detona una explosión en Nueva York",
           "link": null,
           "bloque": "CHINA",
-          "proximidad": 44.2,
-          "sesgo": "Alineado",
-          "confianza": 97,
-          "keywords": [
-            "Nueva York",
-            "explosión",
-            "terrorismo",
-            "suicida"
-          ]
-        },
-        {
-          "id": "USA_101_89ad",
-          "titulo": "La CIA estuvo detrás del ataque con drones en Venezuela, dice una fuente",
-          "link": "https://theintercept.com/2025/12/30/cia-venezuela-drone-strike-dock-tren-de-aragua/",
-          "bloque": "USA",
-          "proximidad": 44.1,
-          "sesgo": "Alineado",
-          "confianza": 75,
-          "keywords": [
-            "CIA",
-            "Venezuela",
-            "ataque dron"
-          ]
-        },
-        {
-          "id": "RUSSIA_113_b",
-          "titulo": "El jefe del Pentágono no descarta una operación estadounidense a gran escala en Venezuela",
-          "link": "https://tass.com/world/2068427",
-          "bloque": "RUSSIA",
-          "proximidad": 44.1,
-          "sesgo": "Alineado",
-          "confianza": 82,
-          "keywords": [
-            "Pentágono",
-            "EEUU",
-            "Venezuela",
-            "operación militar"
-          ]
-        },
-        {
-          "id": "MID_EAST_333",
-          "titulo": "'Acto de guerra': Experto rechaza la justificación de Trump para el ataque a Venezuela",
-          "link": "https://www.aljazeera.com/news/2026/1/3/act-of-war-expert-rejects-trump-rationale-for-venezuela-attack?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 43.9,
-          "sesgo": "Alineado",
-          "confianza": 93,
-          "keywords": [
-            "Trump",
-            "Venezuela",
-            "ataque",
-            "acto de guerra"
-          ]
-        },
-        {
-          "id": "LATAM_370_ae",
-          "titulo": "Trump afirma que Maduro fue capturado después de un “ataque a gran escala” en Venezuela",
-          "link": "https://en.mercopress.com/2026/01/03/trump-claims-maduro-captured-after-large-scale-strike-on-venezuela?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
-          "bloque": "LATAM",
-          "proximidad": 43.4,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Trump",
-            "Maduro",
-            "Venezuela",
-            "ataque"
-          ]
-        },
-        {
-          "id": "EUROPE_243_8",
-          "titulo": "El líder venezolano aterriza en Nueva York tras su captura – como sucedió",
-          "link": "https://www.theguardian.com/world/live/2026/jan/03/caracas-explosions-venezuela-maduro-latest-news-updates-live",
-          "bloque": "EUROPE",
-          "proximidad": 43.1,
+          "proximidad": 43.7,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
-            "Venezuela",
-            "Maduro",
-            "captura"
+            "terrorismo",
+            "suicidio",
+            "explosión",
+            "Nueva York"
           ]
         },
         {
@@ -501,7 +357,7 @@
           "titulo": "En el radar: Aumentan los picos de violencia en las batallas por el control en Haití, Ecuador y México",
           "link": "https://insightcrime.org/news/on-the-radar-violence-spikes-haiti-ecuador-mexico/",
           "bloque": "LATAM",
-          "proximidad": 43.1,
+          "proximidad": 43.2,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -512,62 +368,167 @@
           ]
         },
         {
+          "id": "RUSSIA_115_b",
+          "titulo": "El jefe del Pentágono no descarta una operación estadounidense a gran escala en Venezuela",
+          "link": "https://tass.com/world/2068427",
+          "bloque": "RUSSIA",
+          "proximidad": 43.1,
+          "sesgo": "Alineado",
+          "confianza": 80,
+          "keywords": [
+            "Pentágono",
+            "EEUU",
+            "Venezuela",
+            "operación militar"
+          ]
+        },
+        {
+          "id": "USA_101_89ad",
+          "titulo": "La CIA estuvo detrás del ataque con drones en Venezuela, dice una fuente",
+          "link": "https://theintercept.com/2025/12/30/cia-venezuela-drone-strike-dock-tren-de-aragua/",
+          "bloque": "USA",
+          "proximidad": 42.9,
+          "sesgo": "Alineado",
+          "confianza": 75,
+          "keywords": [
+            "CIA",
+            "Venezuela",
+            "ataque",
+            "drones"
+          ]
+        },
+        {
+          "id": "MID_EAST_339",
+          "titulo": "'Acto de guerra': Experto rechaza la justificación de Trump para el ataque a Venezuela",
+          "link": "https://www.aljazeera.com/news/2026/1/3/act-of-war-expert-rejects-trump-rationale-for-venezuela-attack?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 42.6,
+          "sesgo": "Alineado",
+          "confianza": 90,
+          "keywords": [
+            "Venezuela",
+            "Trump",
+            "ataque",
+            "acto de guerra"
+          ]
+        },
+        {
           "id": "MID_EAST_348",
           "titulo": "Al menos cuatro muertos en enfrentamientos durante protestas en el oeste de Irán: grupos de derechos",
           "link": "https://www.al-monitor.com/originals/2026/01/least-four-killed-protest-clashes-western-iran-rights-groups",
           "bloque": "MID_EAST",
-          "proximidad": 42.9,
+          "proximidad": 42.6,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
             "Irán",
             "protestas",
-            "enfrentamientos"
+            "enfrentamientos",
+            "muertos"
           ]
         },
         {
-          "id": "CHINA_180_ae",
+          "id": "CHINA_181_ae",
           "titulo": "El cierre de la frontera entre Afganistán y Pakistán deja a miles de personas varadas: 'extrañamos a nuestros padres'",
           "link": "https://www.scmp.com/news/world/russia-central-asia/article/3338652/afghanistan-pakistan-border-closure-leaves-thousands-stranded-we-miss-our-parents?utm_source=rss_feed",
           "bloque": "CHINA",
           "proximidad": 42.2,
           "sesgo": "Alineado",
-          "confianza": 92,
+          "confianza": 90,
           "keywords": [
             "Afganistán",
             "Pakistán",
             "frontera",
-            "cierre"
+            "varados"
           ]
         },
         {
-          "id": "EUROPE_267_6",
-          "titulo": "REPETICIÓN: Conferencia de prensa del presidente de EE. UU., Donald Trump, sobre el ataque a Venezuela y la captura de Maduro",
-          "link": "https://www.france24.com/en/video/20260103-replay-us-president-donald-trump-press-conference-on-venezuela-s-attack-and-capture-of-maduro",
+          "id": "EUROPE_243_8",
+          "titulo": "El líder venezolano aterriza en Nueva York tras su captura – como sucedió",
+          "link": "https://www.theguardian.com/world/live/2026/jan/03/caracas-explosions-venezuela-maduro-latest-news-updates-live",
           "bloque": "EUROPE",
+          "proximidad": 42.2,
+          "sesgo": "Alineado",
+          "confianza": 95,
+          "keywords": [
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "INDIA_460_8e",
+          "titulo": "Detrás de las escenas: La Casa Blanca publica imágenes de Donald Trump monitoreando la captura de Nicolás Maduro; ver fotos",
+          "link": "https://timesofindia.indiatimes.com/world/us/behind-the-scenes-white-house-releases-images-of-donald-trump-monitoring-nicols-maduros-capture-see-pics/articleshow/126331164.cms",
+          "bloque": "INDIA",
           "proximidad": 42.2,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
+            "Casa Blanca",
             "Trump",
-            "Venezuela",
             "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "LATAM_370_ae",
+          "titulo": "Trump afirma que Maduro fue capturado después de un “ataque a gran escala” en Venezuela",
+          "link": "https://en.mercopress.com/2026/01/03/trump-claims-maduro-captured-after-large-scale-strike-on-venezuela?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM",
+          "proximidad": 41.8,
+          "sesgo": "Alineado",
+          "confianza": 90,
+          "keywords": [
+            "Trump",
+            "Maduro",
+            "Venezuela",
             "ataque"
           ]
         },
         {
-          "id": "INDIA_462_ca",
-          "titulo": "Escoltado fuera del avión con esposas: Primer video muestra a Nicolás Maduro bajo custodia estadounidense; desea a los agentes 'feliz año nuevo' en la oficina de la DEA",
-          "link": "https://timesofindia.indiatimes.com/world/us/escorted-off-plane-in-handcuffs-video-shows-maduro-in-us-custody-happy-new-year-moment-at-dea-office/articleshow/126330367.cms",
-          "bloque": "INDIA",
-          "proximidad": 42.2,
+          "id": "AFRICA_420_6",
+          "titulo": "Nigeria: Ataques de EE.UU. - El Cuartel General de Defensa se mueve contra terroristas en fuga",
+          "link": "https://allafrica.com/stories/202601030125.html",
+          "bloque": "AFRICA",
+          "proximidad": 41.8,
           "sesgo": "Alineado",
-          "confianza": 98,
+          "confianza": 92,
           "keywords": [
-            "Maduro",
-            "arresto",
+            "Nigeria",
             "EE.UU.",
-            "DEA"
+            "terroristas"
+          ]
+        },
+        {
+          "id": "EUROPE_290_9",
+          "titulo": "EE.UU.: El FBI arresta a un hombre por presunto complot de ataque de Nochevieja",
+          "link": "https://www.dw.com/en/us-fbi-arrests-man-over-alleged-nye-attack-plot/a-75373274?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 41.6,
+          "sesgo": "Alineado",
+          "confianza": 93,
+          "keywords": [
+            "EE.UU.",
+            "FBI",
+            "arresto",
+            "ataque",
+            "Nochevieja"
+          ]
+        },
+        {
+          "id": "USA_106_7d27",
+          "titulo": "Mi búsqueda para que el Pentágono se preocupe por los crímenes que encubrió",
+          "link": "https://theintercept.com/2025/12/27/pete-hegseth-mark-kelly-investigation-vietnam/",
+          "bloque": "USA",
+          "proximidad": 41.4,
+          "sesgo": "Alineado",
+          "confianza": 78,
+          "keywords": [
+            "Pentágono",
+            "crímenes",
+            "encubrimiento",
+            "EEUU"
           ]
         },
         {
@@ -575,7 +536,7 @@
           "titulo": "Drones ucranianos atacan sitios de energía y hogares en toda Rusia, dicen funcionarios",
           "link": "https://www.themoscowtimes.com/2025/12/31/ukrainian-drones-strike-energy-sites-and-homes-across-russia-officials-say-a91592",
           "bloque": "RUSSIA",
-          "proximidad": 41.9,
+          "proximidad": 41.4,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -586,56 +547,11 @@
           ]
         },
         {
-          "id": "EUROPE_270_0",
-          "titulo": "'Narcoterrorismo', transición 'segura' y petróleo: Trump habla después de la captura de Maduro",
-          "link": "https://www.france24.com/en/live-news/20260103-%F0%9F%94%B4-live-maduro-has-been-indicted-for-his-narcoterrorism-campaign-says-trump",
-          "bloque": "EUROPE",
-          "proximidad": 41.9,
-          "sesgo": "Alineado",
-          "confianza": 90,
-          "keywords": [
-            "Narcoterrorismo",
-            "Trump",
-            "Maduro",
-            "Venezuela"
-          ]
-        },
-        {
-          "id": "MID_EAST_356",
-          "titulo": "Disturbios en Irán: 4 escenarios a medida que se extienden las protestas, el régimen sopesa opciones",
-          "link": "https://www.al-monitor.com/originals/2026/01/iran-unrest-4-scenarios-protests-spread-regime-weighs-options",
-          "bloque": "MID_EAST",
-          "proximidad": 41.9,
-          "sesgo": "Alineado",
-          "confianza": 90,
-          "keywords": [
-            "Irán",
-            "protestas",
-            "régimen"
-          ]
-        },
-        {
-          "id": "EUROPE_289_9",
-          "titulo": "EE.UU.: El FBI arresta a un hombre por presunto complot de ataque de Nochevieja",
-          "link": "https://www.dw.com/en/us-fbi-arrests-man-over-alleged-nye-attack-plot/a-75373274?maca=en-rss-en-all-1573-xml-mrss",
-          "bloque": "EUROPE",
-          "proximidad": 41.8,
-          "sesgo": "Alineado",
-          "confianza": 90,
-          "keywords": [
-            "EE.UU.",
-            "FBI",
-            "arresto",
-            "ataque",
-            "Nochevieja"
-          ]
-        },
-        {
-          "id": "EUROPE_281_e",
+          "id": "EUROPE_282_e",
           "titulo": "Ucrania actualiza: Trump dice que Putin está 'matando a demasiada gente'",
           "link": "https://www.dw.com/en/ukraine-updates-trump-says-putin-killing-too-many-people/live-75373512?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 41.7,
+          "proximidad": 41.4,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
@@ -646,25 +562,11 @@
           ]
         },
         {
-          "id": "AFRICA_420_6",
-          "titulo": "Nigeria: Ataques de EE.UU. - El Cuartel General de Defensa se mueve contra terroristas en fuga",
-          "link": "https://allafrica.com/stories/202601030125.html",
-          "bloque": "AFRICA",
-          "proximidad": 41.6,
-          "sesgo": "Alineado",
-          "confianza": 92,
-          "keywords": [
-            "Nigeria",
-            "EE.UU.",
-            "terroristas"
-          ]
-        },
-        {
           "id": "LATAM_404_8e",
           "titulo": "Cómo el crimen organizado amenaza a las tribus no contactadas del Amazonas",
           "link": "https://insightcrime.org/news/how-organized-crime-threatens-the-amazons-uncontacted-tribes/",
           "bloque": "LATAM",
-          "proximidad": 40.9,
+          "proximidad": 41.1,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
@@ -678,28 +580,87 @@
           "titulo": "Guerra contra la Navidad: Trump anuncia una ola de ataques aéreos contra militantes de ISIS en Nigeria",
           "link": "https://theintercept.com/2025/12/25/trump-nigeria-isis-attacks-airstrikes/",
           "bloque": "USA",
-          "proximidad": 40.8,
+          "proximidad": 40.2,
           "sesgo": "Alineado",
-          "confianza": 70,
+          "confianza": 85,
           "keywords": [
             "Trump",
+            "ataques aéreos",
             "ISIS",
-            "Nigeria",
-            "ataques aéreos"
+            "Nigeria"
           ]
         },
         {
-          "id": "USA_106_7d27",
-          "titulo": "Mi búsqueda para que el Pentágono se preocupe por los crímenes que encubrió",
-          "link": "https://theintercept.com/2025/12/27/pete-hegseth-mark-kelly-investigation-vietnam/",
-          "bloque": "USA",
-          "proximidad": 40.7,
-          "sesgo": "Alineado",
-          "confianza": 78,
+          "id": "MID_EAST_362",
+          "titulo": "El genocidio de Gaza radicalizó al mundo, y no hay vuelta atrás",
+          "link": "https://www.972mag.com/gaza-genocide-world-radicalized/",
+          "bloque": "MID_EAST",
+          "proximidad": 39.5,
+          "sesgo": "Periférico",
+          "confianza": 92,
           "keywords": [
-            "Pentágono",
-            "crímenes",
-            "encubrimiento"
+            "Gaza",
+            "genocidio",
+            "radicalización"
+          ]
+        },
+        {
+          "id": "INDIA_464_ca",
+          "titulo": "Escoltado fuera del avión con esposas: El primer video muestra a Nicolás Maduro bajo custodia estadounidense; desea a los agentes un 'feliz año nuevo' en la oficina de la DEA",
+          "link": "https://timesofindia.indiatimes.com/world/us/escorted-off-plane-in-handcuffs-video-shows-maduro-in-us-custody-happy-new-year-moment-at-dea-office/articleshow/126330367.cms",
+          "bloque": "INDIA",
+          "proximidad": 39.3,
+          "sesgo": "Periférico",
+          "confianza": 98,
+          "keywords": [
+            "Maduro",
+            "captura",
+            "EEUU",
+            "DEA"
+          ]
+        },
+        {
+          "id": "USA_17_bd682",
+          "titulo": "La Guardia Costera suspende la búsqueda de supervivientes de los últimos ataques de embarcaciones",
+          "link": "https://www.nytimes.com/2026/01/02/us/politics/coast-guard-survivors-boat-strikes.html",
+          "bloque": "USA",
+          "proximidad": 38.8,
+          "sesgo": "Periférico",
+          "confianza": 89,
+          "keywords": [
+            "Guardia Costera",
+            "supervivientes",
+            "ataques"
+          ]
+        },
+        {
+          "id": "MID_EAST_331",
+          "titulo": "Guerra Rusia-Ucrania: Lista de eventos clave, día 1.410",
+          "link": "https://www.aljazeera.com/news/2026/1/4/russia-ukraine-war-list-of-key-events-day-1410?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 38.6,
+          "sesgo": "Periférico",
+          "confianza": 95,
+          "keywords": [
+            "Rusia",
+            "Ucrania",
+            "guerra",
+            "eventos clave"
+          ]
+        },
+        {
+          "id": "MID_EAST_356",
+          "titulo": "Disturbios en Irán: 4 escenarios a medida que se extienden las protestas, el régimen sopesa las opciones",
+          "link": "https://www.al-monitor.com/originals/2026/01/iran-unrest-4-scenarios-protests-spread-regime-weighs-options",
+          "bloque": "MID_EAST",
+          "proximidad": 38.6,
+          "sesgo": "Periférico",
+          "confianza": 90,
+          "keywords": [
+            "Irán",
+            "disturbios",
+            "protestas",
+            "régimen"
           ]
         },
         {
@@ -707,7 +668,7 @@
           "titulo": "El FBI dice que una operación encubierta frustró un ataque terrorista inspirado en ISIS",
           "link": "https://www.washingtonpost.com/national-security/2026/01/02/terror-plot-north-carolina-fbi/",
           "bloque": "USA",
-          "proximidad": 39.5,
+          "proximidad": 38.5,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
@@ -718,53 +679,11 @@
           ]
         },
         {
-          "id": "MID_EAST_362",
-          "titulo": "El genocidio de Gaza radicalizó al mundo, y no hay vuelta atrás",
-          "link": "https://www.972mag.com/gaza-genocide-world-radicalized/",
-          "bloque": "MID_EAST",
-          "proximidad": 39.4,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "Gaza",
-            "genocidio",
-            "radicalización"
-          ]
-        },
-        {
-          "id": "USA_17_bd682",
-          "titulo": "La Guardia Costera suspende la búsqueda de supervivientes de los últimos ataques de embarcaciones",
-          "link": "https://www.nytimes.com/2026/01/02/us/politics/coast-guard-survivors-boat-strikes.html",
-          "bloque": "USA",
-          "proximidad": 38.6,
-          "sesgo": "Periférico",
-          "confianza": 89,
-          "keywords": [
-            "Guardia Costera",
-            "supervivientes",
-            "ataques"
-          ]
-        },
-        {
-          "id": "LATAM_407_63",
-          "titulo": "Investigador de InSight Crime habla sobre el crimen organizado en el Foro de la ONU",
-          "link": "https://insightcrime.org/the-organization/insight-crime-investigator-organized-crime-un-forum/",
-          "bloque": "LATAM",
-          "proximidad": 38.0,
-          "sesgo": "Periférico",
-          "confianza": 85,
-          "keywords": [
-            "crimen organizado",
-            "ONU",
-            "InSight Crime"
-          ]
-        },
-        {
           "id": "EUROPE_302_d",
-          "titulo": "Malí bajo asedio: rastreando el bloqueo de combustible que paraliza Bamako",
+          "titulo": "Malí bajo asedio: Rastreando el bloqueo de combustible que paraliza Bamako",
           "link": "https://www.bellingcat.com/news/2025/12/03/mali-under-siege-tracking-the-fuel-blockade-crippling-bamako/",
           "bloque": "EUROPE",
-          "proximidad": 36.9,
+          "proximidad": 38.4,
           "sesgo": "Periférico",
           "confianza": 92,
           "keywords": [
@@ -775,11 +694,39 @@
           ]
         },
         {
+          "id": "LATAM_407_63",
+          "titulo": "Investigador de InSight Crime habla sobre el crimen organizado en el Foro de la ONU",
+          "link": "https://insightcrime.org/the-organization/insight-crime-investigator-organized-crime-un-forum/",
+          "bloque": "LATAM",
+          "proximidad": 38.2,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "crimen organizado",
+            "ONU",
+            "InSight Crime"
+          ]
+        },
+        {
+          "id": "RUSSIA_126_e",
+          "titulo": "El estado de emergencia entra en vigor en Venezuela - vicepresidente",
+          "link": "https://tass.com/world/2068355",
+          "bloque": "RUSSIA",
+          "proximidad": 36.9,
+          "sesgo": "Periférico",
+          "confianza": 93,
+          "keywords": [
+            "estado de emergencia",
+            "Venezuela",
+            "vicepresidente"
+          ]
+        },
+        {
           "id": "LATAM_390_97",
           "titulo": "Fuerza bruta en Venezuela",
           "link": "https://elpais.com/opinion/2026-01-03/fuerza-bruta-en-venezuela.html",
           "bloque": "LATAM",
-          "proximidad": 36.6,
+          "proximidad": 36.9,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -789,32 +736,91 @@
           ]
         },
         {
-          "id": "EUROPE_279_4",
-          "titulo": "Corea del Norte lanza misiles balísticos frente a su costa este",
+          "id": "EUROPE_280_4",
+          "titulo": "Corea del Norte lanza misiles balísticos desde su costa este",
           "link": "https://www.dw.com/en/north-korea-fires-ballistic-missiles-off-its-east-coast/a-75381682?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 36.4,
+          "proximidad": 36.7,
           "sesgo": "Periférico",
           "confianza": 95,
           "keywords": [
             "Corea del Norte",
-            "misiles balísticos",
-            "costa este"
+            "misiles",
+            "balísticos"
           ]
         },
         {
-          "id": "EUROPE_276_2",
-          "titulo": "Donald Trump dice que Maduro y su esposa están a bordo de un buque de guerra estadounidense",
-          "link": "https://www.france24.com/en/video/20260103-donald-trump-says-maduro-and-his-wife-aboard-a-us-warship",
-          "bloque": "EUROPE",
+          "id": "CHINA_170_0c",
+          "titulo": "Encuentran 2 cuerpos mientras Indonesia extiende la búsqueda del padre español desaparecido y 3 niños",
+          "link": "https://www.scmp.com/news/asia/southeast-asia/article/3338664/2-bodies-found-indonesia-extends-search-missing-spanish-father-3-children?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 36.4,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "Indonesia",
+            "desaparecidos",
+            "búsqueda"
+          ]
+        },
+        {
+          "id": "MID_EAST_332",
+          "titulo": "Corea del Norte dispara misiles hacia el mar mientras el líder de Corea del Sur visita China",
+          "link": "https://www.aljazeera.com/news/2026/1/4/north-korea-fires-missiles-towards-sea-as-south-korean-leader-visits-china?traffic_source=rss",
+          "bloque": "MID_EAST",
           "proximidad": 36.3,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
-            "Donald Trump",
+            "Corea del Norte",
+            "misiles",
+            "Corea del Sur",
+            "China"
+          ]
+        },
+        {
+          "id": "RUSSIA_122_3",
+          "titulo": "Maduro y su esposa llevados al Centro de Detención Metropolitano en Brooklyn - TV",
+          "link": "https://tass.com/world/2068419",
+          "bloque": "RUSSIA",
+          "proximidad": 36.2,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
             "Maduro",
-            "buque de guerra",
-            "EE.UU."
+            "detención",
+            "Brooklyn",
+            "Venezuela"
+          ]
+        },
+        {
+          "id": "MID_EAST_328",
+          "titulo": "Video muestra al presidente de Venezuela, Maduro, bajo custodia de EE. UU.",
+          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/4/video-shows-venezuelas-president-maduro-in-us-custody?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 36.1,
+          "sesgo": "Periférico",
+          "confianza": 92,
+          "keywords": [
+            "Venezuela",
+            "Maduro",
+            "EE.UU.",
+            "custodia"
+          ]
+        },
+        {
+          "id": "USA_34_03b6e",
+          "titulo": "Persecución en coche termina con un tiroteo con participación policial",
+          "link": "https://abc7ny.com/police-involved-shooting-grand-concourse-section-suspect-shot-in-head-and-leg-bronx/12524318",
+          "bloque": "USA",
+          "proximidad": 36.0,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "persecución",
+            "coche",
+            "tiroteo",
+            "policía"
           ]
         },
         {
@@ -822,7 +828,7 @@
           "titulo": "GameChangers 2025: Cómo la administración Trump reinició la lucha contra el crimen organizado",
           "link": "https://insightcrime.org/news/gamechangers-2025-trump-reset-fight-organized-crime-latin-america/",
           "bloque": "LATAM",
-          "proximidad": 36.1,
+          "proximidad": 35.8,
           "sesgo": "Periférico",
           "confianza": 82,
           "keywords": [
@@ -832,18 +838,18 @@
           ]
         },
         {
-          "id": "USA_34_03b6e",
-          "titulo": "Persecución en coche termina con un tiroteo con participación policial",
-          "link": "https://abc7ny.com/police-involved-shooting-grand-concourse-section-suspect-shot-in-head-and-leg-bronx/12524318",
-          "bloque": "USA",
-          "proximidad": 35.6,
+          "id": "INDIA_495_5b",
+          "titulo": "Cohetes impactan en Damasco, Siria, dañando una mezquita: autoridades locales",
+          "link": "https://www.thehindu.com/news/international/syria-damascus-rockets-mosque-damage-casualties/article70469052.ece",
+          "bloque": "INDIA",
+          "proximidad": 34.9,
           "sesgo": "Periférico",
-          "confianza": 91,
+          "confianza": 90,
           "keywords": [
-            "persecución",
-            "coche",
-            "tiroteo",
-            "policía"
+            "Siria",
+            "Damasco",
+            "cohetes",
+            "mezquita"
           ]
         },
         {
@@ -851,70 +857,69 @@
           "titulo": "Putin autoriza el llamamiento de reservistas militares para proteger la infraestructura crítica",
           "link": "https://www.themoscowtimes.com/2025/12/30/putin-authorizes-call-up-of-military-reservists-to-guard-critical-infrastructure-a91590",
           "bloque": "RUSSIA",
-          "proximidad": 35.1,
+          "proximidad": 34.8,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
             "Putin",
             "reservistas",
             "infraestructura",
-            "Rusia"
+            "seguridad"
           ]
         },
         {
-          "id": "INDIA_486_ff",
-          "titulo": "La capital venezolana tranquila, calles vacías después del ataque de Estados Unidos",
-          "link": "https://www.thehindu.com/news/international/us-strike-venezuela-caracas-ousts-maduro-live-updates-january-2026-colombian-president-gustavo-petro/article70470060.ece",
-          "bloque": "INDIA",
-          "proximidad": 34.7,
+          "id": "LATAM_393_e2",
+          "titulo": "Un lugar más peligroso todavía",
+          "link": "https://elpais.com/opinion/2026-01-04/un-lugar-mas-peligroso-todavia.html",
+          "bloque": "LATAM",
+          "proximidad": 34.6,
+          "sesgo": "Periférico",
+          "confianza": 65,
+          "keywords": [
+            "peligro",
+            "inestabilidad",
+            "Venezuela"
+          ]
+        },
+        {
+          "id": "AFRICA_448_7",
+          "titulo": "Reino Unido analizará la caja negra del accidente aéreo de Libia que mató al jefe del ejército",
+          "link": "http://www.africanews.com/2026/01/02/uk-to-analyse-black-box-from-libya-plane-crash-that-killed-army-chief/",
+          "bloque": "AFRICA",
+          "proximidad": 34.6,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
-            "Venezuela",
-            "ataque",
-            "EE.UU."
-          ]
-        },
-        {
-          "id": "MID_EAST_349",
-          "titulo": "Sudaneses huyen a través de la frontera y de vuelta para escapar de la ciudad petrolera invadida",
-          "link": "https://www.al-monitor.com/originals/2026/01/sudanese-flee-across-border-and-back-escape-overrun-oil-town",
-          "bloque": "MID_EAST",
-          "proximidad": 34.4,
-          "sesgo": "Periférico",
-          "confianza": 92,
-          "keywords": [
-            "Sudán",
-            "conflicto",
-            "petróleo"
+            "Reino Unido",
+            "Libia",
+            "accidente aéreo"
           ]
         }
       ]
     },
     {
       "area": "Economía y Sanciones",
-      "sintesis": "Mientras EE.UU. recauda fondos políticos, Rusia ignora las sanciones petroleras, y China diversifica activos, evidenciando tensiones económicas globales y regionales.",
-      "punto_cero": "🔴 BAJO | Avg: 27.5% | ↓",
+      "sintesis": "INTELIGENCIA BREVE: La asimetría en la percepción y el impacto de las sanciones económicas exacerba la desconfianza global. OBSERVACIONES: Mientras EEUU busca compensación en Venezuela, Rusia elude sanciones con contrabando de grano, evidenciando la disparidad en la aplicación y efectividad de las medidas. China, por su parte, se enfoca en la seguridad financiera interna. PRONÓSTICO: La fragmentación económica regional se intensificará, generando bloques comerciales más definidos y rivalidades geopolíticas agudizadas.",
+      "punto_cero": "🔴 BAJO | Avg: 29.4% | ↓",
       "color": "#3b82f6",
       "meta_netflix": {
         "consensus": "BAJO",
         "trend": "↓",
-        "avg_proximity": 27.45909090909091
+        "avg_proximity": 29.41818181818182
       },
       "particulas": [
         {
-          "id": "CHINA_216_1a",
-          "titulo": "Las empresas que cotizan en bolsa se enfrentan a una resolución de carbono de Año Nuevo: unámonos a ellas",
-          "link": "https://hongkongfp.com/2026/01/01/hang-seng-index-companies-face-a-new-years-carbon-resolution-lets-join-them/",
-          "bloque": "CHINA",
-          "proximidad": 42.9,
+          "id": "INDIA_501_1e",
+          "titulo": "Noticias de hoy en vivo, 4 de enero | Especial para The Express: El colapso de la creencia detrás de la desaceleración económica de Punjab",
+          "link": "https://indianexpress.com/article/india/latest-news-today-live-updates-world-india-cities-news-delhi-mumbai-bengaluru-01-04-2026-news-headlines-10454192/",
+          "bloque": "INDIA",
+          "proximidad": 49.5,
           "sesgo": "Alineado",
-          "confianza": 70,
+          "confianza": 85,
           "keywords": [
-            "empresas",
-            "carbono",
-            "resolución",
-            "medio ambiente"
+            "Punjab",
+            "desaceleración económica",
+            "colapso"
           ]
         },
         {
@@ -922,23 +927,38 @@
           "titulo": "El año inmobiliario en revisión",
           "link": "https://mg.co.za/thought-leader/opinion/2025-12-27-the-real-estate-year-in-review/",
           "bloque": "AFRICA",
-          "proximidad": 42.8,
+          "proximidad": 44.9,
           "sesgo": "Alineado",
-          "confianza": 65,
+          "confianza": 75,
           "keywords": [
-            "inmobiliario",
+            "Inmobiliario",
             "revisión",
-            "economía"
+            "año"
           ]
         },
         {
-          "id": "RUSSIA_121_a",
+          "id": "EUROPE_257_7",
+          "titulo": "Cocaína, corrupción y ametralladoras: lo que llevó a la acusación de Maduro en Venezuela",
+          "link": "https://www.france24.com/en/americas/20260104-cocaine-corruption-and-machine-guns-what-led-to-the-indictment-of-venezuela-maduro",
+          "bloque": "EUROPE",
+          "proximidad": 42.7,
+          "sesgo": "Alineado",
+          "confianza": 85,
+          "keywords": [
+            "Venezuela",
+            "Maduro",
+            "corrupción",
+            "cocaína"
+          ]
+        },
+        {
+          "id": "RUSSIA_123_a",
           "titulo": "Trump dice que los suministros de petróleo venezolano a China continuarán",
           "link": "https://tass.com/world/2068345",
           "bloque": "RUSSIA",
-          "proximidad": 39.9,
-          "sesgo": "Periférico",
-          "confianza": 85,
+          "proximidad": 42.5,
+          "sesgo": "Alineado",
+          "confianza": 80,
           "keywords": [
             "Trump",
             "petróleo",
@@ -947,12 +967,12 @@
           ]
         },
         {
-          "id": "RUSSIA_153_2",
+          "id": "RUSSIA_154_2",
           "titulo": "EE.UU. acusa a Maduro de narcoterrorismo",
           "link": "https://novayagazeta.eu/articles/2026/01/03/ssha-prediavili-maduro-obvineniia-v-narkoterrorizme-news",
           "bloque": "RUSSIA",
-          "proximidad": 39.0,
-          "sesgo": "Periférico",
+          "proximidad": 42.4,
+          "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
             "EE.UU.",
@@ -962,33 +982,122 @@
           ]
         },
         {
+          "id": "MID_EAST_347",
+          "titulo": "Comprar mármol, amenazar a Irán, capturar a Maduro: la vertiginosa rutina de vacaciones de Trump",
+          "link": "https://www.al-monitor.com/originals/2026/01/shop-marble-threaten-iran-capture-maduro-trumps-dizzying-holiday-routine",
+          "bloque": "MID_EAST",
+          "proximidad": 42.2,
+          "sesgo": "Alineado",
+          "confianza": 70,
+          "keywords": [
+            "Trump",
+            "Irán",
+            "Maduro",
+            "sanciones"
+          ]
+        },
+        {
+          "id": "CHINA_216_1a",
+          "titulo": "Las empresas que cotizan en bolsa se enfrentan a una resolución de carbono de año nuevo: unámonos a ellas",
+          "link": "https://hongkongfp.com/2026/01/01/hang-seng-index-companies-face-a-new-years-carbon-resolution-lets-join-them/",
+          "bloque": "CHINA",
+          "proximidad": 41.0,
+          "sesgo": "Alineado",
+          "confianza": 65,
+          "keywords": [
+            "empresas",
+            "carbono",
+            "resolución",
+            "medioambiente"
+          ]
+        },
+        {
           "id": "LATAM_377_0b",
           "titulo": "Los europeos son todos peronistas ahora, ¿dónde están los líderes dispuestos a tomar decisiones difíciles?",
           "link": "https://en.mercopress.com/2026/01/03/europeans-are-all-peronists-now-where-are-the-leaders-willing-to-make-hard-choices?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
           "bloque": "LATAM",
-          "proximidad": 38.7,
+          "proximidad": 40.0,
           "sesgo": "Periférico",
           "confianza": 70,
           "keywords": [
             "Europa",
-            "Peronismo",
+            "peronismo",
             "liderazgo",
             "economía"
           ]
         },
         {
-          "id": "CHINA_182_a6",
-          "titulo": "Los ricos de China cambian bienes raíces por seguros y oro a medida que se acerca la jubilación",
-          "link": "https://www.scmp.com/economy/china-economy/article/3337974/chinas-wealthy-swap-real-estate-insurance-gold-retirement-looms?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 37.0,
+          "id": "LATAM_375_9b",
+          "titulo": "Argentina cambia la política de tipo de cambio",
+          "link": "https://en.mercopress.com/2026/01/03/argentina-shifts-exchange-rate-policy?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
+          "bloque": "LATAM",
+          "proximidad": 38.3,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
+            "Argentina",
+            "tipo de cambio",
+            "economía",
+            "política"
+          ]
+        },
+        {
+          "id": "RUSSIA_111_0",
+          "titulo": "EE.UU. exige grandes inversiones en Venezuela de las compañías petroleras como compensación - Politico",
+          "link": "https://tass.com/world/2068439",
+          "bloque": "RUSSIA",
+          "proximidad": 38.2,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "EEUU",
+            "Venezuela",
+            "petróleo",
+            "inversiones"
+          ]
+        },
+        {
+          "id": "CHINA_183_a6",
+          "titulo": "Los ricos de China cambian bienes raíces por seguros y oro a medida que se acerca la jubilación",
+          "link": "https://www.scmp.com/economy/china-economy/article/3337974/chinas-wealthy-swap-real-estate-insurance-gold-retirement-looms?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 37.9,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
             "China",
-            "riqueza",
-            "inversión",
-            "jubilación"
+            "ricos",
+            "bienes raíces",
+            "seguros",
+            "oro"
+          ]
+        },
+        {
+          "id": "EUROPE_324_6",
+          "titulo": "Este presupuesto muestra que el gobierno laborista todavía está atrapado en el cortoplacismo",
+          "link": "https://www.opendemocracy.net/en/rachel-reeves-budget-short-termism-labour-government-fiscal-rules/",
+          "bloque": "EUROPE",
+          "proximidad": 37.5,
+          "sesgo": "Periférico",
+          "confianza": 75,
+          "keywords": [
+            "presupuesto",
+            "laborista",
+            "cortoplacismo"
+          ]
+        },
+        {
+          "id": "AFRICA_453_4",
+          "titulo": "Tristezas de fin de año de éxitos y fracasos",
+          "link": "https://mg.co.za/friday/2025-12-28-year-end-blues-of-hits-and-misses/",
+          "bloque": "AFRICA",
+          "proximidad": 36.6,
+          "sesgo": "Periférico",
+          "confianza": 30,
+          "keywords": [
+            "Fin de año",
+            "éxitos",
+            "fracasos"
           ]
         },
         {
@@ -996,7 +1105,7 @@
           "titulo": "La flota de contrabando de grano de Rusia continúa sin inmutarse",
           "link": "https://www.bellingcat.com/news/2025/10/23/russias-grain-smuggling-fleet-continues-undeterred/",
           "bloque": "EUROPE",
-          "proximidad": 36.4,
+          "proximidad": 35.4,
           "sesgo": "Periférico",
           "confianza": 93,
           "keywords": [
@@ -1007,70 +1116,11 @@
           ]
         },
         {
-          "id": "EUROPE_324_6",
-          "titulo": "Este presupuesto muestra que el gobierno laborista todavía está atrapado en el cortoplacismo",
-          "link": "https://www.opendemocracy.net/en/rachel-reeves-budget-short-termism-labour-government-fiscal-rules/",
-          "bloque": "EUROPE",
-          "proximidad": 36.1,
-          "sesgo": "Periférico",
-          "confianza": 80,
-          "keywords": [
-            "presupuesto",
-            "laborista",
-            "cortoplacismo",
-            "economía"
-          ]
-        },
-        {
-          "id": "LATAM_375_9b",
-          "titulo": "Argentina cambia la política de tipo de cambio",
-          "link": "https://en.mercopress.com/2026/01/03/argentina-shifts-exchange-rate-policy?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
-          "bloque": "LATAM",
-          "proximidad": 36.1,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "Argentina",
-            "tipo de cambio",
-            "economía"
-          ]
-        },
-        {
-          "id": "AFRICA_423_1",
-          "titulo": "Malawi: Economía en crisis - El Banco Mundial expone el peligroso camino de la deuda, el despilfarro y la confianza rota",
-          "link": "https://allafrica.com/stories/202601030113.html",
-          "bloque": "AFRICA",
-          "proximidad": 35.8,
-          "sesgo": "Periférico",
-          "confianza": 95,
-          "keywords": [
-            "Malawi",
-            "economía",
-            "Banco Mundial",
-            "deuda"
-          ]
-        },
-        {
-          "id": "MID_EAST_365",
-          "titulo": "Desde corredores de efectivo hasta criptomonedas, los habitantes de Gaza luchan por mantenerse financieramente a flote",
-          "link": "https://www.972mag.com/cash-brokers-crypto-gaza-economic-crisis/",
-          "bloque": "MID_EAST",
-          "proximidad": 34.8,
-          "sesgo": "Periférico",
-          "confianza": 85,
-          "keywords": [
-            "Gaza",
-            "economía",
-            "criptomonedas",
-            "finanzas"
-          ]
-        },
-        {
           "id": "LATAM_374_2c",
           "titulo": "Grupo paraguayo compra importante negocio minorista uruguayo",
           "link": "https://en.mercopress.com/2026/01/03/paraguayan-group-buys-over-major-uruguayan-retail-business?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
           "bloque": "LATAM",
-          "proximidad": 34.3,
+          "proximidad": 35.1,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -1081,18 +1131,18 @@
           ]
         },
         {
-          "id": "EUROPE_296_3",
-          "titulo": "Por qué las prohibiciones de plástico no están funcionando y qué debe cambiar",
-          "link": "https://www.dw.com/en/why-plastic-bans-aren-t-working-and-what-needs-to-change/a-74980708?maca=en-rss-en-all-1573-xml-mrss",
-          "bloque": "EUROPE",
-          "proximidad": 32.9,
+          "id": "AFRICA_423_1",
+          "titulo": "Malawi: Economía en crisis - El Banco Mundial expone el peligroso camino de la deuda, el despilfarro y la confianza rota",
+          "link": "https://allafrica.com/stories/202601030113.html",
+          "bloque": "AFRICA",
+          "proximidad": 34.7,
           "sesgo": "Periférico",
-          "confianza": 70,
+          "confianza": 95,
           "keywords": [
-            "plástico",
-            "prohibiciones",
-            "medio ambiente",
-            "economía"
+            "Malawi",
+            "economía",
+            "Banco Mundial",
+            "deuda"
           ]
         },
         {
@@ -1100,7 +1150,7 @@
           "titulo": "Bienvenidos en 2026 a la economía en forma de K: por qué la IA nos hará más productivos (y más desiguales)",
           "link": "https://elpais.com/economia/negocios/2026-01-03/bienvenidos-en-2026-a-la-economia-en-forma-de-k-por-que-la-ia-nos-hara-mas-productivos-y-mas-desiguales.html",
           "bloque": "LATAM",
-          "proximidad": 31.9,
+          "proximidad": 33.7,
           "sesgo": "Periférico",
           "confianza": 80,
           "keywords": [
@@ -1111,11 +1161,26 @@
           ]
         },
         {
-          "id": "CHINA_176_b6",
+          "id": "EUROPE_300_e",
+          "titulo": "El grano de contrabando de Rusia encuentra un nuevo mercado en Arabia Saudita",
+          "link": "https://www.bellingcat.com/news/2025/12/12/russia-ukraine-saudi-arabia-import-smuggled-grain-shadow-fleet-peace-deal-trump-occupied-crimea-petrokhleb-kuban/",
+          "bloque": "EUROPE",
+          "proximidad": 32.3,
+          "sesgo": "Periférico",
+          "confianza": 90,
+          "keywords": [
+            "Rusia",
+            "grano",
+            "Arabia Saudita",
+            "contrabando"
+          ]
+        },
+        {
+          "id": "CHINA_177_b6",
           "titulo": "Cómo las fronteras desiguales alimentan la vasta y resistente economía de estafas de Myanmar",
           "link": "https://www.scmp.com/week-asia/opinion/article/3338564/how-uneven-borders-fuel-myanmars-vast-and-resilient-scam-economy?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 31.8,
+          "proximidad": 30.4,
           "sesgo": "Periférico",
           "confianza": 80,
           "keywords": [
@@ -1125,26 +1190,11 @@
           ]
         },
         {
-          "id": "EUROPE_300_e",
-          "titulo": "El grano de contrabando de Rusia encuentra un nuevo mercado en Arabia Saudita",
-          "link": "https://www.bellingcat.com/news/2025/12/12/russia-ukraine-saudi-arabia-import-smuggled-grain-shadow-fleet-peace-deal-trump-occupied-crimea-petrokhleb-kuban/",
-          "bloque": "EUROPE",
-          "proximidad": 31.3,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "Rusia",
-            "grano",
-            "contrabando",
-            "Arabia Saudita"
-          ]
-        },
-        {
           "id": "LATAM_400_da",
           "titulo": "GameChangers 2025: La evolución a 10 años del auge del mercado de la marihuana en América Latina",
           "link": "https://insightcrime.org/news/gamechangers-2025-10-year-evolution-latam-marijuana-market/",
           "bloque": "LATAM",
-          "proximidad": 30.5,
+          "proximidad": 30.2,
           "sesgo": "Periférico",
           "confianza": 75,
           "keywords": [
@@ -1154,63 +1204,33 @@
           ]
         },
         {
-          "id": "USA_26_28950",
-          "titulo": "McCarthy hace una súplica para que los republicanos respalden el plan del techo de deuda",
-          "link": "https://www.cnn.com/2023/04/18/politics/mccarthy-debt-limit-plan/index.html",
-          "bloque": "USA",
-          "proximidad": 28.7,
-          "sesgo": "Periférico",
-          "confianza": 93,
-          "keywords": [
-            "McCarthy",
-            "republicanos",
-            "techo de deuda",
-            "plan"
-          ]
-        },
-        {
-          "id": "RUSSIA_154_5",
+          "id": "RUSSIA_155_5",
           "titulo": "Reuters: las autoridades indias exigieron a sus refinerías que informen semanalmente sobre las compras de petróleo ruso",
           "link": "https://novayagazeta.eu/articles/2026/01/03/reuters-vlasti-indii-potrebovali-ot-svoikh-npz-ezhenedelno-otchityvatsia-o-zakupkakh-rossiiskoi-nefti-news",
           "bloque": "RUSSIA",
-          "proximidad": 28.5,
+          "proximidad": 28.9,
           "sesgo": "Periférico",
           "confianza": 92,
           "keywords": [
             "India",
             "refinerías",
-            "petróleo",
-            "Rusia"
+            "petróleo ruso",
+            "Reuters"
           ]
         },
         {
-          "id": "INDIA_496_76",
-          "titulo": "La captura de Maduro en Venezuela interrumpe los viajes de vacaciones en el Caribe, cientos de vuelos cancelados",
-          "link": "https://www.thehindu.com/news/international/maduros-capture-in-venezuela-disrupts-caribbean-holiday-travel-hundreds-of-flights-cancelled/article70468948.ece",
-          "bloque": "INDIA",
-          "proximidad": 28.3,
+          "id": "CHINA_207_65",
+          "titulo": "Tesla pierde la corona de vehículos eléctricos ante BYD de China en 2025 a medida que caen las ventas",
+          "link": "https://hongkongfp.com/2026/01/03/tesla-loses-ev-crown-to-chinas-byd-in-2025-as-sales-slip/",
+          "bloque": "CHINA",
+          "proximidad": 28.1,
           "sesgo": "Periférico",
-          "confianza": 88,
+          "confianza": 85,
           "keywords": [
-            "Venezuela",
-            "Maduro",
-            "vuelos",
-            "Caribe"
-          ]
-        },
-        {
-          "id": "EUROPE_309_c",
-          "titulo": "En los mercados de Ghana, se están poniendo a prueba los 'lazos fraternales' con Nigeria",
-          "link": "https://www.opendemocracy.net/en/5050/in-ghanas-markets-brotherly-bonds-with-nigeria-are-being-tested/",
-          "bloque": "EUROPE",
-          "proximidad": 27.6,
-          "sesgo": "Periférico",
-          "confianza": 70,
-          "keywords": [
-            "Ghana",
-            "Nigeria",
-            "mercados",
-            "economía"
+            "Tesla",
+            "BYD",
+            "vehículos eléctricos",
+            "China"
           ]
         },
         {
@@ -1218,7 +1238,7 @@
           "titulo": "La economía de Rusia en 2026: más guerra, crecimiento más lento e impuestos más altos",
           "link": "https://www.themoscowtimes.com/2026/01/02/russias-economy-in-2026-more-war-slower-growth-and-higher-taxes-a91579",
           "bloque": "RUSSIA",
-          "proximidad": 27.2,
+          "proximidad": 27.8,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
@@ -1230,18 +1250,18 @@
           ]
         },
         {
-          "id": "CHINA_207_65",
-          "titulo": "Tesla pierde la corona de vehículos eléctricos ante BYD de China en 2025 a medida que caen las ventas",
-          "link": "https://hongkongfp.com/2026/01/03/tesla-loses-ev-crown-to-chinas-byd-in-2025-as-sales-slip/",
-          "bloque": "CHINA",
-          "proximidad": 26.8,
+          "id": "MID_EAST_365",
+          "titulo": "Desde corredores de efectivo hasta criptomonedas, los habitantes de Gaza luchan por mantenerse financieramente a flote",
+          "link": "https://www.972mag.com/cash-brokers-crypto-gaza-economic-crisis/",
+          "bloque": "MID_EAST",
+          "proximidad": 27.7,
           "sesgo": "Periférico",
-          "confianza": 92,
+          "confianza": 90,
           "keywords": [
-            "Tesla",
-            "BYD",
-            "vehículos eléctricos",
-            "China"
+            "Gaza",
+            "economía",
+            "criptomonedas",
+            "finanzas"
           ]
         },
         {
@@ -1249,7 +1269,7 @@
           "titulo": "El Super PAC de Trump recaudó más de $100 millones en los últimos meses",
           "link": "https://www.nytimes.com/2026/01/02/us/politics/trump-super-pac-maga-inc-fundraising.html",
           "bloque": "USA",
-          "proximidad": 26.7,
+          "proximidad": 27.3,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
@@ -1259,32 +1279,45 @@
           ]
         },
         {
+          "id": "USA_30_2da3d",
+          "titulo": "McDonald's está mejorando sus hamburguesas",
+          "link": "https://www.cnn.com/2023/04/17/business/mcdonalds-burgers/index.html",
+          "bloque": "USA",
+          "proximidad": 25.4,
+          "sesgo": "Periférico",
+          "confianza": 70,
+          "keywords": [
+            "McDonald's",
+            "hamburguesas",
+            "mejora",
+            "comida rápida"
+          ]
+        },
+        {
           "id": "EUROPE_326_3",
           "titulo": "Los precios mundiales del oro han hecho a Ghana más rica. ¿Pero a qué costo?",
           "link": "https://www.opendemocracy.net/en/5050/global-gold-prices-have-made-ghana-richer-but-at-what-cost/",
           "bloque": "EUROPE",
-          "proximidad": 26.7,
+          "proximidad": 24.9,
           "sesgo": "Periférico",
-          "confianza": 82,
+          "confianza": 78,
           "keywords": [
             "Ghana",
             "oro",
-            "precios",
-            "economía"
+            "precios mundiales"
           ]
         },
         {
           "id": "EUROPE_323_3",
-          "titulo": "¿El 'presupuesto del costo de vida' de Rachel Reeves cumplió con las mujeres?",
+          "titulo": "¿El 'presupuesto de costo de vida' de Rachel Reeves cumplió con las mujeres?",
           "link": "https://www.opendemocracy.net/en/rachel-reeves-cost-of-living-budget-deliver-women/",
           "bloque": "EUROPE",
-          "proximidad": 24.6,
+          "proximidad": 24.8,
           "sesgo": "Periférico",
-          "confianza": 75,
+          "confianza": 70,
           "keywords": [
             "Reeves",
             "presupuesto",
-            "costo de vida",
             "mujeres"
           ]
         },
@@ -1293,7 +1326,7 @@
           "titulo": "El aeropuerto Domodedovo de Moscú saldrá a subasta después de la incautación estatal",
           "link": "https://www.themoscowtimes.com/2025/12/30/moscows-domodedovo-airport-to-go-up-for-auction-after-state-seizure-a91583",
           "bloque": "RUSSIA",
-          "proximidad": 24.3,
+          "proximidad": 24.6,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -1304,40 +1337,11 @@
           ]
         },
         {
-          "id": "USA_30_2da3d",
-          "titulo": "McDonald's está mejorando sus hamburguesas",
-          "link": "https://www.cnn.com/2023/04/17/business/mcdonalds-burgers/index.html",
-          "bloque": "USA",
-          "proximidad": 24.1,
-          "sesgo": "Periférico",
-          "confianza": 75,
-          "keywords": [
-            "McDonald's",
-            "hamburguesas",
-            "mejora",
-            "comida rápida"
-          ]
-        },
-        {
-          "id": "AFRICA_456_4",
-          "titulo": "¿Es factible una agencia de calificación africana?",
-          "link": "https://mg.co.za/thought-leader/opinion/2025-12-28-african-ratings-agency-a-feasible-option/",
-          "bloque": "AFRICA",
-          "proximidad": 23.7,
-          "sesgo": "Periférico",
-          "confianza": 70,
-          "keywords": [
-            "agencia calificación",
-            "África",
-            "economía"
-          ]
-        },
-        {
           "id": "USA_28_c6835",
           "titulo": "La economía de China tiene un comienzo sólido, aumentando un 4,5% en el primer trimestre de 2023",
           "link": "https://www.cnn.com/2023/04/17/economy/china-gdp-q1-2023-intl-hnk/index.html",
           "bloque": "USA",
-          "proximidad": 23.3,
+          "proximidad": 23.4,
           "sesgo": "Periférico",
           "confianza": 96,
           "keywords": [
@@ -1348,11 +1352,55 @@
           ]
         },
         {
+          "id": "AFRICA_456_4",
+          "titulo": "¿Es factible una agencia de calificación africana?",
+          "link": "https://mg.co.za/thought-leader/opinion/2025-12-28-african-ratings-agency-a-feasible-option/",
+          "bloque": "AFRICA",
+          "proximidad": 22.6,
+          "sesgo": "Periférico",
+          "confianza": 70,
+          "keywords": [
+            "Agencia",
+            "calificación",
+            "África"
+          ]
+        },
+        {
+          "id": "EUROPE_251_3",
+          "titulo": "Se prevé que China haya vendido uno de cada 10 coches nuevos en el Reino Unido en 2025",
+          "link": "https://www.theguardian.com/business/2025/dec/31/china-forecast-to-have-sold-one-in-every-10-new-cars-in-uk-in-2025",
+          "bloque": "EUROPE",
+          "proximidad": 22.4,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "China",
+            "coches",
+            "Reino Unido",
+            "economía"
+          ]
+        },
+        {
+          "id": "INDIA_461_96",
+          "titulo": "El Ministro de Finanzas saudí aprueba un plan de endeudamiento de 217 mil millones de SR (57.9 mil millones de dólares) para 2026",
+          "link": "https://timesofindia.indiatimes.com/world/middle-east/saudi-finance-minister-approves-sr217-57-9-billion-borrowing-plan-for-2026/articleshow/126331367.cms",
+          "bloque": "INDIA",
+          "proximidad": 21.6,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "Arabia Saudita",
+            "finanzas",
+            "deuda",
+            "plan"
+          ]
+        },
+        {
           "id": "LATAM_398_4b",
           "titulo": "GameChangers 2025: Cryptocurrency Is Now in the Criminal Mainstream",
           "link": "https://insightcrime.org/news/gamechangers-2025-cryptocurrency-now-criminal-mainstream/",
           "bloque": "LATAM",
-          "proximidad": 22.4,
+          "proximidad": 21.3,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -1363,41 +1411,13 @@
           ]
         },
         {
-          "id": "CHINA_179_7d",
-          "titulo": "Por qué Singapur apuesta por las asociaciones internacionales para ayudar a que su industria cinematográfica crezca",
-          "link": "https://www.scmp.com/week-asia/lifestyle-culture/article/3338560/why-singapore-betting-international-partnerships-help-its-film-industry-scale?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 22.0,
-          "sesgo": "Periférico",
-          "confianza": 72,
-          "keywords": [
-            "Singapur",
-            "cine",
-            "asociaciones"
-          ]
-        },
-        {
-          "id": "EUROPE_251_3",
-          "titulo": "Se prevé que China haya vendido uno de cada 10 coches nuevos en el Reino Unido en 2025",
-          "link": "https://www.theguardian.com/business/2025/dec/31/china-forecast-to-have-sold-one-in-every-10-new-cars-in-uk-in-2025",
-          "bloque": "EUROPE",
-          "proximidad": 21.9,
-          "sesgo": "Periférico",
-          "confianza": 85,
-          "keywords": [
-            "China",
-            "coches",
-            "Reino Unido"
-          ]
-        },
-        {
-          "id": "CHINA_174_f7",
-          "titulo": "Las empresas de Chen Zhi en Hong Kong, sancionado, se ven sacudidas por renuncias y activos congelados",
+          "id": "CHINA_175_f7",
+          "titulo": "Las empresas de Chen Zhi en Hong Kong, sancionadas, se ven sacudidas por renuncias y activos congelados",
           "link": "https://www.scmp.com/news/hong-kong/law-and-crime/article/3338657/sanctioned-chen-zhis-hong-kong-firms-rocked-resignations-and-frozen-assets?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 21.5,
+          "proximidad": 20.9,
           "sesgo": "Periférico",
-          "confianza": 89,
+          "confianza": 90,
           "keywords": [
             "Chen Zhi",
             "Hong Kong",
@@ -1405,31 +1425,18 @@
           ]
         },
         {
-          "id": "INDIA_463_af",
-          "titulo": "'El patrimonio neto de Vivek es de $1.8 mil millones': Disputa sobre la promesa de Ramaswamy de 'devolver el dinero a los bolsillos'",
-          "link": "https://timesofindia.indiatimes.com/world/us/viveks-net-worth-is-1-8-billion-row-over-ramaswamy-promising-to-put-money-back-in-citizens-pockets-if-elected-ohio-governor/articleshow/126330500.cms",
-          "bloque": "INDIA",
-          "proximidad": 21.5,
+          "id": "RUSSIA_116_2",
+          "titulo": "El objetivo estratégico de EE.UU. en Venezuela es el control de sus reservas de petróleo - senador ruso",
+          "link": "https://tass.com/politics/2068423",
+          "bloque": "RUSSIA",
+          "proximidad": 20.8,
           "sesgo": "Periférico",
-          "confianza": 75,
+          "confianza": 82,
           "keywords": [
-            "Vivek Ramaswamy",
-            "patrimonio",
-            "finanzas"
-          ]
-        },
-        {
-          "id": "INDIA_459_96",
-          "titulo": "El Ministro de Finanzas saudí aprueba un plan de endeudamiento de 217.000 millones de SR (57.900 millones de dólares) para 2026",
-          "link": "https://timesofindia.indiatimes.com/world/middle-east/saudi-finance-minister-approves-sr217-57-9-billion-borrowing-plan-for-2026/articleshow/126331367.cms",
-          "bloque": "INDIA",
-          "proximidad": 20.3,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "Arabia Saudita",
-            "deuda",
-            "finanzas"
+            "EEUU",
+            "Venezuela",
+            "petróleo",
+            "control"
           ]
         },
         {
@@ -1437,7 +1444,7 @@
           "titulo": "GameChangers 2025: The Unstoppable Rise of Environmental Crime",
           "link": "https://insightcrime.org/news/gamechangers-2025-unstoppable-rise-environmental-crime-amazon/",
           "bloque": "LATAM",
-          "proximidad": 18.9,
+          "proximidad": 19.2,
           "sesgo": "Divergente",
           "confianza": 82,
           "keywords": [
@@ -1448,33 +1455,60 @@
           ]
         },
         {
-          "id": "CHINA_183_21",
+          "id": "EUROPE_239_8",
+          "titulo": "Los términos de EE. UU. 'adaptarse, reducirse o morir' para un fondo de ayuda de $ 2 mil millones significarán que la ONU se inclinará ante Washington, dicen los expertos",
+          "link": "https://www.theguardian.com/global-development/2026/jan/01/us-aid-cuts-conditions-un-humanitarian-pledge-ocha",
+          "bloque": "EUROPE",
+          "proximidad": 19.1,
+          "sesgo": "Divergente",
+          "confianza": 80,
+          "keywords": [
+            "EEUU",
+            "ONU",
+            "ayuda",
+            "Washington"
+          ]
+        },
+        {
+          "id": "USA_26_28950",
+          "titulo": "McCarthy hace un llamamiento a los republicanos para que respalden el plan del techo de deuda",
+          "link": "https://www.cnn.com/2023/04/18/politics/mccarthy-debt-limit-plan/index.html",
+          "bloque": "USA",
+          "proximidad": 18.6,
+          "sesgo": "Divergente",
+          "confianza": 93,
+          "keywords": [
+            "McCarthy",
+            "republicanos",
+            "techo de deuda",
+            "plan"
+          ]
+        },
+        {
+          "id": "CHINA_184_21",
           "titulo": "Cómo esta conservera de una pequeña ciudad japonesa mantiene a flote la industria pesquera en medio de la escasez de mano de obra",
           "link": "https://www.scmp.com/news/asia/east-asia/article/3338649/how-japanese-small-town-cannery-keeps-fishing-industry-afloat-amid-labour-shortage?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 18.2,
+          "proximidad": 17.9,
           "sesgo": "Divergente",
-          "confianza": 88,
+          "confianza": 70,
           "keywords": [
             "Japón",
+            "conservera",
             "pesca",
-            "industria",
             "mano de obra"
           ]
         },
         {
-          "id": "RUSSIA_114_2",
-          "titulo": "El objetivo estratégico de Estados Unidos en Venezuela es el control de sus reservas de petróleo - senador ruso",
-          "link": "https://tass.com/politics/2068423",
-          "bloque": "RUSSIA",
-          "proximidad": 17.6,
+          "id": "USA_84_d87b1",
+          "titulo": "Trump Set to Garnish Wages for Student Loan Defaults; The Debt Collective Lays Out Other Options",
+          "link": "http://www.democracynow.org/2025/12/30/student_loans_julia_barnard",
+          "bloque": "USA",
+          "proximidad": 17.0,
           "sesgo": "Divergente",
-          "confianza": 78,
+          "confianza": 60,
           "keywords": [
-            "EEUU",
-            "Venezuela",
-            "petróleo",
-            "control"
+            "fallback_mode"
           ]
         },
         {
@@ -1482,7 +1516,7 @@
           "titulo": "Guinea: Axis International Ltd de Pankaj Oswal inicia un arbitraje de USD 28.9 mil millones del Banco Mundial contra la República de Guinea",
           "link": "https://allafrica.com/stories/202512290313.html",
           "bloque": "AFRICA",
-          "proximidad": 17.5,
+          "proximidad": 16.0,
           "sesgo": "Divergente",
           "confianza": 80,
           "keywords": [
@@ -1492,82 +1526,55 @@
           ]
         },
         {
-          "id": "USA_84_d87b1",
-          "titulo": "Trump Set to Garnish Wages for Student Loan Defaults; The Debt Collective Lays Out Other Options",
-          "link": "http://www.democracynow.org/2025/12/30/student_loans_julia_barnard",
-          "bloque": "USA",
-          "proximidad": 17.1,
-          "sesgo": "Divergente",
-          "confianza": 60,
-          "keywords": [
-            "fallback_mode"
-          ]
-        },
-        {
           "id": "CHINA_203_83",
           "titulo": "Pato DaDong listo para la apertura en Nueva York",
           "link": null,
           "bloque": "CHINA",
-          "proximidad": 13.7,
+          "proximidad": 14.7,
           "sesgo": "Divergente",
           "confianza": 65,
           "keywords": [
             "DaDong",
-            "pato",
-            "Nueva York"
+            "Nueva York",
+            "restaurante"
           ]
         },
         {
-          "id": "INDIA_516_73",
+          "id": "INDIA_517_73",
           "titulo": "Todos los estados, incluido Kerala, recibirán trenes Vande Bharat Sleeper: Ashwini Vaishnaw",
           "link": "https://indianexpress.com/article/india/all-states-including-kerala-to-get-vande-bharat-sleeper-trains-ashwini-vaishnaw-10453647/",
           "bloque": "INDIA",
-          "proximidad": 13.7,
+          "proximidad": 13.9,
           "sesgo": "Divergente",
           "confianza": 75,
           "keywords": [
             "Vande Bharat",
             "trenes",
             "Kerala",
-            "India"
-          ]
-        },
-        {
-          "id": "INDIA_517_6b",
-          "titulo": "En fotos | Primer vistazo al tren Howrah-Guwahati Vande Bharat Sleeper",
-          "link": "https://indianexpress.com/article/india/in-photos-first-look-of-howrah-guwahati-vande-bharat-sleeper-train-10453502/",
-          "bloque": "INDIA",
-          "proximidad": 9.2,
-          "sesgo": "Divergente",
-          "confianza": 70,
-          "keywords": [
-            "Howrah-Guwahati",
-            "Vande Bharat",
-            "tren",
-            "dormitorio"
+            "economía"
           ]
         }
       ]
     },
     {
       "area": "Energía y Recursos",
-      "sintesis": "Mientras EEUU ambiciona controlar los recursos venezolanos, Rusia los defiende, China promueve tecnologías limpias y LATAM denuncia el intervencionismo histórico.",
-      "punto_cero": "🔴 BAJO | Avg: 40.1% | →",
+      "sintesis": "INTELIGENCIA BREVE: La competencia por el control y la explotación de los recursos energéticos venezolanos exacerba las tensiones geopolíticas globales. OBSERVACIONES: Mientras EE.UU. y Medio Oriente sugieren apropiación directa, Rusia y Latinoamérica defienden la soberanía de Venezuela sobre sus recursos. China, en cambio, promueve tecnologías limpias, indirectamente desafiando la narrativa de Trump. PRONÓSTICO: La pugna por los recursos venezolanos intensificará la polarización y la inestabilidad regional.",
+      "punto_cero": "🔴 BAJO | Avg: 35.7% | ↓",
       "color": "#10b981",
       "meta_netflix": {
         "consensus": "BAJO",
-        "trend": "→",
-        "avg_proximity": 40.1375
+        "trend": "↓",
+        "avg_proximity": 35.7
       },
       "particulas": [
         {
-          "id": "MID_EAST_327",
-          "titulo": "Trump dice que EE.UU. tomará el petróleo de Venezuela",
+          "id": "MID_EAST_333",
+          "titulo": "Trump dice que EE. UU. tomará el petróleo de Venezuela",
           "link": "https://www.aljazeera.com/video/newsfeed/2026/1/4/trump-says-us-will-take-venezuelas-oil?traffic_source=rss",
           "bloque": "MID_EAST",
-          "proximidad": 69.2,
+          "proximidad": 62.5,
           "sesgo": "Alta Convergencia",
-          "confianza": 95,
+          "confianza": 88,
           "keywords": [
             "Trump",
             "EE.UU.",
@@ -1576,17 +1583,16 @@
           ]
         },
         {
-          "id": "RUSSIA_125_9",
+          "id": "RUSSIA_127_9",
           "titulo": "Venezuela protegerá sus recursos naturales, pertenecen al pueblo - Vicepresidente",
           "link": "https://tass.com/world/2068357",
           "bloque": "RUSSIA",
-          "proximidad": 54.0,
+          "proximidad": 52.9,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
             "Venezuela",
-            "recursos",
-            "naturales",
+            "recursos naturales",
             "protección"
           ]
         },
@@ -1595,7 +1601,7 @@
           "titulo": "Trump siempre quiso 'tomar el petróleo'. Dice que lo hará en Venezuela.",
           "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-venezuela-oil.html",
           "bloque": "USA",
-          "proximidad": 52.0,
+          "proximidad": 46.5,
           "sesgo": "Alineado",
           "confianza": 95,
           "keywords": [
@@ -1609,7 +1615,7 @@
           "titulo": "El petróleo, el centro de las controversias históricas entre Venezuela y Estados Unidos",
           "link": "https://elpais.com/america/2026-01-04/el-petroleo-en-el-centro-de-las-controversias-historicas-entre-venezuela-y-estados-unidos.html",
           "bloque": "LATAM",
-          "proximidad": 46.6,
+          "proximidad": 41.7,
           "sesgo": "Alineado",
           "confianza": 88,
           "keywords": [
@@ -1620,13 +1626,13 @@
           ]
         },
         {
-          "id": "CHINA_187_46",
+          "id": "CHINA_188_46",
           "titulo": "La tecnología libre de emisiones de China impulsa la productividad 3 veces más, desmiente la teoría de la carga verde de Trump",
           "link": "https://www.scmp.com/news/china/science/article/3338372/chinas-emission-free-tech-boosts-productivity-3-fold-debunks-trumps-green-burden-theory?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 39.6,
+          "proximidad": 39.9,
           "sesgo": "Periférico",
-          "confianza": 90,
+          "confianza": 85,
           "keywords": [
             "China",
             "emisiones",
@@ -1639,7 +1645,7 @@
           "titulo": "Oregón enfrentó un gran obstáculo para agregar energía verde. Esto es lo que cambió este año.",
           "link": "https://www.propublica.org/article/oregon-renewable-energy-legislative-progress",
           "bloque": "USA",
-          "proximidad": 25.8,
+          "proximidad": 27.0,
           "sesgo": "Periférico",
           "confianza": 88,
           "keywords": [
@@ -1654,9 +1660,9 @@
           "titulo": "Los cameruneses se inclinan por soluciones de cocina limpias con eco-carbón",
           "link": "https://globalvoices.org/2025/12/31/cameroonians-shift-toward-clean-cooking-solutions-with-eco-charcoal/",
           "bloque": "GLOBAL",
-          "proximidad": 23.3,
+          "proximidad": 22.5,
           "sesgo": "Periférico",
-          "confianza": 82,
+          "confianza": 80,
           "keywords": [
             "Camerún",
             "cocina limpia",
@@ -1665,11 +1671,26 @@
           ]
         },
         {
+          "id": "INDIA_505_67",
+          "titulo": "En el hábitat de la garza de vientre blanco de Arunachal, el proyecto Kalai-II recibe el visto bueno",
+          "link": "https://indianexpress.com/article/india/in-arunachals-white-bellied-heron-habitat-kalai-ii-project-gets-nod-10454074/",
+          "bloque": "INDIA",
+          "proximidad": 17.6,
+          "sesgo": "Divergente",
+          "confianza": 85,
+          "keywords": [
+            "Arunachal",
+            "garza",
+            "hábitat",
+            "proyecto Kalai-II"
+          ]
+        },
+        {
           "id": "USA_91_e52f2",
           "titulo": "Blackwater Successor Hunts Immigrants for ICE",
           "link": "https://theintercept.com/2026/01/03/blackwater-successor-constellis-omniplex-hunts-immigrants-for-ice/",
           "bloque": "USA",
-          "proximidad": 10.6,
+          "proximidad": 10.7,
           "sesgo": "Divergente",
           "confianza": 60,
           "keywords": [
@@ -1680,35 +1701,21 @@
     },
     {
       "area": "Soberanía y Alianzas",
-      "sintesis": "Mientras EE.UU. busca el cambio de régimen en Venezuela, Rusia y China defienden la soberanía, generando una crisis global sobre alianzas e injerencia.",
-      "punto_cero": "🔴 BAJO | Avg: 38.1% | ↓",
+      "sintesis": "INTELIGENCIA BREVE: La soberanía nacional se instrumentaliza como pretexto para la injerencia geopolítica, exacerbando la inestabilidad regional. OBSERVACIONES: Mientras China defiende la soberanía de Taiwán frente a ejercicios militares, EE.UU. justifica intervenciones en Venezuela bajo el pretexto de la democracia. Europa mantiene una postura más cautelosa, enfocada en el futuro político de Maduro. PRONÓSTICO: La polarización global en torno a la soberanía intensificará conflictos asimétricos y alianzas oportunistas.",
+      "punto_cero": "🔴 BAJO | Avg: 38.2% | ↓",
       "color": "#f59e0b",
       "meta_netflix": {
         "consensus": "BAJO",
         "trend": "↓",
-        "avg_proximity": 38.14246575342464
+        "avg_proximity": 38.210958904109575
       },
       "particulas": [
-        {
-          "id": "MID_EAST_340",
-          "titulo": "Un 'equipo' de EE.UU. dirigirá Venezuela tras la 'captura' de Maduro",
-          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/3/team-from-us-to-run-venezuela-after-capture-of-maduro?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 69.4,
-          "sesgo": "Alta Convergencia",
-          "confianza": 90,
-          "keywords": [
-            "EE.UU.",
-            "Venezuela",
-            "Maduro"
-          ]
-        },
         {
           "id": "USA_2_86706c",
           "titulo": "Trump sume a EE.UU. en una nueva era de riesgo en Venezuela",
           "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-venezuela-oil-risks.html",
           "bloque": "USA",
-          "proximidad": 68.6,
+          "proximidad": 68.9,
           "sesgo": "Alta Convergencia",
           "confianza": 92,
           "keywords": [
@@ -1718,18 +1725,17 @@
           ]
         },
         {
-          "id": "EUROPE_269_f",
-          "titulo": "Venezuela: EE. UU. listo para 'dirigir' el país, 'Maduro capturado'",
-          "link": "https://www.france24.com/en/video/20260103-venezuela-us-ready-to-run-the-country-maduro-captured",
+          "id": "EUROPE_270_f",
+          "titulo": "Venezuela: ¿Qué sigue para Nicolás Maduro?",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-what-s-next-for-nicolas-maduro",
           "bloque": "EUROPE",
-          "proximidad": 66.3,
+          "proximidad": 66.7,
           "sesgo": "Alta Convergencia",
-          "confianza": 92,
+          "confianza": 85,
           "keywords": [
             "Venezuela",
-            "EE.UU.",
-            "Maduro",
-            "captura"
+            "Nicolás Maduro",
+            "futuro"
           ]
         },
         {
@@ -1737,7 +1743,7 @@
           "titulo": "Cayó Maduro, pero la democracia aún no llegará a Venezuela",
           "link": "https://elpais.com/america/2026-01-04/cayo-maduro-pero-la-democracia-aun-no-llegara-a-venezuela.html",
           "bloque": "LATAM",
-          "proximidad": 66.2,
+          "proximidad": 66.0,
           "sesgo": "Alta Convergencia",
           "confianza": 78,
           "keywords": [
@@ -1748,40 +1754,72 @@
           ]
         },
         {
-          "id": "EUROPE_277_4",
-          "titulo": "Venezuela en el limbo después de la destitución de Maduro por parte de Estados Unidos",
-          "link": "https://www.dw.com/en/venezuela-in-limbo-after-maduro-ouster-by-us/live-75382023?maca=en-rss-en-all-1573-xml-mrss",
+          "id": "EUROPE_271_f",
+          "titulo": "Venezuela: EE.UU. listo para 'dirigir' el país, 'Maduro capturado'",
+          "link": "https://www.france24.com/en/video/20260103-venezuela-us-ready-to-run-the-country-maduro-captured",
           "bloque": "EUROPE",
-          "proximidad": 65.7,
+          "proximidad": 65.3,
           "sesgo": "Alta Convergencia",
-          "confianza": 85,
+          "confianza": 90,
           "keywords": [
             "Venezuela",
-            "Maduro",
             "EE.UU.",
-            "destitución"
+            "Maduro",
+            "captura"
           ]
         },
         {
-          "id": "MID_EAST_344",
-          "titulo": "Trump dice que EE.UU. 'dirigirá' Venezuela después de que Nicolás Maduro fuera capturado",
-          "link": "https://www.aljazeera.com/news/2026/1/3/trump-says-us-will-run-venezuela-after-nicolas-maduro-seized?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 65.6,
+          "id": "EUROPE_274_2",
+          "titulo": "🔴 Ver en vivo: Trump ofrece una conferencia de prensa sobre la operación para capturar a Maduro de Venezuela",
+          "link": "https://www.france24.com/en/americas/20260103-live-venezuela-declares-state-of-emergency-after-reported-us-military-aggression",
+          "bloque": "EUROPE",
+          "proximidad": 65.3,
           "sesgo": "Alta Convergencia",
           "confianza": 90,
           "keywords": [
             "Trump",
-            "EE.UU.",
-            "Venezuela"
+            "Maduro",
+            "Venezuela",
+            "captura"
           ]
         },
         {
-          "id": "EUROPE_287_c",
+          "id": "EUROPE_278_4",
+          "titulo": "Venezuela en el limbo después de la destitución de Maduro por parte de EE.UU.",
+          "link": "https://www.dw.com/en/venezuela-in-limbo-after-maduro-ouster-by-us/live-75382023?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 64.5,
+          "sesgo": "Alta Convergencia",
+          "confianza": 90,
+          "keywords": [
+            "Venezuela",
+            "limbo",
+            "Maduro",
+            "EE.UU."
+          ]
+        },
+        {
+          "id": "RUSSIA_130_9",
+          "titulo": "Rusia exige la liberación de Maduro tras los ataques militares estadounidenses a Venezuela",
+          "link": "https://www.themoscowtimes.com/2026/01/03/russia-demands-release-of-maduro-after-us-military-strikes-venezuela-a91602",
+          "bloque": "RUSSIA",
+          "proximidad": 62.9,
+          "sesgo": "Alta Convergencia",
+          "confianza": 92,
+          "keywords": [
+            "Rusia",
+            "Maduro",
+            "liberación",
+            "EE.UU.",
+            "ataques"
+          ]
+        },
+        {
+          "id": "EUROPE_288_c",
           "titulo": "¿Qué hay detrás de la destitución de Maduro de Venezuela por parte de Trump?",
           "link": "https://www.dw.com/en/what-is-behind-trump-s-ouster-of-venezuela-s-maduro/a-75232235?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 62.4,
+          "proximidad": 62.6,
           "sesgo": "Alta Convergencia",
           "confianza": 70,
           "keywords": [
@@ -1806,60 +1844,28 @@
           ]
         },
         {
-          "id": "RUSSIA_130_9",
-          "titulo": "Rusia exige la liberación de Maduro tras los ataques militares estadounidenses en Venezuela",
-          "link": "https://www.themoscowtimes.com/2026/01/03/russia-demands-release-of-maduro-after-us-military-strikes-venezuela-a91602",
-          "bloque": "RUSSIA",
-          "proximidad": 62.2,
-          "sesgo": "Alta Convergencia",
-          "confianza": 90,
-          "keywords": [
-            "Rusia",
-            "Maduro",
-            "liberación",
-            "EE.UU.",
-            "ataques"
-          ]
-        },
-        {
-          "id": "MID_EAST_330",
+          "id": "MID_EAST_336",
           "titulo": "Verificación de hechos a Trump tras la 'captura' estadounidense de Maduro en Venezuela",
           "link": "https://www.aljazeera.com/news/2026/1/4/fact-checking-trump-following-us-capture-of-venezuelas-maduro?traffic_source=rss",
           "bloque": "MID_EAST",
-          "proximidad": 61.8,
+          "proximidad": 61.3,
           "sesgo": "Alta Convergencia",
-          "confianza": 85,
+          "confianza": 82,
           "keywords": [
             "Trump",
             "Venezuela",
             "Maduro",
-            "EE.UU.",
-            "captura"
+            "verificación"
           ]
         },
         {
           "id": "EUROPE_275_6",
-          "titulo": "México condena los ataques de Estados Unidos contra Venezuela",
-          "link": "https://www.france24.com/en/video/20260103-mexico-condemns-us-strikes-on-venezuela",
-          "bloque": "EUROPE",
-          "proximidad": 61.3,
-          "sesgo": "Alta Convergencia",
-          "confianza": 90,
-          "keywords": [
-            "México",
-            "EE.UU.",
-            "Venezuela",
-            "condena"
-          ]
-        },
-        {
-          "id": "EUROPE_273_6",
           "titulo": "Cómo Nicolás Maduro tomó la presidencia en Venezuela",
           "link": "https://www.france24.com/en/video/20260103-how-nicol%C3%A1s-maduro-took-the-presidency-in-venezuela",
           "bloque": "EUROPE",
-          "proximidad": 61.0,
+          "proximidad": 61.2,
           "sesgo": "Alta Convergencia",
-          "confianza": 75,
+          "confianza": 80,
           "keywords": [
             "Nicolás Maduro",
             "presidencia",
@@ -1867,11 +1873,11 @@
           ]
         },
         {
-          "id": "RUSSIA_111_f",
+          "id": "RUSSIA_113_f",
           "titulo": "Ni Europa, ni las fuerzas estadounidenses se opondrán a la política de Trump hacia Venezuela - experto",
           "link": "https://tass.com/world/2068431",
           "bloque": "RUSSIA",
-          "proximidad": 60.1,
+          "proximidad": 60.5,
           "sesgo": "Alta Convergencia",
           "confianza": 75,
           "keywords": [
@@ -1892,20 +1898,22 @@
           "keywords": [
             "Trump",
             "Venezuela",
-            "ataque"
+            "ataque",
+            "confesión"
           ]
         },
         {
-          "id": "MID_EAST_345",
-          "titulo": "Legisladores estadounidenses reaccionan al ataque a Venezuela, 'captura' de Nicolás Maduro",
-          "link": "https://www.aljazeera.com/news/2026/1/3/us-lawmakers-react-to-attack-on-venezuela-capture-of-maduro?traffic_source=rss",
-          "bloque": "MID_EAST",
+          "id": "INDIA_479_9b",
+          "titulo": "China dice que Estados Unidos debería liberar inmediatamente a Maduro de Venezuela",
+          "link": "https://www.thehindu.com/news/international/china-says-us-should-immediately-release-venezuelas-maduro/article70470228.ece",
+          "bloque": "INDIA",
           "proximidad": 58.7,
           "sesgo": "Alineado",
-          "confianza": 90,
+          "confianza": 85,
           "keywords": [
-            "Legisladores",
-            "EE.UU.",
+            "China",
+            "EEUU",
+            "Maduro",
             "Venezuela"
           ]
         },
@@ -1914,53 +1922,53 @@
           "titulo": "Trump, Maduro y los riesgos de lo impredecible",
           "link": "https://www.opendemocracy.net/en/trump-maduro-venezuela-military-intervention-attacks-democracy-drug-trafficking/",
           "bloque": "EUROPE",
-          "proximidad": 58.6,
+          "proximidad": 58.4,
           "sesgo": "Alineado",
-          "confianza": 75,
+          "confianza": 78,
           "keywords": [
             "Trump",
             "Maduro",
-            "EEUU",
-            "Venezuela"
+            "riesgos",
+            "política"
           ]
         },
         {
-          "id": "INDIA_479_9b",
-          "titulo": "China dice que Estados Unidos debería liberar inmediatamente a Maduro de Venezuela",
-          "link": "https://www.thehindu.com/news/international/china-says-us-should-immediately-release-venezuelas-maduro/article70470228.ece",
-          "bloque": "INDIA",
-          "proximidad": 58.1,
+          "id": "EUROPE_260_4",
+          "titulo": "Maduro en centro de detención de Nueva York mientras Trump dice que EE.UU. 'dirigirá' Venezuela",
+          "link": "https://www.france24.com/en/americas/20260104-maduro-in-new-york-detention-centre-as-trump-says-us-to-run-venezuela-drug-trafficking",
+          "bloque": "EUROPE",
+          "proximidad": 57.9,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 90,
           "keywords": [
-            "China",
-            "EE.UU.",
             "Maduro",
-            "Venezuela"
+            "Venezuela",
+            "EE.UU."
           ]
         },
         {
           "id": "EUROPE_245_2",
-          "titulo": "Trump dice que EE.UU. 'dirigirá' Venezuela después de que Nicolás Maduro sea capturado y llevado a Nueva York",
+          "titulo": "Trump dice que EE. UU. 'dirigirá' Venezuela después de que Nicolás Maduro sea capturado y llevado a Nueva York",
           "link": "https://www.theguardian.com/us-news/2026/jan/03/trump-venezuela-oil-industry",
           "bloque": "EUROPE",
-          "proximidad": 58.0,
+          "proximidad": 57.2,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
             "Trump",
-            "EE.UU.",
-            "Venezuela"
+            "EE. UU.",
+            "Venezuela",
+            "Maduro"
           ]
         },
         {
-          "id": "RUSSIA_123_3",
-          "titulo": "EE.UU. debe liberar inmediatamente a Maduro y devolverlo a Venezuela - Vicepresidente",
+          "id": "RUSSIA_125_3",
+          "titulo": "EE.UU. debe liberar inmediatamente a Maduro, devolverlo a Venezuela - Vicepresidente",
           "link": "https://tass.com/world/2068353",
           "bloque": "RUSSIA",
-          "proximidad": 57.2,
+          "proximidad": 56.5,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 90,
           "keywords": [
             "EE.UU.",
             "Maduro",
@@ -1969,13 +1977,13 @@
           ]
         },
         {
-          "id": "INDIA_471_ce",
-          "titulo": "Trump advierte a México, Cuba y Colombia después de la operación en Venezuela: 'Hay que hacer algo...'",
+          "id": "INDIA_473_ce",
+          "titulo": "Trump advierte a México, Cuba y Colombia después de la operación en Venezuela: 'Algo tiene que hacerse...'",
           "link": "https://timesofindia.indiatimes.com/world/us/trump-sends-warning-to-mexico-cuba-and-colombia-after-invading-venezuela-something-has-to-be-done-/articleshow/126327692.cms",
           "bloque": "INDIA",
           "proximidad": 56.4,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 88,
           "keywords": [
             "Trump",
             "México",
@@ -1985,42 +1993,43 @@
           ]
         },
         {
-          "id": "MID_EAST_329",
-          "titulo": "Republicanos de EE.UU. apoyan a Trump sobre Venezuela en medio de una leve disidencia MAGA",
-          "link": "https://www.aljazeera.com/news/2026/1/4/us-republicans-back-trump-on-venezuela-amid-faint-maga-dissent?traffic_source=rss",
-          "bloque": "MID_EAST",
+          "id": "EUROPE_259_8",
+          "titulo": "En vivo: El vicepresidente venezolano asumirá 'temporalmente' la presidencia tras la captura de Maduro",
+          "link": "https://www.france24.com/en/americas/20260104-live-venezuela-maduro-held-in-us-custody-as-trump-vows-to-run-the-country-us",
+          "bloque": "EUROPE",
           "proximidad": 56.2,
           "sesgo": "Alineado",
-          "confianza": 88,
+          "confianza": 95,
           "keywords": [
-            "Republicanos",
-            "Trump",
             "Venezuela",
-            "MAGA"
+            "vicepresidente",
+            "Maduro",
+            "presidencia"
           ]
         },
         {
-          "id": "EUROPE_274_d",
+          "id": "EUROPE_276_d",
           "titulo": "Venezuela: Una señal de alivio, pero el futuro del país sigue siendo incierto",
           "link": "https://www.france24.com/en/video/20260103-venezuela-a-sign-of-relief-but-country-s-future-remains-uncertain",
           "bloque": "EUROPE",
-          "proximidad": 56.1,
+          "proximidad": 56.2,
           "sesgo": "Alineado",
-          "confianza": 80,
+          "confianza": 85,
           "keywords": [
             "Venezuela",
+            "alivio",
             "futuro",
-            "incertidumbre"
+            "incierto"
           ]
         },
         {
-          "id": "RUSSIA_117_4",
+          "id": "RUSSIA_119_4",
           "titulo": "Diputado brasileño condena la agresión estadounidense contra Venezuela como un ataque a todo el continente",
           "link": "https://tass.com/world/2068411",
           "bloque": "RUSSIA",
-          "proximidad": 55.7,
+          "proximidad": 55.8,
           "sesgo": "Alineado",
-          "confianza": 72,
+          "confianza": 80,
           "keywords": [
             "Brasil",
             "EEUU",
@@ -2033,7 +2042,7 @@
           "titulo": "El movimiento de Trump en Venezuela empuja los límites de 'Estados Unidos Primero'",
           "link": "https://www.washingtonpost.com/politics/2026/01/03/trump-venezuela-intervention-maga/",
           "bloque": "USA",
-          "proximidad": 55.0,
+          "proximidad": 55.7,
           "sesgo": "Alineado",
           "confianza": 78,
           "keywords": [
@@ -2044,32 +2053,33 @@
           ]
         },
         {
-          "id": "RUSSIA_151_d",
-          "titulo": "Trump: EE.UU. gobernará Venezuela hasta que haya una transición de poder allí",
-          "link": "https://novayagazeta.eu/articles/2026/01/03/tramp-ssha-budut-upravliat-venesueloi-poka-tam-ne-proizoidet-tranzit-vlasti-news",
-          "bloque": "RUSSIA",
-          "proximidad": 54.9,
+          "id": "MID_EAST_337",
+          "titulo": "Venezuela cierra temporalmente la frontera con Brasil tras el ataque estadounidense",
+          "link": "https://www.aljazeera.com/news/2026/1/4/venezuela-temporarily-closes-border-with-brazil-following-us-strike?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 55.5,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 90,
           "keywords": [
-            "Trump",
-            "EE.UU.",
             "Venezuela",
-            "transición"
+            "Brasil",
+            "frontera",
+            "EE.UU."
           ]
         },
         {
           "id": "EUROPE_246_1",
-          "titulo": "La 'Putinización' de la política exterior estadounidense ha llegado a Venezuela",
+          "titulo": "La 'putinización' de la política exterior estadounidense ha llegado a Venezuela",
           "link": "https://www.theguardian.com/world/2026/jan/03/putin-russia-us-foreign-policy-venezuela",
           "bloque": "EUROPE",
-          "proximidad": 54.8,
+          "proximidad": 55.0,
           "sesgo": "Alineado",
           "confianza": 85,
           "keywords": [
-            "Putin",
-            "EE.UU.",
-            "Venezuela"
+            "EE. UU.",
+            "política exterior",
+            "Venezuela",
+            "Putin"
           ]
         },
         {
@@ -2079,7 +2089,7 @@
           "bloque": "LATAM",
           "proximidad": 54.8,
           "sesgo": "Alineado",
-          "confianza": 80,
+          "confianza": 85,
           "keywords": [
             "Trump",
             "EE. UU.",
@@ -2088,13 +2098,28 @@
           ]
         },
         {
-          "id": "INDIA_465_c4",
+          "id": "RUSSIA_152_d",
+          "titulo": "Trump: EE.UU. gobernará Venezuela hasta que se produzca una transición de poder allí",
+          "link": "https://novayagazeta.eu/articles/2026/01/03/tramp-ssha-budut-upravliat-venesueloi-poka-tam-ne-proizoidet-tranzit-vlasti-news",
+          "bloque": "RUSSIA",
+          "proximidad": 54.1,
+          "sesgo": "Alineado",
+          "confianza": 85,
+          "keywords": [
+            "Trump",
+            "EE.UU.",
+            "Venezuela",
+            "transición de poder"
+          ]
+        },
+        {
+          "id": "INDIA_467_c4",
           "titulo": "'Si es posible tratar con dictadores...': Zelenskyy sobre el ataque de Trump a Venezuela",
           "link": "https://timesofindia.indiatimes.com/world/europe/if-its-possible-to-deal-with-dictators-zelenskyy-reacts-to-trump-attacking-venezuela-and-says-us-knows-what-to-do-next/articleshow/126330134.cms",
           "bloque": "INDIA",
-          "proximidad": 53.7,
+          "proximidad": 53.9,
           "sesgo": "Alineado",
-          "confianza": 80,
+          "confianza": 82,
           "keywords": [
             "Zelenskyy",
             "Trump",
@@ -2103,69 +2128,26 @@
           ]
         },
         {
-          "id": "USA_9_22d1a8",
-          "titulo": "Trump evita la aprobación del Congreso para la captura de Maduro, y los demócratas dan la voz de alarma",
-          "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-venezuela-congress-authorization.html",
-          "bloque": "USA",
-          "proximidad": 53.5,
-          "sesgo": "Alineado",
-          "confianza": 91,
-          "keywords": [
-            "Trump",
-            "Congreso",
-            "Maduro"
-          ]
-        },
-        {
-          "id": "CHINA_186_c8",
-          "titulo": "¿Vacío de poder en Caracas? Los venezolanos se preguntan quién está a cargo después de la captura de Maduro",
-          "link": "https://www.scmp.com/news/world/americas/article/3338647/power-vacuum-caracas-venezuelans-wonder-whos-charge-after-maduro-capture?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 53.3,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Venezuela",
-            "Caracas",
-            "Maduro",
-            "poder"
-          ]
-        },
-        {
           "id": "MID_EAST_346",
           "titulo": "Más allá de Venezuela, ¿qué significa la caída de Maduro para el aislado Irán?",
           "link": "https://www.al-monitor.com/originals/2026/01/beyond-venezuela-what-does-maduros-fall-mean-isolated-iran",
           "bloque": "MID_EAST",
-          "proximidad": 53.1,
+          "proximidad": 53.5,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 80,
           "keywords": [
             "Venezuela",
             "Maduro",
-            "Irán"
+            "Irán",
+            "aislamiento"
           ]
         },
         {
-          "id": "RUSSIA_127_8",
-          "titulo": "Ministros de Relaciones Exteriores de Rusia y Bielorrusia piden la liberación de Maduro",
-          "link": "https://tass.com/politics/2068363",
-          "bloque": "RUSSIA",
-          "proximidad": 52.9,
-          "sesgo": "Alineado",
-          "confianza": 92,
-          "keywords": [
-            "Rusia",
-            "Bielorrusia",
-            "Maduro",
-            "liberación"
-          ]
-        },
-        {
-          "id": "CHINA_170_9f",
+          "id": "CHINA_171_9f",
           "titulo": "China pide la liberación inmediata de Maduro y acusa a Estados Unidos de violar el derecho internacional",
           "link": "https://www.scmp.com/news/china/diplomacy/article/3338661/china-calls-maduros-immediate-release-accuses-us-breaching-international-law?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 52.9,
+          "proximidad": 53.4,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
@@ -2175,46 +2157,89 @@
           ]
         },
         {
-          "id": "MID_EAST_331",
-          "titulo": "Venezuela cierra temporalmente la frontera con Brasil tras el ataque de EE.UU.",
-          "link": "https://www.aljazeera.com/news/2026/1/4/venezuela-temporarily-closes-border-with-brazil-following-us-strike?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 52.3,
+          "id": "CHINA_187_c8",
+          "titulo": "¿Vacío de poder en Caracas? Los venezolanos se preguntan quién está a cargo después de la captura de Maduro",
+          "link": "https://www.scmp.com/news/world/americas/article/3338647/power-vacuum-caracas-venezuelans-wonder-whos-charge-after-maduro-capture?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 53.4,
           "sesgo": "Alineado",
-          "confianza": 92,
+          "confianza": 88,
           "keywords": [
             "Venezuela",
-            "Brasil",
-            "frontera",
-            "EE.UU.",
-            "ataque"
+            "Caracas",
+            "Maduro",
+            "poder"
           ]
         },
         {
-          "id": "MID_EAST_342",
-          "titulo": "Trump: EE.UU. 'captura' a Maduro en 'plena noche'",
-          "link": "https://www.aljazeera.com/video/newsfeed/2026/1/3/trump-us-captures-maduro-in-dead-of?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 51.1,
+          "id": "EUROPE_269_6",
+          "titulo": "REPETICIÓN: Conferencia de prensa del presidente de EE.UU., Donald Trump, sobre el ataque a Venezuela y la captura de Maduro",
+          "link": "https://www.france24.com/en/video/20260103-replay-us-president-donald-trump-press-conference-on-venezuela-s-attack-and-capture-of-maduro",
+          "bloque": "EUROPE",
+          "proximidad": 53.3,
           "sesgo": "Alineado",
           "confianza": 90,
           "keywords": [
             "Trump",
-            "EE.UU.",
+            "Venezuela",
+            "Maduro",
+            "captura"
+          ]
+        },
+        {
+          "id": "USA_9_22d1a8",
+          "titulo": "Trump evita la aprobación del Congreso para la captura de Maduro, y los demócratas dan la voz de alarma",
+          "link": "https://www.nytimes.com/2026/01/03/us/politics/trump-venezuela-congress-authorization.html",
+          "bloque": "USA",
+          "proximidad": 53.1,
+          "sesgo": "Alineado",
+          "confianza": 91,
+          "keywords": [
+            "Trump",
+            "Congreso",
             "Maduro"
           ]
         },
         {
-          "id": "EUROPE_264_2",
+          "id": "CHINA_176_1a",
+          "titulo": "Veraneantes caribeños varados después de que la operación estadounidense para apoderarse de Maduro detuviera los vuelos",
+          "link": "https://www.scmp.com/news/world/americas/article/3338655/caribbean-holidaymakers-stranded-after-us-operation-seize-maduro-halts-flights?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 53.1,
+          "sesgo": "Alineado",
+          "confianza": 85,
+          "keywords": [
+            "Caribe",
+            "Maduro",
+            "EEUU"
+          ]
+        },
+        {
+          "id": "RUSSIA_129_8",
+          "titulo": "Los ministros de Relaciones Exteriores de Rusia y Bielorrusia piden la liberación de Maduro",
+          "link": "https://tass.com/politics/2068363",
+          "bloque": "RUSSIA",
+          "proximidad": 51.9,
+          "sesgo": "Alineado",
+          "confianza": 95,
+          "keywords": [
+            "Rusia",
+            "Bielorrusia",
+            "Maduro",
+            "liberación"
+          ]
+        },
+        {
+          "id": "EUROPE_266_2",
           "titulo": "El discurso del vicepresidente venezolano Rodríguez contradice las afirmaciones de Trump",
           "link": "https://www.france24.com/en/video/20260103-venezuelan-vp-rodriguez-s-speech-contradicts-trump-s-claims",
           "bloque": "EUROPE",
           "proximidad": 50.9,
           "sesgo": "Alineado",
-          "confianza": 80,
+          "confianza": 85,
           "keywords": [
             "Venezuela",
-            "Rodriguez",
+            "Rodríguez",
             "Trump"
           ]
         },
@@ -2223,7 +2248,7 @@
           "titulo": "Venezuela y el regreso del imperialismo",
           "link": "https://elpais.com/mexico/opinion/2026-01-04/venezuela-y-el-regreso-del-imperialismo.html",
           "bloque": "LATAM",
-          "proximidad": 50.9,
+          "proximidad": 50.8,
           "sesgo": "Alineado",
           "confianza": 75,
           "keywords": [
@@ -2238,7 +2263,7 @@
           "titulo": "Al derrocar a Maduro, Trump arriesga una reacción violenta de la base 'America First'",
           "link": "https://www.nytimes.com/2026/01/03/us/politics/maduro-trump-base-america-first.html",
           "bloque": "USA",
-          "proximidad": 50.7,
+          "proximidad": 50.6,
           "sesgo": "Alineado",
           "confianza": 88,
           "keywords": [
@@ -2248,34 +2273,33 @@
           ]
         },
         {
-          "id": "MID_EAST_332",
-          "titulo": "¿Cuáles son las implicaciones de la 'captura' estadounidense de Nicolás Maduro?",
-          "link": "https://www.aljazeera.com/video/inside-story/2026/1/3/what-are-the-implications-of-the-us-capture-of-nicolas-maduro?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 50.7,
+          "id": "RUSSIA_118_4",
+          "titulo": "Trump quiere gobernar Venezuela, sólo el Congreso puede evitarlo - ex legislador estadounidense",
+          "link": "https://tass.com/world/2068409",
+          "bloque": "RUSSIA",
+          "proximidad": 50.6,
           "sesgo": "Alineado",
-          "confianza": 87,
+          "confianza": 75,
           "keywords": [
-            "EE.UU.",
-            "Maduro",
+            "Trump",
             "Venezuela",
-            "captura",
-            "implicaciones"
+            "Congreso",
+            "EEUU"
           ]
         },
         {
-          "id": "RUSSIA_124_e",
-          "titulo": "El estado de emergencia entra en vigor en Venezuela - vicepresidente",
-          "link": "https://tass.com/world/2068355",
-          "bloque": "RUSSIA",
+          "id": "MID_EAST_338",
+          "titulo": "¿Cuáles son las implicaciones de la 'captura' estadounidense de Nicolás Maduro?",
+          "link": "https://www.aljazeera.com/video/inside-story/2026/1/3/what-are-the-implications-of-the-us-capture-of-nicolas-maduro?traffic_source=rss",
+          "bloque": "MID_EAST",
           "proximidad": 50.5,
           "sesgo": "Alineado",
-          "confianza": 92,
+          "confianza": 85,
           "keywords": [
-            "estado",
-            "emergencia",
             "Venezuela",
-            "vicepresidente"
+            "Maduro",
+            "EE.UU.",
+            "implicaciones"
           ]
         },
         {
@@ -2283,15 +2307,29 @@
           "titulo": "La oposición venezolana, entre el entusiasmo y la confusión tras el ataque de Estados Unidos",
           "link": "https://elpais.com/america/2026-01-04/la-oposicion-venezolana-entre-el-entusiasmo-y-la-confusion-tras-el-ataque-de-estados-unidos.html",
           "bloque": "LATAM",
-          "proximidad": 50.4,
+          "proximidad": 50.5,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 88,
           "keywords": [
             "Venezuela",
             "oposición",
             "EEUU",
-            "ataque",
-            "confusión"
+            "ataque"
+          ]
+        },
+        {
+          "id": "CHINA_189_cc",
+          "titulo": "¿Fue legal la captura del presidente venezolano Maduro por parte de Estados Unidos?",
+          "link": "https://www.scmp.com/news/world/americas/article/3338646/was-us-capture-venezuelas-president-maduro-legal?utm_source=rss_feed",
+          "bloque": "CHINA",
+          "proximidad": 50.4,
+          "sesgo": "Alineado",
+          "confianza": 80,
+          "keywords": [
+            "EE.UU.",
+            "Venezuela",
+            "Maduro",
+            "legalidad"
           ]
         },
         {
@@ -2299,7 +2337,7 @@
           "titulo": "¿Es legal que EE.UU. 'dirija' Venezuela después de la captura de Maduro? Esto es lo que hay que saber.",
           "link": "https://www.nytimes.com/2026/01/03/us/politics/maduro-venezuela-trump-legal-issues.html",
           "bloque": "USA",
-          "proximidad": 50.2,
+          "proximidad": 50.3,
           "sesgo": "Alineado",
           "confianza": 85,
           "keywords": [
@@ -2313,7 +2351,7 @@
           "titulo": "La guerra contra las drogas, el doble rasero de Trump contra América Latina",
           "link": "https://elpais.com/mexico/2026-01-04/la-guerra-contra-las-drogas-el-doble-rasero-de-trump-contra-america-latina.html",
           "bloque": "LATAM",
-          "proximidad": 50.1,
+          "proximidad": 49.5,
           "sesgo": "Alineado",
           "confianza": 70,
           "keywords": [
@@ -2328,7 +2366,7 @@
           "titulo": "Una extraña transición en Venezuela",
           "link": "https://elpais.com/opinion/2026-01-04/una-extrana-transicion-en-venezuela.html",
           "bloque": "LATAM",
-          "proximidad": 49.2,
+          "proximidad": 48.7,
           "sesgo": "Alineado",
           "confianza": 72,
           "keywords": [
@@ -2338,26 +2376,11 @@
           ]
         },
         {
-          "id": "USA_42_01105",
-          "titulo": "Derrocar a Maduro probablemente sea la parte fácil para Trump",
-          "link": "https://www.washingtonpost.com/politics/2026/01/03/trump-maduro-venezuela-donroe-doctrine/",
-          "bloque": "USA",
-          "proximidad": 48.9,
-          "sesgo": "Alineado",
-          "confianza": 75,
-          "keywords": [
-            "Maduro",
-            "Trump",
-            "derrocamiento",
-            "Venezuela"
-          ]
-        },
-        {
           "id": "AFRICA_409_8",
           "titulo": "África: La caída de Maduro - Cuando la democracia choca con la soberanía",
           "link": "https://allafrica.com/stories/202601030149.html",
           "bloque": "AFRICA",
-          "proximidad": 48.9,
+          "proximidad": 48.6,
           "sesgo": "Alineado",
           "confianza": 80,
           "keywords": [
@@ -2368,75 +2391,89 @@
           ]
         },
         {
-          "id": "CHINA_188_cc",
-          "titulo": "¿Fue legal la captura del presidente Maduro de Venezuela por parte de Estados Unidos?",
-          "link": "https://www.scmp.com/news/world/americas/article/3338646/was-us-capture-venezuelas-president-maduro-legal?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 47.7,
+          "id": "USA_42_01105",
+          "titulo": "Derrocar a Maduro probablemente sea la parte fácil para Trump",
+          "link": "https://www.washingtonpost.com/politics/2026/01/03/trump-maduro-venezuela-donroe-doctrine/",
+          "bloque": "USA",
+          "proximidad": 48.4,
           "sesgo": "Alineado",
-          "confianza": 82,
+          "confianza": 75,
           "keywords": [
-            "EE.UU.",
-            "Venezuela",
             "Maduro",
-            "legalidad"
+            "Trump",
+            "derrocamiento",
+            "Venezuela"
           ]
         },
         {
-          "id": "MID_EAST_347",
-          "titulo": "Comprar mármol, amenazar a Irán, capturar a Maduro: la vertiginosa rutina de vacaciones de Trump",
-          "link": "https://www.al-monitor.com/originals/2026/01/shop-marble-threaten-iran-capture-maduro-trumps-dizzying-holiday-routine",
+          "id": "RUSSIA_110_b",
+          "titulo": "El Ministerio de Asuntos Exteriores chino exige a EE.UU. que libere inmediatamente a Maduro",
+          "link": "https://tass.com/world/2068441",
+          "bloque": "RUSSIA",
+          "proximidad": 47.8,
+          "sesgo": "Alineado",
+          "confianza": 88,
+          "keywords": [
+            "China",
+            "EEUU",
+            "Maduro",
+            "liberación"
+          ]
+        },
+        {
+          "id": "EUROPE_272_0",
+          "titulo": "'Narcoterrorismo', transición 'segura' y petróleo: Trump habla después de la captura de Maduro",
+          "link": "https://www.france24.com/en/live-news/20260103-%F0%9F%94%B4-live-maduro-has-been-indicted-for-his-narcoterrorism-campaign-says-trump",
+          "bloque": "EUROPE",
+          "proximidad": 47.2,
+          "sesgo": "Alineado",
+          "confianza": 90,
+          "keywords": [
+            "Narcoterrorismo",
+            "Trump",
+            "Maduro",
+            "petróleo"
+          ]
+        },
+        {
+          "id": "EUROPE_265_2",
+          "titulo": "En vivo: Nicolás Maduro ha llegado a una base militar de Nueva York",
+          "link": "https://www.france24.com/en/americas/20260103-live-venezuela-declares-state-of-emergency-after-reported-us-military-aggression",
+          "bloque": "EUROPE",
+          "proximidad": 47.0,
+          "sesgo": "Alineado",
+          "confianza": 90,
+          "keywords": [
+            "Nicolás Maduro",
+            "Nueva York",
+            "base militar"
+          ]
+        },
+        {
+          "id": "MID_EAST_335",
+          "titulo": "Los republicanos estadounidenses respaldan a Trump en Venezuela en medio de una leve disidencia MAGA",
+          "link": "https://www.aljazeera.com/news/2026/1/4/us-republicans-back-trump-on-venezuela-amid-faint-maga-dissent?traffic_source=rss",
           "bloque": "MID_EAST",
-          "proximidad": 47.6,
+          "proximidad": 46.7,
           "sesgo": "Alineado",
           "confianza": 80,
           "keywords": [
-            "Trump",
-            "Irán",
-            "Maduro"
-          ]
-        },
-        {
-          "id": "RUSSIA_129_e",
-          "titulo": "Avión con Maduro a bordo aterriza en Nueva York - TV",
-          "link": "https://tass.com/world/2068373",
-          "bloque": "RUSSIA",
-          "proximidad": 47.3,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Maduro",
-            "avión",
-            "Nueva York"
-          ]
-        },
-        {
-          "id": "CHINA_175_1a",
-          "titulo": "Turistas caribeños varados después de que una operación estadounidense para apoderarse de Maduro detuviera los vuelos",
-          "link": "https://www.scmp.com/news/world/americas/article/3338655/caribbean-holidaymakers-stranded-after-us-operation-seize-maduro-halts-flights?utm_source=rss_feed",
-          "bloque": "CHINA",
-          "proximidad": 47.0,
-          "sesgo": "Alineado",
-          "confianza": 87,
-          "keywords": [
-            "Caribe",
-            "Maduro",
-            "EEUU"
-          ]
-        },
-        {
-          "id": "RUSSIA_116_4",
-          "titulo": "Trump quiere gobernar Venezuela, solo el Congreso puede evitar esto - ex legislador estadounidense",
-          "link": "https://tass.com/world/2068409",
-          "bloque": "RUSSIA",
-          "proximidad": 46.4,
-          "sesgo": "Alineado",
-          "confianza": 68,
-          "keywords": [
+            "Republicanos",
             "Trump",
             "Venezuela",
-            "Congreso",
-            "gobernar"
+            "MAGA"
+          ]
+        },
+        {
+          "id": "USA_90_e2cc4",
+          "titulo": "“We Are Going to Run the Country”: Trump Boasts of Regime Change in Venezuela",
+          "link": "https://theintercept.com/2026/01/03/venzuela-war-nicolas-maduro-airstrikes-caracas-trump/",
+          "bloque": "USA",
+          "proximidad": 44.6,
+          "sesgo": "Alineado",
+          "confianza": 60,
+          "keywords": [
+            "fallback_mode"
           ]
         },
         {
@@ -2444,7 +2481,7 @@
           "titulo": "La administración Trump engañó al Congreso antes de la incursión de Maduro, dicen los demócratas",
           "link": "https://www.washingtonpost.com/national-security/2026/01/03/maduro-rubio-congress/",
           "bloque": "USA",
-          "proximidad": 44.8,
+          "proximidad": 44.4,
           "sesgo": "Alineado",
           "confianza": 85,
           "keywords": [
@@ -2455,40 +2492,13 @@
           ]
         },
         {
-          "id": "USA_90_e2cc4",
-          "titulo": "“We Are Going to Run the Country”: Trump Boasts of Regime Change in Venezuela",
-          "link": "https://theintercept.com/2026/01/03/venzuela-war-nicolas-maduro-airstrikes-caracas-trump/",
-          "bloque": "USA",
-          "proximidad": 44.8,
-          "sesgo": "Alineado",
-          "confianza": 60,
-          "keywords": [
-            "fallback_mode"
-          ]
-        },
-        {
-          "id": "RUSSIA_115_4",
-          "titulo": "Ex congresista estadounidense condena el secuestro de Maduro como un acto de agresión",
-          "link": "https://tass.com/world/2068405",
-          "bloque": "RUSSIA",
-          "proximidad": 43.8,
-          "sesgo": "Alineado",
-          "confianza": 70,
-          "keywords": [
-            "Maduro",
-            "secuestro",
-            "agresión",
-            "EEUU"
-          ]
-        },
-        {
-          "id": "RUSSIA_122_4",
+          "id": "RUSSIA_124_4",
           "titulo": "Maduro es el único presidente legítimo de Venezuela - Vicepresidente",
           "link": "https://tass.com/world/2068351",
           "bloque": "RUSSIA",
-          "proximidad": 43.7,
+          "proximidad": 44.2,
           "sesgo": "Alineado",
-          "confianza": 90,
+          "confianza": 95,
           "keywords": [
             "Maduro",
             "presidente",
@@ -2497,11 +2507,56 @@
           ]
         },
         {
-          "id": "EUROPE_282_7",
+          "id": "EUROPE_294_d",
+          "titulo": "Los gobiernos de Oriente Medio están observando las protestas de Irán",
+          "link": "https://www.dw.com/en/middle-eastern-governments-are-watching-iran-s-protests/a-75372258?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 43.9,
+          "sesgo": "Alineado",
+          "confianza": 82,
+          "keywords": [
+            "Oriente Medio",
+            "Irán",
+            "protestas",
+            "gobiernos"
+          ]
+        },
+        {
+          "id": "INDIA_471_20",
+          "titulo": "Nalin Haley dice que Venezuela necesita un 'gobierno pro-estadounidense', advierte que Estados Unidos no debe repetir errores",
+          "link": "https://timesofindia.indiatimes.com/world/us/nikki-haleys-son-says-venezuela-needs-pro-american-government-warns-us-must-not-repeat-iraq-and-afghanistan-mistakes/articleshow/126328621.cms",
+          "bloque": "INDIA",
+          "proximidad": 43.7,
+          "sesgo": "Alineado",
+          "confianza": 80,
+          "keywords": [
+            "Nalin Haley",
+            "Venezuela",
+            "EEUU",
+            "gobierno"
+          ]
+        },
+        {
+          "id": "RUSSIA_117_4",
+          "titulo": "Ex congresista estadounidense condena el secuestro de Maduro como un acto de agresión",
+          "link": "https://tass.com/world/2068405",
+          "bloque": "RUSSIA",
+          "proximidad": 43.6,
+          "sesgo": "Alineado",
+          "confianza": 78,
+          "keywords": [
+            "Maduro",
+            "secuestro",
+            "EEUU",
+            "agresión"
+          ]
+        },
+        {
+          "id": "EUROPE_283_7",
           "titulo": "Maduro de Venezuela llega a Nueva York tras ser capturado por EE.UU.",
           "link": "https://www.dw.com/en/venezuela-s-maduro-arrives-in-new-york-after-capture-by-us/live-75373644?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 43.7,
+          "proximidad": 43.6,
           "sesgo": "Alineado",
           "confianza": 75,
           "keywords": [
@@ -2512,142 +2567,113 @@
           ]
         },
         {
-          "id": "INDIA_469_20",
-          "titulo": "Nalin Haley dice que Venezuela necesita un 'gobierno pro-estadounidense', advierte que Estados Unidos no debe repetir errores",
-          "link": "https://timesofindia.indiatimes.com/world/us/nikki-haleys-son-says-venezuela-needs-pro-american-government-warns-us-must-not-repeat-iraq-and-afghanistan-mistakes/articleshow/126328621.cms",
-          "bloque": "INDIA",
-          "proximidad": 43.4,
-          "sesgo": "Alineado",
-          "confianza": 75,
-          "keywords": [
-            "Nalin Haley",
-            "Venezuela",
-            "EE.UU.",
-            "gobierno"
-          ]
-        },
-        {
-          "id": "EUROPE_293_d",
-          "titulo": "Los gobiernos de Oriente Medio están observando las protestas de Irán",
-          "link": "https://www.dw.com/en/middle-eastern-governments-are-watching-iran-s-protests/a-75372258?maca=en-rss-en-all-1573-xml-mrss",
-          "bloque": "EUROPE",
-          "proximidad": 43.2,
-          "sesgo": "Alineado",
-          "confianza": 80,
-          "keywords": [
-            "Oriente Medio",
-            "Irán",
-            "protestas",
-            "gobiernos"
-          ]
-        },
-        {
           "id": "EUROPE_311_5",
           "titulo": "Israel está actuando con impunidad. ¿Tiene demasiada confianza en el apoyo de Trump?",
           "link": "https://www.opendemocracy.net/en/israel-act-impunity-trump-support-palestine-gaza-ceasefire-peace-plan-american-opinion/",
           "bloque": "EUROPE",
-          "proximidad": 43.2,
+          "proximidad": 43.0,
           "sesgo": "Alineado",
-          "confianza": 80,
+          "confianza": 82,
           "keywords": [
             "Israel",
             "impunidad",
             "Trump",
-            "EEUU"
+            "apoyo"
           ]
         },
         {
-          "id": "LATAM_376_3f",
-          "titulo": "El presidente boliviano gobernará electrónicamente desde el extranjero",
-          "link": "https://en.mercopress.com/2026/01/03/bolivian-president-to-rule-electronically-from-abroad?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
-          "bloque": "LATAM",
-          "proximidad": 42.6,
+          "id": "CHINA_215_43",
+          "titulo": "La presidenta de Taiwán promete defender la soberanía después de los ejercicios de China",
+          "link": "https://hongkongfp.com/2026/01/01/taiwans-president-vows-to-defend-sovereignty-after-china-drills/",
+          "bloque": "CHINA",
+          "proximidad": 42.9,
           "sesgo": "Alineado",
-          "confianza": 88,
+          "confianza": 92,
           "keywords": [
-            "Bolivia",
-            "presidente",
-            "gobierno electrónico"
+            "Taiwán",
+            "soberanía",
+            "China",
+            "defensa"
           ]
         }
       ]
     },
     {
       "area": "Tecnología y Espacio",
-      "sintesis": "Mientras EE.UU. teme la IA imperial, China la denuncia por censura, y Rusia usa el espacio para influencia, Europa lidia con dilemas éticos.",
-      "punto_cero": "🔴 BAJO | Avg: 25.9% | ↓",
+      "sintesis": "INTELIGENCIA BREVE: La carrera geoespacial y tecnológica se intensifica, marcada por la desconfianza y la instrumentalización política de la IA. OBSERVACIONES: Mientras China denuncia el uso de la IA para la censura, EEUU acusa a la IA de imperialismo. Europa se centra en los riesgos éticos de la IA, mientras que India defiende la ciencia frente al negacionismo. PRONÓSTICO: La fragmentación tecnológica regional aumentará, impulsada por la seguridad nacional y la competencia estratégica.",
+      "punto_cero": "🔴 BAJO | Avg: 25.7% | ↓",
       "color": "#8b5cf6",
       "meta_netflix": {
         "consensus": "BAJO",
         "trend": "↓",
-        "avg_proximity": 25.87333333333333
+        "avg_proximity": 25.72000000000001
       },
       "particulas": [
         {
-          "id": "RUSSIA_160_6",
-          "titulo": "Mapa del Universo, batería flexible y cura para la vejez. Los principales logros científicos de 2025",
+          "id": "RUSSIA_161_6",
+          "titulo": "Mapa del Universo, batería flexible y cura para el envejecimiento. Los principales logros científicos de 2025",
           "link": "https://novayagazeta.eu/articles/2026/01/03/karta-vselennoi-gibkaia-batareika-i-lekarstvo-ot-starosti",
           "bloque": "RUSSIA",
-          "proximidad": 41.6,
+          "proximidad": 41.3,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 90,
           "keywords": [
             "Universo",
-            "batería flexible",
-            "cura vejez"
-          ]
-        },
-        {
-          "id": "EUROPE_318_d",
-          "titulo": "Oportunidad de trabajo: Beca de Reportaje Tecnológico en colaboración con Tech Policy Press",
-          "link": "https://www.opendemocracy.net/en/job-opportunity-tech-reporting-fellowship/",
-          "bloque": "EUROPE",
-          "proximidad": 40.1,
-          "sesgo": "Alineado",
-          "confianza": 60,
-          "keywords": [
-            "tecnología",
-            "reportaje",
-            "beca",
-            "periodismo"
-          ]
-        },
-        {
-          "id": "CHINA_233_f8",
-          "titulo": "CNN: La censura y la vigilancia de China ya eran intensas. La IA está turboalimentando esos sistemas",
-          "link": "https://edition.cnn.com/2025/12/04/china/china-ai-censorship-surveillance-report-intl-hnk#new_tab",
-          "bloque": "CHINA",
-          "proximidad": 37.9,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "China",
-            "censura",
-            "vigilancia",
-            "IA"
-          ]
-        },
-        {
-          "id": "INDIA_473_75",
-          "titulo": "Neil deGrasse Tyson califica la negación del alunizaje como una 'desconexión de la realidad' en el podcast de Logan Paul",
-          "link": "https://timesofindia.indiatimes.com/etimes/trending/neil-degrasse-tyson-calls-moon-landing-denial-a-disconnect-from-reality-on-logan-pauls-podcast/articleshow/126322639.cms",
-          "bloque": "INDIA",
-          "proximidad": 34.8,
-          "sesgo": "Periférico",
-          "confianza": 90,
-          "keywords": [
-            "Neil deGrasse Tyson",
-            "alunizaje",
-            "Logan Paul",
+            "batería",
             "ciencia"
           ]
         },
         {
-          "id": "EUROPE_286_6",
+          "id": "EUROPE_318_d",
+          "titulo": "Oportunidad de trabajo: Beca de Reportajes Tecnológicos en colaboración con Tech Policy Press",
+          "link": "https://www.opendemocracy.net/en/job-opportunity-tech-reporting-fellowship/",
+          "bloque": "EUROPE",
+          "proximidad": 38.1,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "tecnología",
+            "reportajes",
+            "beca",
+            "Tech Policy Press"
+          ]
+        },
+        {
+          "id": "CHINA_233_f8",
+          "titulo": "CNN – La censura y la vigilancia de China ya eran intensas. La IA está turboalimentando esos sistemas",
+          "link": "https://edition.cnn.com/2025/12/04/china/china-ai-censorship-surveillance-report-intl-hnk#new_tab",
+          "bloque": "CHINA",
+          "proximidad": 37.8,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "China",
+            "censura",
+            "IA",
+            "vigilancia"
+          ]
+        },
+        {
+          "id": "INDIA_475_75",
+          "titulo": "Neil deGrasse Tyson califica la negación del alunizaje como una 'desconexión de la realidad' en el podcast de Logan Paul",
+          "link": "https://timesofindia.indiatimes.com/etimes/trending/neil-degrasse-tyson-calls-moon-landing-denial-a-disconnect-from-reality-on-logan-pauls-podcast/articleshow/126322639.cms",
+          "bloque": "INDIA",
+          "proximidad": 34.6,
+          "sesgo": "Periférico",
+          "confianza": 85,
+          "keywords": [
+            "Neil deGrasse Tyson",
+            "alunizaje",
+            "Logan Paul",
+            "espacio"
+          ]
+        },
+        {
+          "id": "EUROPE_287_6",
           "titulo": "Grok bajo fuego por sexualizar imágenes de mujeres y niños",
           "link": "https://www.dw.com/en/grok-under-fire-for-sexualizing-women-and-children-s-images/a-75373792?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
-          "proximidad": 29.4,
+          "proximidad": 29.0,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -2676,12 +2702,11 @@
           "bloque": "CHINA",
           "proximidad": 26.9,
           "sesgo": "Periférico",
-          "confianza": 98,
+          "confianza": 95,
           "keywords": [
-            "Satélite",
-            "Árabe",
-            "Espacio",
-            "Tecnología"
+            "satélite",
+            "país árabe",
+            "espacio"
           ]
         },
         {
@@ -2696,7 +2721,22 @@
             "Google",
             "IA",
             "cuota de mercado",
-            "búsqueda"
+            "acciones"
+          ]
+        },
+        {
+          "id": "RUSSIA_112_3",
+          "titulo": "Starlink proporcionará a Venezuela servicios de comunicación gratuitos durante un mes",
+          "link": "https://tass.com/world/2068437",
+          "bloque": "RUSSIA",
+          "proximidad": 24.1,
+          "sesgo": "Periférico",
+          "confianza": 90,
+          "keywords": [
+            "Starlink",
+            "Venezuela",
+            "comunicación",
+            "satélite"
           ]
         },
         {
@@ -2715,31 +2755,17 @@
           ]
         },
         {
-          "id": "RUSSIA_110_3",
-          "titulo": "Starlink proporcionará a Venezuela servicios de comunicación gratuitos durante un mes",
-          "link": "https://tass.com/world/2068437",
-          "bloque": "RUSSIA",
-          "proximidad": 24.0,
-          "sesgo": "Periférico",
-          "confianza": 85,
-          "keywords": [
-            "Starlink",
-            "Venezuela",
-            "comunicación"
-          ]
-        },
-        {
-          "id": "CHINA_171_67",
+          "id": "CHINA_172_67",
           "titulo": "Hong Kong impulsará la integración de servicios tecnológicos y financieros en medio del auge de la IA: Paul Chan",
           "link": "https://www.scmp.com/news/hong-kong/hong-kong-economy/article/3338660/hong-kong-boost-tech-and-financial-services-integration-amid-ai-boom-paul-chan?utm_source=rss_feed",
           "bloque": "CHINA",
-          "proximidad": 19.4,
+          "proximidad": 19.8,
           "sesgo": "Divergente",
-          "confianza": 82,
+          "confianza": 88,
           "keywords": [
             "Hong Kong",
-            "tecnología",
-            "IA"
+            "IA",
+            "tecnología"
           ]
         },
         {
@@ -2747,14 +2773,13 @@
           "titulo": "TSMC de Taiwán dice que comenzó la producción en masa de chips de 2nm 'más avanzados'",
           "link": "https://hongkongfp.com/2025/12/31/taiwans-tsmc-says-started-mass-production-of-most-advanced-2nm-chips/",
           "bloque": "CHINA",
-          "proximidad": 18.0,
+          "proximidad": 18.3,
           "sesgo": "Divergente",
           "confianza": 90,
           "keywords": [
             "TSMC",
             "Taiwán",
-            "chips",
-            "2nm"
+            "chips 2nm"
           ]
         },
         {
@@ -2762,7 +2787,7 @@
           "titulo": "Un error de software obligará a 325.000 californianos a reemplazar las identificaciones reales",
           "link": "https://www.nytimes.com/2026/01/02/us/california-real-id-dmv-error.html",
           "bloque": "USA",
-          "proximidad": 15.2,
+          "proximidad": 15.1,
           "sesgo": "Divergente",
           "confianza": 88,
           "keywords": [
@@ -2776,7 +2801,7 @@
           "titulo": "It’s 2026. Why Is Richard Glossip Still in Jail?",
           "link": "https://theintercept.com/2026/01/01/richard-glossip-oklahoma-jail-new-trial-supreme-court/",
           "bloque": "USA",
-          "proximidad": 12.1,
+          "proximidad": 12.0,
           "sesgo": "Divergente",
           "confianza": 60,
           "keywords": [
@@ -2788,7 +2813,7 @@
           "titulo": "\"One More Step to Push Out Principled Humanitarian Actors\": NRC on Israel Ban on Aid Groups in Gaza",
           "link": "http://www.democracynow.org/2025/12/31/gaza",
           "bloque": "USA",
-          "proximidad": 11.0,
+          "proximidad": 11.1,
           "sesgo": "Divergente",
           "confianza": 60,
           "keywords": [
@@ -2799,27 +2824,27 @@
     },
     {
       "area": "Sociedad y Derechos",
-      "sintesis": "Mientras que EE.UU. denuncia intimidación a la prensa, China recuerda tragedias históricas, y otros (LatAm, Medio Oriente) luchan contra la impunidad y la represión.",
-      "punto_cero": "🔴 BAJO | Avg: 25.5% | ↓",
+      "sintesis": "INTELIGENCIA BREVE: La disparidad en la percepción y aplicación de \"Sociedad y Derechos\" exacerba las tensiones geopolíticas existentes. OBSERVACIONES: Mientras Latinoamérica busca justicia transicional, la narrativa rusa se centra en la esperanza de paz futura, contrastando con las preocupaciones europeas sobre la trata de personas. PERSPECTIVAS: La fragmentación de prioridades regionales obstaculiza la cooperación global en materia de derechos humanos. PRONÓSTICO: Aumentarán las fricciones diplomáticas y la polarización ideológica en foros internacionales.",
+      "punto_cero": "🔴 BAJO | Avg: 25.4% | ↓",
       "color": "#ec4899",
       "meta_netflix": {
         "consensus": "BAJO",
         "trend": "↓",
-        "avg_proximity": 25.50421052631578
+        "avg_proximity": 25.363387978142082
       },
       "particulas": [
         {
-          "id": "INDIA_500_1e",
-          "titulo": "Noticias de hoy en vivo, 4 de enero | Rincón del lector | La silenciosa autoridad de escuchar",
-          "link": "https://indianexpress.com/article/india/latest-news-today-live-updates-world-india-cities-news-delhi-mumbai-bengaluru-01-04-2026-news-headlines-10454192/",
-          "bloque": "INDIA",
-          "proximidad": 55.8,
+          "id": "CHINA_229_e8",
+          "titulo": "Foto: Compañeros, por Gauthier Delecroix",
+          "link": "https://chinadigitaltimes.net/2025/12/photo-mates-by-gauthier-delecroix/",
+          "bloque": "CHINA",
+          "proximidad": 53.0,
           "sesgo": "Alineado",
-          "confianza": 60,
+          "confianza": 30,
           "keywords": [
-            "noticias",
-            "actualizaciones",
-            "escuchar"
+            "foto",
+            "arte",
+            "compañeros"
           ]
         },
         {
@@ -2841,7 +2866,7 @@
           "titulo": "Nuestros reporteros se comunicaron para hacer comentarios. Fueron acusados de acoso e intimidación.",
           "link": "https://www.propublica.org/article/propublica-reaching-out-reporting-obstacles",
           "bloque": "USA",
-          "proximidad": 47.5,
+          "proximidad": 47.2,
           "sesgo": "Alineado",
           "confianza": 70,
           "keywords": [
@@ -2853,14 +2878,14 @@
         },
         {
           "id": "EUROPE_321_5",
-          "titulo": "Adiós, desde Más allá del Tráfico y la Esclavitud",
+          "titulo": "Adiós, desde Más Allá del Tráfico y la Esclavitud",
           "link": "https://www.opendemocracy.net/en/beyond-trafficking-and-slavery/farewell-from-beyond-trafficking-and-slavery/",
           "bloque": "EUROPE",
-          "proximidad": 45.9,
+          "proximidad": 46.6,
           "sesgo": "Alineado",
-          "confianza": 85,
+          "confianza": 75,
           "keywords": [
-            "tráfico",
+            "Tráfico",
             "esclavitud",
             "derechos humanos"
           ]
@@ -2870,9 +2895,9 @@
           "titulo": "La Corte Suprema de Chile falla en contra de los criminales de la dictadura",
           "link": "https://en.mercopress.com/2026/01/03/chile-s-supreme-court-rules-against-dictatorship-criminals?utm_source=feed&utm_medium=rss&utm_content=main&utm_campaign=rss",
           "bloque": "LATAM",
-          "proximidad": 45.5,
+          "proximidad": 45.3,
           "sesgo": "Alineado",
-          "confianza": 95,
+          "confianza": 90,
           "keywords": [
             "Chile",
             "Corte Suprema",
@@ -2885,7 +2910,7 @@
           "titulo": "Universidades defienden nuevas ideas",
           "link": null,
           "bloque": "CHINA",
-          "proximidad": 44.9,
+          "proximidad": 45.0,
           "sesgo": "Alineado",
           "confianza": 75,
           "keywords": [
@@ -2895,25 +2920,11 @@
           ]
         },
         {
-          "id": "AFRICA_453_4",
-          "titulo": "Tristezas de fin de año de éxitos y fracasos",
-          "link": "https://mg.co.za/friday/2025-12-28-year-end-blues-of-hits-and-misses/",
-          "bloque": "AFRICA",
-          "proximidad": 44.4,
-          "sesgo": "Alineado",
-          "confianza": 25,
-          "keywords": [
-            "fin de año",
-            "éxitos",
-            "fracasos"
-          ]
-        },
-        {
           "id": "LATAM_401_6c",
           "titulo": "GameChangers 2025: El mercado del contrabando de migrantes pasa del auge a la caída",
           "link": "https://insightcrime.org/news/gamechangers-2025-criminal-migration-income-boom-bust/",
           "bloque": "LATAM",
-          "proximidad": 44.3,
+          "proximidad": 44.5,
           "sesgo": "Alineado",
           "confianza": 80,
           "keywords": [
@@ -2927,7 +2938,7 @@
           "titulo": "25 investigaciones que quizás te hayas perdido este año",
           "link": "https://www.propublica.org/article/propublica-investigations-you-may-have-missed-2025",
           "bloque": "USA",
-          "proximidad": 44.2,
+          "proximidad": 44.0,
           "sesgo": "Alineado",
           "confianza": 55,
           "keywords": [
@@ -2937,17 +2948,17 @@
           ]
         },
         {
-          "id": "CHINA_229_e8",
-          "titulo": "Foto: Mates, por Gauthier Delecroix",
-          "link": "https://chinadigitaltimes.net/2025/12/photo-mates-by-gauthier-delecroix/",
-          "bloque": "CHINA",
-          "proximidad": 43.8,
+          "id": "INDIA_492_e0",
+          "titulo": "La diáspora venezolana celebra la deposición de Maduro, se pregunta qué sigue",
+          "link": "https://www.thehindu.com/news/international/venezuela-diaspora-celebrates-maduros-deposition-wonders-whats-next/article70469963.ece",
+          "bloque": "INDIA",
+          "proximidad": 43.6,
           "sesgo": "Alineado",
-          "confianza": 30,
+          "confianza": 82,
           "keywords": [
-            "Foto",
-            "arte",
-            "Gauthier Delecroix"
+            "Venezuela",
+            "Maduro",
+            "diáspora"
           ]
         },
         {
@@ -2955,9 +2966,9 @@
           "titulo": "La policía 'no toma más medidas' en más de la mitad de las denuncias de violación",
           "link": "https://www.opendemocracy.net/en/police-rape-no-further-action-england-wales-failing-victims-healthcare/",
           "bloque": "EUROPE",
-          "proximidad": 43.4,
+          "proximidad": 43.5,
           "sesgo": "Alineado",
-          "confianza": 70,
+          "confianza": 90,
           "keywords": [
             "policía",
             "violación",
@@ -2966,25 +2977,11 @@
           ]
         },
         {
-          "id": "INDIA_492_e0",
-          "titulo": "La diáspora venezolana celebra la deposición de Maduro, se pregunta qué sigue",
-          "link": "https://www.thehindu.com/news/international/venezuela-diaspora-celebrates-maduros-deposition-wonders-whats-next/article70469963.ece",
-          "bloque": "INDIA",
-          "proximidad": 43.4,
-          "sesgo": "Alineado",
-          "confianza": 85,
-          "keywords": [
-            "Venezuela",
-            "diáspora",
-            "Maduro"
-          ]
-        },
-        {
           "id": "USA_55_3b3a9",
           "titulo": "Las historias de ProPublica más leídas de 2025",
           "link": "https://www.propublica.org/article/propublica-most-read-stories-2025",
           "bloque": "USA",
-          "proximidad": 43.3,
+          "proximidad": 43.2,
           "sesgo": "Alineado",
           "confianza": 50,
           "keywords": [
@@ -2995,32 +2992,33 @@
           ]
         },
         {
-          "id": "MID_EAST_336",
-          "titulo": "Interrupción de Internet, varios arrestos realizados mientras continúan las protestas en Irán",
-          "link": "https://www.aljazeera.com/news/2026/1/3/internet-disruption-several-arrests-made-as-iran-protests-continue?traffic_source=rss",
-          "bloque": "MID_EAST",
-          "proximidad": 42.9,
-          "sesgo": "Alineado",
-          "confianza": 90,
-          "keywords": [
-            "Irán",
-            "protestas",
-            "Internet",
-            "arrestos"
-          ]
-        },
-        {
           "id": "USA_100_0dcf",
           "titulo": "Los federales siguen procesando a manifestantes contra ICE, y perdiendo",
           "link": "https://theintercept.com/2025/12/31/trump-ice-protests-tow-truck-los-angeles/",
           "bloque": "USA",
-          "proximidad": 42.5,
+          "proximidad": 42.6,
           "sesgo": "Alineado",
           "confianza": 85,
           "keywords": [
             "ICE",
             "manifestantes",
-            "procesamiento"
+            "procesamiento",
+            "EEUU"
+          ]
+        },
+        {
+          "id": "MID_EAST_342",
+          "titulo": "Interrupción de Internet, varios arrestos realizados mientras continúan las protestas en Irán",
+          "link": "https://www.aljazeera.com/news/2026/1/3/internet-disruption-several-arrests-made-as-iran-protests-continue?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 42.5,
+          "sesgo": "Alineado",
+          "confianza": 92,
+          "keywords": [
+            "Irán",
+            "protestas",
+            "Internet",
+            "arrestos"
           ]
         },
         {
@@ -3038,11 +3036,25 @@
           ]
         },
         {
+          "id": "CHINA_227_5d",
+          "titulo": "Resumen del \"Archivo de contenido eliminado 404\" de CDT para noviembre de 2025, segunda parte",
+          "link": "https://chinadigitaltimes.net/2025/12/cdts-404-deleted-content-archive-summary-for-november-2025-part-two/",
+          "bloque": "CHINA",
+          "proximidad": 40.8,
+          "sesgo": "Alineado",
+          "confianza": 60,
+          "keywords": [
+            "CDT",
+            "censura",
+            "contenido eliminado"
+          ]
+        },
+        {
           "id": "USA_49_87f02",
           "titulo": "Cómo las nuevas leyes de protesta están impactando las manifestaciones políticas",
           "link": "https://www.washingtonpost.com/nation/2026/01/02/anti-protest-laws-randy-fine/",
           "bloque": "USA",
-          "proximidad": 40.1,
+          "proximidad": 40.4,
           "sesgo": "Alineado",
           "confianza": 85,
           "keywords": [
@@ -3053,26 +3065,11 @@
           ]
         },
         {
-          "id": "CHINA_227_5d",
-          "titulo": "Resumen del \"Archivo de contenido eliminado 404\" de CDT para noviembre de 2025, Parte Dos",
-          "link": "https://chinadigitaltimes.net/2025/12/cdts-404-deleted-content-archive-summary-for-november-2025-part-two/",
-          "bloque": "CHINA",
-          "proximidad": 39.7,
-          "sesgo": "Periférico",
-          "confianza": 70,
-          "keywords": [
-            "CDT",
-            "censura",
-            "contenido eliminado",
-            "China"
-          ]
-        },
-        {
           "id": "MID_EAST_360",
           "titulo": "Diario de un gazatí nostálgico en el extranjero",
           "link": "https://www.972mag.com/diary-gaza-ireland-homesick/",
           "bloque": "MID_EAST",
-          "proximidad": 39.7,
+          "proximidad": 39.8,
           "sesgo": "Periférico",
           "confianza": 85,
           "keywords": [
@@ -3100,28 +3097,57 @@
           "titulo": "Resumen del año: Cómo sobrevivió el Caribe en 2025",
           "link": "https://globalvoices.org/2025/12/30/year-in-review-how-the-caribbean-survived-2025/",
           "bloque": "GLOBAL",
-          "proximidad": 37.7,
+          "proximidad": 37.8,
           "sesgo": "Periférico",
           "confianza": 75,
           "keywords": [
             "Caribe",
             "resiliencia",
-            "desafíos"
+            "sociedad"
           ]
         },
         {
-          "id": "CHINA_224_ef",
-          "titulo": "Resumen de fin de año de CDT 2025: Citas del año (Parte Dos)",
-          "link": "https://chinadigitaltimes.net/2025/12/cdt-2025-year-end-roundup-quotes-of-the-year-part-two/",
-          "bloque": "CHINA",
-          "proximidad": 37.2,
+          "id": "EUROPE_277_4",
+          "titulo": "Myanmar liberará a miles de prisioneros en la amnistía anual",
+          "link": "https://www.dw.com/en/myanmar-to-free-thousands-of-prisoners-in-annual-amnesty/a-75382196?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 37.3,
           "sesgo": "Periférico",
-          "confianza": 70,
+          "confianza": 85,
           "keywords": [
-            "CDT",
-            "citas",
-            "fin de año",
-            "resumen"
+            "Myanmar",
+            "prisioneros",
+            "amnistía",
+            "anual"
+          ]
+        },
+        {
+          "id": "AFRICA_452_e",
+          "titulo": "El patrimonio del ANC bajo asedio",
+          "link": "https://mg.co.za/thought-leader/opinion/2025-12-29-the-ancs-heritage-under-siege/",
+          "bloque": "AFRICA",
+          "proximidad": 36.5,
+          "sesgo": "Periférico",
+          "confianza": 50,
+          "keywords": [
+            "ANC",
+            "patrimonio",
+            "asedio"
+          ]
+        },
+        {
+          "id": "USA_107_e380",
+          "titulo": "Grupo de policías alega \"discriminación\" por parte del fiscal por ser demasiado amable con los inmigrantes",
+          "link": "https://theintercept.com/2025/12/26/steve-descano-immigrants-justice-department/",
+          "bloque": "USA",
+          "proximidad": 36.4,
+          "sesgo": "Periférico",
+          "confianza": 80,
+          "keywords": [
+            "policía",
+            "discriminación",
+            "inmigrantes",
+            "fiscal"
           ]
         },
         {
@@ -3140,17 +3166,18 @@
           ]
         },
         {
-          "id": "USA_107_e380",
-          "titulo": "Grupo de policías alega \"discriminación\" por parte del fiscal por ser demasiado amable con los inmigrantes",
-          "link": "https://theintercept.com/2025/12/26/steve-descano-immigrants-justice-department/",
-          "bloque": "USA",
-          "proximidad": 36.3,
+          "id": "LATAM_384_e3",
+          "titulo": "El exilio venezolano en Latinoamérica celebra la captura de Maduro: “¡Cayó el tirano!”",
+          "link": "https://elpais.com/america-colombia/2026-01-03/el-exilio-venezolano-en-latinoamerica-celebra-la-captura-de-maduro-cayo-el-tirano.html",
+          "bloque": "LATAM",
+          "proximidad": 35.9,
           "sesgo": "Periférico",
-          "confianza": 80,
+          "confianza": 75,
           "keywords": [
-            "policía",
-            "discriminación",
-            "inmigrantes"
+            "exilio venezolano",
+            "Maduro",
+            "captura",
+            "Latinoamérica"
           ]
         },
         {
@@ -3158,7 +3185,7 @@
           "titulo": "Evidencia defectuosa lo acusó de asesinato. Esperó 7 años para quedar libre.",
           "link": "https://www.propublica.org/article/alaska-murder-pretrial-delays-justine-paul",
           "bloque": "USA",
-          "proximidad": 36.1,
+          "proximidad": 35.7,
           "sesgo": "Periférico",
           "confianza": 92,
           "keywords": [
@@ -3173,43 +3200,28 @@
           "titulo": "Beneficiándose de la explotación: Cómo encontramos al hombre detrás de dos sitios de pornografía deepfake",
           "link": "https://www.bellingcat.com/news/2025/12/15/mark-resan-reface-deepfake-porn/",
           "bloque": "EUROPE",
-          "proximidad": 36.0,
+          "proximidad": 35.7,
           "sesgo": "Periférico",
-          "confianza": 75,
+          "confianza": 80,
           "keywords": [
             "explotación",
             "deepfake",
             "pornografía",
-            "internet"
+            "sitios web"
           ]
         },
         {
-          "id": "LATAM_384_e3",
-          "titulo": "El exilio venezolano en Latinoamérica celebra la captura de Maduro: “¡Cayó el tirano!”",
-          "link": "https://elpais.com/america-colombia/2026-01-03/el-exilio-venezolano-en-latinoamerica-celebra-la-captura-de-maduro-cayo-el-tirano.html",
-          "bloque": "LATAM",
-          "proximidad": 36.0,
-          "sesgo": "Periférico",
-          "confianza": 75,
-          "keywords": [
-            "exilio venezolano",
-            "Maduro",
-            "captura",
-            "Latinoamérica"
-          ]
-        },
-        {
-          "id": "AFRICA_452_e",
-          "titulo": "El patrimonio del ANC bajo asedio",
-          "link": "https://mg.co.za/thought-leader/opinion/2025-12-29-the-ancs-heritage-under-siege/",
-          "bloque": "AFRICA",
+          "id": "CHINA_224_ef",
+          "titulo": "Resumen de fin de año de CDT 2025: Citas del año (Segunda parte)",
+          "link": "https://chinadigitaltimes.net/2025/12/cdt-2025-year-end-roundup-quotes-of-the-year-part-two/",
+          "bloque": "CHINA",
           "proximidad": 35.6,
           "sesgo": "Periférico",
-          "confianza": 45,
+          "confianza": 65,
           "keywords": [
-            "ANC",
-            "patrimonio",
-            "política"
+            "CDT",
+            "citas",
+            "fin de año"
           ]
         },
         {
@@ -3217,13 +3229,13 @@
           "titulo": "Foto: Tienda de frutas, por mrhayata",
           "link": "https://chinadigitaltimes.net/2025/12/photo-fruits-shop-by-mrhayata/",
           "bloque": "CHINA",
-          "proximidad": 34.9,
+          "proximidad": 35.3,
           "sesgo": "Periférico",
           "confianza": 30,
           "keywords": [
-            "Foto",
+            "foto",
             "arte",
-            "mrhayata"
+            "frutas"
           ]
         },
         {
@@ -3231,7 +3243,7 @@
           "titulo": "Cómo la invasión de Rusia está impactando a la juventud de Ucrania",
           "link": "https://www.bellingcat.com/news/2025/12/17/how-russias-invasion-is-impacting-ukraines-youth/",
           "bloque": "EUROPE",
-          "proximidad": 34.7,
+          "proximidad": 34.4,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
@@ -3247,7 +3259,7 @@
           "titulo": "Mármol, esculturas de hielo y óptica: la presidencia remota de Trump genera escrutinio",
           "link": "https://www.washingtonpost.com/politics/2026/01/03/trump-mar-a-lago-winter-white-house/",
           "bloque": "USA",
-          "proximidad": 34.4,
+          "proximidad": 34.3,
           "sesgo": "Periférico",
           "confianza": 65,
           "keywords": [
@@ -3258,22 +3270,36 @@
           ]
         },
         {
+          "id": "INDIA_482_b4",
+          "titulo": "El líder de Irán dice que 'los alborotadores deben ser puestos en su lugar', mientras que el número de muertos en las protestas alcanza al menos 15",
+          "link": "https://www.thehindu.com/news/international/irans-leader-says-rioters-must-be-put-in-their-place-after-a-week-of-protests-that-have-shaken-the-islamic-republic/article70470088.ece",
+          "bloque": "INDIA",
+          "proximidad": 34.0,
+          "sesgo": "Periférico",
+          "confianza": 92,
+          "keywords": [
+            "Irán",
+            "protestas",
+            "muertos"
+          ]
+        },
+        {
           "id": "CHINA_193_6a",
           "titulo": "Masacre de Nanjing recordada en el 80 aniversario",
           "link": null,
           "bloque": "CHINA",
           "proximidad": 33.8,
           "sesgo": "Periférico",
-          "confianza": 90,
+          "confianza": 95,
           "keywords": [
             "Nanjing",
             "masacre",
-            "China",
-            "aniversario"
+            "aniversario",
+            "China"
           ]
         },
         {
-          "id": "EUROPE_290_8",
+          "id": "EUROPE_291_8",
           "titulo": "México: Un poderoso terremoto mata al menos a 2 personas",
           "link": "https://www.dw.com/en/mexico-powerful-earthquake-kills-at-least-2-people/a-75373261?maca=en-rss-en-all-1573-xml-mrss",
           "bloque": "EUROPE",
@@ -3285,20 +3311,6 @@
             "terremoto",
             "muertes",
             "desastre natural"
-          ]
-        },
-        {
-          "id": "INDIA_482_b4",
-          "titulo": "El líder de Irán dice que 'los alborotadores deben ser puestos en su lugar', mientras que el número de muertos por las protestas alcanza al menos 15",
-          "link": "https://www.thehindu.com/news/international/irans-leader-says-rioters-must-be-put-in-their-place-after-a-week-of-protests-that-have-shaken-the-islamic-republic/article70470088.ece",
-          "bloque": "INDIA",
-          "proximidad": 33.8,
-          "sesgo": "Periférico",
-          "confianza": 92,
-          "keywords": [
-            "Irán",
-            "protestas",
-            "muertos"
           ]
         },
         {
@@ -3321,7 +3333,7 @@
           "titulo": "Europa está pagando a Libia para que torture a los migrantes en su nombre",
           "link": "https://www.opendemocracy.net/en/libya-eu-migration-torture-detainment-europe-asylum-boats-mediterranean-search-rescue-boats-humanity-1/",
           "bloque": "EUROPE",
-          "proximidad": 33.2,
+          "proximidad": 33.3,
           "sesgo": "Periférico",
           "confianza": 95,
           "keywords": [
@@ -3332,33 +3344,18 @@
           ]
         },
         {
-          "id": "INDIA_475_b6",
+          "id": "INDIA_477_b6",
           "titulo": "¿Están contentos los venezolanos de que Maduro se haya ido? La diáspora celebra el 'día de la libertad'",
           "link": "https://timesofindia.indiatimes.com/world/rest-of-world/are-venezuelans-happy-maduro-is-gone-diaspora-celebrates-day-of-freedom/articleshow/126327548.cms",
           "bloque": "INDIA",
-          "proximidad": 32.9,
+          "proximidad": 33.2,
           "sesgo": "Periférico",
-          "confianza": 80,
+          "confianza": 85,
           "keywords": [
             "Venezuela",
             "Maduro",
             "diáspora",
-            "celebración"
-          ]
-        },
-        {
-          "id": "CHINA_228_4e",
-          "titulo": "Surge un video del juicio de un general por negarse a las órdenes de Tiananmen (con transcripción)",
-          "link": "https://chinadigitaltimes.net/2025/12/video-emerges-of-generals-trial-for-refusing-tiananmen-orders-with-transcript/",
-          "bloque": "CHINA",
-          "proximidad": 32.8,
-          "sesgo": "Periférico",
-          "confianza": 85,
-          "keywords": [
-            "Tiananmen",
-            "general",
-            "juicio",
-            "China"
+            "libertad"
           ]
         },
         {
@@ -3366,7 +3363,7 @@
           "titulo": "Solicitantes de asilo venezolanos se preocupan por lo que viene",
           "link": "https://www.nytimes.com/2026/01/03/us/venezuela-asylum-seekers.html",
           "bloque": "USA",
-          "proximidad": 32.6,
+          "proximidad": 32.7,
           "sesgo": "Periférico",
           "confianza": 90,
           "keywords": [
@@ -3376,11 +3373,11 @@
           ]
         },
         {
-          "id": "EUROPE_261_e",
+          "id": "EUROPE_263_e",
           "titulo": "AFCON 2025 - Senegal remonta para vencer a Sudán",
           "link": "https://www.france24.com/en/tv-shows/africa-cup-of-nations/20260103-afcon-2025-senegal-come-from-behind-to-beat-sudan",
           "bloque": "EUROPE",
-          "proximidad": 32.5,
+          "proximidad": 32.4,
           "sesgo": "Periférico",
           "confianza": 70,
           "keywords": [
@@ -3390,19 +3387,48 @@
           ]
         },
         {
+          "id": "MID_EAST_329",
+          "titulo": "La pobreza y el desempleo se disparan en la Franja de Gaza después de la guerra de Israel",
+          "link": "https://www.aljazeera.com/news/2026/1/4/poverty-unemployment-skyrocket-in-the-gaza-strip-after-israels-war?traffic_source=rss",
+          "bloque": "MID_EAST",
+          "proximidad": 32.3,
+          "sesgo": "Periférico",
+          "confianza": 90,
+          "keywords": [
+            "Gaza",
+            "pobreza",
+            "desempleo",
+            "Israel"
+          ]
+        },
+        {
           "id": "RUSSIA_138_2",
           "titulo": "'Esperando el fin de la guerra': los rusos comparten sus deseos de Año Nuevo para 2026",
           "link": "https://www.themoscowtimes.com/2025/12/31/hoping-for-an-end-to-the-war-russians-share-their-new-years-wishes-for-2026-a91573",
           "bloque": "RUSSIA",
-          "proximidad": 32.0,
+          "proximidad": 31.8,
           "sesgo": "Periférico",
-          "confianza": 85,
+          "confianza": 88,
           "keywords": [
             "Rusia",
             "guerra",
-            "deseos",
             "Año Nuevo",
-            "sociedad"
+            "deseos"
+          ]
+        },
+        {
+          "id": "MID_EAST_358",
+          "titulo": "Un año en +972: Las elecciones de los editores para 2025",
+          "link": "https://www.972mag.com/a-year-in-972-editors-picks-2025/",
+          "bloque": "MID_EAST",
+          "proximidad": 31.8,
+          "sesgo": "Periférico",
+          "confianza": 60,
+          "keywords": [
+            "+972",
+            "editores",
+            "2025",
+            "opinión"
           ]
         },
         {
@@ -3427,70 +3453,42 @@
           "bloque": "MID_EAST",
           "proximidad": 31.5,
           "sesgo": "Periférico",
-          "confianza": 80,
+          "confianza": 70,
           "keywords": [
             "Fascismo",
-            "EEUU",
+            "Estados Unidos",
+            "genocidio",
             "Palestina"
           ]
         },
         {
-          "id": "USA_51_dc8de",
-          "titulo": "¿Testimonio de expertos o sesgo anti-Islam? El caso de agresión sexual pone a prueba el límite legal.",
-          "link": "https://www.washingtonpost.com/national-security/2026/01/02/expert-testimony-domestic-violence-islam/",
+          "id": "USA_37_41c77",
+          "titulo": "Cierres de carreteras y desvíos por el desfile de Navidad",
+          "link": "https://wach.com/news/local/christmas-parade-road-closures-and-detours-in-downtown-lexington#",
           "bloque": "USA",
-          "proximidad": 31.3,
+          "proximidad": 31.4,
           "sesgo": "Periférico",
-          "confianza": 75,
+          "confianza": 50,
           "keywords": [
-            "testimonio",
-            "Islam",
-            "agresión sexual",
-            "sesgo"
+            "Navidad",
+            "desfile",
+            "carreteras",
+            "cierres"
           ]
         },
         {
-          "id": "INDIA_512_f0",
+          "id": "INDIA_513_f0",
           "titulo": "CJI a estudiantes de derecho: 'El mundo los evaluará con cámaras y salarios... Nada de esto es irrelevante; nada es definitivo tampoco'",
           "link": "https://indianexpress.com/article/india/cji-to-law-students-world-will-evaluate-you-with-chambers-and-salaries-none-of-this-is-irrelevant-none-is-definite-either-10454079/",
           "bloque": "INDIA",
           "proximidad": 31.3,
           "sesgo": "Periférico",
-          "confianza": 68,
+          "confianza": 70,
           "keywords": [
             "CJI",
             "estudiantes",
             "derecho",
             "evaluación"
-          ]
-        },
-        {
-          "id": "MID_EAST_358",
-          "titulo": "Un año en +972: Selecciones de los editores para 2025",
-          "link": "https://www.972mag.com/a-year-in-972-editors-picks-2025/",
-          "bloque": "MID_EAST",
-          "proximidad": 31.2,
-          "sesgo": "Periférico",
-          "confianza": 60,
-          "keywords": [
-            "+972",
-            "editor",
-            "opinión"
-          ]
-        },
-        {
-          "id": "CHINA_231_1b",
-          "titulo": "Traducciones: Los entusiastas temen un control más estricto sobre la comedia escénica Crosstalk",
-          "link": "https://chinadigitaltimes.net/2025/12/translations-enthusiasts-fear-tightening-grip-on-crosstalk-stage-comedy/",
-          "bloque": "CHINA",
-          "proximidad": 31.1,
-          "sesgo": "Periférico",
-          "confianza": 75,
-          "keywords": [
-            "Crosstalk",
-            "comedia",
-            "censura",
-            "China"
           ]
         },
         {
@@ -3509,6 +3507,21 @@
           ]
         },
         {
+          "id": "USA_33_ed6f6",
+          "titulo": "Se donan $200,000 en suministros a las escuelas de PB",
+          "link": "https://www.wptv.com/news/education/200-000-worth-of-supplies-distributed-for-palm-beach-county-schools-during-giveaway-event",
+          "bloque": "USA",
+          "proximidad": 31.0,
+          "sesgo": "Periférico",
+          "confianza": 75,
+          "keywords": [
+            "donación",
+            "escuelas",
+            "suministros",
+            "PB"
+          ]
+        },
+        {
           "id": "USA_43_2e6d1",
           "titulo": "En el exilio, los venezolanos reciben la caída de Maduro con alegría y temor a lo que viene después",
           "link": "https://www.washingtonpost.com/immigration/2026/01/03/venezuela-trump-maduro-migrants-celebration/",
@@ -3524,47 +3537,32 @@
           ]
         },
         {
-          "id": "USA_37_41c77",
-          "titulo": "Cierres de carreteras y desvíos por el desfile de Navidad",
-          "link": "https://wach.com/news/local/christmas-parade-road-closures-and-detours-in-downtown-lexington#",
+          "id": "USA_51_dc8de",
+          "titulo": "¿Testimonio de expertos o sesgo anti-Islam? El caso de agresión sexual pone a prueba el límite legal.",
+          "link": "https://www.washingtonpost.com/national-security/2026/01/02/expert-testimony-domestic-violence-islam/",
           "bloque": "USA",
-          "proximidad": 30.8,
+          "proximidad": 30.9,
           "sesgo": "Periférico",
-          "confianza": 60,
+          "confianza": 75,
           "keywords": [
-            "Navidad",
-            "desfile",
-            "carreteras",
-            "cierres"
+            "testimonio",
+            "Islam",
+            "agresión sexual",
+            "sesgo"
           ]
         },
         {
-          "id": "MID_EAST_367",
-          "titulo": "PODCAST: ¿Quién le teme al cristianismo palestino?",
-          "link": "https://www.972mag.com/podcast-palestinian-christians-john-munayer/",
-          "bloque": "MID_EAST",
-          "proximidad": 30.6,
+          "id": "CHINA_231_1b",
+          "titulo": "Traducciones: Los entusiastas temen un control más estricto sobre la comedia escénica Crosstalk",
+          "link": "https://chinadigitaltimes.net/2025/12/translations-enthusiasts-fear-tightening-grip-on-crosstalk-stage-comedy/",
+          "bloque": "CHINA",
+          "proximidad": 30.9,
           "sesgo": "Periférico",
-          "confianza": 70,
+          "confianza": 65,
           "keywords": [
-            "Palestina",
-            "cristianismo",
-            "podcast"
-          ]
-        },
-        {
-          "id": "USA_33_ed6f6",
-          "titulo": "Se donan $200,000 en suministros a las escuelas de PB",
-          "link": "https://www.wptv.com/news/education/200-000-worth-of-supplies-distributed-for-palm-beach-county-schools-during-giveaway-event",
-          "bloque": "USA",
-          "proximidad": 30.5,
-          "sesgo": "Periférico",
-          "confianza": 78,
-          "keywords": [
-            "donación",
-            "escuelas",
-            "suministros",
-            "PB"
+            "comedia",
+            "censura",
+            "China"
           ]
         },
         {
@@ -3572,7 +3570,7 @@
           "titulo": "Dentro de la clínica gratuita que atiende a quienes no pueden pagar el único hospital de la ciudad",
           "link": "https://www.propublica.org/article/samaritan-clinic-phoebe-hospital-albany-georgia",
           "bloque": "USA",
-          "proximidad": 30.5,
+          "proximidad": 30.7,
           "sesgo": "Periférico",
           "confianza": 86,
           "keywords": [
@@ -3583,13 +3581,13 @@
           ]
         },
         {
-          "id": "RUSSIA_166_5",
+          "id": "RUSSIA_167_5",
           "titulo": "En Irán, las protestas masivas por el aumento del costo de vida continúan por quinto día. Varias personas murieron en enfrentamientos con las fuerzas de seguridad",
           "link": "https://novayagazeta.eu/articles/2026/01/02/v-irane-piatyi-den-prodolzhaiutsia-massovye-protesty-iz-za-rosta-stoimosti-zhizni-news",
           "bloque": "RUSSIA",
           "proximidad": 30.5,
           "sesgo": "Periférico",
-          "confianza": 92,
+          "confianza": 90,
           "keywords": [
             "Irán",
             "protestas",
@@ -3597,18 +3595,17 @@
           ]
         },
         {
-          "id": "RUSSIA_145_c",
-          "titulo": "Ex alcalde opositor de Yaroslavl liberado de prisión después de cumplir condena por corrupción",
-          "link": "https://www.themoscowtimes.com/2025/12/30/former-opposition-mayor-of-yaroslavl-freed-from-prison-after-serving-sentence-for-corruption-a91584",
-          "bloque": "RUSSIA",
+          "id": "MID_EAST_367",
+          "titulo": "PODCAST: ¿Quién le teme al cristianismo palestino?",
+          "link": "https://www.972mag.com/podcast-palestinian-christians-john-munayer/",
+          "bloque": "MID_EAST",
           "proximidad": 30.4,
           "sesgo": "Periférico",
-          "confianza": 80,
+          "confianza": 70,
           "keywords": [
-            "Yaroslavl",
-            "oposición",
-            "corrupción",
-            "liberación"
+            "Palestina",
+            "cristianismo",
+            "podcast"
           ]
         },
         {
@@ -3616,7 +3613,7 @@
           "titulo": "Nigeria: Octavos de final de la Afcon 2025 - Trampas, minas terrestres en el camino de las Súper Águilas",
           "link": "https://allafrica.com/stories/202601030131.html",
           "bloque": "AFRICA",
-          "proximidad": 30.3,
+          "proximidad": 30.4,
           "sesgo": "Periférico",
           "confianza": 70,
           "keywords": [
@@ -3626,26 +3623,11 @@
           ]
         },
         {
-          "id": "EUROPE_284_9",
-          "titulo": "Incendio de Nochevieja en Suiza: los gerentes de bares enfrentan una investigación criminal",
-          "link": "https://www.dw.com/en/swiss-nye-fire-bar-managers-face-criminal-investigation/a-75378122?maca=en-rss-en-all-1573-xml-mrss",
-          "bloque": "EUROPE",
-          "proximidad": 30.1,
-          "sesgo": "Periférico",
-          "confianza": 70,
-          "keywords": [
-            "Suiza",
-            "incendio",
-            "Nochevieja",
-            "investigación"
-          ]
-        },
-        {
           "id": "AFRICA_434_5",
           "titulo": "Túnez: Nadadores celebran el Año Nuevo con un chapuzón en el mar frío",
           "link": "http://www.africanews.com/2026/01/03/tunisia-swimmers-celebrate-new-year-with-plunge-in-cold-sea/",
           "bloque": "AFRICA",
-          "proximidad": 30.1,
+          "proximidad": 30.4,
           "sesgo": "Periférico",
           "confianza": 65,
           "keywords": [
@@ -3656,45 +3638,90 @@
           ]
         },
         {
+          "id": "RUSSIA_145_c",
+          "titulo": "Ex alcalde opositor de Yaroslavl liberado de prisión después de cumplir condena por corrupción",
+          "link": "https://www.themoscowtimes.com/2025/12/30/former-opposition-mayor-of-yaroslavl-freed-from-prison-after-serving-sentence-for-corruption-a91584",
+          "bloque": "RUSSIA",
+          "proximidad": 30.3,
+          "sesgo": "Periférico",
+          "confianza": 80,
+          "keywords": [
+            "Yaroslavl",
+            "oposición",
+            "prisión",
+            "corrupción"
+          ]
+        },
+        {
+          "id": "EUROPE_285_9",
+          "titulo": "Incendio de Nochevieja en Suiza: los gerentes de bares enfrentan una investigación criminal",
+          "link": "https://www.dw.com/en/swiss-nye-fire-bar-managers-face-criminal-investigation/a-75378122?maca=en-rss-en-all-1573-xml-mrss",
+          "bloque": "EUROPE",
+          "proximidad": 30.0,
+          "sesgo": "Periférico",
+          "confianza": 92,
+          "keywords": [
+            "Suiza",
+            "incendio",
+            "investigación",
+            "criminal"
+          ]
+        },
+        {
           "id": "AFRICA_457_0",
           "titulo": "El estafador, el bailarín, el soñador",
           "link": "https://mg.co.za/friday/2025-12-27-the-hustler-the-dancer-the-dreamer/",
           "bloque": "AFRICA",
-          "proximidad": 29.9,
+          "proximidad": 29.8,
           "sesgo": "Periférico",
-          "confianza": 20,
+          "confianza": 30,
           "keywords": [
-            "estafador",
+            "Estafador",
             "bailarín",
             "soñador"
           ]
         },
         {
-          "id": "RUSSIA_159_e",
-          "titulo": "¿Todavía se puede o ya no?. Test de Año Nuevo de «Nueva-Europa»: ¿qué tan bien conoces las prohibiciones rusas?",
-          "link": "https://novayagazeta.eu/articles/2026/01/03/eshche-mozhno-ili-uzhe-net",
-          "bloque": "RUSSIA",
-          "proximidad": 29.6,
+          "id": "USA_46_a2632",
+          "titulo": "Miles de votos por correo podrían ser descontados bajo la nueva política de la oficina de correos",
+          "link": "https://www.washingtonpost.com/politics/2026/01/03/elections-mail-ballots-post-office/",
+          "bloque": "USA",
+          "proximidad": 29.7,
           "sesgo": "Periférico",
-          "confianza": 75,
+          "confianza": 70,
           "keywords": [
-            "Rusia",
-            "prohibiciones",
-            "test",
-            "Año Nuevo"
+            "votos",
+            "correo",
+            "política",
+            "descuento"
+          ]
+        },
+        {
+          "id": "AFRICA_437_a",
+          "titulo": "Miles de personas acuden al sur de Nigeria para el Carnaval de Calabar",
+          "link": "http://www.africanews.com/2026/01/02/thousands-flock-to-southern-nigeria-for-calabar-carnival/",
+          "bloque": "AFRICA",
+          "proximidad": 29.5,
+          "sesgo": "Periférico",
+          "confianza": 70,
+          "keywords": [
+            "Nigeria",
+            "Calabar",
+            "carnaval",
+            "turismo"
           ]
         }
       ]
     }
   ],
   "meta": {
-    "updated": "2026-01-04T07:11:09.176978",
-    "execution_seconds": 265.39,
+    "updated": "2026-01-04T07:50:25.633420",
+    "execution_seconds": 271.68,
     "stats": {
       "items_raw": 533,
       "items_classified": 530,
-      "cache_hits": 283,
-      "cache_misses": 247,
+      "cache_hits": 457,
+      "cache_misses": 73,
       "errors": 17
     },
     "config": {

@@ -1,0 +1,16 @@
+{
+  "reports": {
+    "M1-2026": {
+      "id": "M1-2026",
+      "type": "Mensual",
+      "content": "REPORT M1-2026: La Soberanía en Disputa: Polarización Global y Fragmentación Regional.\n\nEXECUTIVE SUMMARY: La instrumentalización de la soberanía nacional como pretexto para la injerencia geopolítica, exacerbada por la desconfianza en la tecnología y la disparidad en la aplicación de derechos, impulsa una fragmentación económica y tecnológica, y polarización ideológica global.\n\nKEY DRIVERS:\n*   Rivalidad por recursos energéticos y control geopolítico.\n*   Asimetría en la percepción e impacto de las sanciones económicas.\n*   Carrera geoespacial y tecnológica marcada por la desconfianza y la instrumentalización política de la IA.",
+      "date": "2026-01-04T07:50:26.869192"
+    },
+    "W1-2026": {
+      "id": "W1-2026",
+      "type": "Semanal",
+      "content": "REPORT W1-2026: La Instrumentalización de la Soberanía y la Fragmentación Global.\n\nEXECUTIVE SUMMARY: La soberanía nacional se utiliza selectivamente para justificar la injerencia geopolítica, intensificando la desconfianza, polarización y fragmentación en seguridad, economía, energía, tecnología y derechos humanos, obstaculizando la cooperación internacional.\n\nKEY DRIVERS:\n*   Competencia por recursos estratégicos y control tecnológico.\n*   Disparidades en la interpretación y aplicación de normas internacionales y derechos humanos.\n*   Polarización geopolítica alimentada por intereses nacionales divergentes.",
+      "date": "2026-01-04T07:50:28.030214"
+    }
+  }
+}
