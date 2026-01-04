@@ -120,9 +120,15 @@ class GeoCoreCollector:
             selected_items = self._synthesize_region(region, pool)
             
             if selected_items:
-                # Mejor filtrado por ID
-                selected_ids_set = set(selected_items["selected_ids"])
-                filtered_items = [item for item in pool if item.id in selected_ids_set]
+                # ESTRATEGIA: Índices Numéricos (1-based) -> Items
+                # La IA devuelve [1, 5, 10...], nosotros mapeamos a pool[0], pool[4], pool[9]...
+                selected_indices = selected_items.get("selected_indexes", [])
+                
+                filtered_items = []
+                for idx in selected_indices:
+                    # Validar rango (1 a len(pool))
+                    if isinstance(idx, int) and 1 <= idx <= len(pool):
+                        filtered_items.append(pool[idx-1]) # Convertir a 0-based
                 
                 # Enforce limits: truncate if too many, warn if too few
                 min_sel = PIPELINE["collection_params"]["output_stories_min"]
@@ -146,8 +152,9 @@ class GeoCoreCollector:
     def _synthesize_region(self, region, pool):
         """Envía el pool completo a la IA para síntesis y selección"""
         
-        # Preparar input para la IA
-        headlines = "\n".join([f"{i+1}. [{item.id}] {item.title} - {item.description[:80]}" 
+        # Preparar input para la IA usando ÍNDICES NUMÉRICOS (Más robusto)
+        # Formato: "1. Título..."
+        headlines = "\n".join([f"{i+1}. {item.title} - {item.description[:80]}" 
                                for i, item in enumerate(pool)])
         
         prompt_template = PIPELINE["regional_synthesis_prompt"]["user_template"]

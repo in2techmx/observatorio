@@ -2,15 +2,15 @@
     "version": "V5_GeoCore",
     "description": "Pipeline logic for Regional Narrative Extraction",
     "collection_params": {
-        "pool_size_per_region": 200,
+        "pool_size_per_region": 300,
         "min_items_for_synthesis": 20,
         "output_stories_min": 100,
         "output_stories_max": 120,
-        "rationale": "Maximum volume (700-840 total items) targets ~20 items per region per category (7 regions × 5 categories × 20 = 700)"
+        "rationale": "Maximum volume (700-840 total items) targets ~20 items per region per category"
     },
     "regional_synthesis_prompt": {
         "system": "You are a Senior Intelligence Analyst specializing in geopolitical narrative extraction.",
-        "user_template": "REGION: {region}\n\nRAW HEADLINES ({count} items):\n{headlines}\n\nTASK:\n1. Identify the DOMINANT NARRATIVE of this region right now.\n2. Select between 100-120 of the most representative news items that support this narrative.\n3. Discard noise (sports, celebrity gossip, minor local events).\n4. Prioritize diversity of topics to ensure coverage across geopolitical, economic, technological, and social themes.\n\nOUTPUT JSON FORMAT:\n{\n  \"narrative\": \"2-3 sentence summary of the dominant theme\",\n  \"selected_ids\": [\"id1\", \"id2\", ...],\n  \"confidence\": \"high/medium/low\"\n}",
+        "user_template": "REGION: {region}\n\nRAW HEADLINES ({count} items):\n{headlines}\n\nTASK:\n1. Identify the DOMINANT NARRATIVE of this region right now.\n2. Select between 100-120 of the most representative news items that support this narrative.\n3. Discard noise (sports, celebrity gossip, minor local events).\n4. Prioritize diversity of topics to ensure coverage across geopolitical, economic, technological, and social themes.\n\nOUTPUT JSON FORMAT:\n{\n  \"narrative\": \"2-3 sentence summary of the dominant theme\",\n  \"selected_indexes\": [1, 2, 5, ...],  // Return the numeric INDEXES of selected items\n  \"confidence\": \"high/medium/low\"\n}",
         "response_format": "application/json"
     },
     "deduplication_strategy": "regional_scope_only",
