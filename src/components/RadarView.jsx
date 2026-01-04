@@ -10,41 +10,40 @@ const RadarView = ({ events, hoveredId, onHover, language = 'EN', onRegionSelect
     const maxRadius = size / 2 - 20;
 
     // Regional Color Palette
+    // Regional Color Palette (Cyberpunk Neon) - MATCHES BACKEND KEYS
     const regionColors = {
-        "USA": "#3b82f6",     // Blue
-        "RUSSIA": "#ef4444",  // Red
-        "CHINA": "#eab308",   // Yellow
-        "EUROPE": "#8b5cf6",  // Purple
-        "MID_EAST": "#f97316",// Orange
-        "LATAM": "#10b981",   // Green
-        "AFRICA": "#14b8a6",  // Teal
-        "INDIA": "#f43f5e",   // Rose
-        "GLOBAL": "#9ca3af"   // Gray
+        "NORTEAMERICA": "#00f3ff",   // Cyan Neon
+        "LATINOAMERICA": "#00ff9f",  // Matrix Green
+        "EUROPA": "#2980b9",         // Blue
+        "ASIA_PACIFICO": "#e056fd",  // Purple Neon
+        "MEDIO_ORIENTE": "#f0932b",  // Orange
+        "RUSIA_CIS": "#ff3f34",      // Red Neon
+        "AFRICA": "#f6e58d",         // Yellow
+        "GLOBAL": "#ffffff"          // White
     };
 
+    // 7 Regions distributed over 360 degrees (~51.4 deg each)
+    // Organized roughly geographically clockwise
     const regionAngles = {
-        "USA": 30,
-        "LATAM": 90,
-        "EUROPE": 150,
-        "RUSSIA": 210,
-        "CHINA": 270,
-        "MID_EAST": 330,
-        "AFRICA": 120,
-        "INDIA": 300,
-        "GLOBAL": 0
+        "NORTEAMERICA": 0,    // Top Right
+        "EUROPA": 51,
+        "RUSIA_CIS": 102,
+        "ASIA_PACIFICO": 154,
+        "MEDIO_ORIENTE": 205,
+        "AFRICA": 257,
+        "LATINOAMERICA": 308  // Top Left
     };
 
     // Translations
     const t = {
         regions: {
-            "USA": language === 'EN' ? "USA" : "EE.UU",
-            "RUSSIA": language === 'EN' ? "RUSSIA" : "RUSIA",
-            "CHINA": "CHINA",
-            "EUROPE": language === 'EN' ? "EUROPE" : "EUROPA",
-            "MID_EAST": language === 'EN' ? "M. EAST" : "O. MEDIO",
-            "LATAM": "LATAM",
+            "NORTEAMERICA": language === 'EN' ? "N. AMERICA" : "N. AMÉRICA",
+            "LATINOAMERICA": "LATAM",
+            "EUROPA": language === 'EN' ? "EUROPE" : "EUROPA",
+            "ASIA_PACIFICO": language === 'EN' ? "ASIA PAC." : "ASIA PAC.",
+            "MEDIO_ORIENTE": language === 'EN' ? "M. EAST" : "O. MEDIO",
+            "RUSIA_CIS": language === 'EN' ? "RUSSIA" : "RUSIA",
             "AFRICA": language === 'EN' ? "AFRICA" : "ÁFRICA",
-            "INDIA": "INDIA",
             "GLOBAL": "GLOBAL"
         },
         tap: language === 'EN' ? "Tap for details" : "Tocar para ver más",
