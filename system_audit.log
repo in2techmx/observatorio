@@ -170,3 +170,43 @@
 2026-01-04 07:05:01,463 | INFO     | AFC is enabled with max remote calls: 10.
 2026-01-04 07:05:02,253 | INFO     | AFC is enabled with max remote calls: 10.
 2026-01-04 07:05:02,987 | INFO     | 💾 FASE 4: Exportación...
+2026-01-04 07:06:43,782 | INFO     | 📡 FASE 1: Recolección (Límite: 20)...
+2026-01-04 07:07:23,538 | INFO     | 🔎 FASE 2: Clasificación IA (533 items)...
+2026-01-04 07:07:23,538 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:07:31,032 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:07:39,346 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:07:47,469 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:07:56,410 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:03,333 | ERROR    | Error Batch IA: Expecting ',' delimiter: line 3 column 129 (char 1
+2026-01-04 07:08:03,333 | INFO     | 🛡️ Fallback recuperó 17 noticias.
+2026-01-04 07:08:04,335 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:12,162 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:20,342 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:29,070 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:37,722 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:45,767 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:08:54,134 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:02,479 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:10,545 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:18,007 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:25,877 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:33,776 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:42,131 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:50,305 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:09:58,141 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:05,756 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:13,749 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:22,007 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:30,392 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:39,277 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:47,642 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:10:56,452 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:02,183 | INFO     | 📐 FASE 3: Análisis Vectorial (Escala No-Lineal)...
+2026-01-04 07:11:04,712 | INFO     | 💬 FASE 3.5: Generando Diálogo Geopolítico (Regional Clustering)...
+2026-01-04 07:11:04,727 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:05,484 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:06,244 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:06,938 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:07,696 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:08,481 | INFO     | AFC is enabled with max remote calls: 10.
+2026-01-04 07:11:09,175 | INFO     | 💾 FASE 4: Exportación...
