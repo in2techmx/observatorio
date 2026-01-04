@@ -84,7 +84,8 @@ function App() {
 
                         categoryMetaMap[cat.area] = {
                             synthesis,
-                            color: cat.color // Capture color from backend
+                            color: cat.color,
+                            regionalSyntheses: cat.regional_syntheses || {}
                         };
                     });
 
@@ -179,8 +180,9 @@ function App() {
                     <CategoryDetail
                         category={selectedCategory}
                         events={activeEvents}
-                        synthesis={syntheses[selectedCategory]?.synthesis} // Access nested synthesis property
-                        onSelectNews={setSelectedNews}
+                        synthesis={syntheses[selectedCategory]?.synthesis}
+                        regionalSyntheses={syntheses[selectedCategory]?.regionalSyntheses}
+                        onSelectNews={handleSelectNews}
                         onClose={handleCloseOverlay}
                         language={language}
                         categoryTranslations={CATEGORY_TRANSLATIONS}
