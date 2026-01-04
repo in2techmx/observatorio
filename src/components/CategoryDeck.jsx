@@ -56,56 +56,48 @@ const CategoryDeck = ({ category, events, synthesis, onSelectNews }) => {
                 </div>
             )}
 
-            {/* Expanded Content (Netflix Drawer Style) */}
-            <AnimatePresence>
-                {isExpanded && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="overflow-hidden bg-black/20"
-                    >
-                        <div className="p-8 border-t border-white/10 border-b border-white/5 mx-4 md:mx-12">
-                            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
+            {/* Expanded Content (Simple Render) */}
+            {isExpanded && (
+                <div className="relative z-20 bg-zinc-900/50 min-h-[500px] border-t border-white/10 border-b border-white/5 mx-4 md:mx-12 transition-all duration-300 backdrop-blur-sm">
+                    <div className="p-8 h-full">
+                        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center h-full">
 
-                                {/* Block 1: The Radar */}
-                                <div className="flex-1 flex flex-col items-center">
-                                    <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-6 flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
-                                        Radar de Proximidad
-                                    </h3>
-                                    <RadarView
-                                        events={events}
-                                        hoveredId={hoveredId}
-                                        onHover={setHoveredId}
-                                    />
-                                    <p className="text-[10px] text-gray-500 mt-4 max-w-xs text-center">
-                                        Los nodos centrales (Radio Interno) representan alta convergencia geopolítica. Los nodos externos son señales débiles o aisladas.
-                                    </p>
-                                </div>
-
-                                {/* Divider */}
-                                <div className="hidden md:block w-px bg-white/10 h-[400px] mx-4" />
-
-                                {/* Block 2: The List */}
-                                <div className="flex-1 w-full md:max-w-xl">
-                                    <h3 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">
-                                        Feed de Inteligencia
-                                    </h3>
-                                    <NewsList
-                                        events={events}
-                                        hoveredId={hoveredId}
-                                        onHover={setHoveredId}
-                                        onSelect={onSelectNews}
-                                    />
-                                </div>
-
+                            {/* Block 1: The Radar */}
+                            <div className="flex-1 flex flex-col items-center w-full min-h-[400px]">
+                                <h3 className="text-xs uppercase tracking-[0.2em] text-cyan-400 mb-6 flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
+                                    Radar de Proximidad
+                                </h3>
+                                <RadarView
+                                    events={events}
+                                    hoveredId={hoveredId}
+                                    onHover={setHoveredId}
+                                />
+                                <p className="text-[10px] text-gray-500 mt-4 max-w-xs text-center">
+                                    Los nodos centrales (Radio Interno) representan alta convergencia geopolítica. Los nodos externos son señales débiles o aisladas.
+                                </p>
                             </div>
+
+                            {/* Divider */}
+                            <div className="hidden md:block w-px bg-white/10 h-[400px] mx-4" />
+
+                            {/* Block 2: The List */}
+                            <div className="flex-1 w-full md:max-w-xl min-h-[400px]">
+                                <h3 className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">
+                                    Feed de Inteligencia
+                                </h3>
+                                <NewsList
+                                    events={events}
+                                    hoveredId={hoveredId}
+                                    onHover={setHoveredId}
+                                    onSelect={onSelectNews}
+                                />
+                            </div>
+
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };

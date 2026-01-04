@@ -107,11 +107,12 @@ const RadarView = ({ events, hoveredId, onHover }) => {
     const selectedEvent = events.find(e => e.id === selectedNodeId);
 
     return (
-        <div className="relative w-[400px] h-[400px] flex items-center justify-center">
+        <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center">
             {/* Click background to deselect */}
             <svg
-                width={size}
-                height={size}
+                viewBox={`0 0 ${size} ${size}`}
+                width="100%"
+                height="100%"
                 className="overflow-visible"
                 onClick={() => setSelectedNodeId(null)}
             >

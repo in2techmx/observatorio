@@ -31,7 +31,9 @@ function App() {
                             country: p.bloque,
                             source_url: p.link,
                             proximity_score: p.proximidad / 10, // Map 0-100 to 0-10
-                            category: categoryBlock.area
+                            category: categoryBlock.area,
+                            analysis: (p.keywords || []).join(', ') + ". " + (p.sesgo || ""), // Fallback content
+                            keywords: p.keywords
                         }));
                     });
 
@@ -72,7 +74,7 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-cyan-500 selection:text-black">
 
             {/* 1. HERO SECTION (Explanation) */}
             <LandingHero />
