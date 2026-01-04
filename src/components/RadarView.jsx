@@ -9,9 +9,31 @@ const RadarView = ({ events, hoveredId, onHover }) => {
     const center = size / 2;
     const maxRadius = size / 2 - 20;
 
-    // Helper: Map proximity (0-10) to radius (inverse relationship: 10 is center, 0 is edge)
-    // Proximity 10 -> r = 0
-    // Proximity 0  -> r = maxRadius
+    // Regional Color Palette
+    const regionColors = {
+        "USA": "#3b82f6",     // Blue
+        "RUSSIA": "#ef4444",  // Red
+        "CHINA": "#eab308",   // Yellow
+        "EUROPE": "#8b5cf6",  // Purple
+        "MID_EAST": "#f97316",// Orange
+        "LATAM": "#10b981",   // Green
+        "AFRICA": "#14b8a6",  // Teal
+        "INDIA": "#f43f5e",   // Rose
+        "GLOBAL": "#9ca3af"   // Gray
+    };
+
+    const regionAngles = {
+        "USA": 30,
+        "LATAM": 90,
+        "EUROPE": 150,
+        "RUSSIA": 210,
+        "CHINA": 270,
+        "MID_EAST": 330,
+        "AFRICA": 120,
+        "INDIA": 300,
+        "GLOBAL": 0
+    };
+
     // PHYSICS ENGINE ----------------
     const [layout, setLayout] = useState([]);
 
@@ -20,18 +42,6 @@ const RadarView = ({ events, hoveredId, onHover }) => {
     // based strictly on proximity (radius) and region (angle).
     useEffect(() => {
         if (!events.length) return;
-
-        const regionAngles = {
-            "USA": 30, // Top Right
-            "LATAM": 90, // Bottom Right
-            "EUROPE": 150, // Bottom Left
-            "RUSSIA": 210, // Left
-            "CHINA": 270, // Top Left
-            "MID_EAST": 330, // Top
-            "AFRICA": 120,
-            "INDIA": 300,
-            "GLOBAL": 0
-        };
 
         // Initial placement with Jitter
         let nodes = events.map(ev => {
@@ -148,6 +158,33 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                 <line x1={center} y1={0} x2={center} y2={size} stroke="white" strokeOpacity={0.05} pointerEvents="none" />
                 <line x1={0} y1={center} x2={size} y2={center} stroke="white" strokeOpacity={0.05} pointerEvents="none" />
 
+                {/* Region Labels (Perimeter) */}
+                {Object.entries(regionAngles).map(([region, angle]) => {
+                    // Check if this region exists in current events
+                    if (!events.some(e => e.country === region)) return null;
+
+                    const rad = angle * (Math.PI / 180);
+                    const labelR = maxRadius + 20; // Push out a bit
+                    const x = center + labelR * Math.cos(rad);
+                    const y = center + labelR * Math.sin(rad);
+
+                    return (
+                        <text
+                            key={region}
+                            x={x}
+                            y={y}
+                            fill={regionColors[region]}
+                            fontSize="8"
+                            textAnchor="middle"
+                            alignmentBaseline="middle"
+                            opacity="0.7"
+                            className="uppercase tracking-widest font-mono"
+                        >
+                            {region}
+                        </text>
+                    );
+                })}
+
                 {/* Center Gravity Well */}
                 <circle cx={center} cy={center} r={5} fill="#06b6d4" className="animate-pulse" opacity="0.5" pointerEvents="none" />
 
@@ -158,6 +195,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                     const ev = node.data;
                     const isHovered = hoveredId === ev.id;
                     const isSelected = selectedNodeId === ev.id;
+                    const nodeColor = regionColors[ev.country] || "white";
 
                     return (
                         <g
@@ -177,7 +215,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                                     y1={center}
                                     x2={x}
                                     y2={y}
-                                    stroke="#06b6d4"
+                                    stroke={nodeColor}
                                     strokeWidth="1"
                                     strokeOpacity="0.3"
                                 />
@@ -187,7 +225,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                                 cx={x}
                                 cy={y}
                                 r={isSelected ? 6 : (isHovered ? 8 : 4)}
-                                fill={isSelected ? "#ec4899" : (isHovered ? "#06b6d4" : "white")}
+                                fill={isSelected ? nodeColor : (isHovered ? nodeColor : nodeColor)}
                                 initial={{ scale: 0, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: i * 0.1, type: "spring" }}
@@ -200,7 +238,7 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                                     cy={y}
                                     r={10}
                                     fill="none"
-                                    stroke="#ec4899"
+                                    stroke={nodeColor}
                                     strokeWidth={2}
                                 />
                             )}
@@ -231,11 +269,14 @@ const RadarView = ({ events, hoveredId, onHover }) => {
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-cyan-500/30 p-4 rounded-xl z-20 w-max max-w-[250px] text-center backdrop-blur-md shadow-2xl"
+                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 border border-white/10 p-4 rounded-xl z-20 w-max max-w-[250px] text-center backdrop-blur-md shadow-2xl"
+                        style={{ borderColor: regionColors[selectedEvent.country] }}
                     >
-                        <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">{selectedEvent.country}</div>
+                        <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1" style={{ color: regionColors[selectedEvent.country] }}>
+                            {selectedEvent.country}
+                        </div>
                         <h4 className="text-sm font-bold text-white mb-2 leading-tight">{selectedEvent.title}</h4>
-                        <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono text-cyan-400">
+                        <div className="inline-block bg-white/10 px-2 py-0.5 rounded text-[10px] font-mono" style={{ color: regionColors[selectedEvent.country] }}>
                             PROX: {selectedEvent.proximity_score}
                         </div>
                     </motion.div>
