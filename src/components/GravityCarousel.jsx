@@ -160,10 +160,6 @@ const GravityCarousel = ({ categories, selectedCategory, onSelect, language = 'E
                 })}
             </motion.div>
 
-            {/* Hint */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] text-gray-600 font-mono tracking-widest pointer-events-none">
-                [{uiText.drag}]
-            </div>
         </div>
     );
 };
