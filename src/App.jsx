@@ -63,12 +63,12 @@ function App() {
                             link: p.link,
                             country: p.bloque,
                             region: p.bloque || p.region, // Handle inconsistent naming
-                            source_url: p.link,
-                            proximity_score: p.proximidad / 10, // Map 0-100 to 0-10 for Radar
+                            source_url: p.link || p.url,  // Backend uses 'url', legacy used 'link'
+                            proximity_score: (p.proximity_score !== undefined ? p.proximity_score : p.proximidad) / 10, // Map 0-100 to 0-10, handle both keys
                             category: categoryBlock.area,
                             analysis: (p.keywords || []).join(', ') + ". " + (p.sesgo || ""),
                             keywords: p.keywords,
-                            snippet: p.snippet
+                            snippet: p.description || p.snippet // Fallback for description
                         }));
                     });
 
