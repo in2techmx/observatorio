@@ -144,7 +144,7 @@ const CategoryDetail = ({ category, events, synthesis, onSelectNews, onClose, la
                                 </h4>
                                 <div className="flex items-center justify-between text-[10px] text-gray-600 font-mono">
                                     <span>{new Date().toLocaleDateString()}</span>
-                                    <span className="group-hover:text-cyan-400 transition-colors">>> READ</span>
+                                    <span className="group-hover:text-cyan-400 transition-colors">&gt;&gt; READ</span>
                                 </div>
                             </div>
                         ))}

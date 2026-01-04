@@ -585,13 +585,26 @@ FORMAT (JSON):
 
             # Get synthesis (now a dict with en/es)
             syn_data = self.syntheses.get(area, {})
+            
+            # Robust Type Checking
+            if isinstance(syn_data, list):
+                if len(syn_data) > 0 and isinstance(syn_data[0], dict):
+                    syn_data = syn_data[0]
+                else:
+                    syn_data = {} # Invalid list structure
+            
             # Fallback if string (legacy safety)
-            if isinstance(syn_data, str): syn_data = {"es": syn_data, "en": syn_data}
+            if isinstance(syn_data, str): 
+                syn_data = {"es": syn_data, "en": syn_data}
+            
+            # Final safety check before .get
+            if not isinstance(syn_data, dict):
+                syn_data = {"es": "Datos no disponibles", "en": "Data unavailable"}
 
             carousel.append({
                 "area": area, 
-                "sintesis": syn_data.get("es", ""),
-                "sintesis_en": syn_data.get("en", ""),
+                "sintesis": syn_data.get("es", "Análisis en curso..."),
+                "sintesis_en": syn_data.get("en", "Analysis in progress..."),
                 "punto_cero": f"{emoji} {consensus} | Avg: {avg:.1f}% | {trend}",
                 "color": colors.get(area, "#666"),
                 "meta_netflix": {"consensus": consensus, "trend": trend, "avg_proximity": avg},
