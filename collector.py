@@ -1,4 +1,5 @@
 # SCRIPT DE RECOLECCIÓN DE NOTICIAS - PROXIMITY ENGINE V4 (Rich Data + Regional Dedupe)
+import os
 import json
 import datetime
 import time
